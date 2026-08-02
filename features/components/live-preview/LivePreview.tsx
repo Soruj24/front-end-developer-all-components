@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import type { ReactNode } from "react";
 import type { RegistryComponent } from "@/features/registry";
 import { categoryBySlug } from "@/features/registry";
+import { ComponentRenderer } from "@/components/preview/ComponentRenderer";
 import { thumbnailGradient } from "../thumbnail";
 import { elements } from "./elements";
 import { dataDisplay } from "./data-display";
@@ -41,7 +42,7 @@ export function LivePreview({ component }: { component: RegistryComponent }) {
     );
   }
 
-  return <div className="flex w-full items-center justify-center">{node}</div>;
+  return <ComponentRenderer>{node}</ComponentRenderer>;
 }
 
 function Fallback({

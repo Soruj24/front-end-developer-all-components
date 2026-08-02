@@ -128,7 +128,7 @@ function DatePicker({ onSelect }: { onSelect: (d: Date) => void }) {
   const cells = useMemo(() => generateDays(year, month), [year, month]);
 
   return (
-    <div className="w-72 rounded-xl border border-border bg-white p-4 shadow-sm dark:border-border dark:bg-zinc-900">
+    <div className="w-full max-w-72 rounded-xl border border-border bg-white p-4 shadow-sm dark:border-border dark:bg-zinc-900">
       <div className="mb-3 flex items-center justify-between">
         <button onClick={() => { if (month === 0) { setYear(y => y - 1); setMonth(11); } else setMonth(m => m - 1); }} className="rounded p-1 hover:bg-muted dark:hover:bg-muted">
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -192,7 +192,7 @@ export default function CalendarPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Calendar</h1>
           <p className="text-muted-foreground">Multiple calendar examples and views.</p>

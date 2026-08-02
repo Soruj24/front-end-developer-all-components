@@ -7,10 +7,10 @@ type DrawerSide = "left" | "right" | "top" | "bottom";
 type DrawerSize = "sm" | "md" | "lg" | "xl" | "full";
 
 const SIZES: Record<DrawerSize, string> = {
-  sm: "w-80",
-  md: "w-[400px]",
-  lg: "w-[500px]",
-  xl: "w-[640px]",
+  sm: "w-full max-w-80",
+  md: "w-full max-w-[400px]",
+  lg: "w-full max-w-[500px]",
+  xl: "w-full max-w-[640px]",
   full: "w-full max-w-2xl",
 };
 

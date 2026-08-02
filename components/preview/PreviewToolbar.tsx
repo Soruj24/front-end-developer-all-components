@@ -2,23 +2,22 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import type { DeviceId } from "./devices";
+import { DeviceSwitcher } from "./DeviceSwitcher";
 import {
   CheckIcon,
   CopyIcon,
   ExpandIcon,
   ExternalLinkIcon,
-  MonitorIcon,
   MoonIcon,
-  SmartphoneIcon,
   SunIcon,
-  TabletIcon,
 } from "./icons";
 
-export type FrameWidth = "desktop" | "tablet" | "mobile";
+export type { DeviceId } from "./devices";
 
 interface PreviewToolbarProps {
-  frame: FrameWidth;
-  onFrameChange: (frame: FrameWidth) => void;
+  device: DeviceId;
+  onDeviceChange: (device: DeviceId) => void;
   forcedDark: boolean;
   onToggleDark: () => void;
   copied: boolean;
@@ -26,12 +25,6 @@ interface PreviewToolbarProps {
   onExpand: () => void;
   playgroundHref: string;
 }
-
-const FRAMES: Array<{ id: FrameWidth; label: string; icon: typeof MonitorIcon }> = [
-  { id: "desktop", label: "Desktop", icon: MonitorIcon },
-  { id: "tablet", label: "Tablet", icon: TabletIcon },
-  { id: "mobile", label: "Mobile", icon: SmartphoneIcon },
-];
 
 function ToolbarButton({
   onClick,
@@ -66,10 +59,10 @@ function Divider() {
   return <span className="h-4 w-px bg-border" aria-hidden="true" />;
 }
 
-/** Toolbar floating above the live preview frame. */
+/** Toolbar above the live preview: device switcher, theme, copy, expand, playground. */
 export function PreviewToolbar({
-  frame,
-  onFrameChange,
+  device,
+  onDeviceChange,
   forcedDark,
   onToggleDark,
   copied,
@@ -83,27 +76,8 @@ export function PreviewToolbar({
         Live Preview
       </span>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <div className="flex items-center gap-0.5 rounded-full border border-border bg-muted p-0.5">
-          {FRAMES.map(({ id, label, icon: FrameIcon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onFrameChange(id)}
-              title={label}
-              aria-label={`${label} preview`}
-              aria-pressed={frame === id}
-              className={cn(
-                "inline-flex h-7 w-7 items-center justify-center rounded-full transition-[background-color,color,box-shadow,transform] duration-150 ease-out active:scale-95",
-                frame === id
-                  ? "bg-background text-foreground shadow-sm ring-1 ring-border"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <FrameIcon className="h-3.5 w-3.5" />
-            </button>
-          ))}
-        </div>
+      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+        <DeviceSwitcher device={device} onDeviceChange={onDeviceChange} />
 
         <Divider />
 

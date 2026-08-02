@@ -231,7 +231,7 @@ export function FloatingToolbar({
       role="toolbar"
       aria-label={ariaLabel}
       className={cn(
-        "z-50 flex w-max select-none items-center gap-1 rounded-2xl border border-black/[0.08] bg-white/80 p-1.5 shadow-card backdrop-blur-xl dark:border-white/[0.1] dark:bg-zinc-900/80",
+        "z-50 flex w-max max-w-full select-none items-center gap-1 rounded-2xl border border-black/[0.08] bg-white/80 p-1.5 shadow-card backdrop-blur-xl dark:border-white/[0.1] dark:bg-zinc-900/80",
         position === "fixed" && "fixed",
         position === "absolute" && "absolute",
         position === "sticky" && "sticky top-4 mx-auto",

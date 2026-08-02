@@ -45,7 +45,7 @@ function PaginationBar({
   const navClass = size === "sm" ? "h-7 text-xs" : size === "lg" ? "h-11 text-base" : "h-9 text-sm";
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex min-w-0 max-w-full items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
       <button onClick={() => onChange(1)} disabled={current === 1} className={`${btnClass} ${sizeClass} flex items-center justify-center border border-border disabled:opacity-40 dark:border-border`}>
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
       </button>
@@ -129,7 +129,7 @@ export default function PaginationPage() {
       </header>
 
       <ComponentPreview id="pagination-style-variants">
-        <div className="grid w-full gap-6">
+        <div className="grid w-full grid-cols-1 gap-6">
           {[
             { label: "Default (Rounded)", v: "default", s: [p1, setP1] as const },
             { label: "Pill (Fully Rounded)", v: "pill", s: [p2, setP2] as const },
@@ -146,7 +146,7 @@ export default function PaginationPage() {
 
       <ComponentPreview id="pagination-size-variants">
         <div className="flex w-full flex-col gap-6">
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {[
               { label: "Small (sm)", z: "sm", s: [p5, setP5] as const },
               { label: "Medium (md, default)", z: "md", s: [p6, setP6] as const },
@@ -170,7 +170,7 @@ export default function PaginationPage() {
       </ComponentPreview>
 
       <ComponentPreview id="pagination-page-counts">
-        <div className="grid w-full gap-4 sm:grid-cols-2">
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
           {[
             { label: "Few Pages (3)", t: 3, s: [p11, setP11] as const },
             { label: "Medium (8)", t: 8, s: [p12, setP12] as const },
@@ -325,7 +325,7 @@ export default function PaginationPage() {
           </div>
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Ghost / Minimal (No Borders)</p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
               <button onClick={() => setP25(Math.max(1, p25 - 1))} disabled={p25 === 1} className="flex h-8 w-8 items-center justify-center rounded text-sm text-muted-foreground/70 hover:bg-muted disabled:opacity-30 dark:hover:bg-muted"><ChevronLeft /></button>
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <button key={n} onClick={() => setP25(n)} className={`flex h-8 min-w-[32px] items-center justify-center rounded text-sm ${n === p25 ? "bg-muted font-medium text-zinc-900 dark:bg-muted dark:text-zinc-100" : "text-muted-foreground hover:text-foreground dark:hover:text-zinc-100"}`}>{n}</button>
@@ -335,7 +335,8 @@ export default function PaginationPage() {
           </div>
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">With Vertical Dividers</p>
-            <div className="inline-flex items-center rounded-md border border-border dark:border-border">
+            <div className="overflow-x-auto pb-1 scrollbar-thin">
+              <div className="inline-flex items-center rounded-md border border-border dark:border-border">
               <button onClick={() => setP26(Math.max(1, p26 - 1))} disabled={p26 === 1} className="flex h-9 w-9 items-center justify-center disabled:opacity-40"><ChevronLeft /></button>
               <div className="h-5 w-px bg-muted" />
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n, i) => (
@@ -346,6 +347,7 @@ export default function PaginationPage() {
               ))}
               <div className="h-5 w-px bg-muted" />
               <button onClick={() => setP26(Math.min(8, p26 + 1))} disabled={p26 === 8} className="flex h-9 w-9 items-center justify-center disabled:opacity-40"><ChevronRight /></button>
+              </div>
             </div>
           </div>
         </div>
@@ -473,12 +475,14 @@ export default function PaginationPage() {
       </ComponentPreview>
 
       <ComponentPreview id="pagination-button-group">
-        <div className="inline-flex -space-x-px overflow-hidden rounded-md border border-border shadow-sm dark:border-border">
-          <button onClick={() => setP34(Math.max(1, p34 - 1))} disabled={p34 === 1} className="border-r border-border bg-white px-3 py-2 text-sm disabled:opacity-40 dark:border-border dark:bg-zinc-900"><ChevronLeft /></button>
-          {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-            <button key={n} onClick={() => setP34(n)} className={`border-r border-border px-3 py-2 text-sm last:border-r-0 dark:border-border ${n === p34 ? "bg-zinc-900 font-medium text-white dark:bg-muted dark:text-zinc-900" : "bg-white hover:bg-muted/40 dark:bg-zinc-900 dark:hover:bg-muted"}`}>{n}</button>
-          ))}
-          <button onClick={() => setP34(Math.min(7, p34 + 1))} disabled={p34 === 7} className="bg-white px-3 py-2 text-sm disabled:opacity-40 dark:bg-zinc-900"><ChevronRight /></button>
+        <div className="w-full overflow-x-auto pb-1 scrollbar-thin">
+          <div className="inline-flex -space-x-px overflow-hidden rounded-md border border-border shadow-sm dark:border-border">
+            <button onClick={() => setP34(Math.max(1, p34 - 1))} disabled={p34 === 1} className="border-r border-border bg-white px-3 py-2 text-sm disabled:opacity-40 dark:border-border dark:bg-zinc-900"><ChevronLeft /></button>
+            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+              <button key={n} onClick={() => setP34(n)} className={`border-r border-border px-3 py-2 text-sm last:border-r-0 dark:border-border ${n === p34 ? "bg-zinc-900 font-medium text-white dark:bg-muted dark:text-zinc-900" : "bg-white hover:bg-muted/40 dark:bg-zinc-900 dark:hover:bg-muted"}`}>{n}</button>
+            ))}
+            <button onClick={() => setP34(Math.min(7, p34 + 1))} disabled={p34 === 7} className="bg-white px-3 py-2 text-sm disabled:opacity-40 dark:bg-zinc-900"><ChevronRight /></button>
+          </div>
         </div>
       </ComponentPreview>
 
@@ -505,7 +509,7 @@ export default function PaginationPage() {
           ].map((c) => (
             <div key={c.label} className="flex flex-wrap items-center gap-4">
               <span className="w-24 text-xs text-muted-foreground">{c.label}</span>
-              <div className="flex items-center gap-1">
+              <div className="flex min-w-0 max-w-full items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                   <button key={n} onClick={() => { if (c.interactive) setP36(n); }} className={`flex h-8 min-w-[32px] items-center justify-center rounded-md border px-2 text-xs ${n === p36 && c.interactive ? `${c.bg} border-transparent text-white` : "border-border dark:border-border"}`}>{n}</button>
                 ))}
@@ -538,7 +542,7 @@ export default function PaginationPage() {
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Gradient Active Page</p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
               <button onClick={() => setP38(Math.max(1, p38 - 1))} disabled={p38 === 1} className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-sm disabled:opacity-40 dark:border-border"><ChevronLeft /></button>
               {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                 <button key={n} onClick={() => setP38(n)} className={`flex h-9 min-w-[36px] items-center justify-center rounded-lg text-sm font-medium ${n === p38 ? "bg-gradient-to-br from-zinc-800 to-zinc-600 text-white shadow dark:from-zinc-200 dark:to-zinc-400" : "border border-border hover:bg-muted/40 dark:border-border dark:hover:bg-muted"}`}>{n}</button>
@@ -548,7 +552,7 @@ export default function PaginationPage() {
           </div>
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Counter Badge on Active</p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
               <button onClick={() => setP39(Math.max(1, p39 - 1))} disabled={p39 === 1} className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-sm disabled:opacity-40 dark:border-border"><ChevronLeft /></button>
               {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                 <button key={n} onClick={() => setP39(n)} className={`relative flex h-9 min-w-[36px] items-center justify-center rounded-lg border text-sm ${n === p39 ? "border-zinc-900 bg-zinc-900 font-medium text-white dark:border-border dark:bg-muted dark:text-zinc-900" : "border-border hover:bg-muted/40 dark:border-border dark:hover:bg-muted"}`}>

@@ -93,7 +93,7 @@ export default function NavigationPage() {
                   <span className="text-xs">▾</span>
                 </button>
                 {megaOpen && (
-                  <div className="absolute left-0 top-full mt-2 w-[calc(100vw-3rem)] max-w-[500px] rounded-lg border border-border bg-white p-5 shadow-xl dark:border-border dark:bg-zinc-900">
+                  <div className="absolute left-0 top-full mt-2 w-[min(calc(100vw-3rem),500px)] rounded-lg border border-border bg-white p-5 shadow-xl dark:border-border dark:bg-zinc-900">
                     <div className="grid grid-cols-3 gap-6">
                       {megaMenuProducts.map((group) => (
                         <div key={group.category} className="flex flex-col gap-2">

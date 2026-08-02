@@ -41,7 +41,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         {open && (
           <div
             ref={ref}
-            className={`absolute z-50 min-w-[10rem] rounded-lg border border-border bg-surface p-4 shadow-popover ${placementClasses[placement]}`}
+            className={`absolute z-50 min-w-[10rem] max-w-[calc(100vw-1rem)] rounded-lg border border-border bg-surface p-4 shadow-popover ${placementClasses[placement]}`}
           >
             {children}
           </div>

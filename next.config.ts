@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     "langchain",
     "openai",
     "@modelcontextprotocol/sdk",
+    "nodemailer",
   ],
 };
 

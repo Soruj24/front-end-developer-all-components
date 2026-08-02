@@ -282,6 +282,9 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Prevent horizontal page scroll without creating a scroll container
+       (keeps position:sticky headers working). */
+    overflow-x: clip;
   }
 
   /* ——— Premium typography hierarchy ——— */

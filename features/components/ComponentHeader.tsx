@@ -9,7 +9,7 @@ export function ComponentHeader({ component }: { component: RegistryComponent })
 
   return (
     <div className="flex flex-col gap-5">
-      <nav className="flex items-center gap-1.5 text-xs text-muted-foreground" aria-label="Breadcrumb">
+      <nav className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-muted-foreground" aria-label="Breadcrumb">
         <span>Registry</span>
         <span className="text-muted-foreground/50">/</span>
         <span>{category?.label ?? component.category}</span>

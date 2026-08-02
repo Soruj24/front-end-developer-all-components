@@ -5,7 +5,11 @@ import { getRegistryItem } from "@/components/registry";
 import { cn } from "@/lib/cn";
 import { AnimatedTabs } from "./AnimatedTabs";
 import { ExpandablePreview } from "./ExpandablePreview";
-import { PreviewToolbar, FrameWidth } from "./PreviewToolbar";
+import { PreviewToolbar } from "./PreviewToolbar";
+import { PreviewFrame } from "./PreviewFrame";
+import { PreviewCanvas } from "./PreviewCanvas";
+import { DEFAULT_DEVICE_ID, getDevice } from "./devices";
+import type { DeviceId } from "./devices";
 import { CodePanel, CliPanel, InstallPanel, DependenciesPanel } from "./panels";
 import {
   BoxesIcon,
@@ -25,12 +29,6 @@ const TABS: Array<{ id: TabId; label: string; icon: ReactNode }> = [
   { id: "deps", label: "Dependencies", icon: <BoxesIcon className="h-3.5 w-3.5" /> },
 ];
 
-const FRAME_CLASSES: Record<FrameWidth, string> = {
-  desktop: "w-full",
-  tablet: "w-full max-w-[768px]",
-  mobile: "w-full max-w-[390px]",
-};
-
 interface ComponentPreviewProps {
   /** Registry id — drives the Code, CLI, Installation, and Dependencies tabs. */
   id: string;
@@ -45,7 +43,8 @@ interface ComponentPreviewProps {
 
 /**
  * shadcn-inspired component preview block. Renders the live demo as `children`
- * and pulls source, CLI, install, and dependency metadata from the registry.
+ * inside a device-responsive frame and pulls source, CLI, install, and
+ * dependency metadata from the registry.
  */
 export function ComponentPreview({
   id,
@@ -56,7 +55,7 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const item = useMemo(() => getRegistryItem(id), [id]);
   const [activeTab, setActiveTab] = useState<TabId>("preview");
-  const [frame, setFrame] = useState<FrameWidth>("desktop");
+  const [device, setDevice] = useState<DeviceId>(DEFAULT_DEVICE_ID);
   const [forcedDark, setForcedDark] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -107,8 +106,8 @@ export function ComponentPreview({
         {activeTab === "preview" && (
           <div className="relative">
             <PreviewToolbar
-              frame={frame}
-              onFrameChange={setFrame}
+              device={device}
+              onDeviceChange={setDevice}
               forcedDark={forcedDark}
               onToggleDark={() => setForcedDark((v) => !v)}
               copied={copied}
@@ -122,22 +121,11 @@ export function ComponentPreview({
                 forcedDark && "dark bg-[#0b0b10]"
               )}
             >
-              <div className="relative flex min-h-[16rem] items-center justify-center overflow-hidden bg-muted/40 p-4 sm:p-8">
-                <div
-                  className="absolute inset-0 bg-dots opacity-50 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
-                  aria-hidden="true"
-                />
-                <div
-                  className={cn(
-                    "relative z-10 w-full transition-[max-width] duration-500 ease-out",
-                    FRAME_CLASSES[frame]
-                  )}
-                >
-                  <div className="flex min-h-[12rem] w-full items-center justify-center rounded-xl border border-border/70 bg-background p-6 shadow-card sm:p-8">
-                    {children}
-                  </div>
-                </div>
-              </div>
+              <PreviewCanvas>
+                <PreviewFrame device={getDevice(device)}>
+                  {children}
+                </PreviewFrame>
+              </PreviewCanvas>
             </div>
           </div>
         )}
@@ -148,7 +136,13 @@ export function ComponentPreview({
         {activeTab === "deps" && item && <DependenciesPanel item={item} />}
       </div>
 
-      <ExpandablePreview open={expanded} title={resolvedTitle} onClose={handleClose}>
+      <ExpandablePreview
+        key={device}
+        open={expanded}
+        title={resolvedTitle}
+        onClose={handleClose}
+        initialDevice={getDevice(device)}
+      >
         {children}
       </ExpandablePreview>
     </section>

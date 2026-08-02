@@ -16,7 +16,7 @@ export function ComponentPropsTable({ props }: { props: ComponentProp[] }) {
           <tr className="border-b border-border bg-muted/40 text-xs text-muted-foreground">
             <th scope="col" className="px-4 py-2.5 font-medium">Prop</th>
             <th scope="col" className="px-4 py-2.5 font-medium">Type</th>
-            <th scope="col" className="px-4 py-2.5 font-medium">Default</th>
+            <th scope="col" className="hidden px-4 py-2.5 font-medium md:table-cell">Default</th>
             <th scope="col" className="px-4 py-2.5 font-medium">Description</th>
           </tr>
         </thead>
@@ -29,15 +29,15 @@ export function ComponentPropsTable({ props }: { props: ComponentProp[] }) {
                   <span className="ml-1.5 text-[10px] font-medium text-danger">required</span>
                 )}
               </td>
-              <td className="whitespace-nowrap px-4 py-3">
-                <code className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+              <td className="px-4 py-3">
+                <code className="whitespace-nowrap rounded-md bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
                   {prop.type}
                 </code>
               </td>
-              <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-muted-foreground">
+              <td className="hidden whitespace-nowrap px-4 py-3 font-mono text-xs text-muted-foreground md:table-cell">
                 {prop.default ?? "—"}
               </td>
-              <td className="px-4 py-3 text-[13px] text-muted-foreground">
+              <td className="min-w-[12rem] px-4 py-3 text-[13px] text-muted-foreground">
                 {prop.description}
               </td>
             </tr>

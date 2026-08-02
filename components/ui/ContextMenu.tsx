@@ -71,7 +71,7 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
         <div
           ref={menuRef}
           style={{ left: position.x, top: position.y }}
-          className="fixed z-50 min-w-[180px] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover"
+          className="fixed z-50 min-w-[180px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover"
         >
           {items.map((item, i) =>
             item.divider ? (
@@ -134,7 +134,7 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
                   )}
                 </button>
                 {item.children && submenu === item.label && (
-                  <div className="absolute left-full top-0 ml-1 min-w-[160px] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover">
+                  <div className="absolute left-full top-0 ml-1 min-w-[160px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover">
                     {item.children.map((child, ci) => (
                       <button
                         key={ci}

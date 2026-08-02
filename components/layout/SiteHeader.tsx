@@ -72,7 +72,7 @@ export function SiteHeader({
               <span className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80 text-[11px] font-bold text-accent-foreground shadow-sm transition-transform duration-300 group-hover:scale-105 animate-logo-glow">
                 {siteConfig.shortName}
               </span>
-              <span className="hidden text-[15px] font-semibold tracking-tight text-foreground sm:inline">
+              <span className="hidden text-[15px] font-semibold tracking-tight text-foreground sm:inline lg:hidden xl:inline">
                 {siteConfig.name}
               </span>
             </Link>
@@ -86,7 +86,7 @@ export function SiteHeader({
                 setSearchOpen(true);
                 setMenuOpen(false);
               }}
-              className="group hidden h-9 w-44 items-center gap-2.5 rounded-full border border-border bg-muted/40 px-3 text-left text-[13px] text-muted-foreground transition-all duration-200 hover:border-ring/60 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] sm:flex"
+              className="group hidden h-9 w-40 items-center gap-2.5 rounded-full border border-border bg-muted/40 px-3 text-left text-[13px] text-muted-foreground transition-all duration-200 hover:border-ring/60 hover:bg-muted/60 hover:text-foreground active:scale-[0.98] sm:flex xl:w-44"
               aria-label="Search"
             >
               <SearchIcon className="h-3.5 w-3.5 shrink-0" />
@@ -126,6 +126,13 @@ export function SiteHeader({
             </Link>
 
             <ThemeToggle />
+
+            <Link
+              href="/login"
+              className="hidden h-9 items-center rounded-full border border-border px-4 text-[13px] font-medium text-foreground transition-all hover:bg-muted active:scale-[0.98] md:inline-flex"
+            >
+              Sign in
+            </Link>
 
             <Link
               href={siteConfig.getStartedHref}

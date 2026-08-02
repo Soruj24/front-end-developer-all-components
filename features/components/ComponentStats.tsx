@@ -18,7 +18,7 @@ export function ComponentStats({
 
   return (
     <div
-      className={`grid grid-cols-4 divide-x divide-border rounded-xl border border-border bg-muted/30 ${
+      className={`grid grid-cols-2 gap-4 rounded-xl border border-border bg-muted/30 sm:grid-cols-4 sm:gap-0 sm:divide-x sm:divide-border ${
         compact ? "text-[11px]" : "text-xs"
       }`}
     >

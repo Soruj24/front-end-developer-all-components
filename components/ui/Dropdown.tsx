@@ -37,7 +37,7 @@ const Dropdown = ({ trigger, items, align = "start" }: DropdownProps) => {
       <div onClick={() => setOpen((prev) => !prev)}>{trigger}</div>
       {open && (
         <div
-          className={`absolute z-50 mt-1 min-w-[180px] overflow-hidden rounded-lg border border-border bg-surface py-1 shadow-popover ${align === "end" ? "right-0" : "left-0"}`}
+          className={`absolute z-50 mt-1 min-w-[180px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-lg border border-border bg-surface py-1 shadow-popover ${align === "end" ? "right-0" : "left-0"}`}
         >
           {items.map((item, i) => {
             if (item.divider) {

@@ -127,7 +127,7 @@ export function DependenciesPanel({ item }: DependenciesPanelProps) {
 
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-6">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <PackageIcon className="h-4 w-4" />
           {item.dependencies.length} runtime{" "}

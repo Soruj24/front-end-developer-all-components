@@ -5,9 +5,9 @@ type Side = "left" | "right";
 type Size = "sm" | "md" | "lg";
 
 const sizeClasses: Record<Size, string> = {
-  sm: "w-72",
-  md: "w-96",
-  lg: "w-[28rem]",
+  sm: "w-full max-w-72",
+  md: "w-full max-w-96",
+  lg: "w-full max-w-[28rem]",
 };
 
 export interface DrawerProps {

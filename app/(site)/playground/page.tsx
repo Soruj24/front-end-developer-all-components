@@ -1,8 +1,10 @@
 import { Suspense } from "react";
-import { Playground } from "@/components/playground";
+import { Playground } from "@/features/playground";
 
 export const metadata = {
   title: "Playground",
+  description:
+    "Full IDE for building UI components: multi-file editor with syntax highlighting, live esbuild preview across devices, console, terminal, and one-click export.",
 };
 
 function Fallback() {

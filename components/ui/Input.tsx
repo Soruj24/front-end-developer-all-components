@@ -13,6 +13,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className = "", label, error, helperText, icon, iconPosition = "left", clearable, ...props }, ref) => {
     const uid = useId();
     const inputId = props.id ?? uid;
+    const errorId = `${inputId}-error`;
+    const helperId = `${inputId}-helper`;
     const [internalHasValue, setInternalHasValue] = useState(
       props.defaultValue !== undefined && props.defaultValue !== ""
     );
@@ -60,6 +62,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 ? "border-danger focus:border-danger focus:ring-danger"
                 : "border-input focus:border-ring focus:ring-ring"
             } ${leftPad} ${rightPad} ${className}`}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : helperText ? helperId : undefined}
             onChange={handleChange}
             {...props}
           />
@@ -81,9 +85,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        {error && <p className="text-sm text-danger">{error}</p>}
+        {error && (
+          <p id={errorId} className="text-sm text-danger">
+            {error}
+          </p>
+        )}
         {helperText && !error && (
-          <p className="text-sm text-muted-foreground">{helperText}</p>
+          <p id={helperId} className="text-sm text-muted-foreground">
+            {helperText}
+          </p>
         )}
       </div>
     );

@@ -9,7 +9,6 @@ import type { NavLink, NavSection } from "@/types/navigation";
 import { cn } from "@/lib/cn";
 import { SidebarToggle } from "./SidebarToggle";
 import { SidebarBackdrop } from "./SidebarBackdrop";
-import { SidebarBrand } from "./SidebarBrand";
 import { SidebarSearch } from "./SidebarSearch";
 import { SidebarSection } from "./SidebarSection";
 import { SidebarFooter } from "./SidebarFooter";
@@ -46,7 +45,7 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
 
   const filteredSections = useMemo(
     () => filterNavigationSections(navSections, search),
-    [navSections, search]
+    [navSections, search],
   );
 
   const isSearching = search.trim().length > 0;
@@ -65,17 +64,19 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
       isSearching ||
       isSectionActive(section, pathname) ||
       !collapsed.has(section.title),
-    [isSearching, pathname, collapsed]
+    [isSearching, pathname, collapsed],
   );
 
   const onNavKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     const nav = navRef.current;
     if (!nav) return;
     const items = Array.from(
-      nav.querySelectorAll<HTMLAnchorElement>("a[data-nav-link]")
+      nav.querySelectorAll<HTMLAnchorElement>("a[data-nav-link]"),
     );
     if (items.length === 0) return;
-    const currentIndex = items.indexOf(document.activeElement as HTMLAnchorElement);
+    const currentIndex = items.indexOf(
+      document.activeElement as HTMLAnchorElement,
+    );
     const focus = (index: number) => {
       const next = (index + items.length) % items.length;
       items[next]?.focus();
@@ -100,22 +101,23 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
       <SidebarToggle open={open} onClick={toggle} />
       {open && <SidebarBackdrop onClick={close} />}
 
-       <aside
-         className={cn(
-           "fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col gap-4 border-r border-border bg-background px-3 py-4 transition-[transform,box-shadow] duration-300 ease-out sm:sticky sm:top-14 sm:h-[calc(100vh-3.5rem)] sm:translate-x-0",
-           open ? "translate-x-0 shadow-card sm:shadow-none" : "-translate-x-full"
-         )}
-         aria-label="Documentation"
-       >
-        <SidebarBrand />
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col gap-4 border-r border-border bg-background px-3 py-4 transition-[transform,box-shadow] duration-300 ease-out sm:sticky sm:top-14 sm:h-[calc(100vh-3.5rem)] sm:translate-x-0",
+          open
+            ? "translate-x-0 shadow-card sm:shadow-none"
+            : "-translate-x-full",
+        )}
+        aria-label="Documentation"
+      >
         <SidebarSearch value={search} onChange={setSearch} />
 
-           <nav
-           ref={navRef}
-           onKeyDown={onNavKeyDown}
-           className="flex flex-1 flex-col gap-0.5 overflow-y-auto py-2"
-           aria-label="Documentation pages"
-         >
+        <nav
+          ref={navRef}
+          onKeyDown={onNavKeyDown}
+          className="flex flex-1 flex-col gap-0.5 overflow-y-auto py-2"
+          aria-label="Documentation pages"
+        >
           {filteredSections.map((section) => (
             <SidebarSection
               key={section.title}

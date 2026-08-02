@@ -423,8 +423,8 @@ export default function TablePage() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span>Rows per page:</span>
             <select aria-label="Rows per page" value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }} className="rounded border border-border bg-transparent px-2 py-1 text-xs dark:border-border">
               {[3, 5, 10].map((s) => <option key={s}>{s}</option>)}

@@ -33,7 +33,7 @@ function BrowserMockup() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[150px_1fr] sm:grid-cols-[176px_1fr]">
+        <div className="grid grid-cols-1 sm:grid-cols-[176px_1fr]">
           <div className="hidden flex-col gap-5 border-r border-border bg-muted/30 p-3.5 sm:flex">
             <div className="flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-primary to-primary/80 text-[9px] font-bold text-primary-foreground">
