@@ -1,0 +1,12 @@
+export { HomeHero } from "./HomeHero";
+export { HomeFeatureGrid } from "./HomeFeatureGrid";
+export { HomePopularComponents } from "./HomePopularComponents";
+export { HomeCategories } from "./HomeCategories";
+export { HomeCodePreview } from "./HomeCodePreview";
+export { HomeInstallation } from "./HomeInstallation";
+export { HomeWhyUs } from "./HomeWhyUs";
+export { HomeSponsors } from "./HomeSponsors";
+export { HomeTestimonials } from "./HomeTestimonials";
+export { HomeLatestComponents } from "./HomeLatestComponents";
+export { HomeDeveloperExperience } from "./HomeDeveloperExperience";
+export { HomeFooter } from "./HomeFooter";

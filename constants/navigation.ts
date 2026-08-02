@@ -1,0 +1,165 @@
+import type { NavSection } from "@/types/navigation";
+
+/**
+ * Single source of truth for the site's navigation tree.
+ *
+ * Each section carries the data needed by every consumer:
+ * - `icon` / link `icon`  → used by the sidebar
+ * - `description` / link `desc` → used by the home page category cards
+ *
+ * Consumers derive their own view from this list so the nav never drifts
+ * between pages.
+ */
+export const navigationSections: NavSection[] = [
+  {
+    title: "Get Started",
+    icon: "★",
+    description: "Core concepts and fundamentals",
+    links: [
+      { label: "Home", href: "/", icon: "⌂" },
+      { label: "Routing", href: "/routing", icon: "↗", desc: "File-based routing, dynamic routes, layouts, navigation" },
+      { label: "Data Fetching", href: "/data-fetching", icon: "⇄", desc: "Server-side data loading, caching, streaming" },
+      { label: "Styling", href: "/styling", icon: "✦", desc: "Tailwind CSS, themes, responsive design" },
+    ],
+  },
+  {
+    title: "Registry",
+    icon: "⌕",
+    description: "Component registry platform",
+    links: [
+      { label: "Components", href: "/components", icon: "▣", desc: "Browse the component registry" },
+    ],
+  },
+  {
+    title: "Components",
+    icon: "▣",
+    description: "Reusable UI primitives",
+    links: [
+      { label: "Buttons", href: "/buttons", icon: "▦", desc: "Variants, sizes, icons, loading states" },
+      { label: "Cards", href: "/cards", icon: "⊞", desc: "Cards, tiles, media cards, interactive" },
+      { label: "Inputs", href: "/inputs", icon: "⌨", desc: "Text inputs, selects, checkboxes, switches" },
+      { label: "Forms", href: "/forms", icon: "☰", desc: "Form layouts, validation, multi-step" },
+      { label: "Badge", href: "/badge", icon: "⬡", desc: "Colored badges, dots, status indicators" },
+      { label: "Avatar", href: "/avatar", icon: "◉", desc: "User avatars, groups, status rings" },
+      { label: "Table", href: "/table", icon: "⊟", desc: "Data tables, sorting, filtering, sticky" },
+      { label: "Pagination", href: "/pagination", icon: "‹›", desc: "Page numbers, prev/next, compact" },
+      { label: "Timeline", href: "/timeline", icon: "≡", desc: "Vertical, horizontal, icon timelines" },
+      { label: "Prompt Builder", href: "/prompt-builder", icon: "✦", desc: "AI prompt builder with variables, templates, and history" },
+      { label: "Command Palette", href: "/command-palette", icon: "⌘", desc: "Raycast-style palette with Ctrl+K, nested commands, and favorites" },
+      { label: "Code Playground", href: "/code-playground", icon: "▶", desc: "Interactive playground — live preview, console, file tabs, share & export" },
+      { label: "API Explorer", href: "/api-explorer", icon: "⇄", desc: "Postman-style client — endpoints, headers, params, auth, body & JSON response viewer" },
+      { label: "JSON Tree Viewer", href: "/json-tree-viewer", icon: "{ }", desc: "Collapsible JSON inspector — search, highlight, copy path/value, type colors, large-payload rendering" },
+      { label: "Terminal Emulator", href: "/terminal-emulator", icon: ">_", desc: "Browser terminal — typing animation, history, autocomplete, themes, resizable, no backend" },
+      { label: "Dock", href: "/dock", icon: "⌘", desc: "macOS-style dock — magnification, tooltips, active dots, drag sorting, keyboard nav, responsive, dark mode" },
+      { label: "Floating Toolbar", href: "/floating-toolbar", icon: "⬟", desc: "Floating toolbar — sticky and draggable, grouped actions, selection-aware, collapsible, keyboard nav, dark mode" },
+      { label: "Bento Grid", href: "/bento-grid", icon: "▦", desc: "Bento grid builder — resizable cards, drag reorder, nested grids, animated layout, hover effects, keyboard nav, dark mode" },
+      { label: "Spotlight Search", href: "/spotlight-search", icon: "⌕", desc: "Animated spotlight search — instant filtering with highlights, categories, recents, popular, keyboard nav, responsive bottom sheet, dark mode" },
+      { label: "Dependency Graph", href: "/dependency-graph", icon: "◉", desc: "Interactive dependency graph — layered layout, zoom & pan, drag nodes, minimap, search, focus mode, connection highlighting, dark mode" },
+      { label: "Variant Matrix", href: "/variant-matrix", icon: "▦", desc: "Variant matrix — rows × columns of live previews, search, tag filters, per-cell copy config, responsive table-to-cards, dark mode" },
+      { label: "Pricing Calculator", href: "/pricing-calculator", icon: "$", desc: "Pricing calculator — quantity sliders with volume tiers, monthly/annual billing, currency, coupons, live donut chart, itemized breakdown, headless price API" },
+    ],
+  },
+  {
+    title: "Navigation",
+    icon: "➤",
+    description: "Site navigation patterns",
+    links: [
+      { label: "Navigation", href: "/navigation", icon: "♢", desc: "Sidebars, top bars, breadcrumbs" },
+      { label: "Layouts", href: "/layouts", icon: "▣", desc: "Page layout patterns and app shells" },
+      { label: "Navbar", href: "/navbar", icon: "⊡", desc: "Fixed, transparent, sticky navbars" },
+      { label: "Header", href: "/header", icon: "⊓", desc: "Brand, nav, search, CTA headers" },
+      { label: "Sidebar", href: "/sidebar", icon: "▤", desc: "Collapsible, nested, icon sidebar" },
+      { label: "Footer", href: "/footer", icon: "⊥", desc: "Multi-column, simple, social footers" },
+      { label: "Tabs", href: "/tabs", icon: "▭", desc: "Underline, pills, icons, vertical tabs" },
+      { label: "Search", href: "/search", icon: "⌕", desc: "Search bars, command palette" },
+    ],
+  },
+  {
+    title: "Overlays",
+    icon: "⊕",
+    description: "Modals, dialogs, and floating UI",
+    links: [
+      { label: "Modal", href: "/modal", icon: "⎔", desc: "Centered, side, full-screen modals" },
+      { label: "Dialog", href: "/dialog", icon: "◻", desc: "Confirm, alert, form dialogs" },
+      { label: "Drawer", href: "/drawer", icon: "▨", desc: "Left, right, bottom drawers" },
+      { label: "Popover", href: "/popover", icon: "◬", desc: "Click, hover popovers" },
+      { label: "Tooltip", href: "/tooltip", icon: "◈", desc: "Top, bottom, rich tooltips" },
+      { label: "Toast", href: "/toast", icon: "◊", desc: "Success, error, info notifications" },
+      { label: "Dropdown", href: "/dropdown", icon: "▾", desc: "Menu dropdowns, select dropdowns" },
+      { label: "Accordion", href: "/accordion", icon: "║", desc: "Single, multiple, icon accordions" },
+      { label: "Carousel", href: "/carousel", icon: "▸▸", desc: "Image, card, testimonial carousels" },
+    ],
+  },
+  {
+    title: "Menus",
+    icon: "☰",
+    description: "Command and context menus",
+    links: [
+      { label: "Command Menu", href: "/command-menu", icon: "⌘", desc: "Cmd+K palette, grouped actions" },
+      { label: "Context Menu", href: "/context-menu", icon: "↘", desc: "Right-click menus, nested" },
+    ],
+  },
+  {
+    title: "Feedback",
+    icon: "⚠",
+    description: "Loading, empty, and error states",
+    links: [
+      { label: "Loading", href: "/loading", icon: "◎", desc: "Spinners, bars, page loaders" },
+      { label: "Skeleton", href: "/skeleton", icon: "▯", desc: "Text, card, table skeletons" },
+      { label: "Empty State", href: "/empty-state", icon: "□", desc: "Empty inbox, search, data states" },
+      { label: "Error", href: "/error", icon: "✖", desc: "Error boundaries, error messages" },
+      { label: "404", href: "/404", icon: "?", desc: "Creative not-found pages" },
+    ],
+  },
+  {
+    title: "Pages",
+    icon: "📄",
+    description: "Full page layouts and sections",
+    links: [
+      { label: "Landing", href: "/landing", icon: "▣", desc: "Marketing landing page" },
+      { label: "Dashboard", href: "/dashboard", icon: "▦", desc: "Admin dashboard layout" },
+      { label: "Hero", href: "/hero", icon: "⊡", desc: "Hero section variations" },
+      { label: "Pricing", href: "/pricing", icon: "$", desc: "Pricing tables and plans" },
+      { label: "Testimonials", href: "/testimonials", icon: "❝", desc: "Customer testimonials" },
+      { label: "FAQ", href: "/faq", icon: "?", desc: "Frequently asked questions" },
+      { label: "Authentication", href: "/authentication", icon: "🔒", desc: "Login, signup, password reset" },
+    ],
+  },
+  {
+    title: "Data & Media",
+    icon: "📊",
+    description: "Data visualization and media",
+    links: [
+      { label: "Charts", href: "/charts", icon: "▇", desc: "Bar, line, pie, area charts" },
+      { label: "Calendar", href: "/calendar", icon: "📅", desc: "Date picker, events, mini calendar" },
+    ],
+  },
+  {
+    title: "Templates",
+    icon: "✦",
+    description: "Full application templates",
+    links: [
+      { label: "Blog", href: "/blog", icon: "📝", desc: "Blog layout with posts" },
+      { label: "E-commerce", href: "/e-commerce", icon: "🛒", desc: "Product listing and cart" },
+      { label: "Chat", href: "/chat", icon: "💬", desc: "Messaging interface" },
+      { label: "AI", href: "/ai", icon: "✦", desc: "AI chat and generation" },
+      { label: "Portfolio", href: "/portfolio", icon: "◆", desc: "Portfolio showcase" },
+      { label: "Admin", href: "/admin/dashboard", icon: "⚙", desc: "Admin panel" },
+      { label: "Analytics", href: "/analytics", icon: "📈", desc: "Analytics dashboard" },
+      { label: "SaaS", href: "/saas", icon: "☁", desc: "Software as a Service landing page" },
+      { label: "Project Mgmt", href: "/project-management", icon: "▦", desc: "Kanban, tasks, project tracking" },
+      { label: "Social Media", href: "/social-media", icon: "◎", desc: "Feed, stories, profiles" },
+      { label: "CRM", href: "/crm", icon: "◉", desc: "Contact management, deals, pipeline" },
+      { label: "LMS", href: "/lms", icon: "▣", desc: "Course platform, lessons, quizzes" },
+      { label: "Job Board", href: "/job-board", icon: "⌕", desc: "Job listings, search, applications" },
+      { label: "Restaurant", href: "/restaurant", icon: "⊡", desc: "Menu, ordering, reservations" },
+      { label: "Real Estate", href: "/real-estate", icon: "▤", desc: "Property listings, mortgage calc" },
+    ],
+  },
+];
+
+/** Total number of links across the whole tree. */
+export const navigationLinkCount = navigationSections.reduce(
+  (total, section) => total + section.links.length,
+  0
+);
