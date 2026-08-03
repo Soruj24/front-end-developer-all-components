@@ -44,6 +44,7 @@ import { spotlightSearches } from "./constants/spotlightSearches";
 import { dependencyGraphs } from "./constants/dependencyGraphs";
 import { variantMatrices } from "./constants/variantMatrices";
 import { pricingCalculators } from "./constants/pricingCalculators";
+import { propsEditors } from "./constants/propsEditors";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -79,6 +80,7 @@ const allEntries: RegistryEntry[] = [
   ...dependencyGraphs,
   ...variantMatrices,
   ...pricingCalculators,
+  ...propsEditors,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(

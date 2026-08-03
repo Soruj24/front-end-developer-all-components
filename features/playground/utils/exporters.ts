@@ -1,6 +1,6 @@
 import type { PlaygroundFile } from "../types";
 import { ENTRY_FILE } from "../constants";
-import { createZip } from "./zip";
+import { createZip } from "@/lib/zip";
 
 function download(name: string, content: string, type: string) {
   const blob = new Blob([content], { type });

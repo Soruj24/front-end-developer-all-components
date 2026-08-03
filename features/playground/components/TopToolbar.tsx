@@ -131,6 +131,12 @@ export function TopToolbar() {
 
       <ToolbarGroup>
         <IconButton
+          icon="sparkles"
+          label="Toggle AI assistant (Ctrl+I)"
+          active={layout.aiOpen}
+          onClick={layout.toggleAi}
+        />
+        <IconButton
           icon="panelLeft"
           label="Toggle sidebar (Ctrl+B)"
           active={layout.sidebarOpen}

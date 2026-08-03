@@ -5,6 +5,7 @@ import { CommandPalette } from "@/components/ui";
 import { usePlayground } from "../context";
 import { useCommands } from "../hooks/useCommands";
 import { SplitHandle } from "../ui/SplitHandle";
+import { AiAssistantPanel } from "../ai";
 import { TopToolbar } from "./TopToolbar";
 import { Sidebar } from "./Sidebar";
 import { EditorPane } from "./editor/EditorPane";
@@ -48,6 +49,20 @@ export function PlaygroundLayout() {
             <PreviewPanel />
           </div>
         </div>
+
+        {layout.aiOpen && (
+          <div className="flex min-h-0 shrink-0" style={{ width: layout.aiWidth }}>
+            <SplitHandle
+              direction="vertical"
+              onMove={(delta) =>
+                layout.setAiWidth(Math.max(280, Math.min(760, layout.aiWidth - delta)))
+              }
+            />
+            <div className="min-h-0 min-w-0 flex-1">
+              <AiAssistantPanel />
+            </div>
+          </div>
+        )}
       </div>
 
       {layout.bottomOpen && <BottomPanel />}

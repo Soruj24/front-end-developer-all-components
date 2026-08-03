@@ -40,12 +40,12 @@ function u32(value: number): Uint8Array {
   ]);
 }
 
-interface ZipEntry {
+export interface ZipFile {
   name: string;
   content: string;
 }
 
-export function createZip(files: ZipEntry[]): Blob {
+export function createZip(files: ZipFile[]): Blob {
   const chunks: Uint8Array[] = [];
   const central: Uint8Array[] = [];
   let offset = 0;

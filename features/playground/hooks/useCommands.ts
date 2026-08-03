@@ -109,6 +109,13 @@ export function useCommands(value: PlaygroundContextValue) {
         onSelect: () => layout.toggleBottom(),
       },
       {
+        id: "ai",
+        label: layout.aiOpen ? "Hide AI assistant" : "Show AI assistant",
+        shortcut: "Ctrl/Cmd+I",
+        group: "View",
+        onSelect: () => layout.toggleAi(),
+      },
+      {
         id: "fullscreen",
         label: "Fullscreen preview",
         shortcut: "Ctrl/Cmd+Shift+F",
@@ -239,6 +246,11 @@ export function useCommands(value: PlaygroundContextValue) {
       if (id === "toggle-console") {
         event.preventDefault();
         layout.toggleBottom();
+        return;
+      }
+      if (id === "toggle-ai") {
+        event.preventDefault();
+        layout.toggleAi();
         return;
       }
       if (id === "switch-preview") {

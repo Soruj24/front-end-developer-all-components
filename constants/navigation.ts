@@ -45,6 +45,7 @@ export const navigationSections: NavSection[] = [
       { label: "Pagination", href: "/pagination", icon: "‹›", desc: "Page numbers, prev/next, compact" },
       { label: "Timeline", href: "/timeline", icon: "≡", desc: "Vertical, horizontal, icon timelines" },
       { label: "Prompt Builder", href: "/prompt-builder", icon: "✦", desc: "AI prompt builder with variables, templates, and history" },
+      { label: "AI Generator", href: "/ai-generator", icon: "✦", desc: "AI prompt-to-component generator — streaming, live preview, history, export & publish" },
       { label: "Command Palette", href: "/command-palette", icon: "⌘", desc: "Raycast-style palette with Ctrl+K, nested commands, and favorites" },
       { label: "Code Playground", href: "/code-playground", icon: "▶", desc: "Interactive playground — live preview, console, file tabs, share & export" },
       { label: "API Explorer", href: "/api-explorer", icon: "⇄", desc: "Postman-style client — endpoints, headers, params, auth, body & JSON response viewer" },
@@ -57,6 +58,7 @@ export const navigationSections: NavSection[] = [
       { label: "Dependency Graph", href: "/dependency-graph", icon: "◉", desc: "Interactive dependency graph — layered layout, zoom & pan, drag nodes, minimap, search, focus mode, connection highlighting, dark mode" },
       { label: "Variant Matrix", href: "/variant-matrix", icon: "▦", desc: "Variant matrix — rows × columns of live previews, search, tag filters, per-cell copy config, responsive table-to-cards, dark mode" },
       { label: "Pricing Calculator", href: "/pricing-calculator", icon: "$", desc: "Pricing calculator — quantity sliders with volume tiers, monthly/annual billing, currency, coupons, live donut chart, itemized breakdown, headless price API" },
+      { label: "Props Editor", href: "/props-editor", icon: "◱", desc: "Visual props editor — no-code component tuning with 15 control types, live preview, responsive values, undo/redo & presets" },
     ],
   },
   {
