@@ -24,15 +24,15 @@ export function parseDocumentation(text: string): DocumentationArtifact | null {
   }
   return {
     overview: parsed.overview,
-    installation: parsed.installation,
-    usage: parsed.usage,
-    props: parsed.props,
-    examples: parsed.examples,
-    variants: parsed.variants,
-    accessibilityNotes: parsed.accessibilityNotes,
-    apiReference: parsed.apiReference,
-    changelog: parsed.changelog,
-    migrationGuide: parsed.migrationGuide,
+    installation: parsed.installation ?? "",
+    usage: parsed.usage ?? "",
+    props: parsed.props ?? "",
+    examples: parsed.examples ?? "",
+    variants: parsed.variants ?? "",
+    accessibilityNotes: parsed.accessibilityNotes ?? "",
+    apiReference: parsed.apiReference ?? "",
+    changelog: parsed.changelog ?? "",
+    migrationGuide: parsed.migrationGuide ?? "",
   };
 }
 

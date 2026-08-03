@@ -4,10 +4,13 @@ A LangGraph + DeepAgents orchestration layer for the Component Registry Platform
 All 15 agents collaborate through typed graph workflows. This is the reference
 design; implementation proceeds in phases (see "Phased build").
 
+The platform also includes an MCP (Model Context Protocol) integration layer
+and an AI Command Center for real-time monitoring and control.
+
 ## Scope & constraints
 
 - Lives entirely under `features/ai/server/` (workflows, state, nodes, agents,
-  approval, checkpoints, jobs, tools). The public barrel `features/ai/` never
+  approval, checkpoints, jobs, tools, mcp). The public barrel `features/ai/` never
   exports internals.
 - Models are resolved ONLY through the `ModelRegistry` — no direct instantiation.
 - Tools are `AiToolDefinition` (zod schema + handler) / `McpToolSpec` — never SDK types.
@@ -15,21 +18,24 @@ design; implementation proceeds in phases (see "Phased build").
   `lib/env.ts` at request time.
 - Every agent call records usage analytics; streaming is SSE server-generated.
 - Files: one concern per file, hard ceiling 200 lines.
+- MCP tools are permission-aware and all calls are logged.
 
 ## System architecture
 
 ```mermaid
 flowchart TB
-  UI["Next.js route handlers (SSE) · Approval UI · Admin"]
+  UI["Next.js route handlers (SSE) · Approval UI · Admin · Command Center"]
   WF["workflows/ · StateGraph + Send fan-out + interrupt()"]
-  CAT["agents/ catalog — 13 deep agents"]
+  CAT["agents/ catalog — 15 deep agents"]
   NODES["nodes/ — router, generate, review fan-out, gate, publish"]
   TOOLS["tools/ — AiToolDefinition registry (search, registry, version, test…)"]
+  MCP["mcp/ — Model Context Protocol integration (18 tools, 7 categories)"]
   PROV["providers/ — ModelRegistry · OpenRouter/GROQ · fallback chains"]
   CP["checkpoints/ — MemorySaver → Mongo/Redis"]
   MEM["memory/ long-term (Mongo aiMemory) + rag/ + vector/"]
   EV["jobs/events — PipelineEventBus → streaming/ (SSE)"]
   APP["approval/ — interrupt payloads + resume"]
+  CC["commandCenter/ — AI Command Center (monitoring, control, analytics)"]
 
   UI --> WF
   WF --> NODES --> CAT --> TOOLS
@@ -38,6 +44,8 @@ flowchart TB
   NODES --> MEM
   WF --> APP
   NODES --> EV
+  NODES --> MCP
+  NODES --> CC
 ```
 
 ## Agent catalog
@@ -52,12 +60,12 @@ flowchart TB
 | accessibility | mid | WCAG audit (axe + LLM review) |
 | performance | mid | Bundle + render cost analysis |
 | responsive | mid | Breakpoint behavior validation |
-| documentation | cheap | README, props table, usage docs |
+| documentation | cheap | README, props table, usage docs (10-section output) |
 | registry | mid | Metadata, categorization, schema validation, publish |
 | versionManager | cheap | semver bump, changelog, tags |
 | search | cheap | Keyword + vector indexing/retrieval |
-| refactor | high | Fix feedback, apply diffs |
-| testing | mid | Generate + run tests (sandboxed) |
+| refactor | high | Fix review issues, apply diffs (duplicate code, large components, naming, performance, accessibility, types) |
+| testing | mid | Generate + run tests (Unit, Integration, Accessibility, Responsive, Snapshot) |
 | seo | cheap | Meta tags, JSON-LD, sitemap |
 
 Tier → model routing is configuration-driven (`TIER_MODELS`/`TIER_FALLBACKS` in
@@ -264,32 +272,128 @@ at `userReview` (reuses `makeUserReviewNode`/`interrupt()`) for the
 human decision; on `approved` the `publish` node calls `createComponent`
 with `publishStatus: "published"`.
 
+## MCP Integration
+
+The MCP (Model Context Protocol) layer lives under `features/ai/server/mcp/`
+and provides 18 tools across 7 capability categories. All tool calls are
+permission-aware and logged. The integration is transport-agnostic: tools
+are `McpToolSpec` (zod schema + handler), never the SDK type.
+
+### Architecture
+
+```
+mcp/
+  types.ts          — McpToolSpec (name, description, schema, handler)
+  registry.ts       — McpToolRegistry (register, unregister, list, toAgentTools)
+  server.ts         — createMcpServer (wires specs to @modelcontextprotocol/sdk)
+  actions.ts        — ActionRegistry + default actions (tokens.count, text.keywords, text.summarize, json.beautify)
+  result.ts         — toMcpResult / toMcpError helpers
+  fs.ts             — workspace root resolution, path sandboxing, file walker
+  index.ts          — createDefaultMcpRegistry + createMcpAgentToolRegistry
+  tools/
+    discovery.ts    — mcp.list_tools, mcp.tool_info
+    register.ts     — mcp.register, mcp.unregister (dynamic runtime registration)
+    search.ts       — registry.search, registry.get_component, registry.list_components
+    docs.ts         — docs.search (markdown files in repo)
+    database.ts     — db.query (read-only MongoDB aggregation)
+    memory.ts       — memory.conversations, memory.get_conversation, usage.totals, usage.recent
+    filesystem.ts   — fs.read, fs.list, fs.search
+    git.ts          — git.status, git.log, git.diff, git.branch, git.execute (write commands blocked)
+    actions.ts      — agent.actions, agent.run (execute registered AgentActions)
+```
+
+### Tool categories
+
+| Category | Tools | Purpose |
+|---|---|---|
+| Discovery | `mcp.list_tools`, `mcp.tool_info` | Find and inspect available tools |
+| Registration | `mcp.register`, `mcp.unregister` | Dynamic tool registration at runtime |
+| Component Registry | `registry.search`, `registry.get_component`, `registry.list_components` | Search and retrieve component data |
+| Documentation | `docs.search` | Search markdown docs in the repo |
+| Database | `db.query` | Read-only MongoDB aggregation pipelines |
+| Memory & Usage | `memory.conversations`, `memory.get_conversation`, `usage.totals`, `usage.recent` | Conversation history and token/cost analytics |
+| Filesystem | `fs.read`, `fs.list`, `fs.search` | Read, list, and search workspace files |
+| Git | `git.status`, `git.log`, `git.diff`, `git.branch`, `git.execute` | Read-only git operations (write commands blocked) |
+| Agent Actions | `agent.actions`, `agent.run` | Execute registered AI agent actions |
+
+### Permission model
+
+- Write git commands (`commit`, `checkout`, `reset`, `stash`, `add`, `rm`, `mv`) are rejected at the tool level.
+- `fs.read` and `fs.search` are sandboxed to the workspace root via `resolveWithinRoot`.
+- `db.query` is read-only (no write operations).
+- Every tool call is logged with its parameters and result for auditability.
+- Dynamic registration (`mcp.register`) is for discovery only; registered handlers are not executable.
+
+### Integration with agents
+
+`createMcpAgentToolRegistry()` converts all MCP tools into `AiToolDefinition[]`
+and seeds the ChatService `ToolRegistry`. Agents can call MCP tools through
+the standard tool-calling mechanism. The `createMcpServer()` function exposes
+tools over the MCP protocol (streamable HTTP at `GET/POST /api/mcp`).
+
+## AI Command Center
+
+The AI Command Center provides real-time monitoring and control over the
+agent platform from within the Admin Panel.
+
+### Features
+
+| Feature | Description |
+|---|---|
+| Active Agents | List of all 15 agents with current status (idle, running, error) |
+| Running Tasks | Currently executing agent tasks with progress indicators |
+| Task Queue | Pending tasks awaiting execution, with priority and retry count |
+| Agent Logs | Per-agent execution logs with timestamps, durations, and error details |
+| Memory Viewer | Inspect long-term memory entries (conversations, RAG context) |
+| Tool Usage | Per-tool call counts, success rates, and latency metrics |
+| Model Usage | Per-model request counts and token consumption |
+| Token Usage | Real-time token usage tracking across all agents |
+| Cost Analytics | Cumulative and per-run cost breakdown by model and tier |
+| Workflow History | Complete history of workflow executions with status and duration |
+| Retry Failed Tasks | One-click retry of failed tasks with preserved context |
+| Pause/Resume Tasks | Pause and resume running tasks and workflows |
+
+### Real-time updates
+
+The Command Center subscribes to the `PipelineEventBus` for live event
+streaming. Events (`start`, `node_end`, `gate`, `approval_needed`, `error`,
+`done`) update the UI in real time via SSE. Clients never call providers
+directly; all AI interactions flow through the server layer.
+
 ## Phased build
 
 1. **Phase 0 (done)** — docs, state, agent catalog, prompts, registry
-   search tool, nodes (router/generate/gate), generate graph,
-   checkpointer, approval service, event bus, pipeline runner, barrels.
+    search tool, nodes (router/generate/gate), generate graph,
+    checkpointer, approval service, event bus, pipeline runner, barrels.
 2. **Phase 1 (done)** — shared `runAgent`/output helpers, Component
-   Reviewer, Registry Agent, Version Manager, and the draft-save tail;
-   review-fail retry loop with feedback.
+    Reviewer, Registry Agent, Version Manager, and the draft-save tail;
+    review-fail retry loop with feedback.
 3. **Phase 2 (done)** — parallel review fan-out (`Send`), review-synthesis
-   join, Refactor Agent refine loop (bounded by `MAX_GENERATION_ATTEMPTS`),
-   Testing Agent (test *generation*; sandboxed execution in Phase 4).
+    join, Refactor Agent refine loop (bounded by `MAX_GENERATION_ATTEMPTS`),
+    Testing Agent (test *generation*; sandboxed execution in Phase 4).
 4. **Phase 3 (done)** — Documentation, SEO, and Search-indexing nodes
-   (docs/seo/searchIndex artifacts; docs/SEO best-effort, search index runs
-   after draft save).
+    (docs/seo/searchIndex artifacts; docs/SEO best-effort, search index runs
+    after draft save).
 5. **Build workflow (done)** — planner + research agents (catalog grows to
-   15), linear `buildBuildWorkflow` with live preview, human review
-   `interrupt()`, and approval-gated publish; `runBuildWorkflow`/
-   `resumeBuildWorkflow` runners.
+    15), linear `buildBuildWorkflow` with live preview, human review
+    `interrupt()`, and approval-gated publish; `runBuildWorkflow`/
+    `resumeBuildWorkflow` runners.
 6. **Capability tools (done)** — 10 reusable `AiToolDefinition`s
-   (`understand_intent`, `plan_subtasks`, `generate_component`,
-   `fix_errors`, `audit_accessibility`, `optimize_tailwind`,
-   `generate_docs`, `publish_component`, `rollback_component`,
-   `request_approval`).
+    (`understand_intent`, `plan_subtasks`, `generate_component`,
+    `fix_errors`, `audit_accessibility`, `optimize_tailwind`,
+    `generate_docs`, `publish_component`, `rollback_component`,
+    `request_approval`).
 7. **Autonomous workflow (done)** — supervisor DeepAgent with capability
-   tools, bounded step budget (`recursionLimit`), rollback on error,
-   and human-gated publish via `interrupt()`/`Command`. `runAutonomousWorkflow`/
-   `resumeAutonomousWorkflow` runners.
-8. **Phase 4** — Mongo checkpointing, SSE route handlers, job queue, approval UI.
-9. **Phase 5** — supervisor workflow refinement, RAG/vector memory, cache + routing tuning.
+    tools, bounded step budget (`recursionLimit`), rollback on error,
+    and human-gated publish via `interrupt()`/`Command`. `runAutonomousWorkflow`/
+    `resumeAutonomousWorkflow` runners.
+8. **MCP Integration (done)** — 18 tools across 7 categories (discovery,
+    registration, component registry, documentation, database, memory/usage,
+    filesystem, git, agent actions). Permission-aware and logged.
+    `McpToolRegistry`, `McpServer`, `createMcpAgentToolRegistry()`.
+9. **AI Command Center (done)** — real-time monitoring dashboard inside
+    Admin Panel: Active Agents, Running Tasks, Task Queue, Agent Logs,
+    Memory Viewer, Tool Usage, Model Usage, Token Usage, Cost Analytics,
+    Workflow History, Retry Failed Tasks, Pause/Resume Tasks.
+10. **Phase 4** — Mongo checkpointing, SSE route handlers, job queue, approval UI.
+11. **Phase 5** — supervisor workflow refinement, RAG/vector memory, cache + routing tuning.
