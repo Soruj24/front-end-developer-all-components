@@ -13,11 +13,15 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 };
 
 let esbuildPromise: Promise<typeof import("esbuild-wasm")> | null = null;
+const ESBUILD_INIT_KEY = "__esbuild_initialized__";
 
 function loadEsbuild(): Promise<typeof import("esbuild-wasm")> {
   if (!esbuildPromise) {
     esbuildPromise = import("esbuild-wasm").then(async (mod) => {
-      await mod.initialize({ wasmURL: "/esbuild.wasm" });
+      if (!(globalThis as Record<string, unknown>)[ESBUILD_INIT_KEY]) {
+        await mod.initialize({ wasmURL: "/esbuild.wasm" });
+        (globalThis as Record<string, unknown>)[ESBUILD_INIT_KEY] = true;
+      }
       return mod;
     });
   }
