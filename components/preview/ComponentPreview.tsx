@@ -22,11 +22,23 @@ import {
 type TabId = "preview" | "code" | "cli" | "install" | "deps";
 
 const TABS: Array<{ id: TabId; label: string; icon: ReactNode }> = [
-  { id: "preview", label: "Preview", icon: <EyeIcon className="h-3.5 w-3.5" /> },
+  {
+    id: "preview",
+    label: "Preview",
+    icon: <EyeIcon className="h-3.5 w-3.5" />,
+  },
   { id: "code", label: "Code", icon: <CodeIcon className="h-3.5 w-3.5" /> },
   { id: "cli", label: "CLI", icon: <TerminalIcon className="h-3.5 w-3.5" /> },
-  { id: "install", label: "Installation", icon: <PackageIcon className="h-3.5 w-3.5" /> },
-  { id: "deps", label: "Dependencies", icon: <BoxesIcon className="h-3.5 w-3.5" /> },
+  {
+    id: "install",
+    label: "Installation",
+    icon: <PackageIcon className="h-3.5 w-3.5" />,
+  },
+  {
+    id: "deps",
+    label: "Dependencies",
+    icon: <BoxesIcon className="h-3.5 w-3.5" />,
+  },
 ];
 
 interface ComponentPreviewProps {
@@ -41,11 +53,7 @@ interface ComponentPreviewProps {
   className?: string;
 }
 
-/**
- * shadcn-inspired component preview block. Renders the live demo as `children`
- * inside a device-responsive frame and pulls source, CLI, install, and
- * dependency metadata from the registry.
- */
+ 
 export function ComponentPreview({
   id,
   title,
@@ -80,7 +88,7 @@ export function ComponentPreview({
     <section
       className={cn(
         "overflow-hidden rounded-2xl border border-border bg-background shadow-card",
-        className
+        className,
       )}
     >
       <header className="flex flex-col gap-3 border-b border-border p-4 sm:p-5">
@@ -89,7 +97,9 @@ export function ComponentPreview({
             {resolvedTitle}
           </h3>
           {resolvedDescription && (
-            <p className="text-sm text-muted-foreground">{resolvedDescription}</p>
+            <p className="text-sm text-muted-foreground">
+              {resolvedDescription}
+            </p>
           )}
         </div>
         <div className="-mx-1 overflow-x-auto px-1 scrollbar-thin">
@@ -118,7 +128,7 @@ export function ComponentPreview({
             <div
               className={cn(
                 "relative border-t border-border",
-                forcedDark && "dark bg-[#0b0b10]"
+                forcedDark && "dark bg-[#0b0b10]",
               )}
             >
               <PreviewCanvas>
