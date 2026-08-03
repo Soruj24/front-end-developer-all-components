@@ -315,3 +315,14 @@ export type {
 } from "./Sidebar";
 export { Steps, Step, StepIndicator } from "./Steps";
 export type { StepsProps, StepProps, StepIndicatorProps, StepStatus } from "./Steps";
+
+export { Tag, TagList } from "./Tags";
+export type { TagProps, TagListProps, TagVariant } from "./Tags";
+export { Tree, TreeItem } from "./Tree";
+export type { TreeProps, TreeItemProps, TreeNode } from "./Tree";
+export { Upload, UploadDropzone } from "./Upload";
+export type { UploadProps, UploadDropzoneProps } from "./Upload";
+export { Video, VideoCaption } from "./Video";
+export type { VideoProps, VideoCaptionProps } from "./Video";
+export { Viewport } from "./Viewport";
+export type { ViewportProps } from "./Viewport";

@@ -45,6 +45,7 @@ import { dependencyGraphs } from "./constants/dependencyGraphs";
 import { variantMatrices } from "./constants/variantMatrices";
 import { pricingCalculators } from "./constants/pricingCalculators";
 import { propsEditors } from "./constants/propsEditors";
+import { commands } from "./constants/commands";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -81,6 +82,7 @@ const allEntries: RegistryEntry[] = [
   ...variantMatrices,
   ...pricingCalculators,
   ...propsEditors,
+  ...commands,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(

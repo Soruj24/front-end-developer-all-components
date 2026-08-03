@@ -7,7 +7,7 @@ import { ComponentModel, CategoryModel, TagModel, SettingModel, NavItemModel } f
 import { db } from "./handle";
 import { toComponentDocInput } from "./map";
 
-export const SEED_VERSION = "1.0.1";
+export const SEED_VERSION = "1.0.7";
 
 const components = () => db(ComponentModel);
 const categories = () => db(CategoryModel);
@@ -68,7 +68,7 @@ export async function seedDatabase(): Promise<void> {
     await nav().findOneAndUpdate(
       { area: "sidebar", group: section.title },
       {
-        $setOnInsert: {
+        $set: {
           area: "sidebar",
           group: section.title,
           label: section.title,

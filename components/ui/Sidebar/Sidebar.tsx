@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { SidebarProps, SidebarHeaderProps, SidebarContentProps, SidebarFooterProps, SidebarItemProps } from "./Sidebar.types";
 
