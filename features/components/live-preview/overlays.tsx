@@ -5,7 +5,17 @@ import type { ReactNode } from "react";
 import {
   ContextMenu,
   Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
   Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
   Dropdown,
   Modal,
   Popover,
@@ -24,13 +34,13 @@ export const overlays: Record<string, () => ReactNode> = {
 
   tooltip: () => (
     <div className="flex flex-wrap items-center justify-center gap-4">
-      <Tooltip content="Save your work" position="top">
+      <Tooltip content="Save your work" side="top">
         <Button variant="outline">Hover top</Button>
       </Tooltip>
-      <Tooltip content="Deletes permanently" position="bottom">
+      <Tooltip content="Deletes permanently" side="bottom">
         <Button variant="destructive">Hover bottom</Button>
       </Tooltip>
-      <Tooltip content={<span className="font-mono">⌘K</span>} position="right">
+      <Tooltip content={<span className="font-mono">⌘K</span>} side="right">
         <Button variant="ghost">Hover right</Button>
       </Tooltip>
     </div>
@@ -88,14 +98,18 @@ function DialogDemo() {
       <Button variant="outline" onClick={() => setOpen(true)}>
         Delete account
       </Button>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        onConfirm={() => setOpen(false)}
-        title="Delete account?"
-        description="This action cannot be undone. All of your projects will be removed."
-        confirmLabel="Delete"
-      />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete account?</DialogTitle>
+            <DialogDescription>This action cannot be undone. All of your projects will be removed.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={() => setOpen(false)}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -107,11 +121,16 @@ function DrawerDemo() {
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open drawer
       </Button>
-      <Drawer open={open} onClose={() => setOpen(false)} title="Notifications" side="right">
-        <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-          <p>Your component passed review.</p>
-          <p>A new release is available.</p>
-        </div>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerContent side="right">
+          <DrawerHeader>
+            <DrawerTitle>Notifications</DrawerTitle>
+          </DrawerHeader>
+          <div className="flex flex-col gap-2 p-4 text-sm text-muted-foreground">
+            <p>Your component passed review.</p>
+            <p>A new release is available.</p>
+          </div>
+        </DrawerContent>
       </Drawer>
     </>
   );
