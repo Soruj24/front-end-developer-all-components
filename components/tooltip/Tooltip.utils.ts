@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { TooltipPlacement } from "./Tooltip.types";
 
 export const computeTooltipPosition = (
@@ -12,13 +11,10 @@ export const computeTooltipPosition = (
   const viewport = { width: window.innerWidth, height: window.innerHeight };
   const margin = 8;
 
-  let placedAt: TooltipPlacement = placement;
   let x = 0;
   let y = 0;
 
-  const compute = (p: TooltipPlacement) => {
-    const halfW = contentWidth / 2;
-    const halfH = contentHeight / 2;
+  const compute = (p: TooltipPlacement): boolean => {
     const spaceBelow = viewport.height - triggerRect.bottom;
     const spaceAbove = triggerRect.top;
     const spaceRight = viewport.width - triggerRect.right;
@@ -58,18 +54,22 @@ export const computeTooltipPosition = (
     }
   };
 
-  const candidates = [placement];
-  const opposites: Record<string, string[]> = {
+  const candidates: TooltipPlacement[] = [placement];
+  const opposites: Record<string, TooltipPlacement[]> = {
     top: ["bottom"], bottom: ["top"], left: ["right"], right: ["left"],
   };
   const base = placement.replace(/-start|-end/, "");
   const opp = opposites[base];
-  if (opp) opp.forEach((o) => candidates.push(`${o}${placement.includes("-start") ? "-end" : placement.includes("-end") ? "-start" : ""}` as TooltipPlacement));
+  if (opp) {
+    opp.forEach((o) => {
+      const suffix = placement.includes("-start") ? "-end" : placement.includes("-end") ? "-start" : "";
+      candidates.push(`${o}${suffix}` as TooltipPlacement);
+    });
+  }
 
   for (const c of candidates) {
-    placedAt = c;
     if (compute(c)) return { x, y, placedAt: c };
   }
 
-  return { x, y, placedAt: "top" };
+  return { x, y, placedAt: placement };
 };

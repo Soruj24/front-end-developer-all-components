@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { cn } from "@/lib/cn";
 import { TOOLTIP_DEFAULTS } from "./Tooltip.constants";
 import type { TooltipProps, TooltipContextValue } from "./Tooltip.types";
 import { useTooltipState, useTooltipDelay } from "./Tooltip.hooks";
@@ -25,7 +26,7 @@ export function Tooltip({
   animationEase = TOOLTIP_DEFAULTS.animationEase,
   zIndex = TOOLTIP_DEFAULTS.zIndex,
 }: TooltipProps) {
-  const [internalOpen, setInternalOpen] = useTooltipState(defaultOpen);
+  const [internalOpen] = useTooltipState(defaultOpen);
   const [hoverOpen, setHoverOpen] = useTooltipState(false);
   const [focusOpen, setFocusOpen] = useTooltipState(false);
 
@@ -33,80 +34,40 @@ export function Tooltip({
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? (controlledOpen as boolean) : internalOpen || hoverOpen || focusOpen;
 
-  const [triggerEl, setTriggerEl] = React.useState<HTMLElement | null>(null);
+  const triggerRef = React.useRef<HTMLSpanElement>(null);
   const arrowRef = React.useRef<SVGSVGElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const handleOpen = () => setHoverOpen(true);
-  const handleClose = () => {
-    setHoverOpen(false);
-    setFocusOpen(false);
-  };
-
+  const handleClose = () => { setHoverOpen(false); setFocusOpen(false); };
   const { scheduleOpen, scheduleClose } = useTooltipDelay(openDelay, closeDelay, handleOpen, handleClose);
 
-  React.useEffect(() => {
-    onOpenChange?.(isOpen);
-  }, [isOpen, onOpenChange]);
+  React.useEffect(() => { onOpenChange?.(isOpen); }, [isOpen, onOpenChange]);
 
   const ctxValue: TooltipContextValue = {
-    isOpen,
-    triggerRef: (el: HTMLElement | null) => { setTriggerEl(el); },
-    arrowRef,
-    contentRef,
-    placement,
-    arrowOffset,
-    contentOffset,
-    arrowSize,
-    portal,
-    disabled,
-    openDelay,
-    closeDelay,
+    isOpen, triggerRef, arrowRef, contentRef, placement, arrowOffset,
+    contentOffset, arrowSize, portal, disabled, openDelay, closeDelay,
     controlledOpen,
     onOpen: () => { setHoverOpen(true); setFocusOpen(true); },
     onClose: () => { setHoverOpen(false); setFocusOpen(false); },
     onToggle: () => { onOpenChange?.(!isOpen); },
   };
 
-  const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>;
-  const childProps = child.props;
-  const childRef = child.props.ref;
-
-  const enhancedChild = React.cloneElement(child, {
-    ...childProps,
-    ref: (el: HTMLElement | null) => {
-      setTriggerEl(el);
-      if (typeof childRef === "function") childRef(el);
-      else if (childRef && "current" in childRef) (childRef as React.MutableRefObject<HTMLElement | null>).current = el;
-    },
-    "aria-describedby": disabled ? undefined : "tooltip-content",
-    "aria-disabled": disabled || undefined,
-    onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
-      scheduleOpen();
-      childProps.onMouseEnter?.(e);
-    },
-    onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
-      scheduleClose();
-      childProps.onMouseLeave?.(e);
-    },
-    onFocus: (e: React.FocusEvent<HTMLElement>) => {
-      scheduleOpen();
-      childProps.onFocus?.(e);
-    },
-    onBlur: (e: React.FocusEvent<HTMLElement>) => {
-      scheduleClose();
-      childProps.onBlur?.(e);
-    },
-    onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => {
-      if (e.key === "Escape") handleClose();
-      childProps.onKeyDown?.(e);
-    },
-  });
-
   return (
     <TooltipProvider value={ctxValue}>
-      <span className="inline-block cursor-pointer" aria-label="tooltip-trigger">
-        {enhancedChild}
+      <span
+        ref={triggerRef}
+        className={cn("inline-block cursor-pointer", disabled && "pointer-events-none")}
+        aria-label="tooltip-trigger"
+        onMouseEnter={scheduleOpen}
+        onMouseLeave={scheduleClose}
+        onFocus={scheduleOpen}
+        onBlur={scheduleClose}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") handleClose();
+        }}
+      >
+        {children}
       </span>
       {isOpen && (
         <>

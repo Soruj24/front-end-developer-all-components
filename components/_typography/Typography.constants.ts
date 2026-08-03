@@ -1,0 +1,31 @@
+export const TYPOGRAPHY_VARIANTS = {
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  h5: "h5",
+  h6: "h6",
+  p: "p",
+  span: "span",
+  blockquote: "blockquote",
+  code: "code",
+  pre: "pre",
+  label: "label",
+  small: "small",
+} as const;
+
+export const TYPOGRAPHY_STYLES: Record<string, string> = {
+  h1: "text-4xl font-bold tracking-tight",
+  h2: "text-3xl font-bold tracking-tight",
+  h3: "text-2xl font-bold",
+  h4: "text-xl font-bold",
+  h5: "text-lg font-semibold",
+  h6: "text-base font-semibold",
+  p: "text-base",
+  span: "text-base",
+  blockquote: "border-l-4 border-gray-200 pl-4 italic dark:border-gray-700",
+  code: "rounded bg-gray-100 px-1 py-0.5 text-sm font-medium dark:bg-gray-800",
+  pre: "rounded-lg bg-gray-900 p-4 text-sm text-gray-100 overflow-x-auto",
+  label: "text-sm font-medium",
+  small: "text-sm",
+};

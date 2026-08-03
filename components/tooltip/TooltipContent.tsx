@@ -14,16 +14,17 @@ interface TooltipContentProps {
 
 export const TooltipContent: React.FC<TooltipContentProps> = ({ content, animationDuration, animationEase, zIndex }) => {
   const ctx = useTooltipContext();
-  const { contentRef, placement, arrowOffset, contentOffset, arrowSize, triggerRef } = ctx;
-  const triggerEl = (triggerRef as unknown as React.MutableRefObject<HTMLElement | null>)?.current;
+  const { contentRef, placement, arrowOffset, contentOffset, arrowSize } = ctx;
+  const triggerEl = ctx.triggerRef as React.RefObject<HTMLElement>;
   const [coords, setCoords] = React.useState({ x: 0, y: 0 });
   const [actualPlacement, setActualPlacement] = React.useState<TooltipPlacement>(placement);
 
   React.useLayoutEffect(() => {
     const el = contentRef?.current;
-    if (!el || !triggerEl) return;
+    const trigger = triggerEl?.current;
+    if (!el || !trigger) return;
 
-    const triggerRect = triggerEl.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
     const contentRect = el.getBoundingClientRect();
     const computed = computeTooltipPosition(triggerRect, contentRect.width, contentRect.height, placement, arrowOffset, contentOffset);
     setCoords({ x: computed.x, y: computed.y });

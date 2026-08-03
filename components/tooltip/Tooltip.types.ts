@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 
 export type TooltipPlacement =
   | "top"
@@ -18,9 +18,9 @@ export type TooltipTrigger = HTMLElement;
 
 export interface TooltipContextValue {
   isOpen: boolean;
-  triggerRef: Ref<TooltipTrigger>;
-  arrowRef: Ref<SVGSVGElement>;
-  contentRef: Ref<HTMLDivElement>;
+  triggerRef: React.RefObject<HTMLSpanElement | null>;
+  arrowRef: React.RefObject<SVGSVGElement | null>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
   placement: TooltipPlacement;
   arrowOffset: number;
   contentOffset: number;
