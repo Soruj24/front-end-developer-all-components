@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
-import type { CollapsibleProps, CollapsibleTriggerProps, CollapsibleContentProps, CollapsibleHeaderProps, CollapsibleTitleProps } from "./Collapsible.types";
+import type { CollapsibleProps, CollapsibleTriggerProps, CollapsibleHeaderProps, CollapsibleTitleProps } from "./Collapsible.types";
 import { COLLAPSIBLE_STYLES } from "./Collapsible.constants";
 
 export const CollapsibleContext = React.createContext<{

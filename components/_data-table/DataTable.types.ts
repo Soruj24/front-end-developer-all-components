@@ -1,4 +1,4 @@
-import type { ReactNode, HTMLAttributes, ButtonHTMLAttributes, ThHTMLAttributes, TdHTMLAttributes } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 
 export interface DataColumn<T> {
   key: string;

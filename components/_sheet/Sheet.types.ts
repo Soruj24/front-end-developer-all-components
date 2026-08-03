@@ -1,4 +1,4 @@
-import type { ReactNode, HTMLAttributes } from "react";
+import type { ReactNode } from "react";
 
 export type SheetSide = "top" | "right" | "bottom" | "left";
 export type SheetSize = "sm" | "md" | "lg" | "xl" | "full";

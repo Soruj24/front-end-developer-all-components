@@ -1,4 +1,4 @@
-import type { ReactNode, ButtonHTMLAttributes, DialogHTMLAttributes } from "react";
+import type { ReactNode } from "react";
 
 export interface AlertDialogProps {
   open?: boolean;
