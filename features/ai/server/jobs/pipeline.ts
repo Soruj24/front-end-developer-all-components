@@ -81,6 +81,8 @@ function emitNodeEnds(
   }
 }
 
+export { emitNodeEnds };
+
 /** Captures a review interrupt from a stream update, emitting approval_needed. */
 function captureInterrupt(
   bus: PipelineEventBus,
@@ -94,6 +96,8 @@ function captureInterrupt(
   }
   return first?.value as UserReviewPayload | undefined;
 }
+
+export { captureInterrupt };
 
 /**
  * Runs the build workflow. The graph pauses at the user review interrupt;

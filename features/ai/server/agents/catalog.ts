@@ -72,7 +72,12 @@ export const AGENT_CATALOG: Record<AgentId, AgentSpec> = {
   componentReviewer: {
     id: "componentReviewer",
     name: "Component Reviewer",
-    role: "Review code correctness, style, and API shape.",
+    role:
+      "Comprehensive component reviewer. Analyze code quality, TypeScript correctness, " +
+      "Tailwind CSS usage, accessibility (WCAG 2.1), responsive design, performance, " +
+      "SEO, reusability, and maintainability. Produce a detailed report with a quality " +
+      "score (0-100), categorized warnings, suggestions, and auto-fix recommendations. " +
+      "Respond with a single ```json block matching the ComprehensiveReview schema.",
     tier: "mid",
     temperature: 0,
     tools: ["search_components"],
@@ -112,7 +117,10 @@ export const AGENT_CATALOG: Record<AgentId, AgentSpec> = {
   documentation: {
     id: "documentation",
     name: "Documentation Agent",
-    role: "Write README, props table, and usage docs.",
+    role:
+      "Generate comprehensive component documentation including overview, " +
+      "installation, usage, props table, examples, variants, accessibility notes, " +
+      "API reference, changelog, and migration guide.",
     tier: "cheap",
     temperature: 0.2,
     tools: [],

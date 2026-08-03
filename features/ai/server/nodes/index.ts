@@ -23,3 +23,6 @@ export { makeUserReviewNode, routeFromUserReview, type UserReviewPayload } from 
 export { makePublishNode } from "./publish";
 export { runAgent, type DeepAgentResult } from "./runAgent";
 export { extractJsonBlock, parseJsonObject } from "./output";
+export { makeSupervisorNode } from "./supervisor";
+export { makeRollbackNode } from "./rollback";
+export { makeComprehensiveReviewNode, parseComprehensiveReview } from "./comprehensiveReview";

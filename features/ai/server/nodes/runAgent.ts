@@ -9,7 +9,7 @@ export interface DeepAgentResult {
   messages: BaseMessage[];
 }
 
-function lastText(messages: BaseMessage[]): string {
+export function lastText(messages: BaseMessage[]): string {
   const last = messages[messages.length - 1];
   return typeof last?.content === "string" ? last.content : "";
 }

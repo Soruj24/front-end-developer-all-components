@@ -87,4 +87,9 @@ export class ApprovalService {
     const all = await this.store.listByThread(threadId);
     return all.filter((request) => request.status === "pending");
   }
+
+  /** Reads a single request; undefined when the id is unknown. */
+  async get(id: string): Promise<ApprovalRequest | undefined> {
+    return this.store.get(id);
+  }
 }

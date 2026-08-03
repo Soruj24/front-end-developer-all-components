@@ -76,9 +76,16 @@ export interface TestArtifact {
 
 /** Docs produced by the Documentation Agent. */
 export interface DocumentationArtifact {
-  readme: string;
-  props?: string;
-  usage?: string;
+  overview: string;
+  installation: string;
+  usage: string;
+  props: string;
+  examples: string;
+  variants: string;
+  accessibilityNotes: string;
+  apiReference: string;
+  changelog: string;
+  migrationGuide: string;
 }
 
 /** Metadata produced by the SEO Agent. */
@@ -94,6 +101,48 @@ export interface SeoArtifact {
 export interface SearchIndexArtifact {
   keywords: string[];
   summary: string;
+}
+
+/** Dimension categories for comprehensive review. */
+export type ReviewDimension =
+  | "code-quality"
+  | "typescript"
+  | "tailwind"
+  | "accessibility"
+  | "responsive"
+  | "performance"
+  | "seo"
+  | "reusability"
+  | "maintainability";
+
+export type ReviewSeverity = "error" | "warn";
+
+export interface ReviewWarning {
+  dimension: ReviewDimension;
+  severity: ReviewSeverity;
+  message: string;
+  line?: number;
+}
+
+export interface ReviewSuggestion {
+  dimension: ReviewDimension;
+  description: string;
+  priority: "high" | "medium" | "low";
+}
+
+export interface ReviewAutoFix {
+  dimension: ReviewDimension;
+  description: string;
+  code: string;
+}
+
+/** Comprehensive review result from the Component Reviewer agent. */
+export interface ComprehensiveReview {
+  qualityScore: number;
+  warnings: ReviewWarning[];
+  suggestions: ReviewSuggestion[];
+  autoFixes: ReviewAutoFix[];
+  report: string;
 }
 
 /** Working state for the component generation workflow (per thread). */
@@ -112,6 +161,7 @@ export interface GenerateState {
   seo?: SeoArtifact;
   searchIndex?: SearchIndexArtifact;
   reviewer?: AgentId;
+  comprehensiveReview?: ComprehensiveReview;
   error?: string;
   attempts: number;
 }
@@ -159,6 +209,9 @@ export const GenerateStateAnnotation = Annotation.Root({
   reviewer: Annotation<AgentId | undefined>({
     reducer: (current, update) => update ?? current,
   }),
+  comprehensiveReview: Annotation<ComprehensiveReview | undefined>({
+    reducer: (current, update) => update ?? current,
+  }),
   error: Annotation<string | undefined>({
     reducer: (current, update) => update ?? current,
   }),
@@ -168,3 +221,4 @@ export const GenerateStateAnnotation = Annotation.Root({
 });
 
 export * from "./build";
+export * from "./autonomous";

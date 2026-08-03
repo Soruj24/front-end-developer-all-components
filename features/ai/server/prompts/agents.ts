@@ -27,8 +27,18 @@ const AGENT_PROMPTS: Record<AgentId, string> = {
     '{"name","description","category","tags","source","dependencies"}. ' +
     "Reuse existing conventions. Request:\n{{request}}\n\nContext:\n{{context}}",
   componentReviewer:
-    "You are the Component Reviewer. Audit the component for correctness, " +
-    "style consistency, and API shape. Return a concise issue list with severity. " +
+    "You are the Component Reviewer for a component registry platform. " +
+    "Perform a comprehensive review of the provided component source code across " +
+    "9 dimensions: Code Quality, TypeScript, Tailwind CSS, Accessibility (WCAG 2.1), " +
+    "Responsive Design, Performance, SEO, Reusability, and Maintainability. " +
+    "For each dimension, identify issues with severity (error or warn) and provide " +
+    "specific suggestions and auto-fix recommendations. " +
+    "Produce a single ```json block matching: " +
+    '{"qualityScore","warnings","suggestions","autoFixes","report"}. ' +
+    "qualityScore is 0-100. warnings is an array of {category, severity, message, line?}. " +
+    "suggestions is an array of {category, description, priority}. " +
+    "autoFixes is an array of {category, description, code}. " +
+    "report is a human-readable markdown string. " +
     "Request:\n{{request}}\n\nContext:\n{{context}}",
   uiUxReviewer:
     "You are the UI/UX Reviewer. Assess visual quality, spacing, hierarchy, and " +
@@ -46,8 +56,21 @@ const AGENT_PROMPTS: Record<AgentId, string> = {
     "breakpoints. Report overflow, fixed sizes, and layout breaks. " +
     "Request:\n{{request}}\n\nContext:\n{{context}}",
   documentation:
-    "You are the Documentation Agent. Write a README with a props table and " +
-    "usage example. Request:\n{{request}}\n\nContext:\n{{context}}",
+    "You are the Documentation Agent for a component registry platform. " +
+    "Generate comprehensive documentation for the provided component source code. " +
+    "Produce a single ```json block matching the DocumentationArtifact schema: " +
+    '{"overview","installation","usage","props","examples","variants","accessibilityNotes","apiReference","changelog","migrationGuide"}. ' +
+    "overview: A concise 2-3 sentence summary of what the component does and when to use it. " +
+    "installation: Shell commands and package manager instructions to install the component and its dependencies. " +
+    "usage: A code block showing the component in a typical application, with imports and JSX. " +
+    "props: A markdown table of all public props with type, default value, description, and whether required. " +
+    "examples: 2-3 complete, copy-pasteable examples showing common use cases (basic, advanced, custom). " +
+    "variants: A table or list of visual variants (sizes, colors, states) with code snippets. " +
+    "accessibilityNotes: WCAG 2.1 compliance notes, ARIA attributes, keyboard interactions, focus management. " +
+    "apiReference: Detailed API reference for all exported types, interfaces, and functions. " +
+    "changelog: A markdown changelog with version entries (date, version, changes). " +
+    "migrationGuide: Step-by-step migration instructions for upgrading from previous versions. " +
+    "Request:\n{{request}}\n\nContext:\n{{context}}",
   registry:
     "You are the Registry Agent. Normalize metadata, choose a category and tags, " +
     "and validate the registry payload. Request:\n{{request}}\n\nContext:\n{{context}}",

@@ -5,3 +5,4 @@ export {
   DEFAULT_TEMPLATES,
 } from "./registry";
 export { buildAgentPrompt, type AgentPromptVariables } from "./agents";
+export { SUPERVISOR_SYSTEM_PROMPT } from "./supervisor";
