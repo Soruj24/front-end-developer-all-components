@@ -1,0 +1,22 @@
+import type { RegistryEntry } from "../../types";
+
+export const comboboxEmpty: RegistryEntry = {
+  id: "combobox-empty",
+  name: "Empty State",
+  description: "Combobox with no options",
+  code: `"use client";
+
+import { Combobox } from "@/components/_combobox";
+
+export function ComboboxEmpty() {
+  return (
+    <Combobox
+      options={[]}
+      placeholder="No options available..."
+      emptyMessage="Nothing to select."
+    />
+  );
+}`,
+  component: "ComboboxEmpty",
+  dependencies: ["@/components/_combobox"],
+};

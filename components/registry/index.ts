@@ -55,6 +55,8 @@ import { bubbles } from "./constants/bubbles";
 import { buttonGroups } from "./constants/button-groups";
 import { checkboxes } from "./constants/checkboxes";
 import { collapsibles } from "./constants/collapsibles";
+import { comboboxes } from "./constants/combobox";
+import { contextMenus } from "./constants/context-menu";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -101,6 +103,8 @@ const allEntries: RegistryEntry[] = [
   ...buttonGroups,
   ...checkboxes,
   ...collapsibles,
+  ...comboboxes,
+  ...contextMenus,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(

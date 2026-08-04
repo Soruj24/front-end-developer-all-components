@@ -1,6 +1,7 @@
 "use client";
 
 import { Alert } from "@/components/_alert";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 
 const variants = ["default", "destructive", "success", "warning", "info"] as const;
@@ -58,7 +59,10 @@ export default function AlertPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Alert</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Alert</h1>
+          <Badge variant="primary">5 variants</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           Displays a brief, important message with optional icon and action. Use alerts to
           convey important status updates, warnings, or error messages.
