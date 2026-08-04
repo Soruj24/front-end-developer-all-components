@@ -59,6 +59,13 @@ import { comboboxes } from "./constants/combobox";
 import { contextMenus } from "./constants/context-menu";
 import { directions } from "./constants/directions";
 import { items } from "./constants/items";
+import { kbds } from "./constants/kbds";
+import { markers } from "./constants/markers";
+import { menubars } from "./constants/menubars";
+import { messages } from "./constants/messages";
+import { messageScrollers } from "./constants/message-scrollers";
+import { nativeSelects } from "./constants/native-selects";
+import { navigationMenus } from "./constants/navigation-menus";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -109,6 +116,13 @@ const allEntries: RegistryEntry[] = [
   ...contextMenus,
   ...directions,
   ...items,
+  ...kbds,
+  ...markers,
+  ...menubars,
+  ...messages,
+  ...messageScrollers,
+  ...nativeSelects,
+  ...navigationMenus,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
