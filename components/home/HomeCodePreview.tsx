@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Card, CardContent } from "@/components/design-system/Card";
+import { Button } from "@/components/design-system/Button";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { CodeBlock } from "./CodeBlock";
@@ -45,21 +48,12 @@ const highlights = [
 function LivePreview() {
   return (
     <div className="flex flex-wrap items-center gap-3 border-b border-border bg-muted/30 px-4 py-5">
-      <span className="inline-flex h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background shadow-sm">
-        Get started
-      </span>
-      <span className="inline-flex h-9 items-center rounded-full border border-border bg-background px-4 text-sm font-medium">
-        Secondary
-      </span>
-      <span className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-        Ghost
-      </span>
-      <span
-        className="inline-flex h-9 items-center rounded-full border border-border bg-background px-4 text-sm font-medium outline outline-2 outline-offset-2 outline-accent/40"
-        aria-hidden="true"
-      >
+      <Button variant="primary" size="md">Get started</Button>
+      <Button variant="secondary" size="md">Secondary</Button>
+      <Button variant="ghost" size="md">Ghost</Button>
+      <Button variant="outline" size="md" className="outline outline-2 outline-offset-2 outline-accent/40">
         Focused
-      </span>
+      </Button>
     </div>
   );
 }
@@ -87,21 +81,21 @@ export function HomeCodePreview() {
                 </li>
               ))}
             </ul>
-            <a
+            <Link
               href="/buttons"
               className="group mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-accent"
             >
               See it in the library
               <ArrowUpRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            </Link>
           </div>
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="overflow-hidden rounded-xl border border-border bg-background shadow-card">
+          <Card className="overflow-hidden shadow-card">
             <LivePreview />
             <CodeBlock code={buttonSource} filename="components/ui/button.tsx" label="tsx" />
-          </div>
+          </Card>
         </Reveal>
       </div>
     </section>

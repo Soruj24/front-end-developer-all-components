@@ -53,6 +53,8 @@ import { attachments } from "./constants/attachments";
 import { breadcrumbs } from "./constants/breadcrumbs";
 import { bubbles } from "./constants/bubbles";
 import { buttonGroups } from "./constants/button-groups";
+import { checkboxes } from "./constants/checkboxes";
+import { collapsibles } from "./constants/collapsibles";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -97,6 +99,8 @@ const allEntries: RegistryEntry[] = [
   ...breadcrumbs,
   ...bubbles,
   ...buttonGroups,
+  ...checkboxes,
+  ...collapsibles,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(

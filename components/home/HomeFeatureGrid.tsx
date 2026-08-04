@@ -1,4 +1,5 @@
 import { MoonIcon } from "@/components/layout/icons";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/design-system/Card";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import {
@@ -64,15 +65,15 @@ export function HomeFeatureGrid() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <Reveal key={feature.title} delay={index * 60}>
-              <div className="group flex h-full flex-col gap-3 rounded-xl border border-border bg-background p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-ring/40 hover:shadow-card">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-muted/40 text-foreground transition-colors group-hover:border-accent/30 group-hover:bg-accent-soft group-hover:text-accent">
-                  <feature.icon className="h-4.5 w-4.5" />
-                </span>
-                <h3 className="font-medium text-foreground">{feature.title}</h3>
-                <p className="text-[13px] leading-relaxed text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
+              <Card className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:border-ring/40 hover:shadow-card">
+                <CardHeader>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-muted/40 text-foreground transition-colors group-hover:border-accent/30 group-hover:bg-accent-soft group-hover:text-accent">
+                    <feature.icon className="h-4.5 w-4.5" />
+                  </span>
+                  <CardTitle className="mt-3">{feature.title}</CardTitle>
+                  <CardDescription>{feature.description}</CardDescription>
+                </CardHeader>
+              </Card>
             </Reveal>
           ))}
         </div>

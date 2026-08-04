@@ -1,4 +1,6 @@
 import { cn } from "@/lib/cn";
+import { Card, CardContent } from "@/components/design-system/Card";
+import { Avatar } from "@/components/design-system/Avatar";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { StarIcon } from "./icons";
@@ -76,35 +78,36 @@ export function HomeTestimonials() {
         <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={(index % 3) * 70} className="mb-4 break-inside-avoid">
-              <figure className="flex flex-col gap-4 rounded-xl border border-border bg-background p-5 transition-colors duration-200 hover:border-ring/40">
-                <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <StarIcon key={i} className="h-3.5 w-3.5 text-accent" />
-                  ))}
-                </div>
-                <blockquote className="text-[13px] leading-relaxed text-foreground/90">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </blockquote>
-                <figcaption className="mt-auto flex items-center gap-3 border-t border-border pt-4">
-                  <span
-                    className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-[10px] font-bold text-white",
-                      testimonial.gradient
-                    )}
-                    aria-hidden="true"
-                  >
-                    {testimonial.initials}
-                  </span>
-                  <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-foreground">
-                      {testimonial.name}
-                    </span>
-                    <span className="text-[11px] text-muted-foreground">
-                      {testimonial.role} · {testimonial.company}
-                    </span>
+              <Card className="flex flex-col gap-4 transition-colors duration-200 hover:border-ring/40">
+                <CardContent className="p-5">
+                  <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <StarIcon key={i} className="h-3.5 w-3.5 text-accent" />
+                    ))}
                   </div>
-                </figcaption>
-              </figure>
+                  <blockquote className="mt-4 text-[13px] leading-relaxed text-foreground/90">
+                    &ldquo;{testimonial.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-auto flex items-center gap-3 border-t border-border pt-4">
+                    <Avatar
+                      fallback={testimonial.initials}
+                      size="sm"
+                      className={cn(
+                        "bg-gradient-to-br text-[10px] font-bold text-white",
+                        testimonial.gradient
+                      )}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-[13px] font-medium text-foreground">
+                        {testimonial.name}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {testimonial.role} · {testimonial.company}
+                      </span>
+                    </div>
+                  </figcaption>
+                </CardContent>
+              </Card>
             </Reveal>
           ))}
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "@/components/design-system/Badge";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { ArrowUpRightIcon } from "./icons";
@@ -57,9 +58,9 @@ export function HomeWhyUs() {
           {reasons.map((reason, index) => (
             <Reveal key={reason.number} delay={index * 80}>
               <div className="group flex gap-5 border-b border-border py-6 transition-colors first:border-t first:pt-0 hover:bg-muted/30 sm:gap-8 sm:px-3">
-                <span className="w-10 shrink-0 pt-0.5 font-mono text-sm font-medium text-accent">
+                <Badge variant="primary" className="w-10 shrink-0 justify-center pt-0.5 font-mono">
                   {reason.number}
-                </span>
+                </Badge>
                 <div className="flex flex-col gap-1.5">
                   <h3 className="text-lg font-medium tracking-tight text-foreground transition-colors group-hover:text-accent">
                     {reason.title}

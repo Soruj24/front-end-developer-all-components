@@ -1,3 +1,4 @@
+import { Card } from "@/components/design-system/Card";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { CodeBlock } from "./CodeBlock";
@@ -57,13 +58,15 @@ export function HomeInstallation() {
 
         <div className="grid items-start gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
           <Reveal>
-            <CodeBlock
-              code={terminalCode}
-              filename="terminal"
-              label="bash"
-              variant="terminal"
-              className="[&_pre]:text-[13px]"
-            />
+            <Card className="overflow-hidden">
+              <CodeBlock
+                code={terminalCode}
+                filename="terminal"
+                label="bash"
+                variant="terminal"
+                className="[&_pre]:text-[13px]"
+              />
+            </Card>
           </Reveal>
 
           <div className="flex flex-col">

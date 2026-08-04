@@ -1,3 +1,5 @@
+import { Card, CardHeader } from "@/components/design-system/Card";
+import { Badge } from "@/components/design-system/Badge";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import {
@@ -63,9 +65,9 @@ export function HomeDeveloperExperience() {
               {dxPoints.map((point) => (
                 <li key={point.title} className="flex flex-col gap-1.5">
                   <span className="flex items-center gap-2">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-muted/40 text-muted-foreground">
+                    <Badge variant="secondary" className="h-7 w-7 justify-center p-0">
                       <point.icon className="h-3.5 w-3.5" />
-                    </span>
+                    </Badge>
                     <span className="text-sm font-medium text-foreground">{point.title}</span>
                   </span>
                   <p className="pl-9 text-[13px] leading-relaxed text-muted-foreground">
@@ -78,15 +80,15 @@ export function HomeDeveloperExperience() {
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="overflow-hidden rounded-xl border border-border bg-background shadow-card">
-            <div className="flex items-center gap-2 border-b border-border bg-muted/30 px-4 py-2.5">
+          <Card className="overflow-hidden shadow-card">
+            <CardHeader className="flex-row items-center gap-2 border-b border-border bg-muted/30 px-4 py-2.5">
               <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-success/20 text-success dark:text-success">
                 <CheckIcon className="h-1.5 w-1.5" />
               </span>
               <span className="text-xs font-medium text-muted-foreground">
                 Your project — ready to go
               </span>
-            </div>
+            </CardHeader>
             <div className="scrollbar-thin overflow-x-auto p-4 font-mono text-[13px] leading-6">
               {tree.map((entry, index) => (
                 <div
@@ -103,7 +105,7 @@ export function HomeDeveloperExperience() {
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         </Reveal>
       </div>
     </section>

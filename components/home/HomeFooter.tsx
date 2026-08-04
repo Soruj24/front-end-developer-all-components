@@ -2,6 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { GithubIcon } from "@/components/layout/icons";
 import { XIcon } from "./icons";
+import { Card, CardContent } from "@/components/design-system/Card";
 
 const columns = [
   {

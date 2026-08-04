@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Card } from "@/components/design-system/Card";
+import { Badge } from "@/components/design-system/Badge";
 import { getLatestComponents } from "@/features/registry/server";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
@@ -9,6 +11,7 @@ const RECENT_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 /** Recently added components pulled live from the database. */
 export async function HomeLatestComponents() {
   const latest = await getLatestComponents(6);
+  const now = Date.now();
 
   return (
     <section className="px-4 py-16 sm:px-6 sm:py-20" aria-label="Latest components">
@@ -22,11 +25,11 @@ export async function HomeLatestComponents() {
         </Reveal>
 
         <Reveal>
-          <div className="overflow-hidden rounded-xl border border-border bg-background shadow-sm">
+          <Card className="overflow-hidden">
             <ul className="divide-y divide-border">
               {latest.map((item) => {
                 const created = new Date(item.createdAt).getTime();
-                const isNew = Date.now() - created < RECENT_WINDOW_MS;
+                const isNew = now - created < RECENT_WINDOW_MS;
                 return (
                   <li key={item.slug}>
                     <Link
@@ -42,18 +45,18 @@ export async function HomeLatestComponents() {
                             {item.name}
                           </span>
                           {isNew && (
-                            <span className="inline-flex h-4.5 items-center rounded-full bg-accent-soft px-1.5 text-[10px] font-semibold uppercase tracking-wide text-accent">
+                            <Badge variant="primary" className="h-4.5 px-1.5 text-[10px]">
                               New
-                            </span>
+                            </Badge>
                           )}
                         </div>
                         <span className="truncate text-[13px] text-muted-foreground">
                           {item.description}
                         </span>
                       </div>
-                      <span className="hidden shrink-0 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground md:inline-flex">
+                      <Badge variant="secondary" className="hidden md:inline-flex">
                         {item.category}
-                      </span>
+                      </Badge>
                       <span className="hidden shrink-0 text-[11px] text-muted-foreground/70 sm:block">
                         {new Date(item.createdAt).toLocaleDateString()}
                       </span>
@@ -63,7 +66,7 @@ export async function HomeLatestComponents() {
                 );
               })}
             </ul>
-          </div>
+          </Card>
         </Reveal>
       </div>
     </section>

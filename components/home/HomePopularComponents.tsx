@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Card, CardContent } from "@/components/design-system/Card";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { ArrowUpRightIcon } from "./icons";
@@ -30,20 +31,19 @@ export function HomePopularComponents() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {popular.map((item, index) => (
             <Reveal key={item.name} delay={index * 50}>
-              <Link
-                href={item.href}
-                className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background transition-all duration-200 hover:-translate-y-0.5 hover:border-ring/40 hover:shadow-card"
-              >
-                {item.preview}
-                <div className="flex items-center justify-between px-4 py-3">
-                  <span className="flex items-center gap-2 text-sm font-medium text-foreground">
-                    <span className="text-xs text-muted-foreground" aria-hidden="true">
-                      {item.glyph}
+              <Link href={item.href}>
+                <Card className="group h-full overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-ring/40 hover:shadow-card">
+                  {item.preview}
+                  <CardContent className="flex items-center justify-between px-4 py-3">
+                    <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                      <span className="text-xs text-muted-foreground" aria-hidden="true">
+                        {item.glyph}
+                      </span>
+                      {item.name}
                     </span>
-                    {item.name}
-                  </span>
-                  <ArrowUpRightIcon className="h-3.5 w-3.5 text-muted-foreground/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
-                </div>
+                    <ArrowUpRightIcon className="h-3.5 w-3.5 text-muted-foreground/40 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                  </CardContent>
+                </Card>
               </Link>
             </Reveal>
           ))}
