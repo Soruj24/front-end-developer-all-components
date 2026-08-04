@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Checkbox } from "@/components/_checkbox";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 
 const sizes = ["sm", "md", "lg"] as const;
@@ -21,7 +22,10 @@ export default function CheckboxPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Checkbox</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Checkbox</h1>
+          <Badge variant="primary">9 variants</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           A control that allows the user to toggle between checked and not checked.
           Use checkboxes for binary on/off options or to select multiple items from a list.

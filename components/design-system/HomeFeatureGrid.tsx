@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/design-system/Card";
+import { FadeInUp } from "@/components/design-system/Animation";
 
 interface Feature {
   title: string;
@@ -85,18 +86,20 @@ export function HomeFeatureGrid() {
         </div>
 
         <div className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <Link key={feature.title} href={feature.href}>
-              <Card className="h-full transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5">
-                <CardHeader>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="mt-4">{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
+          {features.map((feature, index) => (
+            <FadeInUp key={feature.title} delay={index % 2 === 0 ? "short" : "medium"}>
+              <Link href={feature.href}>
+                <Card className="h-full transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5">
+                  <CardHeader>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      {feature.icon}
+                    </div>
+                    <CardTitle className="mt-4">{feature.title}</CardTitle>
+                    <CardDescription>{feature.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            </FadeInUp>
           ))}
         </div>
       </div>

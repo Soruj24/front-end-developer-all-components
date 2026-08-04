@@ -8,6 +8,7 @@ import {
   CollapsibleTitle,
 } from "@/components/_collapsible";
 import { CollapsibleContent } from "@/components/_collapsible/CollapsibleContent";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -24,7 +25,10 @@ export default function CollapsiblePage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Collapsible</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Collapsible</h1>
+          <Badge variant="primary">8 variants</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           An interactive component which expands/collapses a panel. Use collapsibles
           to progressively disclose content and reduce visual clutter.

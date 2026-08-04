@@ -10,6 +10,16 @@ export { Input } from "./Input";
 export { Avatar } from "./Avatar";
 export { Skeleton, CardSkeleton, ListSkeleton } from "./Skeleton";
 
+export {
+  Animation,
+  FadeIn,
+  FadeInUp,
+  FadeInDown,
+  ScaleIn,
+  SlideInUp,
+  SlideInDown,
+} from "./Animation";
+
 export { HomeHero } from "./HomeHero";
 export { HomeFeatureGrid } from "./HomeFeatureGrid";
 export { HomePopularComponents } from "./HomePopularComponents";
