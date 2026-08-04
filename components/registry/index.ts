@@ -52,6 +52,7 @@ import { aspectRatios } from "./constants/aspect-ratios";
 import { attachments } from "./constants/attachments";
 import { breadcrumbs } from "./constants/breadcrumbs";
 import { bubbles } from "./constants/bubbles";
+import { buttonGroups } from "./constants/button-groups";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -95,6 +96,7 @@ const allEntries: RegistryEntry[] = [
   ...attachments,
   ...breadcrumbs,
   ...bubbles,
+  ...buttonGroups,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
