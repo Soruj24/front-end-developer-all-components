@@ -46,6 +46,10 @@ import { variantMatrices } from "./constants/variantMatrices";
 import { pricingCalculators } from "./constants/pricingCalculators";
 import { propsEditors } from "./constants/propsEditors";
 import { commands } from "./constants/commands";
+import { alerts } from "./constants/alerts";
+import { alertDialogs } from "./constants/alert-dialogs";
+import { aspectRatios } from "./constants/aspect-ratios";
+import { attachments } from "./constants/attachments";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -83,6 +87,10 @@ const allEntries: RegistryEntry[] = [
   ...pricingCalculators,
   ...propsEditors,
   ...commands,
+  ...alerts,
+  ...alertDialogs,
+  ...aspectRatios,
+  ...attachments,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
