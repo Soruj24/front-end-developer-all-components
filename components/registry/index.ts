@@ -66,6 +66,15 @@ import { messages } from "./constants/messages";
 import { messageScrollers } from "./constants/message-scrollers";
 import { nativeSelects } from "./constants/native-selects";
 import { navigationMenus } from "./constants/navigation-menus";
+import { progresses } from "./constants/progresses";
+import { radioGroups } from "./constants/radio-groups";
+import { resizables } from "./constants/resizables";
+import { scrollAreas } from "./constants/scroll-areas";
+import { selects } from "./constants/selects";
+import { separators } from "./constants/separators";
+import { sheets } from "./constants/sheets";
+import { sliders } from "./constants/sliders";
+import { spinners } from "./constants/spinners";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -123,6 +132,15 @@ const allEntries: RegistryEntry[] = [
   ...messageScrollers,
   ...nativeSelects,
   ...navigationMenus,
+  ...progresses,
+  ...radioGroups,
+  ...resizables,
+  ...scrollAreas,
+  ...selects,
+  ...separators,
+  ...sheets,
+  ...sliders,
+  ...spinners,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
