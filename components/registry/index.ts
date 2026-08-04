@@ -50,6 +50,8 @@ import { alerts } from "./constants/alerts";
 import { alertDialogs } from "./constants/alert-dialogs";
 import { aspectRatios } from "./constants/aspect-ratios";
 import { attachments } from "./constants/attachments";
+import { breadcrumbs } from "./constants/breadcrumbs";
+import { bubbles } from "./constants/bubbles";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -91,6 +93,8 @@ const allEntries: RegistryEntry[] = [
   ...alertDialogs,
   ...aspectRatios,
   ...attachments,
+  ...breadcrumbs,
+  ...bubbles,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
