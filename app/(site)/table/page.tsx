@@ -3,6 +3,21 @@
 import { useState, useMemo, Fragment } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add table`;
+
+const usageCode = `// No dedicated component — use native HTML table with Tailwind classes
+<table className="w-full text-sm">
+  <thead>
+    <tr className="border-b bg-muted/50">
+      <th className="px-4 py-3 text-left">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr className="border-b"><td className="px-4 py-3">Data</td></tr>
+  </tbody>
+</table>`;
 
 const products = [
   { id: 1, name: "Wireless Headphones", category: "Electronics", price: 79.99, stock: 45, status: "In Stock", rating: 4.5 },
@@ -138,6 +153,18 @@ export default function TablePage() {
           paginated, responsive, and more.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="table-basic-simple">
         <div className="overflow-x-auto rounded-lg border border-border">
@@ -590,6 +617,54 @@ export default function TablePage() {
           </table>
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Pattern</th>
+                <th className="px-4 py-3 text-left font-medium">Description</th>
+                <th className="px-4 py-3 text-left font-medium">Key Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Basic</td>
+                <td className="px-4 py-3 text-muted-foreground">Simple data display</td>
+                <td className="px-4 py-3 text-muted-foreground">Striped, actions, status</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Sortable</td>
+                <td className="px-4 py-3 text-muted-foreground">Column sorting</td>
+                <td className="px-4 py-3 text-muted-foreground">Click headers to sort</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Selectable</td>
+                <td className="px-4 py-3 text-muted-foreground">Row selection</td>
+                <td className="px-4 py-3 text-muted-foreground">Checkboxes, bulk actions</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Filterable</td>
+                <td className="px-4 py-3 text-muted-foreground">Search & filter</td>
+                <td className="px-4 py-3 text-muted-foreground">Search input, dropdowns</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Paginated</td>
+                <td className="px-4 py-3 text-muted-foreground">Page navigation</td>
+                <td className="px-4 py-3 text-muted-foreground">Page size, page numbers</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">Expandable</td>
+                <td className="px-4 py-3 text-muted-foreground">Row expansion</td>
+                <td className="px-4 py-3 text-muted-foreground">Nested content</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

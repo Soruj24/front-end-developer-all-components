@@ -75,6 +75,10 @@ import { separators } from "./constants/separators";
 import { sheets } from "./constants/sheets";
 import { sliders } from "./constants/sliders";
 import { spinners } from "./constants/spinners";
+import { typographies } from "./constants/typographies";
+import { toggleGroups } from "./constants/toggle-groups";
+import { toggles } from "./constants/toggles";
+import { textareas } from "./constants/textareas";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -141,6 +145,10 @@ const allEntries: RegistryEntry[] = [
   ...sheets,
   ...sliders,
   ...spinners,
+  ...typographies,
+  ...toggleGroups,
+  ...toggles,
+  ...textareas,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(

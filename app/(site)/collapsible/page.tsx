@@ -10,6 +10,22 @@ import {
 import { CollapsibleContent } from "@/components/_collapsible/CollapsibleContent";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add collapsible`;
+
+const usageCode = `import {
+  Collapsible, CollapsibleTrigger, CollapsibleHeader,
+  CollapsibleTitle, CollapsibleContent
+} from "@/components/_collapsible";
+
+<Collapsible>
+  <CollapsibleHeader>
+    <CollapsibleTitle>Title</CollapsibleTitle>
+    <CollapsibleTrigger />
+  </CollapsibleHeader>
+  <CollapsibleContent>Content</CollapsibleContent>
+</Collapsible>`;
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
@@ -34,6 +50,18 @@ export default function CollapsiblePage() {
           to progressively disclose content and reduce visual clutter.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="collapsible-default">
         <Collapsible>
@@ -330,6 +358,49 @@ export default function CollapsiblePage() {
           </Collapsible>
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Component</th>
+                <th className="px-4 py-3 text-left font-medium">Props</th>
+                <th className="px-4 py-3 text-left font-medium">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Collapsible</td>
+                <td className="px-4 py-3 text-muted-foreground">open, onOpenChange</td>
+                <td className="px-4 py-3 text-muted-foreground">Root container</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CollapsibleHeader</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Header section</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CollapsibleTitle</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Title text</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CollapsibleTrigger</td>
+                <td className="px-4 py-3 text-muted-foreground">asChild</td>
+                <td className="px-4 py-3 text-muted-foreground">Toggle button</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">CollapsibleContent</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Expandable content</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

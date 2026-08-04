@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 
 const variants = [
   { name: "default", class: "bg-muted text-zinc-900 dark:bg-muted dark:text-zinc-100" },
@@ -15,6 +16,14 @@ const variants = [
 ];
 
 const sizes = ["sm", "md", "lg"] as const;
+const installCommand = `npx component-library@latest add badge`;
+
+const usageCode = `import { Badge } from "@/components/design-system/Badge";
+
+<Badge variant="primary">New</Badge>
+<Badge variant="success">Active</Badge>
+<Badge variant="outline" size="lg">Large</Badge>`;
+
 const sizeClasses = { sm: "px-1.5 py-0.5 text-xs", md: "px-2 py-1 text-sm", lg: "px-3 py-1.5 text-base" };
 
 function BellIcon() {
@@ -65,6 +74,18 @@ export default function BadgePage() {
           dependencies.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="badge-variants">
         <div className="flex flex-wrap items-center gap-4">
@@ -220,6 +241,43 @@ export default function BadgePage() {
           </span>
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;primary&quot; | &quot;secondary&quot; | &quot;success&quot; | &quot;warning&quot; | &quot;error&quot; | &quot;outline&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">size</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

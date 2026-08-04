@@ -3,6 +3,19 @@
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add card`;
+
+const usageCode = `import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/_card";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+  <CardFooter>Footer</CardFooter>
+</Card>`;
 
 const features = [
   "Unlimited projects",
@@ -84,6 +97,18 @@ export default function CardsPage() {
           example.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="card-basic">
         <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -488,6 +513,49 @@ export default function CardsPage() {
           ))}
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Component</th>
+                <th className="px-4 py-3 text-left font-medium">Props</th>
+                <th className="px-4 py-3 text-left font-medium">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Card</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Root container</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CardHeader</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Header section</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CardTitle</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Title heading</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">CardContent</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Body content</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">CardFooter</td>
+                <td className="px-4 py-3 text-muted-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">Footer actions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }
