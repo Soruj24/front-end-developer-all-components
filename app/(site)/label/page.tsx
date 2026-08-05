@@ -1,7 +1,16 @@
 "use client";
 
 import { Badge } from "@/components/design-system/Badge";
-import { Label } from "@/components/_label";
+import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add label`;
+
+const usageCode = `import { Label } from "@/components/_label";
+
+<Label>Email</Label>
+<Label required>Required field</Label>
+<Label disabled>Disabled</Label>`;
 
 export default function LabelPage() {
   return (
@@ -11,13 +20,115 @@ export default function LabelPage() {
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Label</h1>
           <Badge variant="primary">Forms</Badge>
         </div>
-        <p className="text-muted-foreground">Form label with required indicator.</p>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          A form label with optional required indicator, disabled state, and
+          accessible connection to form inputs.
+        </p>
       </header>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Description</h2>
-        <p>Form label with required indicator.</p>
-      </div>
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Default */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Basic label with optional required indicator.</p>
+        </div>
+        <ComponentPreview id="label-default">
+          <div className="flex flex-col gap-4">
+            <label className="text-sm font-medium text-foreground">Email</label>
+            <label className="text-sm font-medium text-foreground">
+              Required <span className="text-red-500">*</span>
+            </label>
+            <label className="text-sm font-medium text-foreground">Optional (no indicator)</label>
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* Sizes */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Different label sizes.</p>
+        </div>
+        <ComponentPreview id="label-sizes">
+          <div className="flex flex-col gap-4">
+            <label className="text-xs font-medium text-muted-foreground">Small label</label>
+            <label className="text-sm font-medium text-foreground">Default label</label>
+            <label className="text-base font-semibold text-foreground">Large label</label>
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* Disabled */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Disabled</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Label in disabled state.</p>
+        </div>
+        <ComponentPreview id="label-disabled">
+          <div className="flex flex-col gap-4">
+            <label className="text-sm font-medium text-muted-foreground/50">Disabled label</label>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" disabled className="rounded" />
+              <label className="text-sm font-medium text-muted-foreground/50">Accept terms (disabled)</label>
+            </div>
+          </div>
+        </ComponentPreview>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">children</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">required</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">htmlFor</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }
