@@ -1,0 +1,177 @@
+import type { BlogPost, BlogCategoryCount } from "../types/blog.types";
+
+export const BLOG_CATEGORIES: BlogCategoryCount[] = [
+  { name: "Technology", count: 8 },
+  { name: "Design", count: 6 },
+  { name: "Business", count: 4 },
+  { name: "AI", count: 5 },
+  { name: "Security", count: 3 },
+];
+
+export const BLOG_POSTS: BlogPost[] = [
+  {
+    id: "1",
+    slug: "building-scalable-web-apps-nextjs",
+    title: "Building Scalable Web Applications with Next.js",
+    excerpt:
+      "Learn how to architect and build modern web applications that scale seamlessly using Next.js and its powerful features including server components, streaming, and edge functions.",
+    category: "Technology",
+    author: { name: "Sarah Chen", role: "Senior Engineer" },
+    date: "Mar 15, 2026",
+    readTime: "8 min read",
+    featured: true,
+    tags: ["Next.js", "React", "Architecture"],
+    coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
+  },
+  {
+    id: "2",
+    slug: "future-of-ui-design-trends-2026",
+    title: "The Future of UI Design Trends in 2026",
+    excerpt:
+      "Explore the emerging design patterns and visual trends shaping the future of user interfaces from glassmorphism to kinetic typography.",
+    category: "Design",
+    author: { name: "Alex Rivera", role: "Design Lead" },
+    date: "Mar 12, 2026",
+    readTime: "6 min read",
+    tags: ["UI", "Trends", "Design Systems"],
+    coverImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+  },
+  {
+    id: "3",
+    slug: "mastering-typescript-generics",
+    title: "Mastering TypeScript Generics",
+    excerpt:
+      "A comprehensive guide to understanding and using TypeScript generics in your daily workflow with practical real-world examples.",
+    category: "Technology",
+    author: { name: "James Wilson", role: "Staff Engineer" },
+    date: "Mar 10, 2026",
+    readTime: "10 min read",
+    tags: ["TypeScript", "Programming"],
+    coverImage: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80",
+  },
+  {
+    id: "4",
+    slug: "scaling-your-startup-lessons-learned",
+    title: "Scaling Your Startup: Lessons Learned",
+    excerpt:
+      "Key insights from growing a tech startup from zero to millions of users while maintaining team culture and product quality.",
+    category: "Business",
+    author: { name: "Priya Patel", role: "Founder" },
+    date: "Mar 8, 2026",
+    readTime: "7 min read",
+    tags: ["Startup", "Growth"],
+    coverImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+  },
+  {
+    id: "5",
+    slug: "integrating-llms-into-applications",
+    title: "Integrating LLMs into Your Application",
+    excerpt:
+      "Practical steps for integrating large language models into real-world applications with cost optimization and latency considerations.",
+    category: "AI",
+    author: { name: "Michael Brown", role: "AI Engineer" },
+    date: "Mar 5, 2026",
+    readTime: "12 min read",
+    tags: ["LLM", "AI", "Integration"],
+    coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
+  },
+  {
+    id: "6",
+    slug: "web-security-best-practices-2026",
+    title: "Web Security Best Practices for 2026",
+    excerpt:
+      "Stay ahead of threats with the latest security practices and tools for web applications including zero-trust architecture.",
+    category: "Security",
+    author: { name: "Emily Davis", role: "Security Engineer" },
+    date: "Mar 3, 2026",
+    readTime: "9 min read",
+    tags: ["Security", "Best Practices"],
+    coverImage: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80",
+  },
+  {
+    id: "7",
+    slug: "color-theory-modern-web-design",
+    title: "Color Theory in Modern Web Design",
+    excerpt:
+      "Understanding color psychology and accessibility to create harmonious and inclusive digital experiences.",
+    category: "Design",
+    author: { name: "Alex Rivera", role: "Design Lead" },
+    date: "Feb 28, 2026",
+    readTime: "5 min read",
+    tags: ["Color", "Accessibility"],
+    coverImage: "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=800&q=80",
+  },
+  {
+    id: "8",
+    slug: "machine-learning-frontend-developers",
+    title: "Machine Learning for Frontend Developers",
+    excerpt:
+      "Demystifying ML concepts and showing how frontend developers can leverage browser-based AI models.",
+    category: "AI",
+    author: { name: "Michael Brown", role: "AI Engineer" },
+    date: "Feb 25, 2026",
+    readTime: "11 min read",
+    tags: ["ML", "Browser AI"],
+    coverImage: "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=800&q=80",
+  },
+  {
+    id: "9",
+    slug: "remote-team-collaboration-tools",
+    title: "Remote Team Collaboration Tools",
+    excerpt:
+      "A comparison of the best tools and practices for keeping distributed teams productive and connected.",
+    category: "Business",
+    author: { name: "Priya Patel", role: "Founder" },
+    date: "Feb 22, 2026",
+    readTime: "6 min read",
+    tags: ["Remote Work", "Tools"],
+    coverImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
+  },
+  {
+    id: "10",
+    slug: "edge-computing-with-nextjs",
+    title: "Edge Computing with Next.js",
+    excerpt:
+      "How edge functions and middleware are changing the way we think about server-side rendering and API routes.",
+    category: "Technology",
+    author: { name: "Sarah Chen", role: "Senior Engineer" },
+    date: "Feb 20, 2026",
+    readTime: "7 min read",
+    tags: ["Edge", "Next.js", "Serverless"],
+    coverImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+  },
+  {
+    id: "11",
+    slug: "oauth-openid-connect-guide",
+    title: "OAuth 2.0 and OpenID Connect Guide",
+    excerpt:
+      "Everything you need to know about implementing authentication and authorization securely in your applications.",
+    category: "Security",
+    author: { name: "Emily Davis", role: "Security Engineer" },
+    date: "Feb 18, 2026",
+    readTime: "10 min read",
+    tags: ["OAuth", "Authentication"],
+    coverImage: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&q=80",
+  },
+  {
+    id: "12",
+    slug: "micro-interactions-delight-users",
+    title: "Micro-Interactions That Delight Users",
+    excerpt:
+      "Small animation details that make a big difference in user experience and how to implement them efficiently.",
+    category: "Design",
+    author: { name: "Alex Rivera", role: "Design Lead" },
+    date: "Feb 15, 2026",
+    readTime: "4 min read",
+    tags: ["Animation", "UX"],
+    coverImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80",
+  },
+];
+
+export const POPULAR_POSTS = [
+  { id: "5", title: "Integrating LLMs into Your Application" },
+  { id: "3", title: "Mastering TypeScript Generics" },
+  { id: "6", title: "Web Security Best Practices for 2026" },
+  { id: "1", title: "Building Scalable Web Applications with Next.js" },
+  { id: "10", title: "Edge Computing with Next.js" },
+];
