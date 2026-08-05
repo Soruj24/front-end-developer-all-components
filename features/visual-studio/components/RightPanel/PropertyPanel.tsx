@@ -11,6 +11,7 @@ import {
   EffectsEditor, AnimationEditor, HoverStateEditor, FocusStateEditor,
   DarkModeEditor, LayoutEditor,
 } from "./PropertyControls";
+import { ResponsiveEditor } from "./ResponsiveEditor";
 
 /* ─── Component-specific fields ─── */
 
@@ -222,7 +223,7 @@ function NodeHeader({ node }: { node: CanvasNode }) {
 
 /* ─── Tabs ─── */
 
-type PropTab = "component" | "layout" | "style" | "effects" | "states";
+type PropTab = "component" | "layout" | "style" | "effects" | "states" | "responsive";
 
 const PROP_TABS: Array<{ id: PropTab; label: string }> = [
   { id: "component", label: "Props" },
@@ -230,6 +231,7 @@ const PROP_TABS: Array<{ id: PropTab; label: string }> = [
   { id: "style", label: "Style" },
   { id: "effects", label: "Effects" },
   { id: "states", label: "States" },
+  { id: "responsive", label: "Responsive" },
 ];
 
 /* ─── Main Panel ─── */
@@ -277,6 +279,11 @@ function NodeProperties({ node }: { node: CanvasNode }) {
             <FocusSection node={node} />
             <DarkModeSection node={node} />
           </>
+        )}
+        {tab === "responsive" && (
+          <div className="p-4">
+            <ResponsiveEditor nodeId={node.id} />
+          </div>
         )}
       </div>
     </div>

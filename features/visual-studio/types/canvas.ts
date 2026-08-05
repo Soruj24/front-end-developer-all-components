@@ -10,11 +10,14 @@ export interface Size {
 
 export type NodeType = "component" | "container" | "text";
 
+export type ResponsiveBreakpoint = "sm" | "md" | "lg" | "xl" | "2xl";
+
 export interface ResponsiveOverride {
-  sm?: Partial<Size>;
-  md?: Partial<Size>;
-  lg?: Partial<Size>;
-  xl?: Partial<Size>;
+  sm?: Partial<VisualProps>;
+  md?: Partial<VisualProps>;
+  lg?: Partial<VisualProps>;
+  xl?: Partial<VisualProps>;
+  "2xl"?: Partial<VisualProps>;
 }
 
 export interface AnimationConfig {
@@ -160,8 +163,6 @@ export interface MarqueeRect {
   width: number;
   height: number;
 }
-
-export type ResponsiveBreakpoint = "sm" | "md" | "lg" | "xl" | "2xl";
 
 export interface ViewportState {
   zoom: number;

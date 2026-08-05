@@ -30,10 +30,13 @@ interface StudioContextValue {
   addNodeToParent: (componentName: string, parentId: string) => string;
   updateNodeProps: (nodeId: string, props: Record<string, unknown>) => void;
   updateNodeVisual: (nodeId: string, visual: Partial<import("../types/canvas").VisualProps>) => void;
+  updateNodeResponsive: (nodeId: string, breakpoint: ResponsiveBreakpoint, patch: Partial<import("../types/canvas").VisualProps>) => void;
   updateNodePosition: (nodeId: string, position: { x: number; y: number }) => void;
   updateNodeSize: (nodeId: string, size: { width: number; height: number }) => void;
   removeNode: (nodeId: string) => void;
   duplicateNode: (nodeId: string) => void;
+  renameNode: (nodeId: string, name: string) => void;
+  reorderNodes: (sourceId: string, targetId: string, position: "before" | "after" | "inside") => void;
   selectNode: (nodeId: string, multi?: boolean) => void;
   clearSelection: () => void;
   bringForward: (nodeId: string) => void;
@@ -246,6 +249,19 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const updateNodeResponsive = useCallback((nodeId: string, breakpoint: ResponsiveBreakpoint, patch: Partial<import("../types/canvas").VisualProps>) => {
+    setCanvas((prev) => {
+      const node = prev.nodes[nodeId];
+      if (!node) return prev;
+      const responsive = { ...(node.responsive ?? {}) };
+      const current = responsive[breakpoint] ?? {};
+      responsive[breakpoint] = { ...current, ...patch };
+      const updated = { ...node, responsive };
+      const nodes = { ...prev.nodes, [nodeId]: updated };
+      return pushHistory({ ...prev, nodes }, `Responsive ${breakpoint} for ${node.componentName}`);
+    });
+  }, []);
+
   const updateNodePosition = useCallback((nodeId: string, position: { x: number; y: number }) => {
     setCanvas((prev) => {
       const node = prev.nodes[nodeId];
@@ -292,6 +308,64 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       };
       const nodes = { ...prev.nodes, [id]: dup };
       return pushHistory({ ...prev, nodes, selection: { ...prev.selection, selectedIds: [id] } }, `Duplicate ${original.componentName}`);
+    });
+  }, []);
+
+  const renameNode = useCallback((nodeId: string, name: string) => {
+    setCanvas((prev) => {
+      const node = prev.nodes[nodeId];
+      if (!node) return prev;
+      const updated = { ...node, componentName: name };
+      const nodes = { ...prev.nodes, [nodeId]: updated };
+      return pushHistory({ ...prev, nodes }, `Rename to ${name}`);
+    });
+  }, []);
+
+  const reorderNodes = useCallback((sourceId: string, targetId: string, position: "before" | "after" | "inside") => {
+    setCanvas((prev) => {
+      const source = prev.nodes[sourceId];
+      const target = prev.nodes[targetId];
+      if (!source || !target) return prev;
+
+      const nodes = { ...prev.nodes };
+
+      if (position === "inside") {
+        if (source.parentId) {
+          const oldParent = nodes[source.parentId];
+          if (oldParent) {
+            nodes[source.parentId] = { ...oldParent, children: oldParent.children.filter((id) => id !== sourceId) };
+          }
+        }
+        nodes[targetId] = { ...target, children: [...target.children, sourceId] };
+        nodes[sourceId] = { ...source, parentId: targetId };
+      } else {
+        if (source.parentId) {
+          const oldParent = nodes[source.parentId];
+          if (oldParent) {
+            nodes[source.parentId] = { ...oldParent, children: oldParent.children.filter((id) => id !== sourceId) };
+          }
+        }
+
+        const newParentId = target.parentId;
+        if (newParentId) {
+          const parent = nodes[newParentId];
+          if (parent) {
+            const idx = parent.children.indexOf(targetId);
+            const newChildren = [...parent.children.filter((id) => id !== sourceId)];
+            if (position === "before") {
+              newChildren.splice(idx, 0, sourceId);
+            } else {
+              newChildren.splice(idx + 1, 0, sourceId);
+            }
+            nodes[newParentId] = { ...parent, children: newChildren };
+          }
+          nodes[sourceId] = { ...source, parentId: newParentId };
+        } else {
+          nodes[sourceId] = { ...source, parentId: null };
+        }
+      }
+
+      return pushHistory({ ...prev, nodes }, `Reorder ${source.componentName}`);
     });
   }, []);
 
@@ -487,8 +561,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const value = useMemo<StudioContextValue>(() => ({
     canvas, panel, settings, generatedCode, generatedTailwind, generatedTypes,
     generatedDocs, componentTree, favorites, recentItems, performanceMetrics,
-    addNode, addNodeToParent, updateNodeProps, updateNodeVisual, updateNodePosition, updateNodeSize,
-    removeNode, duplicateNode, selectNode, clearSelection,
+    addNode, addNodeToParent, updateNodeProps, updateNodeVisual, updateNodeResponsive, updateNodePosition, updateNodeSize,
+    removeNode, duplicateNode, renameNode, reorderNodes, selectNode, clearSelection,
     bringForward, sendBackward, lockNode, toggleVisibility, alignNodes,
     undo, redo, loadTemplate, clearCanvas,
     setViewport, setPanel, setSettings, toggleGrid, toggleOutlines, setResponsiveMode,
@@ -497,8 +571,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }), [
     canvas, panel, settings, generatedCode, generatedTailwind, generatedTypes,
     generatedDocs, componentTree, favorites, recentItems, performanceMetrics,
-    addNode, addNodeToParent, updateNodeProps, updateNodeVisual, updateNodePosition, updateNodeSize,
-    removeNode, duplicateNode, selectNode, clearSelection,
+    addNode, addNodeToParent, updateNodeProps, updateNodeVisual, updateNodeResponsive, updateNodePosition, updateNodeSize,
+    removeNode, duplicateNode, renameNode, reorderNodes, selectNode, clearSelection,
     bringForward, sendBackward, lockNode, toggleVisibility, alignNodes,
     undo, redo, loadTemplate, clearCanvas,
     setViewport, setPanel, setSettings, toggleGrid, toggleOutlines, setResponsiveMode,

@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { cn } from "@/lib/cn";
 import { useStudio } from "../../context/StudioContext";
-import type { CanvasNode as CanvasNodeType } from "../../types/canvas";
+import type { CanvasNode as CanvasNodeType, VisualProps } from "../../types/canvas";
 
 interface Props {
   node: CanvasNodeType;
@@ -13,27 +13,81 @@ interface Props {
   showOutlines: boolean;
 }
 
+function visualToStyle(visual: VisualProps): React.CSSProperties {
+  const style: React.CSSProperties = {};
+
+  // Spacing
+  if (visual.padding.top) style.paddingTop = visual.padding.top;
+  if (visual.padding.right) style.paddingRight = visual.padding.right;
+  if (visual.padding.bottom) style.paddingBottom = visual.padding.bottom;
+  if (visual.padding.left) style.paddingLeft = visual.padding.left;
+  if (visual.margin.top) style.marginTop = visual.margin.top;
+  if (visual.margin.right) style.marginRight = visual.margin.right;
+  if (visual.margin.bottom) style.marginBottom = visual.margin.bottom;
+  if (visual.margin.left) style.marginLeft = visual.margin.left;
+
+  // Layout
+  if (visual.display) style.display = visual.display as "flex" | "block" | "grid";
+  if (visual.flexDirection) style.flexDirection = visual.flexDirection as "row" | "column";
+  if (visual.gap) style.gap = visual.gap;
+
+  // Background
+  if (visual.background.color) style.backgroundColor = visual.background.color;
+  if (visual.background.gradientFrom || visual.background.gradientVia || visual.background.gradientTo) {
+    const stops: string[] = [];
+    if (visual.background.gradientFrom) stops.push(visual.background.gradientFrom);
+    if (visual.background.gradientVia) stops.push(visual.background.gradientVia);
+    if (visual.background.gradientTo) stops.push(visual.background.gradientTo);
+    style.backgroundImage = `linear-gradient(${visual.background.gradientDirection || "to right"}, ${stops.join(", ")})`;
+  }
+
+  // Border
+  if (visual.border.radius) style.borderRadius = visual.border.radius;
+  if (visual.border.width) style.borderWidth = visual.border.width;
+  if (visual.border.color) style.borderColor = visual.border.color;
+  if (visual.border.style && visual.border.style !== "none") style.borderStyle = visual.border.style;
+
+  // Typography
+  if (visual.typography.fontSize) style.fontSize = visual.typography.fontSize;
+  if (visual.typography.fontWeight) style.fontWeight = Number(visual.typography.fontWeight) || 400;
+  if (visual.typography.lineHeight) style.lineHeight = visual.typography.lineHeight;
+  if (visual.typography.letterSpacing) style.letterSpacing = visual.typography.letterSpacing;
+  if (visual.typography.textAlign) style.textAlign = visual.typography.textAlign as "left" | "center" | "right";
+  if (visual.typography.color) style.color = visual.typography.color;
+  if (visual.typography.textTransform) style.textTransform = visual.typography.textTransform as "uppercase" | "lowercase" | "capitalize";
+
+  // Effects
+  if (visual.effects.opacity !== undefined && visual.effects.opacity < 100) {
+    style.opacity = visual.effects.opacity / 100;
+  }
+  if (visual.effects.blur) style.filter = `blur(${visual.effects.blur}px)`;
+
+  return style;
+}
+
 function NodeContent({ node }: { node: CanvasNodeType }) {
   const p = node.props;
+  const vStyle = visualToStyle(node.visual);
+
   switch (node.componentName) {
     case "button":
       return (
         <button
           className="inline-flex h-full w-full items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground pointer-events-none"
-          style={{ borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : undefined }}
+          style={{ ...vStyle, borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : vStyle.borderRadius }}
         >
           {typeof p.loading === "boolean" && p.loading ? "Loading..." : (p.text as string) ?? "Button"}
         </button>
       );
     case "text":
       return (
-        <p className="m-0 p-0 text-foreground" style={{ fontSize: p.fontSize as number, fontWeight: p.fontWeight as string, color: p.color as string }}>
+        <p className="m-0 p-0 text-foreground" style={{ ...vStyle, fontSize: p.fontSize as number, fontWeight: p.fontWeight as string, color: p.color as string || vStyle.color }}>
           {(p.text as string) ?? "Text"}
         </p>
       );
     case "heading":
       return (
-        <h2 className="m-0 p-0 text-foreground" style={{ fontSize: p.fontSize as number, fontWeight: p.fontWeight as string, color: p.color as string }}>
+        <h2 className="m-0 p-0 text-foreground" style={{ ...vStyle, fontSize: p.fontSize as number, fontWeight: p.fontWeight as string, color: p.color as string || vStyle.color }}>
           {(p.text as string) ?? "Heading"}
         </h2>
       );
@@ -43,24 +97,25 @@ function NodeContent({ node }: { node: CanvasNodeType }) {
           type={(p.inputType as string) ?? "text"}
           placeholder={(p.placeholder as string) ?? ""}
           className="h-full w-full rounded-md border border-gray-300 bg-white px-3 text-sm text-foreground pointer-events-none"
+          style={vStyle}
           readOnly
         />
       );
     case "badge":
       return (
-        <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+        <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary" style={vStyle}>
           {(p.text as string) ?? "Badge"}
         </span>
       );
     case "card":
       return (
-        <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-4 shadow-sm" style={{ borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : undefined }}>
+        <div className="h-full w-full rounded-xl border border-gray-200 bg-white p-4 shadow-sm" style={{ ...vStyle, borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : vStyle.borderRadius }}>
           <div className="text-xs text-gray-400">Card Content</div>
         </div>
       );
     case "alert":
       return (
-        <div className="flex h-full w-full items-center gap-3 rounded-lg bg-blue-50 p-4 text-blue-800" style={{ borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : undefined }}>
+        <div className="flex h-full w-full items-center gap-3 rounded-lg bg-blue-50 p-4 text-blue-800" style={{ ...vStyle, borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : vStyle.borderRadius }}>
           <div className="text-lg">ℹ</div>
           <div>
             <div className="text-sm font-semibold">{(p.title as string) ?? "Alert"}</div>
@@ -72,29 +127,29 @@ function NodeContent({ node }: { node: CanvasNodeType }) {
       return (
         <div
           className="flex h-full w-full items-center justify-center rounded-full text-sm font-medium text-white"
-          style={{ backgroundColor: (p.backgroundColor as string) || "#6366f1", borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : undefined }}
+          style={{ ...vStyle, backgroundColor: (p.backgroundColor as string) || "#6366f1", borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : vStyle.borderRadius }}
         >
           {(p.initials as string) ?? "AV"}
         </div>
       );
     case "divider":
-      return <hr className="h-full w-full border-0" style={{ borderTop: `1px solid ${p.color ?? "#e5e7eb"}` }} />;
+      return <hr className="h-full w-full border-0" style={{ ...vStyle, borderTop: `1px solid ${p.color ?? "#e5e7eb"}` }} />;
     case "image":
       return (
-        <div className="flex h-full w-full items-center justify-center rounded bg-gray-100 text-xs text-gray-400">
+        <div className="flex h-full w-full items-center justify-center rounded bg-gray-100 text-xs text-gray-400" style={vStyle}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {p.src ? <img src={p.src as string} alt={p.alt as string} className="h-full w-full rounded object-cover" /> : "Image"}
         </div>
       );
     case "progress":
       return (
-        <div className="h-full w-full overflow-hidden rounded-full bg-gray-200" style={{ height: p.height as number ?? 8, borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : undefined }}>
+        <div className="h-full w-full overflow-hidden rounded-full bg-gray-200" style={{ ...vStyle, height: p.height as number ?? 8, borderRadius: typeof p.borderRadius === "number" ? p.borderRadius : vStyle.borderRadius }}>
           <div className="h-full rounded-full bg-primary" style={{ width: `${p.value ?? 60}%` }} />
         </div>
       );
     case "checkbox":
       return (
-        <label className="flex h-full items-center gap-2 text-sm text-foreground">
+        <label className="flex h-full items-center gap-2 text-sm text-foreground" style={vStyle}>
           <div className={cn("flex h-4 w-4 items-center justify-center rounded border", p.checked ? "bg-primary border-primary text-white" : "border-gray-300")}>
             {p.checked ? <span className="text-[10px]">✓</span> : null}
           </div>
@@ -103,7 +158,7 @@ function NodeContent({ node }: { node: CanvasNodeType }) {
       );
     case "toggle":
       return (
-        <label className="flex h-full items-center gap-2 text-sm text-foreground">
+        <label className="flex h-full items-center gap-2 text-sm text-foreground" style={vStyle}>
           <div className={cn("relative h-5 w-9 rounded-full transition-colors", p.checked ? "bg-primary" : "bg-gray-200")}>
             <div className={cn("absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform", p.checked ? "translate-x-4" : "translate-x-0.5")} />
           </div>
@@ -112,17 +167,17 @@ function NodeContent({ node }: { node: CanvasNodeType }) {
       );
     case "link":
       return (
-        <span className="text-sm text-primary underline">{(p.text as string) ?? "Link"}</span>
+        <span className="text-sm text-primary underline" style={vStyle}>{(p.text as string) ?? "Link"}</span>
       );
     case "spinner":
       return (
-        <div className="h-full w-full animate-spin rounded-full border-2 border-gray-200 border-t-primary" />
+        <div className="h-full w-full animate-spin rounded-full border-2 border-gray-200 border-t-primary" style={vStyle} />
       );
     case "skeleton":
-      return <div className="h-full w-full animate-pulse rounded bg-gray-200" />;
+      return <div className="h-full w-full animate-pulse rounded bg-gray-200" style={vStyle} />;
     case "tooltip":
       return (
-        <span className="inline-flex items-center gap-1 text-sm text-foreground">
+        <span className="inline-flex items-center gap-1 text-sm text-foreground" style={vStyle}>
           {(p.text as string) ?? "Tooltip"}
           <span className="text-xs text-gray-400">ⓘ</span>
         </span>

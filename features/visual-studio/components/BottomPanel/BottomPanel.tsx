@@ -6,14 +6,17 @@ import { useStudio } from "../../context/StudioContext";
 import type { BottomTab } from "../../types/studio";
 import { CodePreview } from "./CodePreview";
 import { ComponentTreeView } from "./ComponentTreeView";
+import { ComponentHierarchy } from "./ComponentHierarchy";
 import { WarningsPanel } from "./WarningsPanel";
+import { AIAssistantPanel } from "../AIAssistant/AIAssistantPanel";
 
 const TABS: Array<{ id: BottomTab; label: string; icon: string }> = [
   { id: "code", label: "Code", icon: "⟨/⟩" },
-  { id: "tree", label: "Tree", icon: "🌳" },
+  { id: "tree", label: "Hierarchy", icon: "🏗" },
   { id: "warnings", label: "Warnings", icon: "⚠" },
   { id: "accessibility", label: "A11y", icon: "♿" },
   { id: "performance", label: "Perf", icon: "⚡" },
+  { id: "ai", label: "AI", icon: "🤖" },
 ];
 
 function AccessibilityPanel() {
@@ -126,10 +129,11 @@ export function BottomPanel() {
       </div>
       <div className="min-h-0 flex-1 overflow-hidden">
         {panel.bottomTab === "code" && <CodePreview />}
-        {panel.bottomTab === "tree" && <ComponentTreeView />}
+        {panel.bottomTab === "tree" && <ComponentHierarchy />}
         {panel.bottomTab === "warnings" && <WarningsPanel />}
         {panel.bottomTab === "accessibility" && <AccessibilityPanel />}
         {panel.bottomTab === "performance" && <PerformancePanel />}
+        {panel.bottomTab === "ai" && <AIAssistantPanel />}
       </div>
     </div>
   );

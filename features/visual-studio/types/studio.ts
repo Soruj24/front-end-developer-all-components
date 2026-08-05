@@ -1,5 +1,5 @@
 export type PanelSide = "left" | "right";
-export type BottomTab = "code" | "tree" | "warnings" | "accessibility" | "performance";
+export type BottomTab = "code" | "tree" | "warnings" | "accessibility" | "performance" | "ai";
 export type LeftTab = "components" | "templates" | "favorites" | "recent" | "ai";
 export type ExportTab = "code" | "download" | "share";
 
