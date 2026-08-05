@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/components/layout";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Sidebar } from "@/components/navigation";
 import { Footer } from "@/components/design-system/Footer";
 import { getNavigationSections, getNavbarLinks } from "@/features/registry/server";

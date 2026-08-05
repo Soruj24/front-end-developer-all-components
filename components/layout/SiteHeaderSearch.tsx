@@ -32,9 +32,9 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
           label: link.label,
           href: link.href,
           section: section.title,
-        }))
+        })),
       ),
-    []
+    [],
   );
 
   const filtered = useMemo(() => {
@@ -44,7 +44,7 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
       (item) =>
         item.label.toLowerCase().includes(q) ||
         item.href.toLowerCase().includes(q) ||
-        item.section.toLowerCase().includes(q)
+        item.section.toLowerCase().includes(q),
     );
   }, [allResults, query]);
 
@@ -61,7 +61,7 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
 
   useEffect(() => {
     const active = listRef.current?.querySelector<HTMLElement>(
-      `[data-index="${activeIndex}"]`
+      `[data-index="${activeIndex}"]`,
     );
     active?.scrollIntoView({ block: "nearest" });
   }, [activeIndex]);
@@ -80,7 +80,7 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
       router.push(href);
       onClose();
     },
-    [router, onClose]
+    [router, onClose],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -127,8 +127,7 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
             aria-label="Search the documentation"
           />
           <kbd className="hidden shrink-0 items-center gap-1 rounded-md border border-border bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
-            <CommandIcon className="h-2.5 w-2.5" />
-            K
+            <CommandIcon className="h-2.5 w-2.5" />K
           </kbd>
         </div>
 
@@ -163,7 +162,7 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
                     "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
                     activeIndex === index
                       ? "bg-accent-soft text-foreground"
-                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
                   )}
                 >
                   <span className="flex-1 truncate">{item.label}</span>
@@ -178,18 +177,26 @@ export function SiteHeaderSearch({ open, onClose }: SiteHeaderSearchProps) {
 
         <div className="flex items-center gap-4 border-t border-border px-4 py-2 text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">↑↓</kbd>
+            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">
+              ↑↓
+            </kbd>
             Navigate
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">↵</kbd>
+            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">
+              ↵
+            </kbd>
             Select
           </span>
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">Esc</kbd>
+            <kbd className="rounded border border-border bg-muted/50 px-1 py-0.5 font-mono">
+              Esc
+            </kbd>
             Close
           </span>
-          <span className="ml-auto hidden font-mono sm:block">{filtered.length} results</span>
+          <span className="ml-auto hidden font-mono sm:block">
+            {filtered.length} results
+          </span>
         </div>
       </div>
     </div>

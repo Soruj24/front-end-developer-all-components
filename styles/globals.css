@@ -875,6 +875,30 @@ svg[data-lod="low"] .graph-lod-label {
   100% { transform: translateX(100%); }
 }
 
+/* ------------------------------------------------------------------ */
+/* Header animations                                                   */
+/* ------------------------------------------------------------------ */
+
+@keyframes nav-indicator-slide {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes mobile-menu-slide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes notification-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes header-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 45%, transparent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in oklab, var(--primary) 0%, transparent); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

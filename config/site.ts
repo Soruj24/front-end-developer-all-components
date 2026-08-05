@@ -17,7 +17,8 @@ export const siteConfig = {
     "Design System",
   ] as string[],
   author: "Component Library",
-  github: "https://github.com",
+  github: "https://github.com/Soruj24/front-end-developer-all-components",
+  discord: "https://discord.gg/sun-ui",
   getStartedHref: "/routing",
   stats: {
     pages: 54,
@@ -27,9 +28,17 @@ export const siteConfig = {
   },
   navLinks: [
     { label: "Components", href: "/components" },
-    { label: "Pages", href: "/landing" },
-    { label: "Templates", href: "/blog" },
-    { label: "Admin", href: "/admin/dashboard" },
+    { label: "Blocks", href: "/blocks" },
+    { label: "Templates", href: "/templates" },
+    { label: "AI", href: "/ai", badge: "new" as const },
+    { label: "Registry", href: "/registry" },
+    { label: "Playground", href: "/playground" },
+  ],
+  secondaryNavLinks: [
+    { label: "Docs", href: "/docs" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Enterprise", href: "/enterprise" },
+    { label: "Community", href: "/community" },
   ],
 } as const;
 

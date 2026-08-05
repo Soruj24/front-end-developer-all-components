@@ -10,7 +10,13 @@ import { SiteHeaderNav } from "./SiteHeaderNav";
 import { SiteHeaderMobileMenu } from "./SiteHeaderMobileMenu";
 import { SiteHeaderSearch } from "./SiteHeaderSearch";
 import { ThemeToggle } from "./ThemeToggle";
-import { GithubIcon, CommandIcon, MenuIcon, SearchIcon, CloseIcon } from "./icons";
+import {
+  GithubIcon,
+  CommandIcon,
+  MenuIcon,
+  SearchIcon,
+  CloseIcon,
+} from "./icons";
 
 /** Global site header: glass brand bar, primary nav, search, GitHub, theme and mobile menu. */
 export function SiteHeader({
@@ -63,12 +69,18 @@ export function SiteHeader({
       <header
         className={cn(
           "sticky top-0 z-40 h-14 w-full border-b transition-[box-shadow,border-color,background-color] duration-300 animate-fade-in-down",
-          scrolled ? "border-border bg-background/80 shadow-xs backdrop-blur-xl" : "border-border/60 bg-background/60 backdrop-blur",
+          scrolled
+            ? "border-border bg-background/80 shadow-xs backdrop-blur-xl"
+            : "border-border/60 bg-background/60 backdrop-blur",
         )}
       >
-          <div className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-2 sm:gap-6">
-            <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label="Go to home">
+            <Link
+              href="/"
+              className="group flex shrink-0 items-center gap-2.5"
+              aria-label="Go to home"
+            >
               <span className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80 text-[11px] font-bold text-accent-foreground shadow-sm transition-transform duration-300 group-hover:scale-105 animate-logo-glow">
                 {siteConfig.shortName}
               </span>
@@ -94,8 +106,7 @@ export function SiteHeader({
               <Kbd className="shrink-0">
                 {isMac ? (
                   <>
-                    <CommandIcon className="h-2.5 w-2.5" />
-                    K
+                    <CommandIcon className="h-2.5 w-2.5" />K
                   </>
                 ) : (
                   <>Ctrl K</>
@@ -146,7 +157,7 @@ export function SiteHeader({
               onClick={() => setMenuOpen((open) => !open)}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full text-foreground transition-[background-color,transform] duration-200 ease-out hover:bg-muted active:scale-95 lg:hidden",
-                menuOpen && "bg-muted"
+                menuOpen && "bg-muted",
               )}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
@@ -161,8 +172,15 @@ export function SiteHeader({
         </div>
       </header>
 
-      <SiteHeaderMobileMenu open={menuOpen} onNavigate={closeMenu} links={navLinks} />
-      <SiteHeaderSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SiteHeaderMobileMenu
+        open={menuOpen}
+        onNavigate={closeMenu}
+        links={navLinks}
+      />
+      <SiteHeaderSearch
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+      />
     </>
   );
 }

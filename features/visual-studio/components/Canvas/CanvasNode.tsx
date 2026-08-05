@@ -65,9 +65,26 @@ function visualToStyle(visual: VisualProps): React.CSSProperties {
   return style;
 }
 
+function mergeResponsiveVisual(node: CanvasNodeType, responsiveMode: import("../../types/canvas").ResponsiveBreakpoint | null): VisualProps {
+  if (!responsiveMode || !node.responsive?.[responsiveMode]) return node.visual;
+  const override = node.responsive[responsiveMode];
+  const base = { ...node.visual };
+  if (override.width !== undefined) base.width = override.width;
+  if (override.height !== undefined) base.height = override.height;
+  if (override.display) base.display = override.display;
+  if (override.flexDirection) base.flexDirection = override.flexDirection;
+  if (override.gap !== undefined) base.gap = override.gap;
+  if (override.padding) base.padding = { ...base.padding, ...override.padding };
+  if (override.margin) base.margin = { ...base.margin, ...override.margin };
+  return base;
+}
+
 function NodeContent({ node }: { node: CanvasNodeType }) {
+  const { canvas } = useStudio();
+  const responsiveMode = canvas.viewport.responsiveMode;
+  const mergedVisual = mergeResponsiveVisual(node, responsiveMode);
   const p = node.props;
-  const vStyle = visualToStyle(node.visual);
+  const vStyle = visualToStyle(mergedVisual);
 
   switch (node.componentName) {
     case "button":
