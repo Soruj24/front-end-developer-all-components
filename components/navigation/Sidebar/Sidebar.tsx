@@ -9,6 +9,7 @@ import type { NavLink, NavSection } from "@/types/navigation";
 import { cn } from "@/lib/cn";
 import { SidebarToggle } from "./SidebarToggle";
 import { SidebarBackdrop } from "./SidebarBackdrop";
+import { SidebarBrand } from "./SidebarBrand";
 import { SidebarSearch } from "./SidebarSearch";
 import { SidebarSection } from "./SidebarSection";
 import { SidebarFooter } from "./SidebarFooter";
@@ -110,6 +111,7 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
         )}
         aria-label="Documentation"
       >
+        <SidebarBrand />
         <SidebarSearch value={search} onChange={setSearch} />
 
         <nav

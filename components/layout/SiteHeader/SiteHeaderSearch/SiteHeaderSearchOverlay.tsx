@@ -58,7 +58,7 @@ export function SiteHeaderSearchOverlay({
     <div
       className={cn(
         "fixed inset-0 z-50 flex items-start justify-center pt-[15vh]",
-        "bg-overlay/50 backdrop-blur-sm",
+        "bg-black/70 backdrop-blur-sm",
         "animate-fade-in",
         className
       )}
@@ -70,13 +70,13 @@ export function SiteHeaderSearchOverlay({
         ref={overlayRef}
         className={cn(
           "w-full max-w-lg mx-4",
-          "rounded-2xl border border-border bg-surface",
+          "rounded-2xl border border-zinc-800 bg-zinc-900",
           "shadow-modal animate-scale-in"
         )}
       >
         <SiteHeaderSearchInput ref={inputRef} onClose={onClose} />
 
-        <div className="border-t border-border">
+        <div className="border-t border-zinc-800">
           <SiteHeaderSearchRecent
             searches={recentSearches}
             onSelect={(query) => {
@@ -86,23 +86,23 @@ export function SiteHeaderSearchOverlay({
           />
         </div>
 
-        <div className="border-t border-border">
+        <div className="border-t border-zinc-800">
           <SiteHeaderSearchResults results={searchResults} onSelect={onClose} />
         </div>
 
-        <div className="flex items-center justify-between border-t border-border px-4 py-2.5">
-          <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-between border-t border-zinc-800 px-4 py-2.5">
+          <div className="flex items-center gap-4 text-[11px] text-zinc-500">
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">↑</kbd>
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">↓</kbd>
+              <kbd className="rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px]">↑</kbd>
+              <kbd className="rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px]">↓</kbd>
               Navigate
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">↵</kbd>
+              <kbd className="rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px]">↵</kbd>
               Select
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">Esc</kbd>
+              <kbd className="rounded border border-zinc-700 bg-zinc-800 px-1.5 py-0.5 font-mono text-[10px]">Esc</kbd>
               Close
             </span>
           </div>

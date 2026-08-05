@@ -36,7 +36,7 @@ export function SiteHeaderTheme({ className }: SiteHeaderThemeProps) {
       <div
         className={cn(
           "hidden h-9 w-9 items-center justify-center rounded-full",
-          "text-muted-foreground lg:flex",
+          "text-zinc-400 lg:flex",
           className
         )}
       />
@@ -49,9 +49,9 @@ export function SiteHeaderTheme({ className }: SiteHeaderThemeProps) {
       onClick={toggle}
       className={cn(
         "hidden h-9 w-9 items-center justify-center rounded-full",
-        "text-muted-foreground transition-all duration-200",
-        "hover:bg-muted hover:text-foreground active:scale-95",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "text-zinc-400 transition-all duration-200",
+        "hover:bg-zinc-800/60 hover:text-zinc-200 active:scale-95",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
         "lg:flex",
         className
       )}

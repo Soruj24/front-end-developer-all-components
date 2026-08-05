@@ -32,9 +32,9 @@ export function SiteHeaderMobileNav({
             "flex items-center gap-3 rounded-lg px-3 py-2.5",
             "text-[14px] font-medium transition-colors",
             isActive(link.href)
-              ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              ? "bg-zinc-800/60 text-zinc-200"
+              : "text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
           )}
           aria-current={isActive(link.href) ? "page" : undefined}
         >
@@ -44,9 +44,9 @@ export function SiteHeaderMobileNav({
               className={cn(
                 "rounded-full px-1.5 py-0.5",
                 "text-[10px] font-semibold uppercase",
-                link.badge === "new" && "bg-primary/10 text-primary",
-                link.badge === "beta" && "bg-warning/10 text-warning",
-                link.badge === "pro" && "bg-info/10 text-info"
+                link.badge === "new" && "bg-blue-500/10 text-blue-400",
+                link.badge === "beta" && "bg-amber-500/10 text-amber-400",
+                link.badge === "pro" && "bg-purple-500/10 text-purple-400"
               )}
             >
               {link.badge}

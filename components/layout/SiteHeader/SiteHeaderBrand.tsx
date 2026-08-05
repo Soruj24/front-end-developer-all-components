@@ -22,8 +22,8 @@ export function SiteHeaderBrand({ className }: SiteHeaderBrandProps) {
       <span
         className={cn(
           "relative flex h-8 w-8 items-center justify-center",
-          "rounded-lg bg-gradient-to-br from-primary to-primary/80",
-          "text-[11px] font-bold text-primary-foreground",
+          "rounded-lg bg-white",
+          "text-[11px] font-bold text-black",
           "shadow-sm transition-transform duration-300",
           "group-hover:scale-105",
           "animate-logo-glow"
@@ -33,9 +33,9 @@ export function SiteHeaderBrand({ className }: SiteHeaderBrandProps) {
       </span>
       <span
         className={cn(
-          "hidden text-[15px] font-semibold tracking-tight text-foreground",
+          "hidden text-[15px] font-semibold tracking-tight text-zinc-200",
           "sm:inline lg:hidden xl:inline",
-          "transition-colors group-hover:text-primary"
+          "transition-colors group-hover:text-white"
         )}
       >
         {siteConfig.name}

@@ -1,15 +1,6 @@
 import type { NavSection } from "@/types/navigation";
 
-/**
- * Single source of truth for the site's navigation tree.
- *
- * Each section carries the data needed by every consumer:
- * - `icon` / link `icon`  → used by the sidebar
- * - `description` / link `desc` → used by the home page category cards
- *
- * Consumers derive their own view from this list so the nav never drifts
- * between pages.
- */
+
 export const navigationSections: NavSection[] = [
   {
     title: "Get Started",
@@ -182,7 +173,6 @@ export const navigationSections: NavSection[] = [
       { label: "Chat", href: "/chat", icon: "💬", desc: "Messaging interface" },
       { label: "AI", href: "/ai", icon: "✦", desc: "AI chat and generation" },
       { label: "Portfolio", href: "/portfolio", icon: "◆", desc: "Portfolio showcase" },
-      { label: "Admin", href: "/admin/dashboard", icon: "⚙", desc: "Admin panel" },
       { label: "Analytics", href: "/analytics", icon: "📈", desc: "Analytics dashboard" },
       { label: "SaaS", href: "/saas", icon: "☁", desc: "Software as a Service landing page" },
       { label: "Project Mgmt", href: "/project-management", icon: "▦", desc: "Kanban, tasks, project tracking" },

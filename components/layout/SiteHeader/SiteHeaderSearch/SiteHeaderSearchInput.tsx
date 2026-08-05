@@ -15,7 +15,7 @@ export const SiteHeaderSearchInput = forwardRef<
   return (
     <div className={cn("flex items-center gap-3 px-4 py-3", className)}>
       <svg
-        className="h-4 w-4 shrink-0 text-muted-foreground"
+        className="h-4 w-4 shrink-0 text-zinc-500"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -32,8 +32,8 @@ export const SiteHeaderSearchInput = forwardRef<
         type="text"
         placeholder="Search components, blocks, templates..."
         className={cn(
-          "flex-1 bg-transparent text-[14px] text-foreground",
-          "placeholder:text-muted-foreground/60",
+          "flex-1 bg-transparent text-[14px] text-zinc-200",
+          "placeholder:text-zinc-500",
           "focus:outline-none"
         )}
         onKeyDown={(e) => {
@@ -45,8 +45,8 @@ export const SiteHeaderSearchInput = forwardRef<
       <kbd
         className={cn(
           "pointer-events-none inline-flex h-5 select-none items-center",
-          "rounded border border-border bg-muted px-1.5",
-          "font-mono text-[10px] font-medium text-muted-foreground"
+          "rounded border border-zinc-700 bg-zinc-800 px-1.5",
+          "font-mono text-[10px] font-medium text-zinc-500"
         )}
       >
         Esc

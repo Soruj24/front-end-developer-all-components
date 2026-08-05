@@ -20,12 +20,12 @@ export function SiteHeaderSearch({
       onClick={onClick}
       className={cn(
         "group hidden h-9 w-40 items-center gap-2.5",
-        "rounded-full border border-border bg-muted/40 px-3",
-        "text-left text-[13px] text-muted-foreground",
+        "rounded-xl border border-zinc-800 bg-zinc-800/40 px-3",
+        "text-left text-[13px] text-zinc-400",
         "transition-all duration-200",
-        "hover:border-ring/60 hover:bg-muted/60 hover:text-foreground",
+        "hover:border-zinc-700 hover:bg-zinc-800/60 hover:text-zinc-200",
         "active:scale-[0.98]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
         "sm:flex xl:w-44",
         className
       )}
@@ -36,8 +36,8 @@ export function SiteHeaderSearch({
       <kbd
         className={cn(
           "pointer-events-none inline-flex h-5 select-none items-center gap-0.5",
-          "rounded border border-border bg-muted px-1.5",
-          "font-mono text-[10px] font-medium text-muted-foreground"
+          "rounded border border-zinc-700 bg-zinc-800 px-1.5",
+          "font-mono text-[10px] font-medium text-zinc-400"
         )}
       >
         {isMac ? (

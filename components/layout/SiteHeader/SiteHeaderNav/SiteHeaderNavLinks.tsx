@@ -50,9 +50,9 @@ export function SiteHeaderNavLinks({
             "relative px-3 py-2 text-[13px] font-medium rounded-lg",
             "transition-colors duration-200",
             isActive(link.href)
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              ? "text-zinc-200"
+              : "text-zinc-400 hover:text-zinc-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2"
           )}
           aria-current={isActive(link.href) ? "page" : undefined}
         >
@@ -62,9 +62,9 @@ export function SiteHeaderNavLinks({
               className={cn(
                 "ml-1.5 inline-flex items-center rounded-full px-1.5 py-0.5",
                 "text-[10px] font-semibold uppercase leading-none",
-                link.badge === "new" && "bg-primary/10 text-primary",
-                link.badge === "beta" && "bg-warning/10 text-warning",
-                link.badge === "pro" && "bg-info/10 text-info"
+                link.badge === "new" && "bg-blue-500/10 text-blue-400",
+                link.badge === "beta" && "bg-amber-500/10 text-amber-400",
+                link.badge === "pro" && "bg-purple-500/10 text-purple-400"
               )}
             >
               {link.badge}

@@ -13,12 +13,12 @@ export function SiteHeaderCTA({ className }: SiteHeaderCTAProps) {
     <Link
       href={siteConfig.getStartedHref}
       className={cn(
-        "hidden h-9 items-center rounded-full bg-foreground px-4",
-        "text-[13px] font-medium text-background",
+        "hidden h-9 items-center rounded-full bg-white px-4",
+        "text-[13px] font-medium text-black",
         "shadow-sm transition-all duration-200",
-        "hover:shadow-md hover:opacity-90 active:scale-[0.98]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "hover:shadow-md hover:bg-zinc-100 active:scale-[0.98]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
+        "focus-visible:ring-offset-2 focus-visible:ring-offset-black",
         "lg:inline-flex",
         className
       )}

@@ -37,10 +37,10 @@ export function SiteHeaderNavDropdown({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-1 px-3 py-2 text-[13px] font-medium",
-          "text-muted-foreground rounded-lg transition-colors",
-          "hover:text-foreground hover:bg-muted/50",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          isOpen && "text-foreground bg-muted/50"
+          "text-zinc-400 rounded-lg transition-colors",
+          "hover:text-zinc-200 hover:bg-zinc-800/60",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
+          isOpen && "text-zinc-200 bg-zinc-800/60"
         )}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -64,7 +64,7 @@ export function SiteHeaderNavDropdown({
         <div
           className={cn(
             "absolute left-0 top-full z-50 mt-1",
-            "w-48 rounded-xl border border-border bg-surface p-1.5",
+            "w-48 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5",
             "shadow-popover animate-scale-in",
             "focus-visible:outline-none"
           )}
@@ -78,22 +78,22 @@ export function SiteHeaderNavDropdown({
               onClick={() => setIsOpen(false)}
               className={cn(
                 "flex items-center gap-2 rounded-lg px-3 py-2",
-                "text-[13px] font-medium text-muted-foreground",
-                "transition-colors hover:bg-muted hover:text-foreground",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                "text-[13px] font-medium text-zinc-400",
+                "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
               )}
               role="menuitem"
             >
-              {item.icon && <span className="text-muted-foreground">{item.icon}</span>}
+              {item.icon && <span className="text-zinc-400">{item.icon}</span>}
               {item.label}
               {item.badge && (
                 <span
                   className={cn(
                     "ml-auto rounded-full px-1.5 py-0.5",
                     "text-[10px] font-semibold uppercase",
-                    item.badge === "new" && "bg-primary/10 text-primary",
-                    item.badge === "beta" && "bg-warning/10 text-warning",
-                    item.badge === "pro" && "bg-info/10 text-info"
+                    item.badge === "new" && "bg-blue-500/10 text-blue-400",
+                    item.badge === "beta" && "bg-amber-500/10 text-amber-400",
+                    item.badge === "pro" && "bg-purple-500/10 text-purple-400"
                   )}
                 >
                   {item.badge}

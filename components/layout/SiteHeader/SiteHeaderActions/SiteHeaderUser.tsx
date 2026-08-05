@@ -36,10 +36,10 @@ export function SiteHeaderUser({
       <Link
         href="/login"
         className={cn(
-          "hidden h-9 items-center rounded-full border border-border px-4",
-          "text-[13px] font-medium text-foreground",
-          "transition-all hover:bg-muted active:scale-[0.98]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "hidden h-9 items-center rounded-full border border-zinc-800 px-4",
+          "text-[13px] font-medium text-zinc-200",
+          "transition-all hover:bg-zinc-800/60 active:scale-[0.98]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
           "md:inline-flex",
           className
         )}
@@ -56,10 +56,10 @@ export function SiteHeaderUser({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "hidden h-9 w-9 items-center justify-center rounded-full",
-          "bg-muted text-sm font-medium text-foreground",
+          "bg-zinc-800 text-sm font-medium text-zinc-200",
           "transition-all duration-200",
-          "hover:bg-muted/80 active:scale-95",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "hover:bg-zinc-700 active:scale-95",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
           "lg:flex"
         )}
         aria-label="User menu"
@@ -80,22 +80,22 @@ export function SiteHeaderUser({
         <div
           className={cn(
             "absolute right-0 top-full z-50 mt-1",
-            "w-48 rounded-xl border border-border bg-surface p-1.5",
+            "w-48 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5",
             "shadow-popover animate-scale-in"
           )}
           role="menu"
         >
-          <div className="border-b border-border px-3 py-2">
-            <p className="text-[13px] font-medium text-foreground">{userName}</p>
+          <div className="border-b border-zinc-800 px-3 py-2">
+            <p className="text-[13px] font-medium text-zinc-200">{userName}</p>
           </div>
           <Link
             href="/account"
             onClick={() => setIsOpen(false)}
             className={cn(
               "flex w-full items-center rounded-lg px-3 py-2",
-              "text-[13px] font-medium text-muted-foreground",
-              "transition-colors hover:bg-muted hover:text-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              "text-[13px] font-medium text-zinc-400",
+              "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             )}
             role="menuitem"
           >
@@ -106,23 +106,23 @@ export function SiteHeaderUser({
             onClick={() => setIsOpen(false)}
             className={cn(
               "flex w-full items-center rounded-lg px-3 py-2",
-              "text-[13px] font-medium text-muted-foreground",
-              "transition-colors hover:bg-muted hover:text-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              "text-[13px] font-medium text-zinc-400",
+              "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             )}
             role="menuitem"
           >
             Settings
           </Link>
-          <div className="my-1 border-t border-border" />
+          <div className="my-1 border-t border-zinc-800" />
           <button
             type="button"
             onClick={() => setIsOpen(false)}
             className={cn(
               "flex w-full items-center rounded-lg px-3 py-2",
-              "text-[13px] font-medium text-danger",
-              "transition-colors hover:bg-danger/10",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              "text-[13px] font-medium text-red-400",
+              "transition-colors hover:bg-red-500/10",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             )}
             role="menuitem"
           >

@@ -73,17 +73,18 @@ export function SiteHeader({ navLinks, className }: HeaderProps) {
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 w-full",
-          "transition-all duration-300",
+          "sticky top-0 z-50 w-full h-16",
+          "backdrop-blur-xl",
           scrolled
-            ? "border-b border-border bg-background/80 shadow-xs backdrop-blur-xl"
-            : "border-b border-border/60 bg-background/60 backdrop-blur",
+            ? "bg-white/80 dark:bg-black/70 border-b border-zinc-800"
+            : "bg-white/80 dark:bg-black/70 border-b border-zinc-800",
+          "transition-all duration-200",
           "animate-fade-in-down",
           className
         )}
       >
-        <div className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-6">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-4">
             <SiteHeaderBrand />
 
             <SiteHeaderNavLinks
@@ -98,7 +99,7 @@ export function SiteHeader({ navLinks, className }: HeaderProps) {
             <SiteHeaderNavDropdown items={secondaryNav} />
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-1.5">
+          <div className="flex items-center gap-2">
             <SiteHeaderSearch onClick={handleSearchToggle} isMac={isMac} />
 
             <SiteHeaderGithub />
@@ -114,10 +115,10 @@ export function SiteHeader({ navLinks, className }: HeaderProps) {
               onClick={toggleMobileMenu}
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full",
-                "text-foreground transition-all duration-200",
-                "hover:bg-muted active:scale-95",
+                "text-zinc-200 transition-all duration-200",
+                "hover:bg-zinc-800/60 active:scale-95",
                 "lg:hidden",
-                mobileMenuOpen && "bg-muted"
+                mobileMenuOpen && "bg-zinc-800/60"
               )}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}

@@ -20,9 +20,9 @@ export function SiteHeaderMobileActions({
         onClick={onThemeToggle}
         className={cn(
           "flex items-center justify-between rounded-lg px-3 py-2.5",
-          "text-[14px] font-medium text-muted-foreground",
-          "transition-colors hover:bg-muted/50 hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          "text-[14px] font-medium text-zinc-400",
+          "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
         )}
       >
         <span className="flex items-center gap-3">
@@ -40,12 +40,12 @@ export function SiteHeaderMobileActions({
         <div
           className={cn(
             "relative h-5 w-9 rounded-full transition-colors",
-            theme === "dark" ? "bg-primary" : "bg-muted"
+            theme === "dark" ? "bg-white" : "bg-zinc-700"
           )}
         >
           <div
             className={cn(
-              "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform",
+              "absolute top-0.5 h-4 w-4 rounded-full bg-black shadow-sm transition-transform",
               theme === "dark" ? "translate-x-4" : "translate-x-0.5"
             )}
           />
@@ -58,9 +58,9 @@ export function SiteHeaderMobileActions({
         rel="noreferrer"
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2.5",
-          "text-[14px] font-medium text-muted-foreground",
-          "transition-colors hover:bg-muted/50 hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          "text-[14px] font-medium text-zinc-400",
+          "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
         )}
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">

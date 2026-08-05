@@ -20,7 +20,7 @@ export function SiteHeaderSearchRecent({
 
   return (
     <div className={cn("p-2", className)}>
-      <p className="px-2 py-1.5 text-[11px] font-medium uppercase text-muted-foreground">
+      <p className="px-2 py-1.5 text-[11px] font-medium uppercase text-zinc-500">
         Recent searches
       </p>
       {searches.map((search) => (
@@ -30,9 +30,9 @@ export function SiteHeaderSearchRecent({
           onClick={() => onSelect(search.query)}
           className={cn(
             "flex w-full items-center gap-2 rounded-lg px-3 py-2",
-            "text-[13px] text-muted-foreground",
-            "transition-colors hover:bg-muted hover:text-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            "text-[13px] text-zinc-400",
+            "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
           )}
         >
           <svg

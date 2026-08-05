@@ -37,10 +37,10 @@ export function SiteHeaderLanguage({ className }: SiteHeaderLanguageProps) {
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "hidden h-9 items-center gap-1.5 rounded-full px-2.5",
-          "text-[13px] font-medium text-muted-foreground",
+          "text-[13px] font-medium text-zinc-400",
           "transition-all duration-200",
-          "hover:bg-muted hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "hover:bg-zinc-800/60 hover:text-zinc-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500",
           "lg:flex"
         )}
         aria-label="Select language"
@@ -66,7 +66,7 @@ export function SiteHeaderLanguage({ className }: SiteHeaderLanguageProps) {
         <div
           className={cn(
             "absolute right-0 top-full z-50 mt-1",
-            "w-40 rounded-xl border border-border bg-surface p-1.5",
+            "w-40 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5",
             "shadow-popover animate-scale-in"
           )}
           role="menu"
@@ -82,11 +82,11 @@ export function SiteHeaderLanguage({ className }: SiteHeaderLanguageProps) {
               className={cn(
                 "flex w-full items-center gap-2 rounded-lg px-3 py-2",
                 "text-[13px] font-medium transition-colors",
-                "hover:bg-muted",
+                "hover:bg-zinc-800/60",
                 selected.code === lang.code
-                  ? "text-foreground bg-muted"
-                  : "text-muted-foreground",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  ? "text-zinc-200 bg-zinc-800/60"
+                  : "text-zinc-400",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
               )}
               role="menuitem"
             >

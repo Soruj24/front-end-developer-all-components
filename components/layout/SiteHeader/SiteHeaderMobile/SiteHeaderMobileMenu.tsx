@@ -29,8 +29,8 @@ export function SiteHeaderMobileMenu({
   return (
     <div
       className={cn(
-        "fixed inset-x-0 top-14 z-40",
-        "border-b border-border bg-surface/95 backdrop-blur-xl",
+        "fixed inset-x-0 top-16 z-40",
+        "border-b border-zinc-800 bg-black/95 backdrop-blur-xl",
         "lg:hidden",
         "animate-slide-in-down",
         className
@@ -46,12 +46,12 @@ export function SiteHeaderMobileMenu({
             onClick={onNavigate}
             className={cn(
               "flex items-center gap-2.5 rounded-lg px-3 py-2",
-              "text-[14px] font-medium text-muted-foreground",
-              "transition-colors hover:bg-muted/50 hover:text-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              "text-[14px] font-medium text-zinc-400",
+              "transition-colors hover:bg-zinc-800/60 hover:text-zinc-200",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             )}
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-[10px] font-bold text-primary-foreground">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[10px] font-bold text-black">
               {siteConfig.shortName}
             </span>
             {siteConfig.name}
@@ -60,7 +60,7 @@ export function SiteHeaderMobileMenu({
 
         <SiteHeaderMobileNav links={links} onNavigate={onNavigate} />
 
-        <div className="my-4 border-t border-border" />
+        <div className="my-4 border-t border-zinc-800" />
 
         <SiteHeaderMobileActions theme={theme} onThemeToggle={onThemeToggle} />
 
@@ -70,9 +70,9 @@ export function SiteHeaderMobileMenu({
             onClick={onNavigate}
             className={cn(
               "flex w-full items-center justify-center rounded-full",
-              "bg-foreground px-4 py-2.5 text-[13px] font-medium text-background",
-              "shadow-sm transition-all hover:shadow-md active:scale-[0.98]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              "bg-white px-4 py-2.5 text-[13px] font-medium text-black",
+              "shadow-sm transition-all hover:bg-zinc-100 active:scale-[0.98]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
             )}
           >
             Get Started
