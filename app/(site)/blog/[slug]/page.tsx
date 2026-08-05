@@ -20,7 +20,7 @@ const categoryColors: Record<string, string> = {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const post = BLOG_POSTS.find((p) => p.slug === slug || p.id === slug);
 
   if (!post) {
     notFound();

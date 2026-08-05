@@ -4,6 +4,7 @@ import type { BlogCategoryCount } from "../types/blog.types";
 
 interface PopularPost {
   id: string;
+  slug: string;
   title: string;
 }
 
@@ -42,7 +43,7 @@ function PopularPosts({ posts }: { posts: PopularPost[] }) {
               {i + 1}
             </span>
             <Link
-              href={`/blog/${post.id}`}
+              href={`/blog/${post.slug}`}
               className="text-sm leading-snug text-foreground/80 transition-colors hover:text-primary"
             >
               {post.title}

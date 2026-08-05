@@ -169,9 +169,9 @@ export const BLOG_POSTS: BlogPost[] = [
 ];
 
 export const POPULAR_POSTS = [
-  { id: "5", title: "Integrating LLMs into Your Application" },
-  { id: "3", title: "Mastering TypeScript Generics" },
-  { id: "6", title: "Web Security Best Practices for 2026" },
-  { id: "1", title: "Building Scalable Web Applications with Next.js" },
-  { id: "10", title: "Edge Computing with Next.js" },
+  { id: "5", slug: "integrating-llms-into-applications", title: "Integrating LLMs into Your Application" },
+  { id: "3", slug: "mastering-typescript-generics", title: "Mastering TypeScript Generics" },
+  { id: "6", slug: "web-security-best-practices-2026", title: "Web Security Best Practices for 2026" },
+  { id: "1", slug: "building-scalable-web-apps-nextjs", title: "Building Scalable Web Applications with Next.js" },
+  { id: "10", slug: "edge-computing-with-nextjs", title: "Edge Computing with Next.js" },
 ];
