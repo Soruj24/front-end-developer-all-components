@@ -163,6 +163,16 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
+    title: "Tools",
+    icon: "⚙",
+    description: "Visual editors and generators",
+    links: [
+      { label: "Visual Studio", href: "/visual-studio", icon: "🎨", desc: "Design-first visual component editor" },
+      { label: "Playground", href: "/playground", icon: "▶", desc: "Live code playground with preview" },
+      { label: "AI Generator", href: "/ai-generator", icon: "✦", desc: "AI-powered component generation" },
+    ],
+  },
+  {
     title: "Templates",
     icon: "✦",
     description: "Full application templates",

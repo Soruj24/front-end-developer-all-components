@@ -7,7 +7,7 @@ import { ComponentModel, CategoryModel, TagModel, SettingModel, NavItemModel } f
 import { db } from "./handle";
 import { toComponentDocInput } from "./map";
 
-export const SEED_VERSION = "1.0.7";
+export const SEED_VERSION = "1.0.8";
 
 const components = () => db(ComponentModel);
 const categories = () => db(CategoryModel);
