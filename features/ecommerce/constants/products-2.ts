@@ -1,0 +1,178 @@
+import type { Product } from "../types/ecommerce.types";
+
+export const PRODUCTS_PART_2: Product[] = [
+  {
+    id: "11",
+    slug: "running-shoes-pro",
+    title: "Professional Running Shoes",
+    description:
+      "Lightweight performance running shoes with responsive cushioning and carbon fiber plate.",
+    price: 159.99,
+    originalPrice: 189.99,
+    rating: 4.8,
+    reviewCount: 1678,
+    category: "Sports",
+    tags: ["Running", "Performance", "Lightweight"],
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80",
+    ],
+    stock: 12,
+    badge: "New",
+  },
+  {
+    id: "12",
+    slug: "leather-wallet-rfid",
+    title: "RFID Blocking Leather Wallet",
+    description:
+      "Slim bifold wallet crafted from genuine leather with RFID blocking technology.",
+    price: 54.99,
+    rating: 4.4,
+    reviewCount: 723,
+    category: "Accessories",
+    tags: ["Wallet", "Leather", "RFID"],
+    images: [
+      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80",
+      "https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&q=80",
+    ],
+    stock: 40,
+  },
+  {
+    id: "13",
+    slug: "smart-home-speaker",
+    title: "Smart Home Speaker",
+    description:
+      "Voice-controlled smart speaker with premium 360-degree sound and built-in smart home hub.",
+    price: 129.99,
+    rating: 4.6,
+    reviewCount: 1890,
+    category: "Electronics",
+    tags: ["Smart Home", "Audio", "Voice Control"],
+    images: [
+      "https://images.unsplash.com/photo-1543512214-318c7553f230?w=600&q=80",
+      "https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=600&q=80",
+    ],
+    stock: 25,
+  },
+  {
+    id: "14",
+    slug: "merino-wool-sweater",
+    title: "Merino Wool Sweater",
+    description:
+      "Luxuriously soft 100% Merino wool sweater with temperature-regulating properties.",
+    price: 119.99,
+    rating: 4.7,
+    reviewCount: 432,
+    category: "Clothing",
+    tags: ["Wool", "Premium", "Winter"],
+    images: [
+      "https://images.unsplash.com/photo-1434389677669-e08b4cda3a47?w=600&q=80",
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
+    ],
+    stock: 16,
+  },
+  {
+    id: "15",
+    slug: "portable-bluetooth-speaker",
+    title: "Portable Bluetooth Speaker",
+    description:
+      "Rugged waterproof Bluetooth speaker with 20-hour playtime and 360-degree sound.",
+    price: 79.99,
+    originalPrice: 99.99,
+    rating: 4.5,
+    reviewCount: 1345,
+    category: "Electronics",
+    tags: ["Portable", "Waterproof", "Bluetooth"],
+    images: [
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80",
+      "https://images.unsplash.com/photo-1589003077984-894e133dabab?w=600&q=80",
+    ],
+    stock: 30,
+  },
+  {
+    id: "16",
+    slug: "cast-iron-dutch-oven",
+    title: "Cast Iron Dutch Oven",
+    description:
+      "Enameled cast iron Dutch oven with self-basting lid, oven-safe to 500°F.",
+    price: 89.99,
+    rating: 4.8,
+    reviewCount: 678,
+    category: "Home & Kitchen",
+    tags: ["Cooking", "Cast Iron", "Durable"],
+    images: [
+      "https://images.unsplash.com/photo-1585837146751-a44118595080?w=600&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+    ],
+    stock: 14,
+  },
+  {
+    id: "17",
+    slug: "canvas-sneakers-classic",
+    title: "Classic Canvas Sneakers",
+    description:
+      "Timeless canvas sneakers with vulcanized rubber sole and cushioned insole.",
+    price: 49.99,
+    rating: 4.3,
+    reviewCount: 2100,
+    category: "Clothing",
+    tags: ["Casual", "Canvas", "Classic"],
+    images: [
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600&q=80",
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80",
+    ],
+    stock: 55,
+  },
+  {
+    id: "18",
+    slug: "sunglasses-polarized",
+    title: "Polarized Sunglasses",
+    description:
+      "Lightweight polarized sunglasses with UV400 protection and titanium frame.",
+    price: 149.99,
+    rating: 4.6,
+    reviewCount: 567,
+    category: "Accessories",
+    tags: ["UV Protection", "Polarized", "Lightweight"],
+    images: [
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80",
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80",
+    ],
+    stock: 22,
+  },
+  {
+    id: "19",
+    slug: "mechanical-keyboard",
+    title: "Mechanical Keyboard",
+    description:
+      "Hot-swappable mechanical keyboard with RGB backlighting and PBT keycaps.",
+    price: 149.99,
+    originalPrice: 179.99,
+    rating: 4.7,
+    reviewCount: 892,
+    category: "Electronics",
+    tags: ["Mechanical", "RGB", "Hot-Swappable"],
+    images: [
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&q=80",
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&q=80",
+    ],
+    stock: 19,
+  },
+  {
+    id: "20",
+    slug: "travel-journal-leather",
+    title: "Leather Travel Journal",
+    description:
+      "Premium leather-bound journal with 200 pages of acid-free paper and expandable pocket.",
+    price: 34.99,
+    rating: 4.8,
+    reviewCount: 456,
+    category: "Books",
+    tags: ["Journal", "Travel", "Leather"],
+    images: [
+      "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&q=80",
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&q=80",
+    ],
+    stock: 38,
+  },
+];
