@@ -1,16 +1,6 @@
-export type TimeRange = "1H" | "24H" | "7D" | "30D" | "90D" | "1Y" | "All";
+import type { TimeRange, Kpi, TrafficSource, TopPage, Region, Device } from "../types/analytics";
 
 export const timeRanges: TimeRange[] = ["1H", "24H", "7D", "30D", "90D", "1Y", "All"];
-
-export interface Kpi {
-  title: string;
-  value: string;
-  change: string;
-  up: boolean;
-  color: string;
-  icon: string;
-  spark: number[];
-}
 
 export const kpiData: Kpi[] = [
   {
@@ -72,15 +62,6 @@ export const kpiData: Kpi[] = [
 export const monthlyLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 export const monthlyValues = [42000, 38000, 51000, 47000, 59000, 55000, 62000, 68000, 64000, 75000, 72000, 82000];
 
-export interface TrafficSource {
-  source: string;
-  visitors: number;
-  pct: number;
-  change: string;
-  up: boolean;
-  color: string;
-}
-
 export const trafficSources: TrafficSource[] = [
   { source: "Organic", visitors: 48290, pct: 38.8, change: "+5.2%", up: true, color: "#22c55e" },
   { source: "Direct", visitors: 28140, pct: 22.6, change: "+2.1%", up: true, color: "#3b82f6" },
@@ -99,14 +80,6 @@ export const conicGradient = (() => {
   return `conic-gradient(${stops.join(", ")})`;
 })();
 
-export interface TopPage {
-  page: string;
-  views: number;
-  unique: number;
-  avgTime: string;
-  bounce: string;
-}
-
 export const topPagesData: TopPage[] = [
   { page: "/", views: 45280, unique: 38900, avgTime: "3m 12s", bounce: "28.4%" },
   { page: "/pricing", views: 18340, unique: 15200, avgTime: "4m 45s", bounce: "22.1%" },
@@ -116,11 +89,6 @@ export const topPagesData: TopPage[] = [
   { page: "/docs", views: 5210, unique: 4600, avgTime: "7m 10s", bounce: "18.5%" },
 ];
 
-export interface Region {
-  name: string;
-  pct: number;
-}
-
 export const regions: Region[] = [
   { name: "USA", pct: 42.3 },
   { name: "UK", pct: 12.8 },
@@ -129,14 +97,6 @@ export const regions: Region[] = [
   { name: "Australia", pct: 4.1 },
   { name: "Japan", pct: 3.7 },
 ];
-
-export interface Device {
-  name: string;
-  pct: number;
-  count: string;
-  color: string;
-  icon: string;
-}
 
 export const deviceData: Device[] = [
   { name: "Desktop", pct: 62.4, count: "179,240", color: "#3b82f6", icon: "M3 5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" },

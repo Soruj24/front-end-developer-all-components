@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { topPagesData } from "./data";
+import type { TopPage } from "../types/analytics";
+import { topPagesData } from "../constants/analytics-data";
 
 function SortHeader({
   label,
@@ -39,8 +40,8 @@ export function TopPagesSection() {
   const sortedPages = useMemo(() => {
     const copy = [...topPagesData];
     copy.sort((a, b) => {
-      let aVal: string | number = a[sortKey as keyof typeof a];
-      let bVal: string | number = b[sortKey as keyof typeof b];
+      let aVal: string | number = a[sortKey as keyof TopPage];
+      let bVal: string | number = b[sortKey as keyof TopPage];
       if (typeof aVal === "string") aVal = parseFloat(aVal) || 0;
       if (typeof bVal === "string") bVal = parseFloat(bVal) || 0;
       return sortDir === "asc" ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);

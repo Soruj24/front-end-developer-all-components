@@ -1,6 +1,6 @@
 "use client";
 
-import { conicGradient, trafficSources } from "./data";
+import { conicGradient, trafficSources } from "../constants/analytics-data";
 
 export function TrafficSourcesSection() {
   return (

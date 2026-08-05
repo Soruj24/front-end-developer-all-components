@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { areaPoints, linePoints, maxMonthly, monthlyLabels, monthlyValues } from "./data";
+import { areaPoints, linePoints, maxMonthly, monthlyLabels, monthlyValues } from "../constants/analytics-data";
 
 function BarChart() {
   return (

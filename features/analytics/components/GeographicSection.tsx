@@ -1,6 +1,6 @@
 "use client";
 
-import { regions } from "./data";
+import { regions } from "../constants/analytics-data";
 
 export function GeographicSection() {
   return (

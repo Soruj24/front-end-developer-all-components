@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { timeRanges } from "./data";
-import { DevicesSection, KpiSection } from "./Sections";
-import { TrafficChartSection } from "./TrafficChart";
-import { TrafficSourcesSection } from "./TrafficSources";
-import { GeographicSection } from "./Geographic";
-import { TopPagesSection } from "./TopPages";
+import {
+  timeRanges,
+  kpiData,
+  deviceData,
+  KpiSection,
+  DevicesSection,
+  TrafficChartSection,
+  TrafficSourcesSection,
+  GeographicSection,
+  TopPagesSection,
+} from "@/features/analytics";
 
 export default function AnalyticsPage() {
   const [selectedRange, setSelectedRange] = useState("30D");
@@ -51,7 +56,7 @@ export default function AnalyticsPage() {
         ))}
       </div>
 
-      <KpiSection />
+      <KpiSection kpis={kpiData} />
       <TrafficChartSection />
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -60,7 +65,7 @@ export default function AnalyticsPage() {
       </div>
 
       <TopPagesSection />
-      <DevicesSection />
+      <DevicesSection devices={deviceData} />
     </div>
   );
 }
