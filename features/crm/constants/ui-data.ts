@@ -1,0 +1,63 @@
+export const statusColors: Record<string, string> = {
+  Active: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  New: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Inactive: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  Hot: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  Warm: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  Cold: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  High: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  Medium: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  Low: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Urgent: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  Pending: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  "In Progress": "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Done: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Open: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Resolved: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Paid: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Overdue: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  Draft: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  Sent: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Negotiating: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  Accepted: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Expiring: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300",
+  Expired: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  Enriched: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Processing: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Platinum: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  Gold: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
+  Silver: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  Bronze: "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300",
+  Completed: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Scheduled: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Enterprise: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  "Mid-Market": "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Starter: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+  Outbound: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
+  Inbound: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300",
+};
+
+export const metricIcons: Record<string, string> = {
+  revenue: "$",
+  deals: "#",
+  winrate: "%",
+  dealsize: "~",
+  cycle: "T",
+  customers: "@",
+};
+
+export const timelineColors: Record<string, string> = {
+  call: "bg-green-500",
+  email: "bg-blue-500",
+  meeting: "bg-purple-500",
+  note: "bg-amber-500",
+  task: "bg-cyan-500",
+  deal: "bg-zinc-400",
+};
+
+export const priorityOrder: Record<string, number> = {
+  High: 0,
+  Medium: 1,
+  Low: 2,
+  Urgent: 0,
+};
