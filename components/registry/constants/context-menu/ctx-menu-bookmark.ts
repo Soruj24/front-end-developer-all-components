@@ -4,7 +4,7 @@ export const ctxMenuBookmark: RegistryEntry = {
   id: "ctx-menu-bookmark",
   title: "Bookmark Context Menu",
   description: "Context menu for bookmark operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;
