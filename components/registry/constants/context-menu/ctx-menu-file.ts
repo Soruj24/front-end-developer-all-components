@@ -4,7 +4,7 @@ export const ctxMenuFile: RegistryEntry = {
   id: "ctx-menu-file",
   title: "File Context Menu",
   description: "Context menu for file operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

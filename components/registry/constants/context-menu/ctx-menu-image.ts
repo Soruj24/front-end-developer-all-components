@@ -4,7 +4,7 @@ export const ctxMenuImage: RegistryEntry = {
   id: "ctx-menu-image",
   title: "Image Context Menu",
   description: "Context menu for image operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

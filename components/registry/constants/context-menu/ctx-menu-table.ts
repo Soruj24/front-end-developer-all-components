@@ -4,7 +4,7 @@ export const ctxMenuTable: RegistryEntry = {
   id: "ctx-menu-table",
   title: "Table Row Context Menu",
   description: "Context menu for table row operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

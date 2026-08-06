@@ -4,7 +4,7 @@ export const ctxMenuLink: RegistryEntry = {
   id: "ctx-menu-link",
   title: "Link Context Menu",
   description: "Context menu for link operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

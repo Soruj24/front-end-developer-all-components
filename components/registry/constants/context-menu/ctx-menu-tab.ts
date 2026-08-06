@@ -4,7 +4,7 @@ export const ctxMenuTab: RegistryEntry = {
   id: "ctx-menu-tab",
   title: "Browser Tab Context Menu",
   description: "Context menu for browser tab operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

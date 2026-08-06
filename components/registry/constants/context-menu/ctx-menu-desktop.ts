@@ -4,7 +4,7 @@ export const ctxMenuDesktop: RegistryEntry = {
   id: "ctx-menu-desktop",
   title: "Desktop Context Menu",
   description: "Context menu for desktop operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;

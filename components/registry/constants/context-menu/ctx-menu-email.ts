@@ -4,7 +4,7 @@ export const ctxMenuEmail: RegistryEntry = {
   id: "ctx-menu-email",
   title: "Email Context Menu",
   description: "Context menu for email operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;
