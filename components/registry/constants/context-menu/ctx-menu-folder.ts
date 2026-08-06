@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuFolder: RegistryEntry = {
   id: "ctx-menu-folder",
-  name: "Folder Context Menu",
+  title: "Folder Context Menu",
   description: "Context menu for folder operations",
   code: `"use client";
 
@@ -34,6 +34,5 @@ export function ContextMenuFolder() {
     </div>
   );
 }`,
-  component: "ContextMenuFolder",
   dependencies: [],
 };

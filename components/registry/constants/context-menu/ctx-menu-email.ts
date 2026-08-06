@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuEmail: RegistryEntry = {
   id: "ctx-menu-email",
-  name: "Email Context Menu",
+  title: "Email Context Menu",
   description: "Context menu for email operations",
   code: `"use client";
 
@@ -36,6 +36,5 @@ export function ContextMenuEmail() {
     </div>
   );
 }`,
-  component: "ContextMenuEmail",
   dependencies: [],
 };

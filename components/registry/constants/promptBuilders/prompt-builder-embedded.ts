@@ -11,7 +11,7 @@ export const promptBuilderEmbedded: RegistryEntry = entry({
 const reviewTemplate = [
   {
     id: "code-review",
-    name: "Code Review",
+    title: "Code Review",
     description: "Get thorough, actionable reviews of a code snippet.",
     sections: [
       { id: "system", title: "System", content: "You are a senior software engineer performing a thorough, kind, and actionable code review." },

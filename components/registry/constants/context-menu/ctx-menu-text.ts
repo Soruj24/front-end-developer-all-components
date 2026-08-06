@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuText: RegistryEntry = {
   id: "ctx-menu-text",
-  name: "Text Context Menu",
+  title: "Text Context Menu",
   description: "Context menu for text editing operations",
   code: `"use client";
 
@@ -31,6 +31,5 @@ export function ContextMenuText() {
     </div>
   );
 }`,
-  component: "ContextMenuText",
   dependencies: [],
 };

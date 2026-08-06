@@ -1,6 +1,6 @@
 export const marketingTemplate = `  {
     id: "marketing",
-    name: "Marketing Copy",
+    title: "Marketing Copy",
     description: "Generate high-converting marketing copy for any product.",
     sections: [
       { id: "system", title: "System", content: "You are an expert copywriter with 15 years of experience writing high-converting marketing copy. Write clearly, speak directly to the reader's pain points, and always end with a compelling call to action." },
@@ -18,7 +18,7 @@ export const marketingTemplate = `  {
 
 export const blogTemplate = `  {
     id: "blog",
-    name: "Blog Post Outline",
+    title: "Blog Post Outline",
     description: "Draft a structured outline for a blog post.",
     sections: [
       { id: "system", title: "System", content: "You are a world-class blog editor who writes clear, skimmable, SEO-friendly outlines." },

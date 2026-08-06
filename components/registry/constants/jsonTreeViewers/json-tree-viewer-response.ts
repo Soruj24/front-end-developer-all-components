@@ -17,7 +17,7 @@ const data = {
     projects: [
       {
         id: "prj_01",
-        name: "Atlas",
+        title: "Atlas",
         private: false,
         stars: 12480,
         languages: ["TypeScript", "Rust", "CSS"],
@@ -25,7 +25,7 @@ const data = {
       },
       {
         id: "prj_02",
-        name: "Nimbus",
+        title: "Nimbus",
         private: true,
         stars: 0,
         languages: ["Go"],

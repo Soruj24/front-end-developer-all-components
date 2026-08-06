@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuChat: RegistryEntry = {
   id: "ctx-menu-chat",
-  name: "Chat Context Menu",
+  title: "Chat Context Menu",
   description: "Context menu for chat message operations",
   code: `"use client";
 
@@ -44,6 +44,5 @@ export function ContextMenuChat() {
     </div>
   );
 }`,
-  component: "ContextMenuChat",
   dependencies: [],
 };

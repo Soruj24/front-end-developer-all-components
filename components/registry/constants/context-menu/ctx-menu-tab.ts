@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuTab: RegistryEntry = {
   id: "ctx-menu-tab",
-  name: "Browser Tab Context Menu",
+  title: "Browser Tab Context Menu",
   description: "Context menu for browser tab operations",
   code: `"use client";
 
@@ -35,6 +35,5 @@ export function ContextMenuTab() {
     </div>
   );
 }`,
-  component: "ContextMenuTab",
   dependencies: [],
 };

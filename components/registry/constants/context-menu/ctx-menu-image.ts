@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuImage: RegistryEntry = {
   id: "ctx-menu-image",
-  name: "Image Context Menu",
+  title: "Image Context Menu",
   description: "Context menu for image operations",
   code: `"use client";
 
@@ -32,6 +32,5 @@ export function ContextMenuImage() {
     </div>
   );
 }`,
-  component: "ContextMenuImage",
   dependencies: [],
 };

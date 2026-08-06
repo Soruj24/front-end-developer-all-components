@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuCanvas: RegistryEntry = {
   id: "ctx-menu-canvas",
-  name: "Canvas Context Menu",
+  title: "Canvas Context Menu",
   description: "Context menu for canvas operations",
   code: `"use client";
 
@@ -37,6 +37,5 @@ export function ContextMenuCanvas() {
     </div>
   );
 }`,
-  component: "ContextMenuCanvas",
   dependencies: [],
 };

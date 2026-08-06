@@ -22,7 +22,7 @@ const quotes = [
 
 const commands: TerminalCommand[] = [
   {
-    name: "fortune",
+    title: "fortune",
     description: "Print a random fortune",
     usage: "fortune",
     run: () => [
@@ -34,7 +34,7 @@ const commands: TerminalCommand[] = [
     ],
   },
   {
-    name: "quote",
+    title: "quote",
     description: "Print a programmer quote",
     usage: "quote",
     run: () => [
@@ -46,7 +46,7 @@ const commands: TerminalCommand[] = [
     ],
   },
   {
-    name: "weather",
+    title: "weather",
     description: "Weather report (fake)",
     usage: "weather [city]",
     run: (args) => {

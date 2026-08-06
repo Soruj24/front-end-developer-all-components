@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuBookmark: RegistryEntry = {
   id: "ctx-menu-bookmark",
-  name: "Bookmark Context Menu",
+  title: "Bookmark Context Menu",
   description: "Context menu for bookmark operations",
   code: `"use client";
 
@@ -44,6 +44,5 @@ export function ContextMenuBookmark() {
     </div>
   );
 }`,
-  component: "ContextMenuBookmark",
   dependencies: [],
 };

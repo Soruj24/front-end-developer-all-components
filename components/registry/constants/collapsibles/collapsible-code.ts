@@ -33,7 +33,7 @@ export default function CollapsibleCode() {
       <CollapsibleContent>
         <pre className="overflow-auto rounded-b-md bg-zinc-950 p-4 text-xs text-zinc-100">
 {JSON.stringify({
-  name: "my-project",
+  title: "my-project",
   version: "1.0.0",
   scripts: { dev: "next dev", build: "next build", start: "next start" },
   dependencies: { next: "^14.0.0", react: "^18.2.0" }

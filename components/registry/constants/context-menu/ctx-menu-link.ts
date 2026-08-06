@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const ctxMenuLink: RegistryEntry = {
   id: "ctx-menu-link",
-  name: "Link Context Menu",
+  title: "Link Context Menu",
   description: "Context menu for link operations",
   code: `"use client";
 
@@ -32,6 +32,5 @@ export function ContextMenuLink() {
     </div>
   );
 }`,
-  component: "ContextMenuLink",
   dependencies: [],
 };
