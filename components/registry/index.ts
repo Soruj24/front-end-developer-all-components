@@ -80,6 +80,8 @@ import { toggleGroups } from "./constants/toggle-groups";
 import { toggles } from "./constants/toggles";
 import { textareas } from "./constants/textareas";
 import { auth } from "./constants/auth";
+import { faq } from "./constants/faq";
+import { testimonials } from "./constants/testimonials";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -151,6 +153,8 @@ const allEntries: RegistryEntry[] = [
   ...toggles,
   ...textareas,
   ...auth,
+  ...faq,
+  ...testimonials,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
