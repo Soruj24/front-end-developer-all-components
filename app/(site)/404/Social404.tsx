@@ -110,3 +110,136 @@ export function Interactive404() {
     </NotFoundLayout>
   );
 }
+
+export function Coffee404() {
+  return (
+    <NotFoundLayout className="py-20" style={{ background: "linear-gradient(135deg, #f5e6d3, #e8d5b7)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="relative">
+        <div className="h-24 w-24 rounded-full border-4 border-amber-800 bg-amber-100 opacity-40" style={{ boxShadow: "inset 0 0 20px rgba(139,90,43,0.3)" }} />
+        <div className="absolute top-8 left-8 h-24 w-24 rounded-full border-4 border-amber-800/20" />
+      </div>
+      <h1 className="mt-4 text-[8rem] font-bold text-amber-900">404</h1>
+      <p className="mt-2 text-lg text-amber-800">Spilled coffee on the page.</p>
+      <p className="mt-1 text-sm text-amber-700">Oops! This page is gone.</p>
+      <GoHomeButton className="mt-8 rounded-lg bg-amber-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-amber-800" />
+    </NotFoundLayout>
+  );
+}
+
+export function Winter404() {
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #e8f4f8, #b3d9e8)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 30 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute text-white opacity-70"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              fontSize: `${8 + Math.random() * 12}px`,
+              animation: `snowfall ${3 + Math.random() * 4}s linear ${Math.random() * 3}s infinite`,
+            }}
+          >
+            ❄
+          </div>
+        ))}
+      </div>
+      <div className="relative z-10">
+        <span className="text-6xl">⛄</span>
+        <h1 className="mt-4 text-[8rem] font-bold text-blue-800">404</h1>
+        <p className="mt-2 text-lg text-blue-700">This page is frozen.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-blue-600 px-8 py-3 text-sm font-medium text-white hover:bg-blue-500" />
+      </div>
+      <style>{`@keyframes snowfall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 0; } 10% { opacity: 0.7; } 90% { opacity: 0.7; } 100% { transform: translateY(400px) rotate(360deg); opacity: 0; } }`}</style>
+    </NotFoundLayout>
+  );
+}
+
+export function Autumn404() {
+  const leaves = ["🍂", "🍁", "🍃", "🌿"];
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #fde68a, #fbbf24)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 20 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              fontSize: `${16 + Math.random() * 16}px`,
+              animation: `leaf-fall ${4 + Math.random() * 4}s ease-in-out ${Math.random() * 3}s infinite`,
+            }}
+          >
+            {leaves[i % 4]}
+          </div>
+        ))}
+      </div>
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-orange-800">404</h1>
+        <p className="mt-2 text-lg text-orange-700">This page fell with the leaves.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-orange-700 px-8 py-3 text-sm font-medium text-white hover:bg-orange-600" />
+      </div>
+      <style>{`@keyframes leaf-fall { 0% { transform: translateY(-20px) rotate(0deg); } 50% { transform: translateY(200px) rotate(180deg) translateX(30px); } 100% { transform: translateY(400px) rotate(360deg); } }`}</style>
+    </NotFoundLayout>
+  );
+}
+
+export function Ocean404() {
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #0077b6, #023e8a, #03045e)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute bottom-0 left-0 right-0 h-20 opacity-30" style={{ background: "url('data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 120\" preserveAspectRatio=\"none\"%3E%3Cpath d=\"M0,60 C200,120 400,0 600,60 C800,120 1000,0 1200,60 L1200,120 L0,120 Z\" fill=\"%23ffffff\" opacity=\"0.3\"/%3E%3C/svg%3E')", backgroundSize: "cover" }} />
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 8 }, (_, i) => (
+          <span
+            key={i}
+            className="absolute text-2xl"
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${30 + Math.random() * 40}%`,
+              animation: `fish-swim ${5 + Math.random() * 3}s ease-in-out ${Math.random() * 2}s infinite alternate`,
+            }}
+          >
+            🐟
+          </span>
+        ))}
+      </div>
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-white">404</h1>
+        <p className="mt-2 text-lg text-cyan-200">Page sunk to the bottom of the ocean.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-cyan-500 px-8 py-3 text-sm font-medium text-white hover:bg-cyan-400" />
+      </div>
+      <style>{`@keyframes fish-swim { 0% { transform: translateX(-20px) scaleX(1); } 50% { transform: translateX(20px) scaleX(1); } 100% { transform: translateX(-20px) scaleX(-1); } }`}</style>
+    </NotFoundLayout>
+  );
+}
+
+export function Fire404() {
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #1a0000, #4a0000, #8b0000)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute inset-0 pointer-events-none opacity-60">
+        {Array.from({ length: 12 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute bottom-0 rounded-full"
+            style={{
+              left: `${10 + i * 7}%`,
+              width: `${20 + Math.random() * 20}px`,
+              height: `${40 + Math.random() * 40}px`,
+              background: `linear-gradient(180deg, #ff4500, #ff6600, #ff8800, transparent)`,
+              borderRadius: "50% 50% 20% 20%",
+              animation: `flame-flicker ${0.5 + Math.random() * 0.5}s ease-in-out ${Math.random() * 0.5}s infinite alternate`,
+            }}
+          />
+        ))}
+      </div>
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-orange-400" style={{ textShadow: "0 0 30px #ff4500, 0 0 60px #ff0000" }}>404</h1>
+        <p className="mt-2 text-lg text-orange-300">This page went up in flames.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-orange-600 px-8 py-3 text-sm font-medium text-white hover:bg-orange-500" />
+      </div>
+      <style>{`@keyframes flame-flicker { 0% { transform: translateY(0) scaleX(1); opacity: 0.8; } 100% { transform: translateY(-30px) scaleX(0.8); opacity: 0.3; } }`}</style>
+    </NotFoundLayout>
+  );
+}

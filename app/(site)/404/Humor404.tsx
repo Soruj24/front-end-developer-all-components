@@ -89,3 +89,67 @@ export function Quote404() {
     </NotFoundLayout>
   );
 }
+
+export function Pirate404() {
+  return (
+    <NotFoundLayout className="py-20">
+      <span className="text-7xl">🏴‍☠️</span>
+      <h1 className="mt-4 text-5xl font-bold text-amber-800 dark:text-amber-400">404</h1>
+      <p className="mt-2 text-lg text-muted-foreground">Yarr! This page has walked the plank!</p>
+      <p className="mt-1 text-sm text-muted-foreground/70">Abandon ship and head back to shore.</p>
+      <GoHomeButton className="mt-8 rounded-lg bg-amber-800 px-6 py-2.5 text-sm font-medium text-white hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500" />
+    </NotFoundLayout>
+  );
+}
+
+export function Zombie404() {
+  return (
+    <NotFoundLayout className="py-20">
+      <span className="text-7xl">🧟</span>
+      <h1 className="mt-4 text-5xl font-bold text-green-700 dark:text-green-400">BRAAAINS...</h1>
+      <p className="mt-2 text-lg text-muted-foreground">This page was eaten by zombies.</p>
+      <p className="mt-1 text-sm text-muted-foreground/70">Run! Before they get you too.</p>
+      <GoHomeButton className="mt-8 rounded-lg bg-green-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500" />
+    </NotFoundLayout>
+  );
+}
+
+export function Ninja404() {
+  return (
+    <NotFoundLayout className="py-20">
+      <span className="text-7xl">🥷</span>
+      <h1 className="mt-4 text-5xl font-bold text-zinc-800 dark:text-zinc-100">404</h1>
+      <p className="mt-2 text-lg text-muted-foreground">This page vanished like a ninja.</p>
+      <p className="mt-1 text-sm text-muted-foreground/70">It was never here. Or was it?</p>
+      <GoHomeButton className="mt-8 rounded-lg bg-zinc-800 px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-900 dark:hover:bg-zinc-300" />
+    </NotFoundLayout>
+  );
+}
+
+export function Cowboy404() {
+  return (
+    <NotFoundLayout className="py-20">
+      <span className="text-7xl">🤠</span>
+      <h1 className="mt-4 text-5xl font-bold text-amber-900 dark:text-amber-300">404</h1>
+      <p className="mt-2 text-lg text-muted-foreground">Well, this page rode off into the sunset.</p>
+      <p className="mt-1 text-sm text-muted-foreground/70">Ain&apos;t nothin&apos; here, partner.</p>
+      <GoHomeButton className="mt-8 rounded-full bg-amber-900 px-8 py-3 text-sm font-medium text-white hover:bg-amber-800 dark:bg-amber-700 dark:hover:bg-amber-600" />
+    </NotFoundLayout>
+  );
+}
+
+export function Detective404() {
+  return (
+    <NotFoundLayout className="py-20" style={{ background: "#1a1a1a", borderRadius: "12px", color: "#d4d4d4" }}>
+      <span className="text-7xl">🔍</span>
+      <h1 className="mt-4 text-4xl font-bold text-zinc-200">Case #404: Missing Page</h1>
+      <p className="mt-2 text-sm text-zinc-400">Status: Cold case. The page vanished without a trace.</p>
+      <div className="mt-4 rounded-lg bg-zinc-800 p-4 text-left text-xs text-zinc-400">
+        <p>SUSPECT: Unknown</p>
+        <p>LAST SEEN: /this-page</p>
+        <p>EVIDENCE: 404 error log</p>
+      </div>
+      <GoHomeButton className="mt-6 rounded border border-zinc-600 bg-transparent px-6 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800" />
+    </NotFoundLayout>
+  );
+}

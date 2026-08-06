@@ -39,6 +39,13 @@ import { nfQuote } from "./nf-quote";
 import { nfHandDrawn } from "./nf-hand-drawn";
 import { nfLanguage } from "./nf-language";
 import { nfInteractive } from "./nf-interactive";
+import { nfTypewriter } from "./nf-typewriter";
+import { nfNeon, nfPixelArt, nfOrigami, nfPopArt } from "./nf-text-extras";
+import { nfPirate, nfZombie, nfNinja, nfCowboy, nfDetective } from "./nf-humor-extras";
+import { nfMatrix, nfCyberpunk, nfRetro80s, nfVaporwave, nfSteampunk } from "./nf-tech-extras";
+import { nfGalaxy, nfAstronaut, nfAlien, nfWormhole, nfTimeTravel } from "./nf-space-extras";
+import { nfChalkboard, nfBlueprint, nfStickyNote, nfMap, nfCompass } from "./nf-nav-extras";
+import { nfCoffee, nfWinter, nfAutumn, nfOcean, nfFire, nfIceCrystal } from "./nf-social-extras";
 
 import type { RegistryEntry } from "../../types";
 
@@ -84,4 +91,35 @@ export const feedback: RegistryEntry[] = [
   nfHandDrawn,
   nfLanguage,
   nfInteractive,
+  nfTypewriter,
+  nfNeon,
+  nfPixelArt,
+  nfOrigami,
+  nfPopArt,
+  nfPirate,
+  nfZombie,
+  nfNinja,
+  nfCowboy,
+  nfDetective,
+  nfMatrix,
+  nfCyberpunk,
+  nfRetro80s,
+  nfVaporwave,
+  nfSteampunk,
+  nfGalaxy,
+  nfAstronaut,
+  nfAlien,
+  nfWormhole,
+  nfTimeTravel,
+  nfChalkboard,
+  nfBlueprint,
+  nfStickyNote,
+  nfMap,
+  nfCompass,
+  nfCoffee,
+  nfWinter,
+  nfAutumn,
+  nfOcean,
+  nfFire,
+  nfIceCrystal,
 ];

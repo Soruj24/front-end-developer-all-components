@@ -1,53 +1,82 @@
 "use client";
 
 import { useState, type ComponentType } from "react";
-import { Minimal404, Illustrated404, Gradient404, Card404, HandDrawn404, Minimalist404, Colorful404 } from "./Text404";
-import { Funny404, Construction404, TeaTime404, FunFact404, Joke404, Quote404 } from "./Humor404";
-import { Dark404, BrokenRobot404, Glitch404, GameOver404, Terminal404 } from "./Tech404";
-import { Animated404, LostInSpace404, Floating404, Maze404 } from "./Space404";
-import { Search404, Sitemap404, Suggested404, Masonry404 } from "./Nav404";
-import { Countdown404, Contact404, Language404, Interactive404 } from "./Social404";
+import { ComponentPreview } from "@/components/preview";
+import { Minimal404, Illustrated404, Gradient404, Card404, HandDrawn404, Minimalist404, Colorful404, Typewriter404, Neon404, PixelArt404, Origami404, PopArt404 } from "./Text404";
+import { Funny404, Construction404, TeaTime404, FunFact404, Joke404, Quote404, Pirate404, Zombie404, Ninja404, Cowboy404, Detective404 } from "./Humor404";
+import { Dark404, BrokenRobot404, Glitch404, GameOver404, Terminal404, Matrix404, Cyberpunk404, Retro80s404, Vaporwave404, Steampunk404 } from "./Tech404";
+import { Animated404, LostInSpace404, Floating404, Maze404, Galaxy404, Astronaut404, Alien404, Wormhole404 } from "./Space404";
+import { Search404, Sitemap404, Suggested404, Masonry404, Chalkboard404, Blueprint404, StickyNote404, Map404, Compass404 } from "./Nav404";
+import { Countdown404, Contact404, Language404, Interactive404, Coffee404, Winter404, Autumn404, Ocean404, Fire404 } from "./Social404";
 
-const STYLES: Array<{ label: string; Render: ComponentType }> = [
-  { label: "Minimal", Render: Minimal404 },
-  { label: "Funny", Render: Funny404 },
-  { label: "Illustrated", Render: Illustrated404 },
-  { label: "Search", Render: Search404 },
-  { label: "Animated", Render: Animated404 },
-  { label: "Dark", Render: Dark404 },
-  { label: "Broken Robot", Render: BrokenRobot404 },
-  { label: "Lost in Space", Render: LostInSpace404 },
-  { label: "Countdown", Render: Countdown404 },
-  { label: "Sitemap", Render: Sitemap404 },
-  { label: "Suggested", Render: Suggested404 },
-  { label: "Contact", Render: Contact404 },
-  { label: "Gradient", Render: Gradient404 },
-  { label: "Glitch", Render: Glitch404 },
-  { label: "Game Over", Render: GameOver404 },
-  { label: "Construction", Render: Construction404 },
-  { label: "Tea Time", Render: TeaTime404 },
-  { label: "Fun Fact", Render: FunFact404 },
-  { label: "Joke", Render: Joke404 },
-  { label: "Quote", Render: Quote404 },
-  { label: "Maze", Render: Maze404 },
-  { label: "Floating", Render: Floating404 },
-  { label: "Card", Render: Card404 },
-  { label: "Terminal", Render: Terminal404 },
-  { label: "Hand-drawn", Render: HandDrawn404 },
-  { label: "Minimalist", Render: Minimalist404 },
-  { label: "Colorful", Render: Colorful404 },
-  { label: "Masonry", Render: Masonry404 },
-  { label: "Language", Render: Language404 },
-  { label: "Interactive", Render: Interactive404 },
+const STYLES: Array<{ label: string; Render: ComponentType; registryId: string }> = [
+  { label: "Minimal", Render: Minimal404, registryId: "nf-minimal" },
+  { label: "Funny", Render: Funny404, registryId: "nf-funny" },
+  { label: "Illustrated", Render: Illustrated404, registryId: "nf-illustrated" },
+  { label: "Search", Render: Search404, registryId: "nf-search" },
+  { label: "Animated", Render: Animated404, registryId: "nf-animated" },
+  { label: "Dark", Render: Dark404, registryId: "nf-dark-glow" },
+  { label: "Broken Robot", Render: BrokenRobot404, registryId: "nf-broken-robot" },
+  { label: "Lost in Space", Render: LostInSpace404, registryId: "nf-animated" },
+  { label: "Countdown", Render: Countdown404, registryId: "nf-countdown" },
+  { label: "Sitemap", Render: Sitemap404, registryId: "nf-navigation" },
+  { label: "Suggested", Render: Suggested404, registryId: "nf-navigation" },
+  { label: "Contact", Render: Contact404, registryId: "nf-contact" },
+  { label: "Gradient", Render: Gradient404, registryId: "nf-gradient" },
+  { label: "Glitch", Render: Glitch404, registryId: "nf-glitch" },
+  { label: "Game Over", Render: GameOver404, registryId: "nf-game-over" },
+  { label: "Construction", Render: Construction404, registryId: "nf-funny" },
+  { label: "Tea Time", Render: TeaTime404, registryId: "nf-funny" },
+  { label: "Fun Fact", Render: FunFact404, registryId: "nf-fun-fact" },
+  { label: "Joke", Render: Joke404, registryId: "nf-joke" },
+  { label: "Quote", Render: Quote404, registryId: "nf-quote" },
+  { label: "Maze", Render: Maze404, registryId: "nf-illustrated" },
+  { label: "Floating", Render: Floating404, registryId: "nf-animated" },
+  { label: "Card", Render: Card404, registryId: "nf-minimal" },
+  { label: "Terminal", Render: Terminal404, registryId: "nf-broken-robot" },
+  { label: "Hand-drawn", Render: HandDrawn404, registryId: "nf-hand-drawn" },
+  { label: "Minimalist", Render: Minimalist404, registryId: "nf-minimal" },
+  { label: "Colorful", Render: Colorful404, registryId: "nf-gradient" },
+  { label: "Masonry", Render: Masonry404, registryId: "nf-navigation" },
+  { label: "Language", Render: Language404, registryId: "nf-language" },
+  { label: "Interactive", Render: Interactive404, registryId: "nf-interactive" },
+  { label: "Typewriter", Render: Typewriter404, registryId: "nf-typewriter" },
+  { label: "Neon", Render: Neon404, registryId: "nf-neon" },
+  { label: "Pixel Art", Render: PixelArt404, registryId: "nf-pixel-art" },
+  { label: "Origami", Render: Origami404, registryId: "nf-origami" },
+  { label: "Pop Art", Render: PopArt404, registryId: "nf-pop-art" },
+  { label: "Pirate", Render: Pirate404, registryId: "nf-pirate" },
+  { label: "Zombie", Render: Zombie404, registryId: "nf-zombie" },
+  { label: "Ninja", Render: Ninja404, registryId: "nf-ninja" },
+  { label: "Cowboy", Render: Cowboy404, registryId: "nf-cowboy" },
+  { label: "Detective", Render: Detective404, registryId: "nf-detective" },
+  { label: "Matrix", Render: Matrix404, registryId: "nf-matrix" },
+  { label: "Cyberpunk", Render: Cyberpunk404, registryId: "nf-cyberpunk" },
+  { label: "Retro 80s", Render: Retro80s404, registryId: "nf-retro-80s" },
+  { label: "Vaporwave", Render: Vaporwave404, registryId: "nf-vaporwave" },
+  { label: "Steampunk", Render: Steampunk404, registryId: "nf-steampunk" },
+  { label: "Galaxy", Render: Galaxy404, registryId: "nf-galaxy" },
+  { label: "Astronaut", Render: Astronaut404, registryId: "nf-astronaut" },
+  { label: "Alien", Render: Alien404, registryId: "nf-alien" },
+  { label: "Wormhole", Render: Wormhole404, registryId: "nf-wormhole" },
+  { label: "Chalkboard", Render: Chalkboard404, registryId: "nf-chalkboard" },
+  { label: "Blueprint", Render: Blueprint404, registryId: "nf-blueprint" },
+  { label: "Sticky Note", Render: StickyNote404, registryId: "nf-sticky-note" },
+  { label: "Treasure Map", Render: Map404, registryId: "nf-map" },
+  { label: "Compass", Render: Compass404, registryId: "nf-compass" },
+  { label: "Coffee Stain", Render: Coffee404, registryId: "nf-coffee" },
+  { label: "Winter", Render: Winter404, registryId: "nf-winter" },
+  { label: "Autumn", Render: Autumn404, registryId: "nf-autumn" },
+  { label: "Ocean", Render: Ocean404, registryId: "nf-ocean" },
+  { label: "Fire", Render: Fire404, registryId: "nf-fire" },
 ];
 
 export default function NotFoundPage() {
   const [activeStyle, setActiveStyle] = useState(0);
-  const Active = STYLES[activeStyle].Render;
+  const { Render: Active, registryId } = STYLES[activeStyle];
 
   return (
     <div className="min-h-screen bg-muted/40 p-4 dark:bg-zinc-900">
-      {/* Style tabs */}
       <div className="mb-6 flex flex-wrap gap-2">
         {STYLES.map((style, i) => (
           <button
@@ -64,12 +93,10 @@ export default function NotFoundPage() {
         ))}
       </div>
 
-      {/* Preview card */}
-      <div className="mx-auto max-w-4xl rounded-2xl border bg-white p-6 shadow-lg dark:border-border dark:bg-muted">
+      <ComponentPreview id={registryId} title={STYLES[activeStyle].label + " 404"}>
         <Active />
-      </div>
+      </ComponentPreview>
 
-      {/* Style name footer */}
       <p className="mt-4 text-center text-xs text-muted-foreground/70">
         Style {activeStyle + 1} of {STYLES.length} —{" "}
         <span className="font-medium">{STYLES[activeStyle].label}</span>

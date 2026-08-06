@@ -87,3 +87,63 @@ export function Floating404() {
     </NotFoundLayout>
   );
 }
+
+export function Galaxy404() {
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "radial-gradient(ellipse at center, #1a0033 0%, #000 70%)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 30% 40%, #4a0080 0%, transparent 50%), radial-gradient(circle at 70% 60%, #000066 0%, transparent 50%)" }} />
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-transparent" style={{ WebkitTextStroke: "2px #a855f7", textShadow: "0 0 40px #a855f7" }}>404</h1>
+        <p className="mt-2 text-lg text-purple-300">Lost in the galaxy</p>
+        <p className="mt-1 text-sm text-purple-400/70">This page is 4.2 light years away.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-purple-600 px-8 py-3 text-sm font-medium text-white hover:bg-purple-500" />
+      </div>
+    </NotFoundLayout>
+  );
+}
+
+export function Astronaut404() {
+  return (
+    <NotFoundLayout className="py-20" style={{ background: "linear-gradient(180deg, #0c0c1d, #1a1a3e)", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute top-10 right-20 text-6xl opacity-40" style={{ animation: "float-astronaut 6s ease-in-out infinite" }}>🧑‍🚀</div>
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-white">404</h1>
+        <p className="mt-2 text-lg text-blue-200">Houston, we have a problem.</p>
+        <p className="mt-1 text-sm text-blue-300/70">This page is not in orbit.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-blue-600 px-8 py-3 text-sm font-medium text-white hover:bg-blue-500" />
+      </div>
+      <style>{`@keyframes float-astronaut { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }`}</style>
+    </NotFoundLayout>
+  );
+}
+
+export function Alien404() {
+  return (
+    <NotFoundLayout className="py-20" style={{ background: "linear-gradient(180deg, #000, #0a2e0a)", borderRadius: "12px", minHeight: "400px" }}>
+      <span className="text-8xl" style={{ animation: "alien-bob 2s ease-in-out infinite" }}>👽</span>
+      <h1 className="mt-4 text-[8rem] font-bold text-green-400" style={{ textShadow: "0 0 20px #0f0" }}>404</h1>
+      <p className="mt-2 text-lg text-green-300">Take me to your... 404 page?</p>
+      <p className="mt-1 text-sm text-green-400/70">The aliens abducted this page.</p>
+      <GoHomeButton className="mt-8 rounded-full bg-green-600 px-8 py-3 text-sm font-medium text-white hover:bg-green-500" />
+      <style>{`@keyframes alien-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }`}</style>
+    </NotFoundLayout>
+  );
+}
+
+export function Wormhole404() {
+  return (
+    <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "#000", borderRadius: "12px", minHeight: "400px" }}>
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="h-64 w-64 rounded-full border-4 border-purple-500/30" style={{ animation: "wormhole-spin 4s linear infinite" }} />
+        <div className="absolute h-48 w-48 rounded-full border-4 border-cyan-500/30" style={{ animation: "wormhole-spin 3s linear infinite reverse" }} />
+        <div className="absolute h-32 w-32 rounded-full border-4 border-pink-500/30" style={{ animation: "wormhole-spin 2s linear infinite" }} />
+      </div>
+      <div className="relative z-10">
+        <h1 className="text-[10rem] font-bold text-white">404</h1>
+        <p className="mt-2 text-lg text-purple-300">You fell through a wormhole.</p>
+        <GoHomeButton className="mt-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 px-8 py-3 text-sm font-medium text-white hover:opacity-90" />
+      </div>
+      <style>{`@keyframes wormhole-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+    </NotFoundLayout>
+  );
+}
