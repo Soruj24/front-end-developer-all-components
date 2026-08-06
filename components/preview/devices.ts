@@ -25,7 +25,7 @@ export const DEVICES: DevicePreset[] = [
   { id: "full", label: "Full Width", shortLabel: "Full", width: null },
 ];
 
-export const DEFAULT_DEVICE_ID: DeviceId = "desktop";
+export const DEFAULT_DEVICE_ID: DeviceId = "full";
 
 export function getDevice(id: DeviceId): DevicePreset {
   return DEVICES.find((device) => device.id === id) ?? DEVICES[0];

@@ -61,6 +61,7 @@ async function writeClipboard(value: string): Promise<boolean> {
 }
 
 function tokenize(code: string): Array<{ type: TokenType; text: string }> {
+  if (!code) return [];
   const tokens: Array<{ type: TokenType; text: string }> = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -113,10 +114,10 @@ export function CodeBlock({
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const terminal = variant === "terminal";
-  const tokens = tokenize(code);
+  const tokens = tokenize(code ?? "");
 
   const onCopy = async () => {
-    const ok = await writeClipboard(code);
+    const ok = await writeClipboard(code ?? "");
     if (!ok) return;
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
