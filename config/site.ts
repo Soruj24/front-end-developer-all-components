@@ -25,6 +25,8 @@ export const siteConfig = {
     components: 40,
     categories: 9,
     examplesPerPage: "30+",
+    downloads: "10K",
+    stars: "500",
   },
   navLinks: [
     { label: "Components", href: "/components" },
