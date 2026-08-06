@@ -91,7 +91,9 @@ export default function MessageScrollerPage() {
           <MessageScroller
             className="h-64"
             emptyMessage="No messages yet. Start a conversation!"
-          />
+          >
+            {null}
+          </MessageScroller>
         </ComponentPreview>
       </section>
 
