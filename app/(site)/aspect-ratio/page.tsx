@@ -50,7 +50,7 @@ export default function AspectRatioPage() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">1:1</p>
-              <AspectRatio ratio={1}>
+              <AspectRatio ratio="1:1">
                 <div className="flex h-full items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800">
                   <span className="text-sm font-medium text-zinc-500">1:1</span>
                 </div>
@@ -58,7 +58,7 @@ export default function AspectRatioPage() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">4:3</p>
-              <AspectRatio ratio={4 / 3}>
+              <AspectRatio ratio="4:3">
                 <div className="flex h-full items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800">
                   <span className="text-sm font-medium text-zinc-500">4:3</span>
                 </div>
@@ -66,7 +66,7 @@ export default function AspectRatioPage() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">16:9</p>
-              <AspectRatio ratio={16 / 9}>
+              <AspectRatio ratio="16:9">
                 <div className="flex h-full items-center justify-center rounded-md bg-zinc-100 dark:bg-zinc-800">
                   <span className="text-sm font-medium text-zinc-500">16:9</span>
                 </div>
@@ -88,7 +88,7 @@ export default function AspectRatioPage() {
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">2:3 Portrait</p>
-              <AspectRatio ratio={2 / 3}>
+              <AspectRatio ratio="2:3">
                 <div className="flex h-full items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-purple-500 text-white">
                   <span className="text-sm font-medium">2:3</span>
                 </div>
@@ -96,7 +96,7 @@ export default function AspectRatioPage() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">3:4 Photo</p>
-              <AspectRatio ratio={3 / 4}>
+              <AspectRatio ratio="3:4">
                 <div className="flex h-full items-center justify-center rounded-md bg-gradient-to-br from-green-500 to-teal-500 text-white">
                   <span className="text-sm font-medium">3:4</span>
                 </div>
@@ -104,7 +104,7 @@ export default function AspectRatioPage() {
             </div>
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground">9:16 Mobile</p>
-              <AspectRatio ratio={9 / 16}>
+              <AspectRatio ratio="9:16">
                 <div className="flex h-full items-center justify-center rounded-md bg-gradient-to-br from-orange-500 to-red-500 text-white">
                   <span className="text-sm font-medium">9:16</span>
                 </div>
@@ -129,8 +129,8 @@ export default function AspectRatioPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">ratio</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">"16:9" | "4:3" | "1:1" | "2:3" | "3:4" | "9:16"</td>
+                <td className="px-4 py-3">No</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs">className</td>
