@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxDefaultValue: RegistryEntry = {
   id: "combobox-default-value",
-  name: "Default Value",
+  title: "Default Value",
   description: "Combobox with pre-selected value",
   code: `"use client";
 

@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxEmpty: RegistryEntry = {
   id: "combobox-empty",
-  name: "Empty State",
+  title: "Empty State",
   description: "Combobox with no options",
   code: `"use client";
 

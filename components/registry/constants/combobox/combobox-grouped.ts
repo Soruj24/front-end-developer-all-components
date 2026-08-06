@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxGrouped: RegistryEntry = {
   id: "combobox-grouped",
-  name: "Grouped Options",
+  title: "Grouped Options",
   description: "Combobox with grouped options",
   code: `"use client";
 

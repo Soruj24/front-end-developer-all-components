@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxWithIcons: RegistryEntry = {
   id: "combobox-with-icons",
-  name: "With Icons",
+  title: "With Icons",
   description: "Combobox with option icons",
   code: `"use client";
 

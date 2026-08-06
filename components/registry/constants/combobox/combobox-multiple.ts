@@ -2,7 +2,7 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxMultiple: RegistryEntry = {
   id: "combobox-multiple",
-  name: "Multiple Select",
+  title: "Multiple Select",
   description: "Multi-select combobox with max selected limit",
   code: `"use client";
 
