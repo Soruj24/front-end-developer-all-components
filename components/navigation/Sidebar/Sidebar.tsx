@@ -33,7 +33,7 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
   const [search, setSearch] = useState("");
   const navRef = useRef<HTMLElement>(null);
 
-  const navSections = sections ?? navigationSections;
+  const navSections = sections?.length ? sections : navigationSections;
 
   // Sections default to collapsed except the one holding the active page.
   const [collapsed, setCollapsed] = useState<Set<string>>(() => {

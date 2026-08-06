@@ -62,7 +62,7 @@ export function SiteHeader({ navLinks, className }: HeaderProps) {
 
   const { isOpen: mobileMenuOpen, toggle: toggleMobileMenu, close: closeMobileMenu } = useMobileMenu();
 
-  const links = navLinks || primaryNav;
+  const links = navLinks?.length ? navLinks : primaryNav;
 
   const handleSearchToggle = useCallback(() => {
     setSearchOpen((prev) => !prev);
