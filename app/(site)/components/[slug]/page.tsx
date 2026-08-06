@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
-  getComponentBySlug,
+  getComponentBySlug as getDbComponentBySlug,
   getAllComponentSlugs,
-  getComponents,
+  getComponents as getDbComponents,
 } from "@/features/registry/server";
+import {
+  getComponentBySlug as getStaticComponentBySlug,
+  registryCatalog,
+} from "@/features/registry";
 import { ComponentDetail } from "@/features/components";
 
 export const dynamicParams = true;
@@ -20,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const component = await getComponentBySlug(slug);
+  const component = (await getDbComponentBySlug(slug)) ?? getStaticComponentBySlug(slug);
   if (!component) return { title: "Not Found" };
   return {
     title: component.name,
@@ -34,13 +38,16 @@ export default async function ComponentPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const component = await getComponentBySlug(slug);
+  const component = (await getDbComponentBySlug(slug)) ?? getStaticComponentBySlug(slug);
   if (!component) notFound();
 
-  const sameCategory = await getComponents({
+  const dbSameCategory = await getDbComponents({
     category: component.category,
     pageSize: 4,
   });
+  const sameCategory = dbSameCategory.length
+    ? dbSameCategory
+    : registryCatalog.filter((c) => c.category === component.category).slice(0, 4);
   const related = sameCategory.filter((item) => item.slug !== component.slug).slice(0, 3);
 
   return (

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getComponents, getCategories, getTotalDownloads } from "@/features/registry/server";
+import { registryCatalog, registryCategories, totalDownloads as calcTotalDownloads } from "@/features/registry";
 import { ComponentsExplorer } from "@/features/components";
 
 export const metadata: Metadata = {
@@ -9,11 +10,17 @@ export const metadata: Metadata = {
 };
 
 export default async function ComponentsPage() {
-  const [components, categories, totalDownloads] = await Promise.all([
+  let [dbComponents, dbCategories, dbTotalDownloads] = await Promise.all([
     getComponents({ pageSize: 100 }),
     getCategories(),
     getTotalDownloads(),
   ]);
+
+  const components = dbComponents.length ? dbComponents : registryCatalog;
+  const categories = dbCategories.length
+    ? dbCategories
+    : registryCategories.map((c) => ({ ...c, count: components.filter((comp) => comp.category === c.id).length }));
+  const downloads = dbTotalDownloads || calcTotalDownloads(components);
 
   return (
     <div className="flex flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
@@ -34,7 +41,7 @@ export default async function ComponentsPage() {
             <strong className="text-foreground">{categories.length}</strong> categories
           </span>
           <span>
-            <strong className="text-foreground">{totalDownloads.toLocaleString()}</strong>{" "}
+            <strong className="text-foreground">{downloads.toLocaleString()}</strong>{" "}
             total downloads
           </span>
         </div>
