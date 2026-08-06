@@ -2,9 +2,9 @@ import type { RegistryEntry } from "../../types";
 
 export const comboboxCommandPalette: RegistryEntry = {
   id: "combobox-command-palette",
-  name: "Command Palette",
+  title: "Command Palette",
   description: "Combobox used as a command palette",
-  code: `"use client";
+  source: `"use client";
 
 import { useState } from "react";
 import { Combobox } from "@/components/_combobox";
