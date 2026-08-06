@@ -4,7 +4,7 @@ export const ctxMenuChat: RegistryEntry = {
   id: "ctx-menu-chat",
   title: "Chat Context Menu",
   description: "Context menu for chat message operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;
