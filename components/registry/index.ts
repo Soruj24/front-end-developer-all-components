@@ -84,6 +84,7 @@ import { faq } from "./constants/faq";
 import { testimonials } from "./constants/testimonials";
 import { pricing } from "./constants/pricing";
 import { hero } from "./constants/hero";
+import { charts } from "./constants/charts";
 
 /** All registered examples, keyed by id. */
 const allEntries: RegistryEntry[] = [
@@ -159,6 +160,7 @@ const allEntries: RegistryEntry[] = [
   ...testimonials,
   ...pricing,
   ...hero,
+  ...charts,
 ];
 
 export const registry: Record<string, RegistryItem> = Object.fromEntries(
