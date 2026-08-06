@@ -9,9 +9,9 @@ const installCommand = `npx component-library@latest add slider`;
 
 const usageCode = `import { Slider } from "@/components/_slider";
 
-<Slider defaultValue={[50]} />
-<Slider defaultValue={[25, 75]} />
-<Slider defaultValue={[50]} disabled />`;
+<Slider value={[50]} />
+<Slider value={[25, 75]} />
+<Slider value={[50]} disabled />`;
 
 export default function SliderPage() {
   return (
@@ -45,7 +45,7 @@ export default function SliderPage() {
           <p className="mt-1 text-sm text-muted-foreground">Default slider.</p>
         </div>
         <ComponentPreview id="slider-default">
-          <Slider defaultValue={[50]} />
+          <Slider value={[50]} />
         </ComponentPreview>
       </section>
 
@@ -57,9 +57,9 @@ export default function SliderPage() {
         </div>
         <ComponentPreview id="slider-sizes">
           <div className="flex flex-col gap-6">
-            <Slider defaultValue={[50]} size="sm" />
-            <Slider defaultValue={[50]} size="md" />
-            <Slider defaultValue={[50]} size="lg" />
+            <Slider value={[50]} size="sm" />
+            <Slider value={[50]} size="md" />
+            <Slider value={[50]} size="lg" />
           </div>
         </ComponentPreview>
       </section>
@@ -72,8 +72,8 @@ export default function SliderPage() {
         </div>
         <ComponentPreview id="slider-range">
           <div className="flex flex-col gap-4">
-            <Slider defaultValue={[25, 75]} />
-            <Slider defaultValue={[10, 90]} min={0} max={100} step={5} />
+            <Slider value={[25, 75]} />
+            <Slider value={[10, 90]} min={0} max={100} step={5} />
           </div>
         </ComponentPreview>
       </section>
