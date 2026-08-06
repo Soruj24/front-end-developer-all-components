@@ -41,9 +41,7 @@ export function ComponentDetail({
         </div>
       </Section>
 
-      <Section title="API Reference">
-        <ComponentPropsTable props={component.props} />
-      </Section>
+      <ComponentPropsTable props={component.props} />
 
       <Section title="Source Code">
         <pre className="overflow-x-auto rounded-xl border border-border bg-muted/40 p-4 font-mono text-xs leading-relaxed text-foreground">
@@ -71,9 +69,23 @@ function Section({
   title: string;
   children: React.ReactNode;
 }) {
+  const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold tracking-tight text-foreground">{title}</h2>
+    <section className="flex flex-col gap-4" id={id}>
+      <h2 className="text-lg font-semibold tracking-tight text-foreground">
+        <a
+          className="group no-underline"
+          href={`#${id}`}
+        >
+          <span className="underline-offset-4 group-hover:underline">{title}</span>
+          <span
+            aria-hidden="true"
+            className="ml-2 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            #
+          </span>
+        </a>
+      </h2>
       {children}
     </section>
   );

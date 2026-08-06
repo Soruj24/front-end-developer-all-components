@@ -10,40 +10,39 @@ export function ComponentPropsTable({ props }: { props: ComponentProp[] }) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-border bg-muted/40 text-xs text-muted-foreground">
-            <th scope="col" className="px-4 py-2.5 font-medium">Prop</th>
-            <th scope="col" className="px-4 py-2.5 font-medium">Type</th>
-            <th scope="col" className="hidden px-4 py-2.5 font-medium md:table-cell">Default</th>
-            <th scope="col" className="px-4 py-2.5 font-medium">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.map((prop) => (
-            <tr key={prop.name} className="border-b border-border last:border-b-0">
-              <td className="whitespace-nowrap px-4 py-3">
-                <code className="font-mono text-xs font-medium text-primary">{prop.name}</code>
-                {prop.required && (
-                  <span className="ml-1.5 text-[10px] font-medium text-danger">required</span>
-                )}
-              </td>
-              <td className="px-4 py-3">
-                <code className="whitespace-nowrap rounded-md bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
-                  {prop.type}
-                </code>
-              </td>
-              <td className="hidden whitespace-nowrap px-4 py-3 font-mono text-xs text-muted-foreground md:table-cell">
-                {prop.default ?? "—"}
-              </td>
-              <td className="min-w-[12rem] px-4 py-3 text-[13px] text-muted-foreground">
-                {prop.description}
-              </td>
+    <section className="flex flex-col gap-4">
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+      <div className="overflow-hidden rounded-lg border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b bg-muted/50">
+              <th className="px-4 py-3 text-left font-medium">Prop</th>
+              <th className="px-4 py-3 text-left font-medium">Type</th>
+              <th className="px-4 py-3 text-left font-medium">Default</th>
+              <th className="px-4 py-3 text-left font-medium">Required</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {props.map((prop, index) => (
+              <tr
+                key={prop.name}
+                className={index < props.length - 1 ? "border-b" : ""}
+              >
+                <td className="px-4 py-3 font-mono text-xs">{prop.name}</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {prop.values && prop.values.length > 0
+                    ? prop.values.map((v) => `"${v}"`).join(" | ")
+                    : prop.type}
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {prop.default ?? "—"}
+                </td>
+                <td className="px-4 py-3">{prop.required ? "Yes" : "No"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
