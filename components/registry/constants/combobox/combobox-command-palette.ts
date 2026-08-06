@@ -38,6 +38,5 @@ export function ComboboxCommandPalette() {
     </div>
   );
 }`,
-  component: "ComboboxCommandPalette",
   dependencies: ["@/components/_combobox"],
 };
