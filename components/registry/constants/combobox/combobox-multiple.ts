@@ -29,6 +29,5 @@ export function ComboboxMultiple() {
     />
   );
 }`,
-  component: "ComboboxMultiple",
   dependencies: ["@/components/_combobox"],
 };

@@ -17,6 +17,5 @@ export function ComboboxEmpty() {
     />
   );
 }`,
-  component: "ComboboxEmpty",
   dependencies: ["@/components/_combobox"],
 };

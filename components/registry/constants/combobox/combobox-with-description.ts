@@ -30,6 +30,5 @@ export function ComboboxWithDescription() {
     />
   );
 }`,
-  component: "ComboboxWithDescription",
   dependencies: ["@/components/_combobox"],
 };

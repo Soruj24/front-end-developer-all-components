@@ -27,6 +27,5 @@ export function ComboboxGrouped() {
     />
   );
 }`,
-  component: "ComboboxGrouped",
   dependencies: ["@/components/_combobox"],
 };

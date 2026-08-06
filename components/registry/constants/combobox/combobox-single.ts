@@ -26,6 +26,5 @@ export function ComboboxSingle() {
     />
   );
 }`,
-  component: "ComboboxSingle",
   dependencies: ["@/components/_combobox"],
 };

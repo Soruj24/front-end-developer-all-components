@@ -27,6 +27,5 @@ export function ComboboxWithIcons() {
     />
   );
 }`,
-  component: "ComboboxWithIcons",
   dependencies: ["@/components/_combobox"],
 };

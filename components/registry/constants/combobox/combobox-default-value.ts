@@ -4,7 +4,7 @@ export const comboboxDefaultValue: RegistryEntry = {
   id: "combobox-default-value",
   title: "Default Value",
   description: "Combobox with pre-selected value",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 
@@ -27,6 +27,5 @@ export function ComboboxDefaultValue() {
     />
   );
 }`,
-  component: "ComboboxDefaultValue",
   dependencies: ["@/components/_combobox"],
 };
