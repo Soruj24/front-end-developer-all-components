@@ -4,7 +4,7 @@ export const comboboxGrouped: RegistryEntry = {
   id: "combobox-grouped",
   title: "Grouped Options",
   description: "Combobox with grouped options",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 

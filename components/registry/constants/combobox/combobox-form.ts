@@ -4,7 +4,7 @@ export const comboboxForm: RegistryEntry = {
   id: "combobox-form",
   title: "Form Usage",
   description: "Combobox used in a form context",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 

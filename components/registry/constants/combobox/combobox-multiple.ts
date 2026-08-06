@@ -4,7 +4,7 @@ export const comboboxMultiple: RegistryEntry = {
   id: "combobox-multiple",
   title: "Multiple Select",
   description: "Multi-select combobox with max selected limit",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 

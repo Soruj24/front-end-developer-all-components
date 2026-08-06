@@ -4,7 +4,7 @@ export const comboboxEmpty: RegistryEntry = {
   id: "combobox-empty",
   title: "Empty State",
   description: "Combobox with no options",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 

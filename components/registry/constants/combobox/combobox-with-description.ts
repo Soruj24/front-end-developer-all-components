@@ -4,7 +4,7 @@ export const comboboxWithDescription: RegistryEntry = {
   id: "combobox-with-description",
   title: "With Description",
   description: "Combobox with option descriptions",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 

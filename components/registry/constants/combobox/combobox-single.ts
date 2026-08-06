@@ -4,7 +4,7 @@ export const comboboxSingle: RegistryEntry = {
   id: "combobox-single",
   title: "Single Select",
   description: "Basic single-select combobox",
-  code: `"use client";
+  source: `"use client";
 
 import { Combobox } from "@/components/_combobox";
 
