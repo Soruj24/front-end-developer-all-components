@@ -3,7 +3,7 @@ import { optionalEnv } from "@/lib/env";
 
 interface MongooseCache {
   conn: mongoose.Mongoose | null;
-  promise: Promise<mongoose.Mongoose> | null;
+  promise: Promise<mongoose.Mongoose | null> | null;
 }
 
 declare global {
