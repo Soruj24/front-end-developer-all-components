@@ -78,7 +78,8 @@ export async function getComponentBySlug(
 export async function getComponentDocBySlug(
   slug: string
 ): Promise<LeanComponentDoc | null> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null;
   return components().findOne({ slug, deletedAt: null }).lean<LeanComponentDoc>();
 }
 
@@ -158,7 +159,8 @@ export async function getRecentlyUpdatedComponents(limit = 6): Promise<RegistryC
 }
 
 export async function getCategories(): Promise<(RegistryCategory & { count: number })[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const cats = await categoriesDb().find().sort({ sortOrder: 1 }).lean<CategoryDoc>();
   const counts = await components().aggregate<{ _id: string; count: number }>([
     { $match: publicMatch },
@@ -169,18 +171,21 @@ export async function getCategories(): Promise<(RegistryCategory & { count: numb
 }
 
 export async function getCategoryBySlug(slug: string): Promise<RegistryCategory | null> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null;
   const doc = await categoriesDb().findOne({ slug }).lean<CategoryDoc>();
   return doc ? toRegistryCategory(doc) : null;
 }
 
 export async function getTags(): Promise<{ name: string; slug: string; count: number }[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   return tagsDb().find().sort({ count: -1 }).lean<{ name: string; slug: string; count: number }>();
 }
 
 export async function getTotalDownloads(): Promise<number> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return 0;
   const agg = await components().aggregate<{ total: number }>([
     { $match: publicMatch },
     { $group: { _id: null, total: { $sum: "$stats.downloads" } } },
@@ -189,13 +194,15 @@ export async function getTotalDownloads(): Promise<number> {
 }
 
 export async function getNavItems(area: "sidebar" | "navbar" | "footer") {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   return navDb().find({ area, enabled: true }).sort({ sortOrder: 1 }).lean();
 }
 
 /** Sidebar navigation sections built from the NavItem collection. */
 export async function getNavigationSections(): Promise<NavSection[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const docs = await navDb()
     .find({ area: "sidebar", enabled: true })
     .sort({ sortOrder: 1 })
@@ -215,7 +222,8 @@ export async function getNavigationSections(): Promise<NavSection[]> {
 
 /** Primary navbar links built from the NavItem collection. */
 export async function getNavbarLinks(): Promise<{ label: string; href: string }[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const docs = await navDb()
     .find({ area: "navbar", enabled: true })
     .sort({ sortOrder: 1 })
@@ -232,7 +240,8 @@ export type { AdminComponentRow };
 export async function getAdminComponentRows(
   query: Partial<ComponentFilter> = {}
 ): Promise<AdminComponentRow[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const match: Record<string, unknown> = { deletedAt: null };
   if (query.category && query.category !== "all") match.category = query.category;
   if (query.query && query.query.trim()) {
@@ -286,7 +295,8 @@ export interface AdminComponentInput {
 export async function createComponent(
   input: AdminComponentInput
 ): Promise<AdminComponentRow> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null as unknown as AdminComponentRow;
   const existing = await components().findOne({ slug: input.slug }).lean();
   if (existing) throw fieldError("SLUG_CONFLICT", "A component with this slug already exists.");
   const created = (await components().create({
@@ -309,7 +319,8 @@ export async function updateComponent(
   id: string,
   patch: AdminComponentInput
 ): Promise<AdminComponentRow> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null as unknown as AdminComponentRow;
   const update: Record<string, unknown> = { ...patch };
   if (patch.scheduledAt) update.scheduledAt = new Date(patch.scheduledAt);
   const doc = (await components().findByIdAndUpdate(
@@ -324,10 +335,11 @@ export async function updateComponent(
 }
 
 export async function deleteComponent(id: string): Promise<void> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return;
   const doc = (await components().findByIdAndUpdate(
     id,
-    { $set: { deletedAt: new Date() } },
+    { deletedAt: new Date() },
     { new: true }
   )) as unknown as LeanComponentDoc | null;
   if (!doc) throw fieldError("NOT_FOUND", "Component not found.");
@@ -338,7 +350,8 @@ export async function duplicateComponent(
   slug: string,
   opts?: { suffix?: string }
 ): Promise<AdminComponentRow> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null as unknown as AdminComponentRow;
   const source = await components().findOne({ slug, deletedAt: null }).lean<LeanComponentDoc>();
   if (!source) throw fieldError("NOT_FOUND", "Source component not found.");
   const newSlug = `${slug}-${opts?.suffix ?? "copy"}`;
@@ -365,7 +378,8 @@ export type SetStatusAction =
   | { status: "scheduled"; scheduledAt: string };
 
 export async function setPublishStatus(id: string, action: SetStatusAction): Promise<void> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return;
   const update: Record<string, unknown> = { publishStatus: action.status };
   if (action.status === "published") {
     update.publishedAt = new Date();
@@ -401,7 +415,8 @@ export async function snapshotVersion(
 export async function getVersions(id: string): Promise<
   { id: string; version: string; kind: string; notes: string[]; createdAt: string }[]
 > {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const docs = await versions()
     .find({ componentId: id })
     .sort({ createdAt: -1 })
@@ -416,7 +431,8 @@ export async function getVersions(id: string): Promise<
 }
 
 export async function rollbackToVersion(id: string, versionId: string): Promise<void> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return;
   const snap = await versions()
     .findById(versionId)
     .lean<{ componentId?: unknown; snapshot: RegistryComponent }>();
@@ -429,7 +445,8 @@ export async function rollbackToVersion(id: string, versionId: string): Promise<
 }
 
 export async function refreshTags(tags: string[]): Promise<void> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return;
   const normalized = tags.map((t) => t.toLowerCase().trim()).filter(Boolean);
   for (const tag of normalized) {
     await tagsDb().findOneAndUpdate(
