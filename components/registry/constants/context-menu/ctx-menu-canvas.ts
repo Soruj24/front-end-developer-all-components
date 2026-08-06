@@ -4,7 +4,7 @@ export const ctxMenuCanvas: RegistryEntry = {
   id: "ctx-menu-canvas",
   title: "Canvas Context Menu",
   description: "Context menu for canvas operations",
-  code: `"use client";
+  source: `"use client";
 
 interface MenuItem {
   label: string;
