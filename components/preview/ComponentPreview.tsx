@@ -115,7 +115,7 @@ export function ComponentPreview({
       <div key={activeTab} className="animate-fade-slide">
         {activeTab === "preview" && (
           <div className="relative">
-            <PreviewToolbar
+            {/* <PreviewToolbar
               device={device}
               onDeviceChange={setDevice}
               forcedDark={forcedDark}
@@ -124,7 +124,7 @@ export function ComponentPreview({
               onCopy={onCopy}
               onExpand={() => setExpanded(true)}
               playgroundHref={`/playground?component=${encodeURIComponent(id)}`}
-            />
+            /> */}
             <div
               className={cn(
                 "relative border-t border-border",
