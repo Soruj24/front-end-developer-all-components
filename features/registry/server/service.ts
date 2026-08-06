@@ -67,7 +67,8 @@ export async function getComponentBySlug(
   slug: string,
   opts?: { includeUnpublished?: boolean }
 ): Promise<RegistryComponent | null> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return null;
   const match: Record<string, unknown> = { slug, deletedAt: null };
   if (!opts?.includeUnpublished) Object.assign(match, publicMatch);
   const doc = await components().findOne(match).lean<LeanComponentDoc>();
@@ -82,13 +83,15 @@ export async function getComponentDocBySlug(
 }
 
 export async function getAllComponentSlugs(): Promise<string[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const docs = await components().find({ ...publicMatch }).lean<{ slug: string }>();
   return docs.map((d) => d.slug);
 }
 
 export async function getComponents(query: ComponentQuery = {}): Promise<RegistryComponent[]> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return [];
   const match: Record<string, unknown> = { ...publicMatch };
   if (query.category) match.category = query.category;
   if (query.tag) match.tags = query.tag;
@@ -109,7 +112,8 @@ export async function getComponents(query: ComponentQuery = {}): Promise<Registr
 }
 
 export async function countComponents(query: ComponentQuery = {}): Promise<number> {
-  await connectDb();
+  const conn = await connectDb();
+  if (!conn) return 0;
   const match: Record<string, unknown> = { ...publicMatch };
   if (query.category) match.category = query.category;
   if (query.tag) match.tags = query.tag;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { requireEnv } from "@/lib/env";
+import { optionalEnv } from "@/lib/env";
 
 interface MongooseCache {
   conn: mongoose.Mongoose | null;
@@ -14,13 +14,12 @@ const cache: MongooseCache = globalThis.__mongooseCache ?? { conn: null, promise
 if (!globalThis.__mongooseCache) globalThis.__mongooseCache = cache;
 
 /** Connects to MongoDB once and reuses the connection across HMR reloads. */
-export async function connectDb(): Promise<mongoose.Mongoose> {
+export async function connectDb(): Promise<mongoose.Mongoose | null> {
+  const uri = optionalEnv("MONGODB_URI");
+  if (!uri) return null;
+  
   if (cache.conn) return cache.conn;
   if (!cache.promise) {
-    const uri = requireEnv(
-      "MONGODB_URI",
-      "mongodb://127.0.0.1:27017/component-library"
-    );
     cache.promise = mongoose
       .connect(uri, { serverSelectionTimeoutMS: 5000 })
       .then(async (m) => {
@@ -32,7 +31,8 @@ export async function connectDb(): Promise<mongoose.Mongoose> {
           console.error("[db] seed failed:", error);
         }
         return m;
-      });
+      })
+      .catch(() => null);
   }
   cache.conn = await cache.promise;
   return cache.conn;
