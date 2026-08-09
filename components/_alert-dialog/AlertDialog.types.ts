@@ -6,6 +6,8 @@ export interface AlertDialogProps {
   onOpenChange?: (open: boolean) => void;
   title: ReactNode;
   description?: ReactNode;
+  icon?: ReactNode;
+  children?: ReactNode;
   cancelText?: string;
   confirmText?: string;
   confirmVariant?: "default" | "destructive";
