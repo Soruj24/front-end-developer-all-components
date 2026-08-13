@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Badge } from "@/components/design-system/Badge";
-import { Button } from "@/components/design-system/Button";
+import { EnhancedSearch } from "./EnhancedSearch";
 
 interface EcommerceNavbarProps {
   totalItems?: number;
@@ -29,7 +29,6 @@ export function EcommerceNavbar({
   className,
 }: EcommerceNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <header
@@ -49,24 +48,7 @@ export function EcommerceNavbar({
         </Link>
 
         <div className="relative mx-4 hidden flex-1 md:block">
-          <svg
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search products, brands, categories..."
-            className="w-full rounded-full border border-border bg-muted/50 py-2.5 pl-10 pr-12 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:bg-background focus:ring-1 focus:ring-primary"
-          />
-          <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-            /
-          </kbd>
+          <EnhancedSearch className="w-full" />
         </div>
 
         <nav className="hidden items-center gap-1 lg:flex">
@@ -129,22 +111,8 @@ export function EcommerceNavbar({
 
       {mobileMenuOpen && (
         <div className="border-t border-border/50 bg-background px-6 py-4 lg:hidden">
-          <div className="relative mb-4 md:hidden">
-            <svg
-              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products..."
-              className="w-full rounded-lg border border-border bg-background py-2.5 pl-10 pr-4 text-sm outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
-            />
+          <div className="mb-4 md:hidden">
+            <EnhancedSearch className="w-full" />
           </div>
           <nav className="flex flex-col gap-1">
             {categories.map((cat) => (

@@ -21,6 +21,10 @@ import {
   DeliveryEstimate,
   SizeGuide,
   ProductImageZoom,
+  FlashSaleBanner,
+  QuantityDiscountDisplay,
+  BackInStockNotification,
+  CompareButton,
 } from "@/features/ecommerce";
 import { StarRating } from "@/features/ecommerce/components/StarRating";
 
@@ -158,17 +162,28 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-bold text-foreground">
-              ${product.price.toFixed(2)}
+              ${product.flashSale ? product.flashSale.salePrice.toFixed(2) : product.price.toFixed(2)}
             </span>
-            {product.originalPrice && (
+            {(product.originalPrice || product.flashSale) && (
               <span className="text-lg text-muted-foreground line-through">
-                ${product.originalPrice.toFixed(2)}
+                ${(product.flashSale ? product.price : product.originalPrice || 0).toFixed(2)}
               </span>
             )}
             {discount && (
               <Badge className="bg-danger/10 text-danger">Save {discount}%</Badge>
             )}
           </div>
+
+          {product.flashSale && (
+            <FlashSaleBanner flashSale={product.flashSale} />
+          )}
+
+          {product.quantityDiscounts && product.quantityDiscounts.length > 0 && (
+            <QuantityDiscountDisplay
+              discounts={product.quantityDiscounts}
+              currentQuantity={quantity}
+            />
+          )}
 
           <p className="text-muted-foreground leading-relaxed">
             {product.description}
@@ -188,6 +203,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               <span className="font-medium text-danger">Out of Stock</span>
             )}
           </div>
+
+          {product.stock === 0 && (
+            <BackInStockNotification productId={product.id} productTitle={product.title} />
+          )}
 
           {product.variants && product.variants.length > 0 && (
             <div className="space-y-4">
@@ -292,6 +311,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               </svg>
             </Button>
           </div>
+
+          <CompareButton productId={product.id} />
 
           <div className="flex items-center justify-between border-t border-border/50 pt-4">
             <div className="flex flex-wrap gap-2">

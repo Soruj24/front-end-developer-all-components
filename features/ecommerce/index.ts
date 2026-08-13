@@ -9,6 +9,11 @@ export type {
   ProductSpecification,
   PromoCode,
   ShippingOption,
+  QuantityDiscount,
+  FlashSale,
+  SearchSuggestion,
+  OrderTracking,
+  OrderTimelineEvent,
 } from "./types/ecommerce.types";
 
 export { PRODUCTS } from "./constants/product-data";
@@ -34,6 +39,11 @@ export { TrustBadges } from "./components/TrustBadges";
 export { DeliveryEstimate } from "./components/DeliveryEstimate";
 export { ProductImageZoom } from "./components/ProductImageZoom";
 export { SizeGuide } from "./components/SizeGuide";
+export { FlashSaleBanner } from "./components/FlashSaleBanner";
+export { QuantityDiscountDisplay } from "./components/QuantityDiscountDisplay";
+export { BackInStockNotification } from "./components/BackInStockNotification";
+export { EnhancedSearch } from "./components/EnhancedSearch";
+export { CompareButton } from "./components/CompareButton";
 export { CheckoutSteps } from "./components/CheckoutSteps";
 export { CheckoutShippingForm } from "./components/CheckoutShippingForm";
 export { CheckoutPaymentForm } from "./components/CheckoutPaymentForm";

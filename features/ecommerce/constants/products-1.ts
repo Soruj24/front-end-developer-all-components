@@ -24,6 +24,11 @@ export const PRODUCTS_PART_1: Product[] = [
     sold: 4521,
     viewers: 89,
     shipping: { freeShipping: true, estimatedDays: 3, ExpressAvailable: true },
+    quantityDiscounts: [
+      { minQuantity: 2, discountPercent: 5, label: "Buy 2, Save 5%" },
+      { minQuantity: 5, discountPercent: 10, label: "Buy 5, Save 10%" },
+      { minQuantity: 10, discountPercent: 15, label: "Buy 10, Save 15%" },
+    ],
     variants: [
       {
         type: "color",
@@ -170,6 +175,18 @@ export const PRODUCTS_PART_1: Product[] = [
     sold: 3267,
     viewers: 156,
     shipping: { freeShipping: true, estimatedDays: 2, ExpressAvailable: true },
+    flashSale: {
+      id: "fs1",
+      productId: "3",
+      salePrice: 119.99,
+      endsAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+      totalAvailable: 50,
+      claimedCount: 32,
+    },
+    quantityDiscounts: [
+      { minQuantity: 3, discountPercent: 8, label: "Buy 3, Save 8%" },
+      { minQuantity: 6, discountPercent: 12, label: "Buy 6, Save 12%" },
+    ],
     variants: [
       {
         type: "color",
@@ -336,6 +353,18 @@ export const PRODUCTS_PART_1: Product[] = [
     sold: 2890,
     viewers: 112,
     shipping: { freeShipping: true, estimatedDays: 3 },
+    flashSale: {
+      id: "fs2",
+      productId: "6",
+      salePrice: 49.99,
+      endsAt: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+      totalAvailable: 30,
+      claimedCount: 18,
+    },
+    quantityDiscounts: [
+      { minQuantity: 2, discountPercent: 10, label: "Buy 2, Save 10%" },
+      { minQuantity: 4, discountPercent: 15, label: "Buy 4, Save 15%" },
+    ],
     variants: [
       {
         type: "color",
@@ -388,6 +417,11 @@ export const PRODUCTS_PART_1: Product[] = [
     sold: 5678,
     viewers: 45,
     shipping: { freeShipping: true, estimatedDays: 3 },
+    quantityDiscounts: [
+      { minQuantity: 3, discountPercent: 10, label: "Buy 3, Save 10%" },
+      { minQuantity: 6, discountPercent: 15, label: "Buy 6, Save 15%" },
+      { minQuantity: 12, discountPercent: 20, label: "Buy 12, Save 20%" },
+    ],
     variants: [
       {
         type: "color",

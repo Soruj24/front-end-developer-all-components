@@ -21,6 +21,22 @@ export interface ProductSpecification {
   value: string;
 }
 
+export interface QuantityDiscount {
+  minQuantity: number;
+  discountPercent: number;
+  label: string;
+}
+
+export interface FlashSale {
+  id: string;
+  productId: string;
+  salePrice: number;
+  endsAt: string;
+  maxQuantity?: number;
+  claimedCount: number;
+  totalAvailable: number;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -39,6 +55,8 @@ export interface Product {
   variants?: ProductVariant[];
   reviews?: ProductReview[];
   specifications?: ProductSpecification[];
+  quantityDiscounts?: QuantityDiscount[];
+  flashSale?: FlashSale;
   sold?: number;
   viewers?: number;
   shipping?: {
@@ -94,4 +112,38 @@ export interface ShippingOption {
   price: number;
   estimatedDays: string;
   icon: string;
+}
+
+export interface SearchSuggestion {
+  id: string;
+  text: string;
+  category?: ProductCategory;
+  type: "product" | "category" | "recent";
+}
+
+export interface OrderTracking {
+  orderId: string;
+  status: "placed" | "processing" | "shipped" | "out_for_delivery" | "delivered";
+  estimatedDelivery: string;
+  trackingNumber?: string;
+  carrier?: string;
+  timeline: OrderTimelineEvent[];
+  items: CartItem[];
+  total: number;
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    address1: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+}
+
+export interface OrderTimelineEvent {
+  status: string;
+  date: string;
+  location?: string;
+  description: string;
+  completed: boolean;
 }
