@@ -6,15 +6,26 @@ import { cn } from "@/lib/cn";
 import { Badge } from "@/components/design-system/Badge";
 import { Button } from "@/components/design-system/Button";
 import { StarRating } from "./StarRating";
+import { ProductWishlistButton } from "./ProductWishlistButton";
 import type { Product } from "../types/ecommerce.types";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
+  isWishlisted?: boolean;
+  onToggleWishlist?: () => void;
+  onQuickView?: () => void;
   className?: string;
 }
 
-export function ProductCard({ product, onAddToCart, className }: ProductCardProps) {
+export function ProductCard({
+  product,
+  onAddToCart,
+  isWishlisted = false,
+  onToggleWishlist,
+  onQuickView,
+  className,
+}: ProductCardProps) {
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
@@ -23,20 +34,22 @@ export function ProductCard({ product, onAddToCart, className }: ProductCardProp
     <div
       className={cn(
         "group flex flex-col overflow-hidden rounded-xl border border-border/50 bg-background",
-        "transition-all duration-200 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20",
+        "transition-all duration-200 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 hover:border-primary/20",
         className
       )}
     >
-      <Link href={`/e-commerce/${product.slug}`} className="relative block">
-        <div className="relative aspect-square overflow-hidden bg-muted/30">
-          <Image
-            src={product.images[0]}
-            alt={product.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        </div>
+      <div className="relative block">
+        <Link href={`/e-commerce/${product.slug}`} className="block">
+          <div className="relative aspect-square overflow-hidden bg-muted/30">
+            <Image
+              src={product.images[0]}
+              alt={product.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          </div>
+        </Link>
 
         {product.badge && (
           <Badge className="absolute left-3 top-3 bg-primary text-primary-foreground">
@@ -49,7 +62,29 @@ export function ProductCard({ product, onAddToCart, className }: ProductCardProp
             -{discount}%
           </Badge>
         )}
-      </Link>
+
+        <div className="absolute right-3 top-3 flex flex-col gap-2">
+          {onToggleWishlist && (
+            <ProductWishlistButton
+              isWishlisted={isWishlisted}
+              onToggle={onToggleWishlist}
+              size="sm"
+            />
+          )}
+        </div>
+
+        {onQuickView && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onQuickView();
+            }}
+            className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-background/90 px-4 py-2 text-xs font-medium text-foreground opacity-0 shadow-lg backdrop-blur-sm transition-all group-hover:opacity-100 hover:bg-background"
+          >
+            Quick View
+          </button>
+        )}
+      </div>
 
       <div className="flex flex-1 flex-col gap-2.5 p-4">
         <Link href={`/e-commerce/${product.slug}`}>
@@ -59,7 +94,7 @@ export function ProductCard({ product, onAddToCart, className }: ProductCardProp
         </Link>
 
         <div className="flex items-center gap-2">
-          <StarRating rating={product.rating} />
+          <StarRating rating={product.rating} size="sm" />
           <span className="text-xs text-muted-foreground">
             ({product.reviewCount.toLocaleString()})
           </span>
@@ -76,12 +111,23 @@ export function ProductCard({ product, onAddToCart, className }: ProductCardProp
           )}
         </div>
 
+        {product.shipping?.freeShipping && (
+          <span className="text-[11px] font-medium text-green-600">Free Shipping</span>
+        )}
+
+        {product.sold && product.sold > 500 && (
+          <span className="text-[11px] text-muted-foreground">
+            {product.sold.toLocaleString()}+ sold
+          </span>
+        )}
+
         <div className="mt-auto pt-2">
           <Button
             onClick={() => onAddToCart(product)}
             variant="outline"
             size="sm"
             className="w-full"
+            disabled={product.stock === 0}
           >
             <svg
               className="h-4 w-4"
@@ -96,7 +142,7 @@ export function ProductCard({ product, onAddToCart, className }: ProductCardProp
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
               />
             </svg>
-            Add to Cart
+            {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
           </Button>
         </div>
       </div>

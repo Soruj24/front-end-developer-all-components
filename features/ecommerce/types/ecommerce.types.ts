@@ -1,3 +1,26 @@
+export interface ProductVariant {
+  type: "size" | "color" | "style";
+  name: string;
+  options: { label: string; value: string; inStock?: boolean; priceModifier?: number }[];
+}
+
+export interface ProductReview {
+  id: string;
+  author: string;
+  date: string;
+  rating: number;
+  title: string;
+  content: string;
+  helpful: number;
+  verified: boolean;
+  images?: string[];
+}
+
+export interface ProductSpecification {
+  label: string;
+  value: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -13,6 +36,16 @@ export interface Product {
   stock: number;
   featured?: boolean;
   badge?: string;
+  variants?: ProductVariant[];
+  reviews?: ProductReview[];
+  specifications?: ProductSpecification[];
+  sold?: number;
+  viewers?: number;
+  shipping?: {
+    freeShipping?: boolean;
+    estimatedDays?: number;
+    ExpressAvailable?: boolean;
+  };
 }
 
 export type ProductCategory =
@@ -27,6 +60,7 @@ export type ProductCategory =
 export interface CartItem {
   product: Product;
   quantity: number;
+  selectedVariant?: { type: string; value: string };
 }
 
 export interface ProductFilterState {
@@ -42,4 +76,22 @@ export type ProductSort =
   | "price-asc"
   | "price-desc"
   | "rating"
-  | "newest";
+  | "newest"
+  | "bestselling"
+  | "discount";
+
+export interface PromoCode {
+  code: string;
+  discount: number;
+  type: "percentage" | "fixed";
+  minPurchase?: number;
+  maxDiscount?: number;
+}
+
+export interface ShippingOption {
+  id: string;
+  name: string;
+  price: number;
+  estimatedDays: string;
+  icon: string;
+}
