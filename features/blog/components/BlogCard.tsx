@@ -24,7 +24,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
       href={`/blog/${post.slug}`}
       className={cn(
         "group flex flex-col overflow-hidden rounded-xl border border-border/50 bg-background",
-        "transition-all duration-200 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20",
+        "transition-all duration-200 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 hover:border-primary/20",
         className
       )}
     >
@@ -54,6 +54,13 @@ export function BlogCard({ post, className }: BlogCardProps) {
             </svg>
           </div>
         )}
+        {post.featured && (
+          <div className="absolute top-3 left-3">
+            <Badge className="bg-yellow-500/90 text-white text-[10px] font-bold uppercase tracking-wider">
+              Featured
+            </Badge>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
@@ -74,7 +81,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
           {post.excerpt}
         </p>
 
-        <div className="mt-auto flex items-center gap-3 pt-3 border-t border-border/50">
+        <div className="mt-auto flex items-center gap-3 border-t border-border/50 pt-3">
           <Avatar
             fallback={post.author.name
               .split(" ")
@@ -88,14 +95,39 @@ export function BlogCard({ post, className }: BlogCardProps) {
             </span>
             <span className="text-border">·</span>
             <span>{post.date}</span>
-            <span className="text-border">·</span>
-            <span>{post.readTime}</span>
           </div>
         </div>
 
-        <span className="text-xs font-medium text-primary transition-colors group-hover:text-primary/80">
-          Read more →
-        </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {post.readTime}
+            </span>
+            {post.views && (
+              <span className="flex items-center gap-1">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                {post.views.toLocaleString()}
+              </span>
+            )}
+            {post.likes && (
+              <span className="flex items-center gap-1">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                {post.likes}
+              </span>
+            )}
+          </div>
+          <span className="text-xs font-medium text-primary transition-colors group-hover:text-primary/80">
+            Read more →
+          </span>
+        </div>
       </div>
     </Link>
   );
