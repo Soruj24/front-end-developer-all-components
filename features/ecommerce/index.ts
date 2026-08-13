@@ -23,6 +23,7 @@ export { ProductCard } from "./components/ProductCard";
 export { ProductGrid } from "./components/ProductGrid";
 export { ProductFilters } from "./components/ProductFilters";
 export { CartDrawer } from "./components/CartDrawer";
+export { CartItem as CartItemCard } from "./components/CartItem";
 export { StarRating } from "./components/StarRating";
 export { EcommerceNavbar } from "./components/EcommerceNavbar";
 export { EcommerceTopBar } from "./components/EcommerceTopBar";
@@ -50,6 +51,7 @@ export { CheckoutPaymentForm } from "./components/CheckoutPaymentForm";
 export { CheckoutOrderSummary } from "./components/CheckoutOrderSummary";
 export { CheckoutReviewStep } from "./components/CheckoutReviewStep";
 export { CheckoutSuccess } from "./components/CheckoutSuccess";
+export { CheckoutExpressCheckout } from "./components/CheckoutExpressCheckout";
 export { useCheckout } from "./hooks/useCheckout";
 export type {
   CheckoutAddress,
@@ -59,3 +61,5 @@ export type {
   CheckoutStep,
   CheckoutOrder,
 } from "./types/checkout.types";
+export { detectCardBrand, luhnCheck, formatCardNumber } from "./utils/card";
+export type { CardBrand } from "./utils/card";

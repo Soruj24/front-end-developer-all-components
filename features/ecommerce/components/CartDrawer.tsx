@@ -1,29 +1,89 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/cn";
 import { Badge } from "@/components/design-system/Badge";
 import { Button } from "@/components/design-system/Button";
-import type { CartItem } from "../types/ecommerce.types";
-import Image from "next/image";
+import { CartItem } from "./CartItem";
+import type { CartItem as CartItemType } from "../types/ecommerce.types";
 
 interface CartDrawerProps {
-  items: CartItem[];
+  items: CartItemType[];
+  savedItems: CartItemType[];
   totalItems: number;
-  totalPrice: number;
+  subtotal: number;
+  totalSavings: number;
+  giftWrap: boolean;
+  giftMessage: string;
+  giftWrapCost: number;
+  hasFreeShipping: boolean;
+  amountToFreeShipping: number;
+  freeShippingThreshold: number;
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
+  onSaveForLater: (productId: string) => void;
+  onMoveToCart: (productId: string) => void;
+  onToggleGiftWrap: () => void;
+  onGiftMessageChange: (msg: string) => void;
   onClearCart: () => void;
   isOpen: boolean;
   onClose: () => void;
 }
 
+function FreeShippingBar({
+  hasFreeShipping,
+  amountToFreeShipping,
+  threshold,
+}: {
+  hasFreeShipping: boolean;
+  amountToFreeShipping: number;
+  threshold: number;
+}) {
+  const progress = hasFreeShipping ? 100 : ((threshold - amountToFreeShipping) / threshold) * 100;
+
+  return (
+    <div className="rounded-lg bg-muted/50 px-4 py-3">
+      {hasFreeShipping ? (
+        <div className="flex items-center gap-2 text-sm text-green-600">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="font-medium">You qualify for free shipping!</span>
+        </div>
+      ) : (
+        <>
+          <p className="text-xs text-muted-foreground">
+            Add <span className="font-semibold text-foreground">${amountToFreeShipping.toFixed(2)}</span> more for free shipping
+          </p>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-border">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function CartDrawer({
   items,
+  savedItems,
   totalItems,
-  totalPrice,
+  subtotal,
+  totalSavings,
+  giftWrap,
+  giftMessage,
+  giftWrapCost,
+  hasFreeShipping,
+  amountToFreeShipping,
+  freeShippingThreshold,
   onUpdateQuantity,
   onRemoveItem,
+  onSaveForLater,
+  onMoveToCart,
+  onToggleGiftWrap,
+  onGiftMessageChange,
   onClearCart,
   isOpen,
   onClose,
@@ -32,6 +92,8 @@ export function CartDrawer({
 
   if (!isOpen) return null;
 
+  const total = subtotal + giftWrapCost;
+
   return (
     <>
       <div
@@ -39,7 +101,7 @@ export function CartDrawer({
         onClick={onClose}
       />
 
-      <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-background shadow-xl">
+      <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-background shadow-xl animate-slide-in-right">
         <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
           <div className="flex items-center gap-3">
             <h2 className="text-lg font-semibold text-foreground">Cart</h2>
@@ -61,73 +123,103 @@ export function CartDrawer({
               <svg className="mb-4 h-16 w-16 text-muted-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
               </svg>
-              <p className="text-muted-foreground">Your cart is empty</p>
+              <p className="mb-2 text-muted-foreground">Your cart is empty</p>
+              <p className="text-sm text-muted-foreground/70">
+                Add items to get started
+              </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
+              <FreeShippingBar
+                hasFreeShipping={hasFreeShipping}
+                amountToFreeShipping={amountToFreeShipping}
+                threshold={freeShippingThreshold}
+              />
+
               {items.map((item) => (
-                <div
-                  key={item.product.id}
-                  className="flex gap-4 rounded-xl border border-border/50 p-3"
-                >
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-muted/30">
-                    <Image
-                      src={item.product.images[0]}
-                      alt={item.product.title}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
+                <CartItem
+                  key={`${item.product.id}-${item.selectedVariant?.value || ""}`}
+                  item={item}
+                  onUpdateQuantity={onUpdateQuantity}
+                  onRemove={onRemoveItem}
+                  onSaveForLater={onSaveForLater}
+                />
+              ))}
+
+              {totalSavings > 0 && (
+                <div className="rounded-lg bg-green-500/10 px-3 py-2 text-center text-sm text-green-600">
+                  You&apos;re saving <span className="font-semibold">${totalSavings.toFixed(2)}</span> on this order!
+                </div>
+              )}
+
+              <div className="rounded-lg border border-border/50 p-3">
+                <label className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={giftWrap}
+                    onChange={onToggleGiftWrap}
+                    className="accent-primary"
+                  />
+                  <div className="flex-1">
+                    <span className="text-sm font-medium text-foreground">Gift wrap this order</span>
+                    <span className="ml-1 text-xs text-muted-foreground">(+${giftWrapCost.toFixed(2)})</span>
                   </div>
+                </label>
+                {giftWrap && (
+                  <input
+                    type="text"
+                    value={giftMessage}
+                    onChange={(e) => onGiftMessageChange(e.target.value)}
+                    placeholder="Add a gift message..."
+                    className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+                    maxLength={200}
+                  />
+                )}
+              </div>
 
-                  <div className="flex flex-1 flex-col">
-                    <h4 className="text-sm font-medium text-foreground line-clamp-1">
-                      {item.product.title}
-                    </h4>
-                    <p className="text-sm font-semibold text-foreground">
-                      ${item.product.price.toFixed(2)}
-                    </p>
-
-                    <div className="mt-auto flex items-center justify-between pt-2">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
-                          className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-muted"
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center text-sm font-medium text-foreground">
-                          {item.quantity}
+              {savedItems.length > 0 && (
+                <div className="rounded-lg border border-border/50 p-3">
+                  <p className="mb-2 text-xs font-medium text-muted-foreground">
+                    Saved for later ({savedItems.length})
+                  </p>
+                  <div className="space-y-2">
+                    {savedItems.slice(0, 3).map((item) => (
+                      <div key={item.product.id} className="flex items-center gap-2">
+                        <span className="flex-1 truncate text-xs text-foreground">
+                          {item.product.title}
                         </span>
                         <button
-                          onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
-                          className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-muted"
+                          onClick={() => onMoveToCart(item.product.id)}
+                          className="shrink-0 text-xs font-medium text-primary hover:underline"
                         >
-                          +
+                          Move to cart
                         </button>
                       </div>
-
-                      <button
-                        onClick={() => onRemoveItem(item.product.id)}
-                        className="text-xs text-muted-foreground transition-colors hover:text-danger"
-                      >
-                        Remove
-                      </button>
-                    </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-border/50 px-6 py-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Subtotal</span>
-              <span className="text-lg font-bold text-foreground">
-                ${totalPrice.toFixed(2)}
-              </span>
+          <div className="border-t border-border/50 px-6 py-4 space-y-3">
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="font-medium text-foreground">${subtotal.toFixed(2)}</span>
+              </div>
+              {giftWrap && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Gift wrap</span>
+                  <span className="font-medium text-foreground">${giftWrapCost.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-border/50 pt-2">
+                <span className="font-semibold text-foreground">Total</span>
+                <span className="text-lg font-bold text-foreground">${total.toFixed(2)}</span>
+              </div>
             </div>
 
             <Button
@@ -138,14 +230,21 @@ export function CartDrawer({
                 router.push("/e-commerce/checkout");
               }}
             >
-              Checkout
+              Checkout - ${total.toFixed(2)}
             </Button>
+
+            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>Secure checkout with SSL encryption</span>
+            </div>
 
             <button
               onClick={onClearCart}
-              className="w-full text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="w-full text-center text-xs text-muted-foreground transition-colors hover:text-red-500"
             >
-              Clear Cart
+              Clear cart
             </button>
           </div>
         )}

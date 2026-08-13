@@ -8,6 +8,8 @@ import type { CartItem, ShippingOption, PromoCode } from "../types/ecommerce.typ
 interface CartSummaryProps {
   items: CartItem[];
   subtotal: number;
+  totalSavings: number;
+  giftWrapCost?: number;
   className?: string;
 }
 
@@ -23,7 +25,13 @@ const PROMO_CODES: PromoCode[] = [
   { code: "WELCOME15", discount: 15, type: "percentage" },
 ];
 
-export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
+export function CartSummary({
+  items,
+  subtotal,
+  totalSavings,
+  giftWrapCost = 0,
+  className,
+}: CartSummaryProps) {
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
   const [promoError, setPromoError] = useState("");
@@ -45,7 +53,7 @@ export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
     }
   }
 
-  const total = subtotal - discount + effectiveShipping;
+  const total = subtotal - discount + effectiveShipping + giftWrapCost;
 
   const handleApplyPromo = () => {
     setPromoError("");
@@ -63,6 +71,8 @@ export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
     }
   };
 
+  const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
+
   return (
     <div className={cn("rounded-xl border border-border/50 bg-background p-5", className)}>
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -71,14 +81,28 @@ export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
 
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Subtotal ({items.length} items)</span>
+          <span className="text-muted-foreground">Subtotal ({itemCount} items)</span>
           <span className="font-medium text-foreground">${subtotal.toFixed(2)}</span>
         </div>
 
+        {totalSavings > 0 && (
+          <div className="flex justify-between text-green-600">
+            <span>Item Savings</span>
+            <span className="font-medium">-${totalSavings.toFixed(2)}</span>
+          </div>
+        )}
+
         {discount > 0 && (
           <div className="flex justify-between text-green-600">
-            <span>Discount ({appliedPromo?.code})</span>
+            <span>Promo ({appliedPromo?.code})</span>
             <span className="font-medium">-${discount.toFixed(2)}</span>
+          </div>
+        )}
+
+        {giftWrapCost > 0 && (
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Gift wrap</span>
+            <span className="font-medium text-foreground">${giftWrapCost.toFixed(2)}</span>
           </div>
         )}
 
@@ -188,6 +212,9 @@ export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
                 : `$${appliedPromo.discount} discount applied`}
             </p>
           )}
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            Try: SAVE10, FLAT20, WELCOME15
+          </p>
         </div>
       </div>
 
@@ -195,11 +222,20 @@ export function CartSummary({ items, subtotal, className }: CartSummaryProps) {
         Proceed to Checkout
       </Button>
 
-      <div className="mt-4 flex items-center justify-center gap-4 text-muted-foreground">
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-        <span className="text-xs">Secure checkout with SSL encryption</span>
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        {[
+          { icon: "🔒", label: "Secure" },
+          { icon: "🚚", label: "Fast Shipping" },
+          { icon: "↩️", label: "Easy Returns" },
+        ].map((badge) => (
+          <div
+            key={badge.label}
+            className="flex flex-col items-center gap-1 rounded-lg bg-muted/50 px-2 py-2.5"
+          >
+            <span className="text-base">{badge.icon}</span>
+            <span className="text-[10px] font-medium text-muted-foreground">{badge.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

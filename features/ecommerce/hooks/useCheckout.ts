@@ -22,8 +22,17 @@ const initialState: CheckoutState = {
   notes: "",
 };
 
+const PROMO_CODES: Record<string, number> = {
+  SAVE10: 0.1,
+  WELCOME20: 0.2,
+  FLAT15: 15,
+  FREESHIP: 0,
+};
+
 export function useCheckout(items: CartItem[]) {
   const [state, setState] = useState<CheckoutState>(initialState);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -32,7 +41,14 @@ export function useCheckout(items: CartItem[]) {
 
   const shippingCost = state.shippingMethod?.price || 0;
   const tax = subtotal * 0.08;
-  const discount = state.promoDiscount;
+
+  const discount = (() => {
+    if (state.promoDiscount === 0 && state.promoCode === "") return 0;
+    const pct = PROMO_CODES[state.promoCode];
+    if (pct !== undefined && pct < 1) return subtotal * pct;
+    return state.promoDiscount;
+  })();
+
   const total = subtotal + shippingCost + tax - discount;
 
   const setStep = useCallback((step: CheckoutStep) => {
@@ -85,9 +101,21 @@ export function useCheckout(items: CartItem[]) {
     }));
   }, []);
 
-  const applyPromoCode = useCallback((code: string, discount: number) => {
-    setState((prev) => ({ ...prev, promoCode: code, promoDiscount: discount }));
-  }, []);
+  const applyPromoCode = useCallback(
+    (code: string) => {
+      const upper = code.toUpperCase().trim();
+      const pct = PROMO_CODES[upper];
+      if (pct === undefined) return false;
+      const discountAmount = pct < 1 ? subtotal * pct : pct;
+      setState((prev) => ({
+        ...prev,
+        promoCode: upper,
+        promoDiscount: discountAmount,
+      }));
+      return true;
+    },
+    [subtotal]
+  );
 
   const removePromoCode = useCallback(() => {
     setState((prev) => ({ ...prev, promoCode: "", promoDiscount: 0 }));
@@ -97,8 +125,19 @@ export function useCheckout(items: CartItem[]) {
     setState((prev) => ({ ...prev, notes }));
   }, []);
 
+  const placeOrder = useCallback(async () => {
+    setIsProcessing(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const id = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    setOrderId(id);
+    setIsProcessing(false);
+    setState((prev) => ({ ...prev, step: "success" }));
+  }, []);
+
   const reset = useCallback(() => {
     setState(initialState);
+    setIsProcessing(false);
+    setOrderId(null);
   }, []);
 
   const canProceed = useCallback(() => {
@@ -116,6 +155,8 @@ export function useCheckout(items: CartItem[]) {
 
   return {
     ...state,
+    isProcessing,
+    orderId,
     subtotal,
     shippingCost,
     tax,
@@ -132,6 +173,7 @@ export function useCheckout(items: CartItem[]) {
     applyPromoCode,
     removePromoCode,
     setNotes,
+    placeOrder,
     reset,
     canProceed,
   };

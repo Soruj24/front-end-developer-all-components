@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 import type { CartItem } from "../types/ecommerce.types";
@@ -10,7 +13,7 @@ interface CheckoutOrderSummaryProps {
   discount: number;
   total: number;
   promoCode?: string;
-  onApplyPromo?: (code: string) => void;
+  onApplyPromo?: (code: string) => boolean;
   onRemovePromo?: () => void;
   className?: string;
 }
@@ -27,11 +30,40 @@ export function CheckoutOrderSummary({
   onRemovePromo,
   className,
 }: CheckoutOrderSummaryProps) {
+  const [promoInput, setPromoInput] = useState("");
+  const [promoError, setPromoError] = useState("");
+  const [promoSuccess, setPromoSuccess] = useState(false);
+
+  const handleApplyPromo = () => {
+    setPromoError("");
+    setPromoSuccess(false);
+    if (!promoInput.trim()) return;
+    const result = onApplyPromo?.(promoInput.trim());
+    if (result === false) {
+      setPromoError("Invalid promo code");
+    } else {
+      setPromoSuccess(true);
+      setPromoInput("");
+    }
+  };
+
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const savings = items.reduce((sum, item) => {
+    if (item.product.originalPrice) {
+      return sum + (item.product.originalPrice - item.product.price) * item.quantity;
+    }
+    return sum;
+  }, 0);
+
   return (
     <div className={cn("rounded-xl border border-border/50 bg-background", className)}>
       <div className="border-b border-border/50 px-5 py-4">
-        <h3 className="font-semibold text-foreground">Order Summary</h3>
-        <p className="text-sm text-muted-foreground">{items.length} item{items.length !== 1 ? "s" : ""}</p>
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-foreground">Order Summary</h3>
+          <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+            {itemCount} item{itemCount !== 1 ? "s" : ""}
+          </span>
+        </div>
       </div>
 
       <div className="max-h-64 overflow-y-auto px-5 py-4">
@@ -56,6 +88,7 @@ export function CheckoutOrderSummary({
                 </p>
                 <p className="text-sm text-muted-foreground">
                   ${item.product.price.toFixed(2)} each
+                  {item.quantity > 1 && ` x ${item.quantity}`}
                 </p>
               </div>
               <p className="text-sm font-medium text-foreground">
@@ -85,10 +118,24 @@ export function CheckoutOrderSummary({
           <span className="text-muted-foreground">Tax (8%)</span>
           <span className="font-medium text-foreground">${tax.toFixed(2)}</span>
         </div>
+        {savings > 0 && (
+          <div className="flex justify-between text-sm text-green-600">
+            <span>Item Savings</span>
+            <span className="font-medium">-${savings.toFixed(2)}</span>
+          </div>
+        )}
         {discount > 0 && (
           <div className="flex justify-between text-sm text-green-600">
-            <span>Discount</span>
-            <span className="font-medium">-${discount.toFixed(2)}</span>
+            <span>Promo Discount</span>
+            <div className="flex items-center gap-2">
+              <span className="font-medium">-${discount.toFixed(2)}</span>
+              <button
+                onClick={onRemovePromo}
+                className="text-xs text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         )}
         <div className="border-t border-border/50 pt-3">
@@ -98,6 +145,39 @@ export function CheckoutOrderSummary({
           </div>
         </div>
       </div>
+
+      {!promoCode && (
+        <div className="border-t border-border/50 px-5 py-4">
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Promo Code</p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={promoInput}
+              onChange={(e) => {
+                setPromoInput(e.target.value);
+                setPromoError("");
+                setPromoSuccess(false);
+              }}
+              placeholder="Enter code"
+              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+            />
+            <button
+              onClick={handleApplyPromo}
+              disabled={!promoInput.trim()}
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+            >
+              Apply
+            </button>
+          </div>
+          {promoError && <p className="mt-1.5 text-xs text-red-500">{promoError}</p>}
+          {promoSuccess && (
+            <p className="mt-1.5 text-xs text-green-600">Promo code applied!</p>
+          )}
+          <p className="mt-2 text-xs text-muted-foreground">
+            Try: SAVE10, WELCOME20, FLAT15
+          </p>
+        </div>
+      )}
 
       <div className="border-t border-border/50 px-5 py-4">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">

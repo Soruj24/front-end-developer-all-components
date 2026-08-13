@@ -8,6 +8,7 @@ import { CheckoutPaymentForm } from "@/features/ecommerce/components/CheckoutPay
 import { CheckoutOrderSummary } from "@/features/ecommerce/components/CheckoutOrderSummary";
 import { CheckoutReviewStep } from "@/features/ecommerce/components/CheckoutReviewStep";
 import { CheckoutSuccess } from "@/features/ecommerce/components/CheckoutSuccess";
+import { CheckoutExpressCheckout } from "@/features/ecommerce/components/CheckoutExpressCheckout";
 import Link from "next/link";
 
 export default function CheckoutPage() {
@@ -21,6 +22,8 @@ export default function CheckoutPage() {
     sameAsShipping,
     promoCode,
     notes,
+    isProcessing,
+    orderId,
     shippingCost,
     tax,
     discount,
@@ -33,6 +36,9 @@ export default function CheckoutPage() {
     setSameAsShipping,
     setPayment,
     setNotes,
+    applyPromoCode,
+    removePromoCode,
+    placeOrder,
   } = useCheckout(items);
 
   if (loaded && items.length === 0 && step !== "success") {
@@ -69,22 +75,30 @@ export default function CheckoutPage() {
 
       {step === "success" ? (
         <CheckoutSuccess
-          orderId={`ORD-${Date.now().toString(36).toUpperCase()}`}
+          orderId={orderId || "ORD-PROCESSING"}
           email={shippingAddress?.email || ""}
         />
       ) : (
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
           <div>
             {step === "shipping" && (
-              <CheckoutShippingForm
-                initialAddress={shippingAddress}
-                initialMethod={shippingMethod}
-                sameAsShipping={sameAsShipping}
-                onAddressSubmit={setShippingAddress}
-                onMethodSelect={setShippingMethod}
-                onSameAsShippingChange={setSameAsShipping}
-                onNext={nextStep}
-              />
+              <>
+                <CheckoutShippingForm
+                  initialAddress={shippingAddress}
+                  initialMethod={shippingMethod}
+                  sameAsShipping={sameAsShipping}
+                  onAddressSubmit={setShippingAddress}
+                  onMethodSelect={setShippingMethod}
+                  onSameAsShippingChange={setSameAsShipping}
+                  onNext={nextStep}
+                />
+                <CheckoutExpressCheckout
+                  onExpressPayment={(p) => {
+                    setPayment(p);
+                    nextStep();
+                  }}
+                />
+              </>
             )}
 
             {step === "payment" && (
@@ -109,8 +123,9 @@ export default function CheckoutPage() {
                 discount={discount}
                 total={total}
                 notes={notes}
+                isProcessing={isProcessing}
                 onNotesChange={setNotes}
-                onPlaceOrder={nextStep}
+                onPlaceOrder={placeOrder}
                 onBack={prevStep}
               />
             )}
@@ -125,6 +140,8 @@ export default function CheckoutPage() {
               discount={discount}
               total={total}
               promoCode={promoCode}
+              onApplyPromo={applyPromoCode}
+              onRemovePromo={removePromoCode}
             />
           </div>
         </div>
