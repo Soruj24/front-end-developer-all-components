@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { Suspense, useMemo, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   ProductGrid,
   ProductFilters,
@@ -13,20 +14,69 @@ import type { ProductCategory, ProductSort } from "@/features/ecommerce";
 
 const POSTS_PER_PAGE = 12;
 
-export default function EcommercePage() {
+function EcommerceContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const cart = useCart();
-  const [category, setCategory] = useState<ProductCategory>("All");
-  const [priceRange, setPriceRange] = useState(0);
-  const [minRating, setMinRating] = useState(0);
-  const [sort, setSort] = useState<ProductSort>("featured");
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  const category = (searchParams.get("category") as ProductCategory) || "All";
+  const search = searchParams.get("search") || "";
+  const sort = (searchParams.get("sort") as ProductSort) || "featured";
+  const priceRangeIdx = Number(searchParams.get("price")) || 0;
+  const minRating = Number(searchParams.get("rating")) || 0;
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const updateParam = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value && value !== "0" && value !== "featured" && value !== "All" && value !== "") {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+      params.delete("page");
+      router.push(`/e-commerce${params.toString() ? `?${params.toString()}` : ""}`);
+    },
+    [router, searchParams],
+  );
+
+  const setCategory = useCallback(
+    (c: ProductCategory) => updateParam("category", c),
+    [updateParam],
+  );
+  const setSearch = useCallback(
+    (s: string) => updateParam("search", s),
+    [updateParam],
+  );
+  const setSort = useCallback(
+    (s: ProductSort) => updateParam("sort", s),
+    [updateParam],
+  );
+  const setPriceRange = useCallback(
+    (i: number) => updateParam("price", String(i)),
+    [updateParam],
+  );
+  const setMinRating = useCallback(
+    (r: number) => updateParam("rating", String(r)),
+    [updateParam],
+  );
+  const setPage = useCallback(
+    (p: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (p > 1) {
+        params.set("page", String(p));
+      } else {
+        params.delete("page");
+      }
+      router.push(`/e-commerce?${params.toString()}`);
+    },
+    [router, searchParams],
+  );
 
   const filtered = useMemo(() => {
     let result = PRODUCTS.filter((p) => {
       const matchCat = category === "All" || p.category === category;
-      const range = PRICE_RANGES[priceRange];
+      const range = PRICE_RANGES[priceRangeIdx] || PRICE_RANGES[0];
       const matchPrice = p.price >= range.min && p.price <= range.max;
       const matchRating = p.rating >= minRating;
       const matchSearch =
@@ -67,7 +117,7 @@ export default function EcommercePage() {
     }
 
     return result;
-  }, [category, priceRange, minRating, sort, search]);
+  }, [category, priceRangeIdx, minRating, sort, search]);
 
   const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const paginatedProducts = filtered.slice(
@@ -93,7 +143,7 @@ export default function EcommercePage() {
       <div className="flex flex-col gap-8 lg:flex-row">
         <ProductFilters
           selectedCategory={category}
-          selectedPriceRange={priceRange}
+          selectedPriceRange={priceRangeIdx}
           minRating={minRating}
           sort={sort}
           search={search}
@@ -110,52 +160,6 @@ export default function EcommercePage() {
               {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
             </p>
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 rounded-lg border border-border bg-background p-1">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`rounded-md p-1.5 transition-colors ${
-                    viewMode === "grid"
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`rounded-md p-1.5 transition-colors ${
-                    viewMode === "list"
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                </button>
-              </div>
               {cart.totalSavings > 0 && (
                 <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600">
                   You save ${cart.totalSavings.toFixed(2)}
@@ -172,7 +176,7 @@ export default function EcommercePage() {
           {totalPages > 1 && (
             <div className="mt-8 flex items-center justify-center gap-1.5">
               <button
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                onClick={() => setPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
                 className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
               >
@@ -195,7 +199,7 @@ export default function EcommercePage() {
                 (page) => (
                   <button
                     key={page}
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => setPage(page)}
                     className={`h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors ${
                       page === currentPage
                         ? "bg-primary text-primary-foreground shadow-sm"
@@ -208,7 +212,7 @@ export default function EcommercePage() {
               )}
               <button
                 onClick={() =>
-                  setCurrentPage(Math.min(totalPages, currentPage + 1))
+                  setPage(Math.min(totalPages, currentPage + 1))
                 }
                 disabled={currentPage === totalPages}
                 className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
@@ -233,5 +237,30 @@ export default function EcommercePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EcommercePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 p-6 sm:p-8 lg:p-12">
+          <div className="h-8 w-48 animate-pulse rounded bg-muted" />
+          <div className="h-12 w-64 animate-pulse rounded bg-muted" />
+          <div className="flex gap-8">
+            <div className="h-96 w-64 animate-pulse rounded-xl bg-muted" />
+            <div className="flex-1">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="h-72 animate-pulse rounded-xl bg-muted" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <EcommerceContent />
+    </Suspense>
   );
 }

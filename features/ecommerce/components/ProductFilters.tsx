@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
 import type { ProductCategory, ProductSort } from "../types/ecommerce.types";
 import { PRODUCT_CATEGORIES, PRICE_RANGES } from "../constants/categories";
@@ -18,6 +19,54 @@ interface ProductFiltersProps {
   className?: string;
 }
 
+function DebouncedSearchInput({
+  initialValue,
+  onChange,
+}: {
+  initialValue: string;
+  onChange: (value: string) => void;
+}) {
+  const [localValue, setLocalValue] = useState(initialValue);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  const handleChange = useCallback(
+    (next: string) => {
+      setLocalValue(next);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        onChange(next);
+      }, 350);
+    },
+    [onChange],
+  );
+
+  return (
+    <div className="relative">
+      <svg
+        className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input
+        type="text"
+        value={localValue}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Search products..."
+        className="w-full rounded-lg border border-border bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+      />
+    </div>
+  );
+}
+
 export function ProductFilters({
   selectedCategory,
   selectedPriceRange,
@@ -33,23 +82,11 @@ export function ProductFilters({
 }: ProductFiltersProps) {
   return (
     <aside className={cn("w-full shrink-0 space-y-6 lg:w-72", className)}>
-      <div className="relative">
-        <svg
-          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search products..."
-          className="w-full rounded-lg border border-border bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
-        />
-      </div>
+      <DebouncedSearchInput
+        key={search}
+        initialValue={search}
+        onChange={onSearchChange}
+      />
 
       <div className="rounded-xl border border-border/50 bg-background p-4">
         <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
