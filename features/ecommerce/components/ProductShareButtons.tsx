@@ -15,11 +15,11 @@ export function ProductShareButtons({
   className,
 }: ProductShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-  const shareUrl = typeof window !== "undefined" ? window.location.href : url;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      const fullUrl = window.location.href;
+      await navigator.clipboard.writeText(fullUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {}
@@ -28,7 +28,7 @@ export function ProductShareButtons({
   return (
     <div className={cn("flex items-center gap-1", className)}>
       <a
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`}
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-[#1DA1F2]/10 hover:text-[#1DA1F2]"
@@ -39,7 +39,7 @@ export function ProductShareButtons({
         </svg>
       </a>
       <a
-        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-[#1877F2]/10 hover:text-[#1877F2]"
@@ -50,7 +50,7 @@ export function ProductShareButtons({
         </svg>
       </a>
       <a
-        href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}`}
+        href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-[#0A66C2]/10 hover:text-[#0A66C2]"

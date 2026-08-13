@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, useEffect, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -41,9 +41,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     notFound();
   }
 
-  if (product) {
-    cart.addRecentlyViewed(product.id);
-  }
+  useEffect(() => {
+    if (product) {
+      cart.addRecentlyViewed(product.id);
+    }
+  }, [product?.id]);
 
   const related = PRODUCTS.filter(
     (p) => p.category === product.category && p.id !== product.id

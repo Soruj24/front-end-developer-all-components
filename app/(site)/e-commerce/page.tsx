@@ -4,14 +4,11 @@ import { useState, useMemo } from "react";
 import {
   ProductGrid,
   ProductFilters,
-  CartDrawer,
   useCart,
   PRODUCTS,
   PRICE_RANGES,
   ProductBreadcrumbs,
 } from "@/features/ecommerce";
-import { Button } from "@/components/design-system/Button";
-import { Badge } from "@/components/design-system/Badge";
 import type { ProductCategory, ProductSort } from "@/features/ecommerce";
 
 const POSTS_PER_PAGE = 12;
@@ -23,7 +20,6 @@ export default function EcommercePage() {
   const [minRating, setMinRating] = useState(0);
   const [sort, setSort] = useState<ProductSort>("featured");
   const [search, setSearch] = useState("");
-  const [cartOpen, setCartOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
@@ -84,56 +80,13 @@ export default function EcommercePage() {
         ]}
       />
 
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Shop
-          </h1>
-          <p className="mt-1 text-muted-foreground">
-            Discover our curated collection of premium products
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 rounded-lg border border-border bg-background p-1">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`rounded-md p-1.5 transition-colors ${
-                viewMode === "grid" ? "bg-muted text-foreground" : "text-muted-foreground"
-              }`}
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`rounded-md p-1.5 transition-colors ${
-                viewMode === "list" ? "bg-muted text-foreground" : "text-muted-foreground"
-              }`}
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-
-          <Button
-            variant="outline"
-            onClick={() => setCartOpen(true)}
-            className="relative"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
-            </svg>
-            Cart
-            {cart.totalItems > 0 && (
-              <Badge className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px]">
-                {cart.totalItems}
-              </Badge>
-            )}
-          </Button>
-        </div>
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Shop
+        </h1>
+        <p className="mt-1 text-muted-foreground">
+          Discover our curated collection of premium products
+        </p>
       </header>
 
       <div className="flex flex-col gap-8 lg:flex-row">
@@ -156,6 +109,28 @@ export default function EcommercePage() {
               {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
             </p>
             <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 rounded-lg border border-border bg-background p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`rounded-md p-1.5 transition-colors ${
+                    viewMode === "grid" ? "bg-muted text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`rounded-md p-1.5 transition-colors ${
+                    viewMode === "list" ? "bg-muted text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+              </div>
               {cart.totalSavings > 0 && (
                 <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600">
                   You save ${cart.totalSavings.toFixed(2)}
@@ -208,17 +183,6 @@ export default function EcommercePage() {
           )}
         </div>
       </div>
-
-      <CartDrawer
-        items={cart.items}
-        totalItems={cart.totalItems}
-        totalPrice={cart.totalPrice}
-        onUpdateQuantity={cart.updateQuantity}
-        onRemoveItem={cart.removeItem}
-        onClearCart={cart.clearCart}
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-      />
     </div>
   );
 }
