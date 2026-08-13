@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { Badge } from "@/components/design-system/Badge";
 import { Button } from "@/components/design-system/Button";
@@ -27,6 +28,8 @@ export function CartDrawer({
   isOpen,
   onClose,
 }: CartDrawerProps) {
+  const router = useRouter();
+
   if (!isOpen) return null;
 
   return (
@@ -127,7 +130,14 @@ export function CartDrawer({
               </span>
             </div>
 
-            <Button className="w-full" size="lg">
+            <Button
+              className="w-full"
+              size="lg"
+              onClick={() => {
+                onClose();
+                router.push("/e-commerce/checkout");
+              }}
+            >
               Checkout
             </Button>
 

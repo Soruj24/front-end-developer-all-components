@@ -11,7 +11,7 @@ import { CheckoutSuccess } from "@/features/ecommerce/components/CheckoutSuccess
 import Link from "next/link";
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCart();
+  const { items, subtotal, loaded } = useCart();
   const {
     step,
     shippingAddress,
@@ -35,7 +35,7 @@ export default function CheckoutPage() {
     setNotes,
   } = useCheckout(items);
 
-  if (items.length === 0 && step !== "success") {
+  if (loaded && items.length === 0 && step !== "success") {
     return (
       <div className="mx-auto max-w-4xl px-4 py-16 text-center">
         <div className="mb-6 flex h-20 w-20 mx-auto items-center justify-center rounded-full bg-muted/30">
