@@ -44,7 +44,7 @@ export default function FileTreePage() {
           <h3 className="text-lg font-medium text-foreground">Default</h3>
           <ComponentPreview id="file-tree-default">
             <div className="flex w-full items-center justify-center py-10">
-              <p className="text-sm text-subtle">File Tree demo</p>
+              <p className="text-sm text-muted-foreground">File Tree demo</p>
             </div>
           </ComponentPreview>
         </div>
@@ -53,7 +53,7 @@ export default function FileTreePage() {
           <h3 className="text-lg font-medium text-foreground">Variants</h3>
           <ComponentPreview id="file-tree-variants">
             <div className="flex w-full items-center justify-center gap-4 py-10">
-              <p className="text-sm text-subtle">Size and style variants</p>
+              <p className="text-sm text-muted-foreground">Size and style variants</p>
             </div>
           </ComponentPreview>
         </div>
@@ -62,7 +62,7 @@ export default function FileTreePage() {
           <h3 className="text-lg font-medium text-foreground">Interactive</h3>
           <ComponentPreview id="file-tree-interactive">
             <div className="flex w-full items-center justify-center py-10">
-              <p className="text-sm text-subtle">Interactive demo</p>
+              <p className="text-sm text-muted-foreground">Interactive demo</p>
             </div>
           </ComponentPreview>
         </div>
