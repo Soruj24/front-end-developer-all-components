@@ -1,10 +1,25 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Crop, RotateCcw, Check, X, Move } from "lucide-react";
+import {
+  Crop,
+  RotateCcw,
+  Check,
+  X,
+  Move,
+  ZoomIn,
+  ZoomOut,
+  RefreshCw,
+  Image,
+  User,
+  Monitor,
+  Smartphone,
+  Globe,
+  Share2,
+} from "lucide-react";
 
 const installCommand = `npx component-library@latest add crop-tool`;
 const usageCode = `import { CropTool } from "@/components/crop-tool";
@@ -16,32 +31,38 @@ const usageCode = `import { CropTool } from "@/components/crop-tool";
 />`;
 
 function CropBoxDemo() {
-  const [box, setBox] = useState({ x: 20, y: 20, w: 60, h: 60 });
-  const [dragging, setDragging] = useState(false);
+  const [box, setBox] = useState({ x: 15, y: 20, w: 70, h: 60 });
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative h-48 w-full max-w-sm overflow-hidden rounded-lg bg-muted">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-800 dark:to-purple-800" />
-        <div className="absolute inset-0 bg-black/50" />
-        <div
-          className="absolute border-2 border-white shadow-lg cursor-move"
-          style={{ left: `${box.x}%`, top: `${box.y}%`, width: `${box.w}%`, height: `${box.h}%` }}
-          onMouseDown={() => setDragging(true)}
-        >
-          <div className="absolute inset-0 bg-transparent" />
-          <div className="absolute left-0 top-0 h-2 w-2 -translate-x-1 -translate-y-1 cursor-nw-resize rounded-full bg-white" />
-          <div className="absolute right-0 top-0 h-2 w-2 translate-x-1 -translate-y-1 cursor-ne-resize rounded-full bg-white" />
-          <div className="absolute bottom-0 left-0 h-2 w-2 -translate-x-1 translate-y-1 cursor-sw-resize rounded-full bg-white" />
-          <div className="absolute bottom-0 right-0 h-2 w-2 translate-x-1 translate-y-1 cursor-se-resize rounded-full bg-white" />
-          <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
-            {[...Array(9)].map((_, i) => <div key={i} className="border border-white/30" />)}
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="relative h-56 overflow-hidden rounded-lg bg-muted">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 opacity-60" />
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIvPjwvc3ZnPg==')] opacity-50" />
+          <div className="absolute inset-0 bg-black/40" />
+          <div
+            className="absolute border-2 border-white shadow-lg cursor-move"
+            style={{ left: `${box.x}%`, top: `${box.y}%`, width: `${box.w}%`, height: `${box.h}%` }}
+          >
+            <div className="absolute inset-0 bg-transparent" />
+            <div className="absolute left-0 top-0 h-3 w-3 -translate-x-1.5 -translate-y-1.5 cursor-nw-resize rounded-full bg-white shadow-md" />
+            <div className="absolute right-0 top-0 h-3 w-3 translate-x-1.5 -translate-y-1.5 cursor-ne-resize rounded-full bg-white shadow-md" />
+            <div className="absolute bottom-0 left-0 h-3 w-3 -translate-x-1.5 translate-y-1.5 cursor-sw-resize rounded-full bg-white shadow-md" />
+            <div className="absolute bottom-0 right-0 h-3 w-3 translate-x-1.5 translate-y-1.5 cursor-se-resize rounded-full bg-white shadow-md" />
+            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
+              {[...Array(9)].map((_, i) => (
+                <div key={i} className="border border-white/30" />
+              ))}
+            </div>
+            <div className="absolute bottom-1 right-1 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-mono text-white">
+              {Math.round(box.w)}×{Math.round(box.h)}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>Drag corners to resize</span>
-        <span>{Math.round(box.w)}% × {Math.round(box.h)}%</span>
+        <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+          <span>Drag corners to resize</span>
+          <span className="font-mono">{Math.round(box.w)}% × {Math.round(box.h)}%</span>
+        </div>
       </div>
     </div>
   );
@@ -49,20 +70,51 @@ function CropBoxDemo() {
 
 function AspectRatioDemo() {
   const [ratio, setRatio] = useState("1:1");
-  const ratios = ["1:1", "4:3", "16:9", "3:2", "Free"];
-  const dims: Record<string, string> = { "1:1": "w-24 h-24", "4:3": "w-24 h-18", "16:9": "w-24 h-14", "3:2": "w-24 h-16", "Free": "w-24 h-20" };
+  const ratios = [
+    { label: "1:1", desc: "Square", w: 24, h: 24 },
+    { label: "4:3", desc: "Standard", w: 24, h: 18 },
+    { label: "16:9", desc: "Widescreen", w: 28, h: 16 },
+    { label: "3:2", desc: "Photo", w: 24, h: 16 },
+    { label: "Free", desc: "Custom", w: 24, h: 20 },
+  ];
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-2">
-        {ratios.map((r) => (
-          <button key={r} onClick={() => setRatio(r)} className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${ratio === r ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
-            {r}
-          </button>
-        ))}
-      </div>
-      <div className="flex items-center justify-center rounded-lg border bg-muted p-6">
-        <div className={`${dims[ratio]} rounded-md border-2 border-dashed border-primary bg-primary/10`} />
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="mb-3 text-sm font-semibold">Aspect Ratio</div>
+        <div className="grid grid-cols-5 gap-1.5 mb-4">
+          {ratios.map((r) => (
+            <button
+              key={r.label}
+              onClick={() => setRatio(r.label)}
+              className={`flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-xs transition-colors ${
+                ratio === r.label
+                  ? "bg-foreground text-background"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              <div
+                className={`border-2 ${
+                  ratio === r.label ? "border-background/50" : "border-current"
+                }`}
+                style={{ width: r.w * 0.6, height: r.h * 0.6 }}
+              />
+              <span className="font-medium">{r.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center justify-center rounded-lg bg-muted/50 p-6">
+          <div
+            className="rounded-md border-2 border-dashed border-foreground/30 bg-foreground/5 transition-all"
+            style={{
+              width: ratios.find((r) => r.label === ratio)?.w ?? 24,
+              height: ratios.find((r) => r.label === ratio)?.h ?? 24,
+            }}
+          />
+        </div>
+        <p className="mt-2 text-center text-[10px] text-muted-foreground">
+          {ratios.find((r) => r.label === ratio)?.desc} — {ratio}
+        </p>
       </div>
     </div>
   );
@@ -71,29 +123,254 @@ function AspectRatioDemo() {
 function CropControlsDemo() {
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(100);
+  const [flipH, setFlipH] = useState(false);
+
   return (
-    <div className="flex flex-col gap-4 w-full max-w-sm">
-      <div className="relative h-32 overflow-hidden rounded-lg bg-muted">
-        <div
-          className="absolute inset-4 bg-gradient-to-br from-green-200 to-blue-200 dark:from-green-800 dark:to-blue-800 rounded"
-          style={{ transform: `rotate(${rotation}deg) scale(${zoom / 100})` }}
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="relative mb-4 h-40 overflow-hidden rounded-lg bg-muted">
+          <div
+            className="absolute inset-4 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400 transition-transform"
+            style={{
+              transform: `rotate(${rotation}deg) scale(${zoom / 100}) scaleX(${flipH ? -1 : 1})`,
+            }}
+          />
+        </div>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <RotateCcw className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="w-10 text-[10px] font-medium text-muted-foreground">{rotation}°</span>
+            <input
+              type="range"
+              min={-180}
+              max={180}
+              value={rotation}
+              onChange={(e) => setRotation(Number(e.target.value))}
+              className="flex-1 accent-foreground"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <ZoomIn className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="w-10 text-[10px] font-medium text-muted-foreground">{zoom}%</span>
+            <input
+              type="range"
+              min={50}
+              max={200}
+              value={zoom}
+              onChange={(e) => setZoom(Number(e.target.value))}
+              className="flex-1 accent-foreground"
+            />
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setFlipH(!flipH)}
+              className={`flex-1 rounded-lg py-2 text-xs font-medium transition-colors ${
+                flipH ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              Flip H
+            </button>
+            <button
+              onClick={() => { setRotation(0); setZoom(100); setFlipH(false); }}
+              className="flex-1 rounded-lg bg-muted py-2 text-xs font-medium text-muted-foreground hover:bg-muted/80 transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-2">
+          <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-foreground py-2.5 text-xs font-medium text-background hover:bg-foreground/90 transition-colors">
+            <Check className="h-3.5 w-3.5" />
+            Apply
+          </button>
+          <button className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-black/[.08] py-2.5 text-xs font-medium hover:bg-muted transition-colors dark:border-white/[.145]">
+            <X className="h-3.5 w-3.5" />
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AvatarCropDemo() {
+  const [size, setSize] = useState(128);
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="mb-3 text-sm font-semibold">Avatar Crop</div>
+        <div className="flex items-center gap-6">
+          <div className="relative">
+            <div className="h-32 w-32 overflow-hidden rounded-full bg-muted">
+              <div className="h-full w-full bg-gradient-to-br from-orange-400 to-pink-500" />
+            </div>
+            <div className="absolute inset-0 rounded-full border-4 border-dashed border-white/50" />
+            <div className="absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-background">
+              <RefreshCw className="h-3 w-3" />
+            </div>
+          </div>
+          <div className="flex-1 space-y-3">
+            <div>
+              <label className="mb-1 block text-[10px] font-medium text-muted-foreground">Output Size</label>
+              <div className="flex gap-1.5">
+                {[64, 128, 256].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
+                      size === s ? "bg-foreground text-background" : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {s}px
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-2">
+              <p className="text-[10px] text-muted-foreground">Preview: {size}×{size}px</p>
+              <div className="mt-1 flex gap-1">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
+                <div className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
+                <div className="h-4 w-4 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BannerCropDemo() {
+  const [platform, setPlatform] = useState("twitter");
+
+  const platforms = [
+    { id: "twitter", label: "Twitter", icon: Globe, w: 300, h: 100, ratio: "3:1" },
+    { id: "linkedin", label: "LinkedIn", icon: Monitor, w: 300, h: 120, ratio: "5:2" },
+    { id: "youtube", label: "YouTube", icon: Monitor, w: 300, h: 68, ratio: "16:4" },
+  ];
+
+  const active = platforms.find((p) => p.id === platform)!;
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="mb-3 text-sm font-semibold">Banner Crop</div>
+        <div className="flex gap-1.5 mb-4">
+          {platforms.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => setPlatform(p.id)}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
+                platform === p.id ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              <p.icon className="h-3 w-3" />
+              {p.label}
+            </button>
+          ))}
+        </div>
+        <div className="relative overflow-hidden rounded-lg bg-muted" style={{ height: 120 }}>
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-purple-400 opacity-60" />
+          <div
+            className="absolute border-2 border-dashed border-white/60"
+            style={{ left: "5%", top: "50%", width: "90%", height: `${(active.h / 120) * 100}%`, transform: "translateY(-50%)" }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-white/80">
+              {active.ratio} — {active.w}×{active.h}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PresetSizesDemo() {
+  const [selected, setSelected] = useState("post");
+  const presets = [
+    { id: "post", label: "Instagram Post", size: "1080×1080", icon: Globe, color: "bg-pink-500" },
+    { id: "story", label: "Instagram Story", size: "1080×1920", icon: Smartphone, color: "bg-purple-500" },
+    { id: "thumb", label: "Thumbnail", size: "320×180", icon: Image, color: "bg-blue-500" },
+    { id: "avatar", label: "Profile Picture", size: "400×400", icon: User, color: "bg-emerald-500" },
+    { id: "og", label: "OG Image", size: "1200×630", icon: Monitor, color: "bg-orange-500" },
+  ];
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="mb-3 text-sm font-semibold">Preset Sizes</div>
+        <div className="space-y-1.5">
+          {presets.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => setSelected(p.id)}
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                selected === p.id ? "bg-muted/80" : "hover:bg-muted/30"
+              }`}
+            >
+              <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${p.color}`}>
+                <p.icon className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-medium">{p.label}</p>
+                <p className="text-[10px] text-muted-foreground">{p.size}</p>
+              </div>
+              {selected === p.id && (
+                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-foreground">
+                  <Check className="h-3 w-3 text-background" />
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BeforeAfterDemo() {
+  const [position, setPosition] = useState(50);
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card p-4 shadow-sm dark:border-white/[.145]">
+        <div className="mb-3 text-sm font-semibold">Before / After</div>
+        <div className="relative h-48 overflow-hidden rounded-lg bg-muted">
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700" />
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{ width: `${position}%` }}
+          >
+            <div className="h-full w-[200%] bg-gradient-to-br from-orange-400 to-pink-500" style={{ width: `${(100 / position) * 100}%` }} />
+          </div>
+          <div
+            className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg cursor-ew-resize"
+            style={{ left: `${position}%` }}
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-lg">
+              <div className="flex gap-0.5">
+                <div className="h-3 w-0.5 rounded-full bg-muted-foreground" />
+                <div className="h-3 w-0.5 rounded-full bg-muted-foreground" />
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-2 left-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white">
+            Original
+          </div>
+          <div className="absolute top-2 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white">
+            Cropped
+          </div>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={position}
+          onChange={(e) => setPosition(Number(e.target.value))}
+          className="mt-3 w-full accent-foreground"
         />
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <RotateCcw className="h-3 w-3 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground w-14">{rotation}°</span>
-          <input type="range" min={-180} max={180} value={rotation} onChange={(e) => setRotation(Number(e.target.value))} className="flex-1 accent-primary" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Move className="h-3 w-3 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground w-14">{zoom}%</span>
-          <input type="range" min={50} max={200} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="flex-1 accent-primary" />
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <button className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-primary py-2 text-sm font-medium text-primary-foreground"><Check className="h-3.5 w-3.5" /> Apply</button>
-        <button className="flex-1 flex items-center justify-center gap-1 rounded-lg border py-2 text-sm font-medium hover:bg-muted"><X className="h-3.5 w-3.5" /> Cancel</button>
       </div>
     </div>
   );
@@ -104,11 +381,14 @@ export default function CropToolPage() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Crop Tool</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Crop Tool
+          </h1>
           <Badge variant="primary">Tools</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Image cropping tool with resizable crop box, aspect ratio presets, rotation, zoom, and apply/cancel controls.
+          Image cropping tool with resizable crop box, aspect ratio presets, rotation, zoom, and
+          apply/cancel controls.
         </p>
       </header>
 
@@ -122,25 +402,78 @@ export default function CropToolPage() {
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Crop Box</h2>
-        <ComponentPreview>
-          <CropBoxDemo />
-        </ComponentPreview>
-      </section>
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Aspect Ratios</h2>
-        <ComponentPreview>
-          <AspectRatioDemo />
-        </ComponentPreview>
-      </section>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Crop Box</h3>
+          <p className="text-sm text-muted-foreground">
+            Interactive crop area with resize handles and rule-of-thirds grid.
+          </p>
+          <ComponentPreview id="crop-box">
+            <CropBoxDemo />
+          </ComponentPreview>
+        </div>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Rotation & Zoom</h2>
-        <ComponentPreview>
-          <CropControlsDemo />
-        </ComponentPreview>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Aspect Ratios</h3>
+          <p className="text-sm text-muted-foreground">
+            Preset aspect ratios with visual preview.
+          </p>
+          <ComponentPreview id="crop-ratios">
+            <AspectRatioDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Rotation & Zoom</h3>
+          <p className="text-sm text-muted-foreground">
+            Image transformation controls with flip and reset.
+          </p>
+          <ComponentPreview id="crop-controls">
+            <CropControlsDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Avatar Crop</h3>
+          <p className="text-sm text-muted-foreground">
+            Circular crop for profile pictures with size presets.
+          </p>
+          <ComponentPreview id="crop-avatar">
+            <AvatarCropDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Banner Crop</h3>
+          <p className="text-sm text-muted-foreground">
+            Platform-specific banner crops (Twitter, LinkedIn, YouTube).
+          </p>
+          <ComponentPreview id="crop-banner">
+            <BannerCropDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Preset Sizes</h3>
+          <p className="text-sm text-muted-foreground">
+            Common output sizes for social media and web.
+          </p>
+          <ComponentPreview id="crop-presets">
+            <PresetSizesDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Before / After</h3>
+          <p className="text-sm text-muted-foreground">
+            Compare original and cropped images with slider.
+          </p>
+          <ComponentPreview id="crop-compare">
+            <BeforeAfterDemo />
+          </ComponentPreview>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4">
@@ -156,10 +489,36 @@ export default function CropToolPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">src</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onCrop</td><td className="px-4 py-3 text-muted-foreground">(area: CropArea) =&gt; void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">aspectRatio</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">1</td><td className="px-4 py-3">No</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">src</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onCrop</td>
+                <td className="px-4 py-3 text-muted-foreground">{"(area: CropArea) => void"}</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">aspectRatio</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">1</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">shape</td>
+                <td className="px-4 py-3 text-muted-foreground">{"\"rect\" | \"circle\""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{"\"rect\""}</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
             </tbody>
           </table>
         </div>
