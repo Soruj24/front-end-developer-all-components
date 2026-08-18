@@ -207,11 +207,11 @@ export default function StepperInputPage() {
           <p className="mt-1 text-sm text-muted-foreground">Stepper embedded in a line of text.</p>
         </div>
         <ComponentPreview id="stepper-inline">
-          <p className="text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             Show{" "}
             <StepperInput value={v5} onChange={setV5} min={1} max={100} size="sm" />{" "}
             results per page
-          </p>
+          </div>
         </ComponentPreview>
       </section>
 
