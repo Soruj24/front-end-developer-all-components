@@ -708,8 +708,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-underline">
-        <TabsUnderlineGroup />
-      </ComponentPreview>
+          <TabsUnderlineGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Pills & Capsule Tabs */}
       <section className="flex flex-col gap-4">
@@ -720,8 +721,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-pills-capsule">
-        <TabsPillsCapsuleGroup />
-      </ComponentPreview>
+          <TabsPillsCapsuleGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Icon Tabs */}
       <section className="flex flex-col gap-4">
@@ -732,8 +734,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-icons">
-        <TabsIconsGroup />
-      </ComponentPreview>
+          <TabsIconsGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Badges & Descriptions */}
       <section className="flex flex-col gap-4">
@@ -744,8 +747,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-badges-descriptions">
-        <TabsBadgesDescriptionsGroup />
-      </ComponentPreview>
+          <TabsBadgesDescriptionsGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Vertical Tabs */}
       <section className="flex flex-col gap-4">
@@ -756,8 +760,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-vertical">
-        <TabsVerticalGroup />
-      </ComponentPreview>
+          <TabsVerticalGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Boxed & Card Tabs */}
       <section className="flex flex-col gap-4">
@@ -768,8 +773,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-boxed-card">
-        <TabsBoxedCardGroup />
-      </ComponentPreview>
+          <TabsBoxedCardGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Colored Backgrounds */}
       <section className="flex flex-col gap-4">
@@ -780,8 +786,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-colored-backgrounds">
-        <TabsColoredBackgroundsGroup />
-      </ComponentPreview>
+          <TabsColoredBackgroundsGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Animated & Scrollable */}
       <section className="flex flex-col gap-4">
@@ -792,8 +799,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-animated-scroll-steps">
-        <TabsAnimatedScrollStepsGroup />
-      </ComponentPreview>
+          <TabsAnimatedScrollStepsGroup />
+        </ComponentPreview>
+      </section>
 
       {/* Dropdown & Accordion */}
       <section className="flex flex-col gap-4">
@@ -804,8 +812,9 @@ export default function TabsPage() {
           </p>
         </div>
         <ComponentPreview id="tabs-dropdown-accordion-mixed">
-        <TabsDropdownAccordionMixedGroup />
-      </ComponentPreview>
+          <TabsDropdownAccordionMixedGroup />
+        </ComponentPreview>
+      </section>
 
       {/* API Reference */}
       <section className="flex flex-col gap-4">
