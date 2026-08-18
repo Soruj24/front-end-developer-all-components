@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 /** A single destination inside a navigation section. */
 export interface NavLink {
   label: string;
   href: string;
   /** Small glyph shown next to the label (sidebar only). */
-  icon?: string;
+  icon?: ReactNode;
   /** One-line description (home page cards only). */
   desc?: string;
   /** Optional nested destinations rendered as an indented sub-level. */
@@ -14,7 +16,7 @@ export interface NavLink {
 export interface NavSection {
   title: string;
   /** Small glyph shown before the section title (sidebar only). */
-  icon?: string;
+  icon?: ReactNode;
   /** Short description shown under the section title (home page only). */
   description?: string;
   links: NavLink[];

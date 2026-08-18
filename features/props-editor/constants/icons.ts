@@ -1,3 +1,78 @@
+import {
+  Star,
+  Heart,
+  User,
+  Settings,
+  Search,
+  Bell,
+  Mail,
+  Home,
+  Calendar,
+  Clock,
+  BarChart3,
+  Code,
+  Database,
+  Cloud,
+  Download,
+  Upload,
+  Image,
+  File,
+  Folder,
+  Link,
+  Lock,
+  Check,
+  Plus,
+  Minus,
+  ArrowRight,
+  ArrowLeft,
+  ExternalLink,
+  GitBranch,
+  Sparkles,
+  Zap,
+  Pin,
+  ShoppingBag,
+  CreditCard,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
+
+const lucideIconMap: Record<string, LucideIcon> = {
+  star: Star,
+  heart: Heart,
+  user: User,
+  settings: Settings,
+  search: Search,
+  bell: Bell,
+  mail: Mail,
+  home: Home,
+  calendar: Calendar,
+  clock: Clock,
+  chart: BarChart3,
+  code: Code,
+  database: Database,
+  cloud: Cloud,
+  download: Download,
+  upload: Upload,
+  image: Image,
+  file: File,
+  folder: Folder,
+  link: Link,
+  lock: Lock,
+  check: Check,
+  plus: Plus,
+  minus: Minus,
+  arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
+  external: ExternalLink,
+  gitBranch: GitBranch,
+  sparkles: Sparkles,
+  zap: Zap,
+  pin: Pin,
+  shoppingBag: ShoppingBag,
+  creditCard: CreditCard,
+  trophy: Trophy,
+};
+
 /**
  * Curated single-path stroke icons for the Icon Picker control.
  * Each entry is the `d` of a single 24x24 viewBox path.
@@ -44,4 +119,8 @@ export const DEFAULT_ICON = ICON_NAMES[0] ?? "star";
 
 export function getIcon(name: string): string {
   return ICON_PATHS[name] ?? ICON_PATHS[DEFAULT_ICON] ?? "";
+}
+
+export function getLucideIcon(name: string): LucideIcon | undefined {
+  return lucideIconMap[name];
 }
