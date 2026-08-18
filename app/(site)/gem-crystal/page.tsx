@@ -4,14 +4,22 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Gem, Sparkles } from "lucide-react";
+import { Gem, Sparkles, Crown, Star, Lock, Unlock, TrendingUp } from "lucide-react";
 
 const installCommand = `npx component-library@latest add gem-crystal`;
 const usageCode = `import { GemCrystal } from "@/components/gem-crystal";
 
 <GemCrystal color="blue" size="lg" sparkle />`;
 
-function GemDemo({ color = "#3b82f6", size = 80, sparkle = true }: { color?: string; size?: number; sparkle?: boolean }) {
+function GemRenderer({
+  color = "#3b82f6",
+  size = 80,
+  sparkle = true,
+}: {
+  color?: string;
+  size?: number;
+  sparkle?: boolean;
+}) {
   const [glow, setGlow] = useState(0);
 
   useEffect(() => {
@@ -61,7 +69,7 @@ function GemShowcaseDemo() {
     <div className="flex gap-4">
       {gems.map((g) => (
         <div key={g.label} className="flex flex-col items-center gap-1">
-          <GemDemo color={g.color} size={60} />
+          <GemRenderer color={g.color} size={60} />
           <span className="text-[10px] text-muted-foreground">{g.label}</span>
         </div>
       ))}
@@ -69,12 +77,12 @@ function GemShowcaseDemo() {
   );
 }
 
-function GemSizeDemo() {
+function SizeScaleDemo() {
   return (
     <div className="flex items-end gap-4">
       {[30, 50, 70, 90, 110].map((s) => (
         <div key={s} className="flex flex-col items-center gap-1">
-          <GemDemo color="#a855f7" size={s} sparkle={false} />
+          <GemRenderer color="#a855f7" size={s} sparkle={false} />
           <span className="text-[10px] text-muted-foreground">{s}px</span>
         </div>
       ))}
@@ -82,7 +90,7 @@ function GemSizeDemo() {
   );
 }
 
-function GemCollectionDemo() {
+function InventoryDisplayDemo() {
   const inventory = [
     { name: "Diamond", count: 3, color: "#e0f2fe" },
     { name: "Ruby", count: 7, color: "#ef4444" },
@@ -93,13 +101,209 @@ function GemCollectionDemo() {
     <div className="grid grid-cols-2 gap-2 w-full max-w-sm">
       {inventory.map((item) => (
         <div key={item.name} className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2">
-          <GemDemo color={item.color} size={24} sparkle={false} />
+          <GemRenderer color={item.color} size={24} sparkle={false} />
           <div className="flex-1">
             <p className="text-xs font-medium">{item.name}</p>
-            <p className="text-[10px] text-muted-foreground">×{item.count}</p>
+            <p className="text-[10px] text-muted-foreground">x{item.count}</p>
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function PremiumBadgeDemo() {
+  const [tier, setTier] = useState<"bronze" | "silver" | "gold" | "diamond">("gold");
+  const tiers = {
+    bronze: { color: "#cd7f32", label: "Bronze", icon: "◆" },
+    silver: { color: "#c0c0c0", label: "Silver", icon: "◆" },
+    gold: { color: "#ffd700", label: "Gold", icon: "★" },
+    diamond: { color: "#b9f2ff", label: "Diamond", icon: "✦" },
+  };
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm overflow-hidden dark:border-white/[.145]">
+        <div className="border-b border-black/[.06] px-4 py-3 dark:border-white/[.1]">
+          <div className="flex items-center gap-2">
+            <Crown className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Premium Membership</h3>
+          </div>
+        </div>
+        <div className="p-5">
+          <div className="flex items-center gap-4 mb-4">
+            <GemRenderer color={tiers[tier].color} size={70} />
+            <div>
+              <p className="text-lg font-extrabold">{tiers[tier].label} Tier</p>
+              <p className="text-xs text-muted-foreground">Exclusive benefits</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            {(Object.keys(tiers) as Array<keyof typeof tiers>).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTier(t)}
+                className={`flex-1 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                  tier === t ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                {tiers[t].label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LootBoxDemo() {
+  const [opened, setOpened] = useState(false);
+  const [reward, setReward] = useState<{ name: string; color: string; rarity: string } | null>(null);
+
+  const rewards = [
+    { name: "Legendary Sword", color: "#ffd700", rarity: "Legendary" },
+    { name: "Epic Shield", color: "#a855f7", rarity: "Epic" },
+    { name: "Rare Potion", color: "#3b82f6", rarity: "Rare" },
+    { name: "Common Gem", color: "#6b7280", rarity: "Common" },
+  ];
+
+  const openBox = () => {
+    const random = rewards[Math.floor(Math.random() * rewards.length)];
+    setReward(random);
+    setOpened(true);
+  };
+
+  const resetBox = () => {
+    setOpened(false);
+    setReward(null);
+  };
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm overflow-hidden dark:border-white/[.145]">
+        <div className="border-b border-black/[.06] px-4 py-3 dark:border-white/[.1]">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Loot Box</h3>
+          </div>
+        </div>
+        <div className="p-5 text-center">
+          {opened && reward ? (
+            <div className="space-y-3">
+              <div className="flex justify-center">
+                <GemRenderer color={reward.color} size={80} />
+              </div>
+              <p className="text-lg font-extrabold">{reward.name}</p>
+              <p className="text-xs text-muted-foreground">{reward.rarity}</p>
+              <button onClick={resetBox} className="w-full rounded-lg bg-foreground px-4 py-2 text-xs font-medium text-background hover:bg-foreground/90">
+                Open Another
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex justify-center">
+                <div className="h-20 w-20 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-950/30 dark:to-amber-900/30 flex items-center justify-center">
+                  <span className="text-3xl">?</span>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Click to reveal your reward</p>
+              <button onClick={openBox} className="w-full rounded-lg bg-foreground px-4 py-2 text-xs font-medium text-background hover:bg-foreground/90">
+                Open Loot Box
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AchievementSystemDemo() {
+  const [unlocked, setUnlocked] = useState<number[]>([0, 1]);
+  const achievements = [
+    { id: 0, name: "First Steps", desc: "Complete tutorial", gem: "#22c55e", required: 1 },
+    { id: 1, name: "Collector", desc: "Gather 10 gems", gem: "#3b82f6", required: 10 },
+    { id: 2, name: "Treasure Hunter", desc: "Open 50 loot boxes", gem: "#a855f7", required: 50 },
+    { id: 3, name: "Gem Master", desc: "Collect all gem types", gem: "#ffd700", required: 100 },
+  ];
+
+  const toggle = (id: number) => {
+    setUnlocked((prev) => prev.includes(id) ? prev.filter((u) => u !== id) : [...prev, id]);
+  };
+
+  return (
+    <div className="w-full max-w-md">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm overflow-hidden dark:border-white/[.145]">
+        <div className="border-b border-black/[.06] px-4 py-3 dark:border-white/[.1]">
+          <div className="flex items-center gap-2">
+            <Star className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Achievements</h3>
+            <span className="ml-auto text-[10px] text-muted-foreground">{unlocked.length}/{achievements.length}</span>
+          </div>
+        </div>
+        <div className="p-4 space-y-2">
+          {achievements.map((a) => (
+            <button
+              key={a.id}
+              onClick={() => toggle(a.id)}
+              className={`flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all ${
+                unlocked.includes(a.id)
+                  ? "border-primary/30 bg-primary/5"
+                  : "border-black/[.08] opacity-60 dark:border-white/[.145]"
+              }`}
+            >
+              <GemRenderer color={a.gem} size={32} sparkle={unlocked.includes(a.id)} />
+              <div className="flex-1">
+                <p className="text-xs font-bold">{a.name}</p>
+                <p className="text-[10px] text-muted-foreground">{a.desc}</p>
+              </div>
+              {unlocked.includes(a.id) ? (
+                <Unlock className="h-3 w-3 text-primary" />
+              ) : (
+                <Lock className="h-3 w-3 text-muted-foreground" />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GemValueChartDemo() {
+  const gems = [
+    { name: "Diamond", color: "#b9f2ff", rarity: "Legendary", value: "10,000", change: "+12%" },
+    { name: "Ruby", color: "#ef4444", rarity: "Epic", value: "5,000", change: "+8%" },
+    { name: "Emerald", color: "#22c55e", rarity: "Rare", value: "2,500", change: "+5%" },
+    { name: "Sapphire", color: "#3b82f6", rarity: "Uncommon", value: "1,000", change: "+3%" },
+  ];
+
+  return (
+    <div className="w-full max-w-md">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm overflow-hidden dark:border-white/[.145]">
+        <div className="border-b border-black/[.06] px-4 py-3 dark:border-white/[.1]">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Gem Market</h3>
+          </div>
+        </div>
+        <div className="p-4 space-y-3">
+          {gems.map((g) => (
+            <div key={g.name} className="flex items-center gap-3 rounded-lg bg-muted/30 px-3 py-2">
+              <GemRenderer color={g.color} size={28} sparkle={false} />
+              <div className="flex-1">
+                <p className="text-xs font-bold">{g.name}</p>
+                <p className="text-[9px] text-muted-foreground">{g.rarity}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs font-mono font-bold">{g.value}</p>
+                <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{g.change}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -109,11 +313,14 @@ export default function GemCrystalPage() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Gem Crystal</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Gem Crystal
+          </h1>
           <Badge variant="primary">Visual</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          SVG gem crystal visualizations with sparkle effects, color variants, size scaling, and collection display.
+          SVG gem crystal visualizations with sparkle effects, color variants, size scaling, and
+          collection display.
         </p>
       </header>
 
@@ -127,25 +334,78 @@ export default function GemCrystalPage() {
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Gem Collection</h2>
-        <ComponentPreview>
-          <GemShowcaseDemo />
-        </ComponentPreview>
-      </section>
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Size Variants</h2>
-        <ComponentPreview>
-          <GemSizeDemo />
-        </ComponentPreview>
-      </section>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Gem Showcase</h3>
+          <p className="text-sm text-muted-foreground">
+            Different gem types with sparkle effects.
+          </p>
+          <ComponentPreview id="gem-showcase">
+            <GemShowcaseDemo />
+          </ComponentPreview>
+        </div>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Inventory Display</h2>
-        <ComponentPreview>
-          <GemCollectionDemo />
-        </ComponentPreview>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Size Scale</h3>
+          <p className="text-sm text-muted-foreground">
+            Different gem sizes from small to large.
+          </p>
+          <ComponentPreview id="gem-size">
+            <SizeScaleDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Inventory Display</h3>
+          <p className="text-sm text-muted-foreground">
+            Collection grid with gem counts.
+          </p>
+          <ComponentPreview id="gem-inventory">
+            <InventoryDisplayDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Premium Badge</h3>
+          <p className="text-sm text-muted-foreground">
+            Membership tier with gem indicator.
+          </p>
+          <ComponentPreview id="gem-premium">
+            <PremiumBadgeDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Loot Box</h3>
+          <p className="text-sm text-muted-foreground">
+            Gaming reward box with random gem drops.
+          </p>
+          <ComponentPreview id="gem-loot">
+            <LootBoxDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Achievement System</h3>
+          <p className="text-sm text-muted-foreground">
+            Unlockable achievements with gem rewards.
+          </p>
+          <ComponentPreview id="gem-achievements">
+            <AchievementSystemDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Gem Value Chart</h3>
+          <p className="text-sm text-muted-foreground">
+            Market prices and rarity display.
+          </p>
+          <ComponentPreview id="gem-chart">
+            <GemValueChartDemo />
+          </ComponentPreview>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4">
@@ -161,10 +421,30 @@ export default function GemCrystalPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">color</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">{'"#3b82f6"'}</td><td className="px-4 py-3">No</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">size</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">80</td><td className="px-4 py-3">No</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">sparkle</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">color</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">"#3b82f6"</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">size</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">80</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">sparkle</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
             </tbody>
           </table>
         </div>
