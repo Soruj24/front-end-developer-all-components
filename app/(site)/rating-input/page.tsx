@@ -313,14 +313,14 @@ export default function RatingInputPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">icon</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"star" | "heart" | "thumb"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"star"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"star" | "heart" | "thumb"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"star"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"sm" | "md" | "lg"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"md"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"sm" | "md" | "lg"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"md"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

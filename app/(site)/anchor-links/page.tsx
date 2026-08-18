@@ -155,7 +155,7 @@ export default function AnchorLinksPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">links</td>
-                <td className="px-4 py-3 text-muted-foreground">{"{ label: string; href: string }[]"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{"{ label: string; href: string }[]"}'}</td>
                 <td className="px-4 py-3 text-muted-foreground">[]</td>
                 <td className="px-4 py-3">Yes</td>
               </tr>

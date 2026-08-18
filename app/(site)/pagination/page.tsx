@@ -376,7 +376,7 @@ export default function PaginationPage() {
                       <td className="whitespace-nowrap px-4 py-3 text-sm font-medium">#{id}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-sm">User {id}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">user{id}@ex.com</td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">{["Admin", "Editor", "Viewer"][id % 3]}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">{'{["Admin", "Editor", "Viewer"][id % 3]}'}</td>
                       <td className="whitespace-nowrap px-4 py-3">
                         <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${id % 2 === 0 ? "bg-green-100 text-green-700 dark:bg-green-900/30" : "bg-muted text-muted-foreground dark:bg-muted"}`}>
                           {id % 2 === 0 ? "Active" : "Inactive"}

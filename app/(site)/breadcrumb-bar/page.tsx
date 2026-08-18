@@ -264,13 +264,13 @@ export default function BreadcrumbBarPage() {
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">separator</td>
                 <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">{"/"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{"/"}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default" | "pill" | "muted"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default" | "pill" | "muted"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

@@ -129,7 +129,7 @@ export default function AspectRatioPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">ratio</td>
-                <td className="px-4 py-3 text-muted-foreground">"16:9" | "4:3" | "1:1" | "2:3" | "3:4" | "9:16"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"16:9" | "4:3" | "1:1" | "2:3" | "3:4" | "9:16"'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

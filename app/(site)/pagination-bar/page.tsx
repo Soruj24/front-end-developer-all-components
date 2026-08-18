@@ -275,7 +275,7 @@ export default function PaginationBarPage() {
                     <td className="whitespace-nowrap px-4 py-2.5">
                       <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-sm text-muted-foreground">{["Admin", "Editor", "Viewer"][i % 3]}</td>
+                    <td className="whitespace-nowrap px-4 py-2.5 text-sm text-muted-foreground">{'{["Admin", "Editor", "Viewer"][i % 3]}'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -321,14 +321,14 @@ export default function PaginationBarPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default" | "pill" | "outline"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default" | "pill" | "outline"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"sm" | "md" | "lg"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"md"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"sm" | "md" | "lg"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"md"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

@@ -348,7 +348,7 @@ export default function QuickNavPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default" | "compact" | "flat"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default" | "compact" | "flat"`}'}</td>
                 <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
                 <td className="px-4 py-3">No</td>
               </tr>

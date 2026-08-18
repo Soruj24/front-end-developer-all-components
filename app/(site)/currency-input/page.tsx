@@ -117,7 +117,7 @@ export default function CurrencyInputPage() {
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">currency</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"USD"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"USD"'}</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>

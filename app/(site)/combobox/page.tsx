@@ -364,19 +364,19 @@ export default function ComboboxPage() {
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"Select..."</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"Select..."'}</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">searchPlaceholder</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"Search..."</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"Search..."'}</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">emptyMessage</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"No results found."</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"No results found."'}</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">

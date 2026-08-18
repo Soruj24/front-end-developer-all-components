@@ -287,8 +287,8 @@ export default function ResponsiveContainerPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">maxWidth</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"sm" | "md" | "lg" | "xl" | "2xl" | "prose"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"xl"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"sm" | "md" | "lg" | "xl" | "2xl" | "prose"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"xl"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

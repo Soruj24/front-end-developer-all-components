@@ -275,8 +275,8 @@ export default function ClusterLayoutPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">justify</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"start" | "center" | "end"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"start"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"start" | "center" | "end"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"start"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

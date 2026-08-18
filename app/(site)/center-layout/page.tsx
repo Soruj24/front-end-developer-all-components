@@ -237,8 +237,8 @@ export default function CenterLayoutPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">axis</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"both" | "x" | "y"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"both"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"both" | "x" | "y"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"both"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

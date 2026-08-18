@@ -116,8 +116,8 @@ export default function ButtonSpotlightPage() {
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">"default" | "outline"</td>
-                <td className="px-4 py-3 text-muted-foreground">"default"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"default" | "outline"'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"default"'}</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>

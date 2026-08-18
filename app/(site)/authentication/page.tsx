@@ -110,7 +110,7 @@ export default function Authentication() {
               {AUTH_PATTERNS.map((pattern) => (
                 <tr key={pattern.registryId} className="border-b">
                   <td className="px-4 py-3 font-mono text-xs">{pattern.label}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{pattern.Render.name || "Component"}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{'{pattern.Render.name || "Component"}'}</td>
                   <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{pattern.registryId}</td>
                   <td className="px-4 py-3 text-muted-foreground">Authentication form for {pattern.label.toLowerCase()} flow</td>
                 </tr>

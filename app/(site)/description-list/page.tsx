@@ -183,7 +183,7 @@ export default function DescriptionListPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">{"{ label: string; value: string; icon?: LucideIcon }[]"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{"{ label: string; value: string; icon?: LucideIcon }[]"}'}</td>
                 <td className="px-4 py-3 text-muted-foreground">[]</td>
                 <td className="px-4 py-3">Yes</td>
               </tr>

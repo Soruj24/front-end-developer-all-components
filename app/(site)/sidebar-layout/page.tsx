@@ -294,8 +294,8 @@ export default function SidebarLayoutPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">side</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"left" | "right"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"left"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"left" | "right"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"left"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

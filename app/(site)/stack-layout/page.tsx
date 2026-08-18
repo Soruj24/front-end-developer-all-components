@@ -237,8 +237,8 @@ export default function StackLayoutPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"vertical" | "horizontal"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"vertical"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical" | "horizontal"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

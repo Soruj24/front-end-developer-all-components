@@ -336,7 +336,7 @@ export default function SplitViewPage() {
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"horizontal" | "vertical"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"horizontal" | "vertical"`}'}</td>
                 <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
                 <td className="px-4 py-3">No</td>
               </tr>

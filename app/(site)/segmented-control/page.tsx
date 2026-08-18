@@ -312,8 +312,8 @@ export default function SegmentedControlPage() {
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"sm" | "md" | "lg"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"md"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"sm" | "md" | "lg"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"md"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
             </tbody>

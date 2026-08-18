@@ -684,19 +684,19 @@ export default function AlertDialogPage() {
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">cancelText</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"Cancel"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"Cancel"'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">confirmText</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"Confirm"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"Confirm"'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">confirmVariant</td>
-                <td className="px-4 py-3 text-muted-foreground">"default" | "destructive"</td>
-                <td className="px-4 py-3 text-muted-foreground">"default"</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"default" | "destructive"'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'"default"'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

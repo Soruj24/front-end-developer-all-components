@@ -194,7 +194,7 @@ export default function BreadcrumbPage() {
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">separator</td>
                 <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">{"/"}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{"/"}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

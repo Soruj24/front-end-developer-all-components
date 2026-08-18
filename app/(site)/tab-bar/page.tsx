@@ -319,8 +319,8 @@ export default function TabBarPage() {
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default" | "filled" | "pill" | "minimal"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"default"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default" | "filled" | "pill" | "minimal"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"default"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
             </tbody>

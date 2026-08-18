@@ -239,14 +239,14 @@ export default function DragHandlePage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"vertical" | "horizontal" | "dots" | "arrows"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"vertical"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical" | "horizontal" | "dots" | "arrows"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"sm" | "md" | "lg"`}</td>
-                <td className="px-4 py-3 text-muted-foreground">{`"md"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"sm" | "md" | "lg"`}'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{'{`"md"`}'}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>
