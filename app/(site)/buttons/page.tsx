@@ -416,6 +416,49 @@ export default function ButtonsPage() {
           </div>
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;primary&quot; | &quot;secondary&quot; | &quot;outline&quot; | &quot;ghost&quot; | &quot;destructive&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;primary&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">size</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;icon&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,12 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { SpotlightSearch, type SpotlightItem } from "@/components/ui";
 import {
   allSpotlightItems,
   quickSpotlightItems,
 } from "@/components/spotlight-search/demo";
+
+const installCommand = `npx component-library@latest add spotlight-search`;
+
+const usageCode = `import { SpotlightSearch } from "@/components/ui";
+
+<SpotlightSearch
+  items={spotlightItems}
+  open={open}
+  onOpenChange={setOpen}
+  storageKey="spotlight"
+/>`;
 
 function wireActions(items: SpotlightItem[], onRun: (label: string) => void): SpotlightItem[] {
   return items.map((item) => ({
@@ -95,9 +108,12 @@ export default function SpotlightSearchPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Spotlight Search
-        </h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Spotlight Search
+          </h1>
+          <Badge variant="primary">3 examples</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           An animated, macOS-style search dialog. Instant filtering with
           highlighted matches, category sections, persisted recents and a
@@ -106,50 +122,148 @@ export default function SpotlightSearchPage() {
         </p>
       </header>
 
-      <ComponentPreview id="spotlight-search-full">
-        <div className="flex w-full flex-col items-center gap-4 py-6">
-          <TriggerButton label="Search everything" onOpen={() => setOpenFull(true)} kbd />
-          <ActionHint lastAction={lastAction} />
-          <SpotlightSearch
-            items={fullItems}
-            open={openFull}
-            onOpenChange={setOpenFull}
-            storageKey="page:spotlight-search-full"
-          />
-        </div>
-      </ComponentPreview>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-      <ComponentPreview id="spotlight-search-quick">
-        <div className="flex w-full flex-col items-center gap-4 py-6">
-          <TriggerButton label="Launch quickly" onOpen={() => setOpenQuick(true)} />
-          <ActionHint lastAction={lastAction} />
-          <SpotlightSearch
-            items={quickItems}
-            open={openQuick}
-            onOpenChange={setOpenQuick}
-            placeholder="Type an app or action..."
-            width={440}
-            maxHeight={340}
-            storageKey="page:spotlight-search-quick"
-          />
-        </div>
-      </ComponentPreview>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
-      <ComponentPreview id="spotlight-search-trigger">
-        <div className="flex w-full flex-col items-center gap-6 py-6">
-          <SearchBarTrigger onOpen={() => setOpenTrigger(true)} />
-          <p className="text-xs text-subtle">
-            Built-in shortcut disabled — the trigger controls when it opens.
-          </p>
-          <SpotlightSearch
-            items={fullItems}
-            open={openTrigger}
-            onOpenChange={setOpenTrigger}
-            bindShortcut={false}
-            storageKey="page:spotlight-search-trigger"
-          />
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-medium text-foreground">Full Spotlight</h3>
+            <p className="text-sm text-muted-foreground">Complete search with categories, recents, and keyboard shortcuts.</p>
+          </div>
+          <ComponentPreview id="spotlight-search-full">
+            <div className="flex w-full flex-col items-center gap-4 py-6">
+              <TriggerButton label="Search everything" onOpen={() => setOpenFull(true)} kbd />
+              <ActionHint lastAction={lastAction} />
+              <SpotlightSearch
+                items={fullItems}
+                open={openFull}
+                onOpenChange={setOpenFull}
+                storageKey="page:spotlight-search-full"
+              />
+            </div>
+          </ComponentPreview>
         </div>
-      </ComponentPreview>
+
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-medium text-foreground">Quick Launch</h3>
+            <p className="text-sm text-muted-foreground">Compact variant with custom width and height.</p>
+          </div>
+          <ComponentPreview id="spotlight-search-quick">
+            <div className="flex w-full flex-col items-center gap-4 py-6">
+              <TriggerButton label="Launch quickly" onOpen={() => setOpenQuick(true)} />
+              <ActionHint lastAction={lastAction} />
+              <SpotlightSearch
+                items={quickItems}
+                open={openQuick}
+                onOpenChange={setOpenQuick}
+                placeholder="Type an app or action..."
+                width={440}
+                maxHeight={340}
+                storageKey="page:spotlight-search-quick"
+              />
+            </div>
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-medium text-foreground">Custom Trigger</h3>
+            <p className="text-sm text-muted-foreground">Use a custom trigger button with shortcut disabled.</p>
+          </div>
+          <ComponentPreview id="spotlight-search-trigger">
+            <div className="flex w-full flex-col items-center gap-6 py-6">
+              <SearchBarTrigger onOpen={() => setOpenTrigger(true)} />
+              <p className="text-xs text-subtle">
+                Built-in shortcut disabled — the trigger controls when it opens.
+              </p>
+              <SpotlightSearch
+                items={fullItems}
+                open={openTrigger}
+                onOpenChange={setOpenTrigger}
+                bindShortcut={false}
+                storageKey="page:spotlight-search-trigger"
+              />
+            </div>
+          </ComponentPreview>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">items</td>
+                <td className="px-4 py-3 text-muted-foreground">SpotlightItem[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">open</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onOpenChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(open: boolean) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Search...&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">width</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">560</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">maxHeight</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">440</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">storageKey</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">bindShortcut</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

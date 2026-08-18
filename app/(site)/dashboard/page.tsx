@@ -1,6 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add dashboard`;
+
+const usageCode = `import { Dashboard } from "@/features/dashboard";
+
+<Dashboard />`;
 
 const periods = ["1D", "7D", "30D", "90D", "1Y"];
 
@@ -238,218 +246,286 @@ export default function Dashboard() {
   const [activePeriod, setActivePeriod] = useState("30D");
 
   return (
-    <div className="flex flex-col gap-6 p-4 sm:p-6 lg:p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Dashboard</h1>
-          <p className="text-muted-foreground dark:text-muted-foreground/70 text-sm mt-1">Your business metrics at a glance</p>
+          <Badge variant="primary">6 examples</Badge>
         </div>
-        <div className="flex gap-1 bg-muted dark:bg-muted p-1 rounded-lg">
-          {periods.map((p) => (
-            <button
-              key={p}
-              onClick={() => setActivePeriod(p)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-                activePeriod === p
-                  ? "bg-white dark:bg-muted text-foreground shadow-sm"
-                  : "text-muted-foreground dark:text-muted-foreground/70 hover:text-zinc-800 dark:hover:text-zinc-200"
-              }`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-      </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Business metrics dashboard with KPI cards, revenue charts, orders, activity feeds, and notifications.
+        </p>
+      </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {kpiCards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-xl border border-border bg-background p-5 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-medium text-muted-foreground dark:text-muted-foreground/70 uppercase tracking-wider">{card.label}</span>
-              <div className="rounded-lg bg-muted/40 dark:bg-muted p-2">{card.icon}</div>
-            </div>
-            <div className="text-2xl font-bold text-foreground">{card.value}</div>
-            <div className={`mt-1 flex items-center gap-1 text-sm font-medium ${card.up ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
-              {card.up ? (
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-                </svg>
-              ) : (
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                </svg>
-              )}
-              {card.change}
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-foreground mb-4">Revenue Over Time</h2>
-          <div className="flex items-end gap-1.5 h-56 sm:h-64">
-            {revenueMonths.map((m) => (
-              <div key={m.label} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
-                <div
-                  className="w-full rounded-t-md bg-gradient-to-t from-blue-500 to-blue-400 dark:from-blue-600 dark:to-blue-500 hover:from-blue-600 hover:to-blue-500 transition-all min-h-[4px]"
-                  style={{ height: `${m.value}%` }}
-                />
-                <span className="text-[10px] text-muted-foreground/70 dark:text-muted-foreground">{m.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-foreground mb-4">Sales by Category</h2>
-          <div className="flex flex-col gap-5">
-            {categoryData.map((c) => (
-              <div key={c.label} className="flex items-center gap-3">
-                <span className="w-24 text-sm text-muted-foreground text-right">{c.label}</span>
-                <div className="flex-1 h-5 bg-muted dark:bg-muted rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full ${c.color} transition-all`} style={{ width: `${c.pct}%` }} />
-                </div>
-                <span className="w-10 text-sm font-medium text-zinc-800 dark:text-zinc-200">{c.pct}%</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 rounded-xl border border-border bg-background p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-semibold text-foreground">Recent Orders</h2>
-            <button className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View All</button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Order</th>
-                  <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Customer</th>
-                  <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider hidden sm:table-cell">Product</th>
-                  <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Status</th>
-                  <th scope="col" className="text-right py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Amount</th>
-                  <th scope="col" className="text-right py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider hidden md:table-cell">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((o) => (
-                  <tr key={o.id} className="border-b border-border last:border-0 hover:bg-muted/40 dark:hover:bg-muted/50 transition-colors">
-                    <td className="py-3 px-2 font-medium text-foreground">{o.id}</td>
-                    <td className="py-3 px-2 text-muted-foreground">{o.customer}</td>
-                    <td className="py-3 px-2 text-muted-foreground hidden sm:table-cell">{o.product}</td>
-                    <td className="py-3 px-2">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${statusStyles[o.status] || ""}`}>
-                        {o.status}
-                      </span>
-                    </td>
-                    <td className="py-3 px-2 text-right font-medium text-foreground">{o.amount}</td>
-                    <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground/70 text-xs hidden md:table-cell">{o.date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-foreground mb-4">Recent Activity</h2>
-          <div className="space-y-5 max-h-[380px] overflow-y-auto pr-1">
-            {activityGroups.map((group) => (
-              <div key={group.group}>
-                <p className="text-xs font-semibold text-muted-foreground/70 dark:text-muted-foreground uppercase tracking-wider mb-2">{group.group}</p>
-                <div className="space-y-3">
-                  {group.items.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className={`mt-1.5 h-2.5 w-2.5 rounded-full shrink-0 ${item.color}`} />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground">
-                          <span className="font-medium text-foreground">{item.user}</span> {item.action}
-                        </p>
-                        <p className="text-xs text-muted-foreground/70 dark:text-muted-foreground mt-0.5">{item.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-foreground mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {quickActions.map((action) => (
-              <button
-                key={action.label}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted dark:hover:bg-muted hover:border-foreground/20 transition-all cursor-pointer group"
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">KPI Cards</h3>
+          <p className="text-sm text-muted-foreground">Display key business metrics with trend indicators and icons.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 p-6 rounded-lg border border-border bg-background">
+            {kpiCards.map((card) => (
+              <div
+                key={card.label}
+                className="rounded-xl border border-border bg-background p-5 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="text-muted-foreground dark:text-muted-foreground/70 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {action.icon}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-muted-foreground dark:text-muted-foreground/70 uppercase tracking-wider">{card.label}</span>
+                  <div className="rounded-lg bg-muted/40 dark:bg-muted p-2">{card.icon}</div>
                 </div>
-                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground dark:group-hover:text-zinc-100 transition-colors">{action.label}</span>
-              </button>
+                <div className="text-2xl font-bold text-foreground">{card.value}</div>
+                <div className={`mt-1 flex items-center gap-1 text-sm font-medium ${card.up ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+                  {card.up ? (
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                    </svg>
+                  ) : (
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                    </svg>
+                  )}
+                  {card.change}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-        <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-          <h2 className="text-base font-semibold text-foreground mb-4">Traffic Sources</h2>
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div
-              className="h-40 w-40 shrink-0 rounded-full"
-              style={{
-                background: `conic-gradient(
-                  ${trafficSources.map((s, i) => {
-                    const start = trafficSources.slice(0, i).reduce((sum, t) => sum + t.pct, 0);
-                    return `${s.color} ${start}% ${start + s.pct}%`;
-                  }).join(", ")}
-                )`,
-              }}
-            />
-            <div className="flex flex-col gap-2.5">
-              {trafficSources.map((s) => (
-                <div key={s.label} className="flex items-center gap-2.5">
-                  <div className="h-3 w-3 rounded-sm shrink-0" style={{ backgroundColor: s.color }} />
-                  <span className="text-sm text-muted-foreground">{s.label}</span>
-                  <span className="text-sm font-semibold text-foreground">{s.pct}%</span>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Revenue Chart</h3>
+          <p className="text-sm text-muted-foreground">Monthly revenue visualization with category breakdown.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 rounded-lg border border-border bg-background">
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <h2 className="text-base font-semibold text-foreground mb-4">Revenue Over Time</h2>
+              <div className="flex items-end gap-1.5 h-56 sm:h-64">
+                {revenueMonths.map((m) => (
+                  <div key={m.label} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+                    <div
+                      className="w-full rounded-t-md bg-gradient-to-t from-blue-500 to-blue-400 dark:from-blue-600 dark:to-blue-500 hover:from-blue-600 hover:to-blue-500 transition-all min-h-[4px]"
+                      style={{ height: `${m.value}%` }}
+                    />
+                    <span className="text-[10px] text-muted-foreground/70 dark:text-muted-foreground">{m.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <h2 className="text-base font-semibold text-foreground mb-4">Sales by Category</h2>
+              <div className="flex flex-col gap-5">
+                {categoryData.map((c) => (
+                  <div key={c.label} className="flex items-center gap-3">
+                    <span className="w-24 text-sm text-muted-foreground text-right">{c.label}</span>
+                    <div className="flex-1 h-5 bg-muted dark:bg-muted rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full ${c.color} transition-all`} style={{ width: `${c.pct}%` }} />
+                    </div>
+                    <span className="w-10 text-sm font-medium text-zinc-800 dark:text-zinc-200">{c.pct}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Recent Orders</h3>
+          <p className="text-sm text-muted-foreground">Track order status, customer details, and amounts.</p>
+          <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Order</th>
+                    <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Customer</th>
+                    <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider hidden sm:table-cell">Product</th>
+                    <th scope="col" className="text-left py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Status</th>
+                    <th scope="col" className="text-right py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider">Amount</th>
+                    <th scope="col" className="text-right py-3 px-2 font-medium text-muted-foreground dark:text-muted-foreground/70 text-xs uppercase tracking-wider hidden md:table-cell">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map((o) => (
+                    <tr key={o.id} className="border-b border-border last:border-0 hover:bg-muted/40 dark:hover:bg-muted/50 transition-colors">
+                      <td className="py-3 px-2 font-medium text-foreground">{o.id}</td>
+                      <td className="py-3 px-2 text-muted-foreground">{o.customer}</td>
+                      <td className="py-3 px-2 text-muted-foreground hidden sm:table-cell">{o.product}</td>
+                      <td className="py-3 px-2">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${statusStyles[o.status] || ""}`}>
+                          {o.status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 text-right font-medium text-foreground">{o.amount}</td>
+                      <td className="py-3 px-2 text-right text-muted-foreground dark:text-muted-foreground/70 text-xs hidden md:table-cell">{o.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Activity & Quick Actions</h3>
+          <p className="text-sm text-muted-foreground">Monitor user activity and access common actions quickly.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 rounded-lg border border-border bg-background">
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <h2 className="text-base font-semibold text-foreground mb-4">Recent Activity</h2>
+              <div className="space-y-5 max-h-[380px] overflow-y-auto pr-1">
+                {activityGroups.map((group) => (
+                  <div key={group.group}>
+                    <p className="text-xs font-semibold text-muted-foreground/70 dark:text-muted-foreground uppercase tracking-wider mb-2">{group.group}</p>
+                    <div className="space-y-3">
+                      {group.items.map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <div className={`mt-1.5 h-2.5 w-2.5 rounded-full shrink-0 ${item.color}`} />
+                          <div className="min-w-0">
+                            <p className="text-sm text-muted-foreground">
+                              <span className="font-medium text-foreground">{item.user}</span> {item.action}
+                            </p>
+                            <p className="text-xs text-muted-foreground/70 dark:text-muted-foreground mt-0.5">{item.time}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <h2 className="text-base font-semibold text-foreground mb-4">Quick Actions</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {quickActions.map((action) => (
+                  <button
+                    key={action.label}
+                    className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted dark:hover:bg-muted hover:border-foreground/20 transition-all cursor-pointer group"
+                  >
+                    <div className="text-muted-foreground dark:text-muted-foreground/70 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {action.icon}
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground dark:group-hover:text-zinc-100 transition-colors">{action.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Traffic Sources</h3>
+          <p className="text-sm text-muted-foreground">Visualize traffic distribution with a conic gradient chart.</p>
+          <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div
+                className="h-40 w-40 shrink-0 rounded-full"
+                style={{
+                  background: `conic-gradient(
+                    ${trafficSources.map((s, i) => {
+                      const start = trafficSources.slice(0, i).reduce((sum, t) => sum + t.pct, 0);
+                      return `${s.color} ${start}% ${start + s.pct}%`;
+                    }).join(", ")}
+                  )`,
+                }}
+              />
+              <div className="flex flex-col gap-2.5">
+                {trafficSources.map((s) => (
+                  <div key={s.label} className="flex items-center gap-2.5">
+                    <div className="h-3 w-3 rounded-sm shrink-0" style={{ backgroundColor: s.color }} />
+                    <span className="text-sm text-muted-foreground">{s.label}</span>
+                    <span className="text-sm font-semibold text-foreground">{s.pct}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
+          <p className="text-sm text-muted-foreground">Real-time notification feed with read/unread states.</p>
+          <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+            <div className="space-y-1">
+              {notifications.map((n, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
+                    !n.read ? "bg-blue-50/50 dark:bg-blue-950/20 border-l-2 border-blue-500" : "hover:bg-muted/40 dark:hover:bg-muted/50"
+                  }`}
+                >
+                  <div className="mt-0.5 shrink-0">{n.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm ${!n.read ? "font-medium text-foreground" : "text-muted-foreground"}`}>
+                      {n.text}
+                    </p>
+                    <p className="text-xs text-muted-foreground/70 dark:text-muted-foreground mt-0.5">{n.time}</p>
+                  </div>
+                  {!n.read && <div className="h-2 w-2 rounded-full bg-blue-500 shrink-0 mt-1.5" />}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-semibold text-foreground">Notifications</h2>
-          <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-500 text-[10px] font-bold text-white">3</span>
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">kpiCards</td>
+                <td className="px-4 py-3 text-muted-foreground">KpiCard[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">revenueMonths</td>
+                <td className="px-4 py-3 text-muted-foreground">RevenueMonth[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">orders</td>
+                <td className="px-4 py-3 text-muted-foreground">Order[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">periods</td>
+                <td className="px-4 py-3 text-muted-foreground">string[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div className="space-y-1">
-          {notifications.map((n, i) => (
-            <div
-              key={i}
-              className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
-                !n.read ? "bg-blue-50/50 dark:bg-blue-950/20 border-l-2 border-blue-500" : "hover:bg-muted/40 dark:hover:bg-muted/50"
-              }`}
-            >
-              <div className="mt-0.5 shrink-0">{n.icon}</div>
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm ${!n.read ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                  {n.text}
-                </p>
-                <p className="text-xs text-muted-foreground/70 dark:text-muted-foreground mt-0.5">{n.time}</p>
-              </div>
-              {!n.read && <div className="h-2 w-2 rounded-full bg-blue-500 shrink-0 mt-1.5" />}
-            </div>
-          ))}
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   PropertyCard,
   PropertyFilters,
@@ -16,6 +18,13 @@ import {
   formatPrice,
 } from "@/features/real-estate";
 import type { PropertyType, ListingStatus } from "@/features/real-estate";
+
+const installCommand = `npx component-library@latest add real-estate`;
+
+const usageCode = `import { PropertyCard, PropertyFilters, MortgageCalculator } from "@/features/real-estate";
+
+<PropertyFilters onTypeChange={setType} />
+<PropertyCard property={property} />`;
 
 export default function RealEstatePage() {
   const [type, setType] = useState<PropertyType>("All");
@@ -42,63 +51,136 @@ export default function RealEstatePage() {
   }, [type, status, search, minPrice, maxPrice, minBeds, minBaths]);
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 p-6 sm:p-8 lg:p-12">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Real Estate
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          Find your dream home with powerful search and insights.
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Real Estate</h1>
+          <Badge variant="primary">8 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Real estate listings with filters, featured properties, mortgage calculator, and market trends.
         </p>
       </header>
 
-      {featured && <FeaturedProperty property={featured} />}
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1">
-          <div className="mb-6">
-            <p className="text-sm text-muted-foreground">
-              {filtered.length} properties found
-            </p>
-          </div>
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {filtered.length === 0 ? (
-              <div className="col-span-full py-16 text-center">
-                <p className="text-muted-foreground">No properties match your criteria.</p>
-              </div>
-            ) : (
-              filtered.map((p) => <PropertyCard key={p.id} property={p} />)
-            )}
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Featured Property</h3>
+          <p className="text-sm text-muted-foreground">Highlighted featured property with large image and details.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            {featured && <FeaturedProperty property={featured} />}
           </div>
         </div>
 
-        <aside className="w-full shrink-0 space-y-6 lg:w-80">
-          <PropertyFilters
-            activeType={type}
-            activeStatus={status}
-            search={search}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            minBeds={minBeds}
-            minBaths={minBaths}
-            onTypeChange={setType}
-            onStatusChange={setStatus}
-            onSearchChange={setSearch}
-            onMinPriceChange={setMinPrice}
-            onMaxPriceChange={setMaxPrice}
-            onMinBedsChange={setMinBeds}
-            onMinBathsChange={setMinBaths}
-          />
-          <AgentCard />
-          <MortgageCalculator />
-          <MarketTrendsChart />
-          <NeighborhoodInfoCard />
-          <SchoolRatingsList />
-          <PriceHistoryList />
-          <OpenHouseSchedule />
-        </aside>
-      </div>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Property Grid with Filters</h3>
+          <p className="text-sm text-muted-foreground">Filterable property grid with sidebar tools.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <div className="flex flex-col gap-8 lg:flex-row">
+              <div className="flex-1">
+                <p className="text-sm text-muted-foreground mb-4">{filtered.length} properties found</p>
+                <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {filtered.length === 0 ? (
+                    <div className="col-span-full py-16 text-center">
+                      <p className="text-muted-foreground">No properties match your criteria.</p>
+                    </div>
+                  ) : (
+                    filtered.map((p) => <PropertyCard key={p.id} property={p} />)
+                  )}
+                </div>
+              </div>
+              <aside className="w-full shrink-0 space-y-6 lg:w-80">
+                <PropertyFilters
+                  activeType={type}
+                  activeStatus={status}
+                  search={search}
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                  minBeds={minBeds}
+                  minBaths={minBaths}
+                  onTypeChange={setType}
+                  onStatusChange={setStatus}
+                  onSearchChange={setSearch}
+                  onMinPriceChange={setMinPrice}
+                  onMaxPriceChange={setMaxPrice}
+                  onMinBedsChange={setMinBeds}
+                  onMinBathsChange={setMinBaths}
+                />
+                <AgentCard />
+                <MortgageCalculator />
+                <MarketTrendsChart />
+                <NeighborhoodInfoCard />
+                <SchoolRatingsList />
+                <PriceHistoryList />
+                <OpenHouseSchedule />
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">property</td>
+                <td className="px-4 py-3 text-muted-foreground">Property</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">activeType</td>
+                <td className="px-4 py-3 text-muted-foreground">PropertyType</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;All&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onTypeChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(type: PropertyType) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">search</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

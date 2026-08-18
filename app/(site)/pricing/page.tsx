@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { ThreeColumnStandard } from "./components/ThreeColumnStandard";
 import { FourColumnGrid } from "./components/FourColumnGrid";
 import { AnnualMonthlyToggle } from "./components/AnnualMonthlyToggle";
@@ -32,6 +34,23 @@ import { SeatBasedTeamDiscount } from "./components/SeatBasedTeamDiscount";
 import { HybridPricing } from "./components/HybridPricing";
 import { GrandfatheredPricing } from "./components/GrandfatheredPricing";
 import { PriceAnchoring } from "./components/PriceAnchoring";
+
+const pricingProps = [
+  { prop: "variant", type: "\"three-column\" | \"four-column\" | \"toggle\" | \"enterprise\"", default: "\"three-column\"", required: "No" },
+  { prop: "plans", type: "PricingPlan[]", default: "-", required: "Yes" },
+  { prop: "annual", type: "boolean", default: "false", required: "No" },
+  { prop: "showFeatures", type: "boolean", default: "true", required: "No" },
+  { prop: "onSelect", type: "(plan: string) => void", default: "-", required: "No" },
+];
+
+const installCommand = `npx component-library@latest add pricing`;
+
+const usageCode = `import { PricingTable } from "@/components/pricing";
+
+<PricingTable
+  plans={pricingPlans}
+  annual={isAnnual}
+/>`;
 
 const STYLES: Array<{ label: string; Render: React.ComponentType; registryId: string }> = [
   { label: "3-Column Standard", Render: ThreeColumnStandard, registryId: "pricing-three-column" },
@@ -73,9 +92,28 @@ export default function Pricing() {
   return (
     <div className="mx-auto max-w-7xl space-y-24 px-4 py-12 sm:px-6 lg:px-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight">Simple, transparent pricing</h1>
+        <div className="flex items-center justify-center gap-3">
+          <h1 className="text-4xl font-bold tracking-tight">Simple, transparent pricing</h1>
+          <Badge variant="primary">{STYLES.length} layouts</Badge>
+        </div>
         <p className="mt-3 text-muted-foreground dark:text-muted-foreground/70">Choose the plan that fits your needs. No hidden fees. No surprises.</p>
       </div>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
       <section>
         <div className="mb-8 flex flex-wrap justify-center gap-2">
@@ -97,6 +135,33 @@ export default function Pricing() {
         <ComponentPreview id={registryId}>
           <Active />
         </ComponentPreview>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pricingProps.map((row, i) => (
+                <tr key={row.prop} className={i < pricingProps.length - 1 ? "border-b" : ""}>
+                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
+                  <td className="px-4 py-3">{row.required}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { DocsLayout } from "@/components/docs"
+import { Badge } from "@/components/design-system/Badge"
+import { CodeBlock } from "@/components/home/CodeBlock"
 
 const staticData = {
   users: 1247,
@@ -30,6 +31,23 @@ const mockCards = [
   { title: "Conversion Rate", value: "3.24%" },
 ]
 
+const installCommand = `npx component-library@latest add data-fetching`
+
+const usageCode = `// Static fetch (force-cache)
+const data = await fetch("/api/data", {
+  cache: "force-cache",
+});
+
+// Dynamic fetch (no-store)
+const data = await fetch("/api/data", {
+  cache: "no-store",
+});
+
+// Revalidating fetch (ISR)
+const data = await fetch("/api/data", {
+  next: { revalidate: 10 },
+});`
+
 function Skeleton({ className = "" }: { className?: string }) {
   return (
     <div className={`animate-pulse rounded bg-muted ${className}`} />
@@ -38,25 +56,104 @@ function Skeleton({ className = "" }: { className?: string }) {
 
 export default function DataFetchingPage() {
   return (
-    <DocsLayout
-      title="Data Fetching"
-      description="Interactive demos of data fetching patterns in Next.js."
-      contentClassName="flex flex-col gap-16"
-    >
-      <StaticFetchSection />
-      <DynamicFetchSection />
-      <IsrSection />
-      <ParallelFetchSection />
-      <SequentialFetchSection />
-      <ErrorHandlingSection />
-    </DocsLayout>
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Data Fetching</h1>
+          <Badge variant="primary">6 patterns</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Interactive demos of data fetching patterns in Next.js. Covers static, dynamic,
+          ISR, parallel, sequential, and error handling strategies.
+        </p>
+      </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-10">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <StaticFetchSection />
+        <DynamicFetchSection />
+        <IsrSection />
+        <ParallelFetchSection />
+        <SequentialFetchSection />
+        <ErrorHandlingSection />
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Pattern</th>
+                <th className="px-4 py-3 text-left font-medium">Cache Option</th>
+                <th className="px-4 py-3 text-left font-medium">Revalidate</th>
+                <th className="px-4 py-3 text-left font-medium">Best For</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Static Fetch</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;force-cache&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">Never</td>
+                <td className="px-4 py-3 text-muted-foreground">Content that rarely changes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Dynamic Fetch</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;no-store&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">Every request</td>
+                <td className="px-4 py-3 text-muted-foreground">Real-time data</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">ISR</td>
+                <td className="px-4 py-3 text-muted-foreground">time-based</td>
+                <td className="px-4 py-3 text-muted-foreground">Configurable</td>
+                <td className="px-4 py-3 text-muted-foreground">Semi-dynamic content</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Parallel Fetch</td>
+                <td className="px-4 py-3 text-muted-foreground">Mixed</td>
+                <td className="px-4 py-3 text-muted-foreground">Mixed</td>
+                <td className="px-4 py-3 text-muted-foreground">Independent data sources</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Sequential Fetch</td>
+                <td className="px-4 py-3 text-muted-foreground">Mixed</td>
+                <td className="px-4 py-3 text-muted-foreground">Mixed</td>
+                <td className="px-4 py-3 text-muted-foreground">Dependent data chains</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">Error Handling</td>
+                <td className="px-4 py-3 text-muted-foreground">try/catch</td>
+                <td className="px-4 py-3 text-muted-foreground">N/A</td>
+                <td className="px-4 py-3 text-muted-foreground">Graceful degradation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   )
 }
 
 function StaticFetchSection() {
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">1. Static Fetch (force-cache)</h2>
+      <h3 className="text-lg font-semibold">1. Static Fetch (force-cache)</h3>
       <p className="text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1.5 py-0.5 text-sm dark:bg-muted">cache: &quot;force-cache&quot;</code>{" "}
         (default) fetches data once and caches it indefinitely. Data never changes after the initial load — same as static generation.
@@ -92,7 +189,7 @@ function DynamicFetchSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">2. Dynamic Fetch (no-store)</h2>
+      <h3 className="text-lg font-semibold">2. Dynamic Fetch (no-store)</h3>
       <p className="text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1.5 py-0.5 text-sm dark:bg-muted">cache: &quot;no-store&quot;</code>{" "}
         fetches fresh data on every request. Each click simulates a new network request with different results.
@@ -153,7 +250,7 @@ function IsrSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">3. Revalidating Fetch (ISR) — revalidate: 10</h2>
+      <h3 className="text-lg font-semibold">3. Revalidating Fetch (ISR) — revalidate: 10</h3>
       <p className="text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1.5 py-0.5 text-sm dark:bg-muted">{'next: { revalidate: 10 }'}</code>{" "}
         revalidates data every 10 seconds. Counter auto-increments. Click to manually trigger revalidation.
@@ -205,7 +302,7 @@ function ParallelFetchSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">4. Parallel Fetching</h2>
+      <h3 className="text-lg font-semibold">4. Parallel Fetching</h3>
       <p className="text-sm text-muted-foreground">
         Multiple fetches start simultaneously using <code className="rounded bg-muted px-1.5 py-0.5 text-sm dark:bg-muted">Promise.all</code>. All requests run in parallel — total time is the slowest single request.
       </p>
@@ -266,16 +363,16 @@ function SequentialFetchSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">5. Sequential Fetching</h2>
+      <h3 className="text-lg font-semibold">5. Sequential Fetching</h3>
       <p className="text-sm text-muted-foreground">
         Fetches happen one after another. &quot;Fetch User&quot; completes first, then &quot;Fetch User&apos;s Orders&quot; uses the user data. Total time is the sum of all requests.
       </p>
 
       <div className="flex flex-col gap-4 rounded-lg border border-black/[.08] p-4 dark:border-white/[.145]">
         <div>
-          <h3 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+          <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
             Step 1: Fetch User
-          </h3>
+          </h4>
           {loadingUser ? (
             <div className="flex flex-col gap-2">
               <Skeleton className="h-4 w-40" />
@@ -291,9 +388,9 @@ function SequentialFetchSection() {
         </div>
 
         <div className="border-t border-black/[.08] pt-4 dark:border-white/[.145]">
-          <h3 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+          <h4 className="mb-2 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
             Step 2: Fetch User&apos;s Orders
-          </h3>
+          </h4>
           {loadingOrders ? (
             <div className="flex flex-col gap-2">
               <Skeleton className="h-4 w-full" />
@@ -363,7 +460,7 @@ function ErrorHandlingSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">6. Error Handling (try/catch)</h2>
+      <h3 className="text-lg font-semibold">6. Error Handling (try/catch)</h3>
       <p className="text-sm text-muted-foreground">
         Demonstrates wrapping fetches in <code className="rounded bg-muted px-1.5 py-0.5 text-sm dark:bg-muted">try/catch</code> blocks. Toggle to trigger a success or error state.
       </p>

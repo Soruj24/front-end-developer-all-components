@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   SearchDialog,
   SearchTrigger,
@@ -176,6 +178,21 @@ function FuzzyResultsDemo() {
 /* Page                                                               */
 /* ------------------------------------------------------------------ */
 
+const searchProps = [
+  { prop: "variant", type: "\"command-palette\" | \"inline\" | \"fuzzy\"", default: "\"command-palette\"", required: "No" },
+  { prop: "placeholder", type: "string", default: "\"Search...\"", required: "No" },
+  { prop: "onSearch", type: "(query: string) => void", default: "-", required: "No" },
+  { prop: "items", type: "SearchItem[]", default: "[]", required: "No" },
+  { prop: "hotkey", type: "string", default: "\"⌘K\"", required: "No" },
+];
+
+const installCommand = `npx component-library@latest add search`;
+
+const usageCode = `import { SearchDialog, SearchTrigger } from "@/components/search";
+
+<SearchTrigger onClick={() => setOpen(true)} />
+<SearchDialog open={open} onClose={() => setOpen(false)} />`;
+
 const FEATURES = [
   "Ctrl + K",
   "Command palette",
@@ -194,7 +211,10 @@ export default function SearchPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Search</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Search</h1>
+          <Badge variant="primary">2 variants</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           A premium documentation search experience — a command palette driven
           by fuzzy matching, with recent searches, popular components, category
@@ -212,6 +232,22 @@ export default function SearchPage() {
         </div>
       </header>
 
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
       <ComponentPreview id="search-command-palette">
         <DocumentationSearchDemo />
       </ComponentPreview>
@@ -219,6 +255,34 @@ export default function SearchPage() {
       <ComponentPreview id="search-fuzzy-results">
         <FuzzyResultsDemo />
       </ComponentPreview>
+    </section>
+
+    {/* API Reference */}
+    <section className="flex flex-col gap-4">
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+      <div className="overflow-hidden rounded-lg border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b bg-muted/50">
+              <th className="px-4 py-3 text-left font-medium">Prop</th>
+              <th className="px-4 py-3 text-left font-medium">Type</th>
+              <th className="px-4 py-3 text-left font-medium">Default</th>
+              <th className="px-4 py-3 text-left font-medium">Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchProps.map((row, i) => (
+              <tr key={row.prop} className={i < searchProps.length - 1 ? "border-b" : ""}>
+                <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
+                <td className="px-4 py-3">{row.required}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
     </div>
   );
 }

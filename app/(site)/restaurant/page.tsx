@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   useCart,
   useFavorites,
@@ -34,6 +36,13 @@ import {
   Footer,
 } from "@/features/restaurant";
 
+const installCommand = `npx component-library@latest add restaurant`;
+
+const usageCode = `import { RestaurantCard, MenuCard, CartDrawer } from "@/features/restaurant";
+
+<RestaurantCard restaurant={restaurant} />
+<MenuCard item={item} onAddToCart={addToCart} />`;
+
 export default function RestaurantPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const { cart, addToCart, removeFromCart, cartTotal, deliveryFee, itemCount } = useCart();
@@ -42,77 +51,157 @@ export default function RestaurantPage() {
   const [showAutocomplete, setShowAutocomplete] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background">
-      <RestaurantHeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} showAutocomplete={showAutocomplete} onShowAutocomplete={setShowAutocomplete} searchSuggestions={searchSuggestions} onSelectSuggestion={setSearchQuery} />
-
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-12 lg:px-8">
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {[{ label: "Restaurants", value: "200+", icon: "🏪" }, { label: "Menu Items", value: "1,500+", icon: "🍽️" }, { label: "Happy Customers", value: "50K+", icon: "😊" }, { label: "Avg Delivery", value: "25 min", icon: "⚡" }].map((s) => (
-            <div key={s.label} className="flex items-center gap-3 rounded-2xl border border-border bg-white p-4 dark:border-border dark:bg-zinc-900">
-              <span className="text-2xl">{s.icon}</span>
-              <div><p className="text-lg font-bold text-foreground">{s.value}</p><p className="text-xs text-muted-foreground">{s.label}</p></div>
-            </div>
-          ))}
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Restaurant</h1>
+          <Badge variant="primary">12 examples</Badge>
         </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Restaurant ordering system with menus, cart, reservations, reviews, and gallery.
+        </p>
+      </header>
 
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Featured Restaurants</h2><p className="mt-1 text-sm text-muted-foreground">Top picks near you</p></div><RestaurantHero restaurants={RESTAURANTS} /></div>
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-        <div className="space-y-4 rounded-2xl border border-border bg-white p-6 dark:border-border dark:bg-zinc-900">
-          <CuisineFilter active={activeCuisine} onChange={setActiveCuisine} />
-          <DietaryFilter active={activeDietary} onChange={setActiveDietary} />
-        </div>
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Nearby Restaurants</h2><p className="mt-1 text-sm text-muted-foreground">Explore restaurants in your area</p></div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{RESTAURANTS.map((r) => <RestaurantCard key={r.id} restaurant={r} isFavorite={favorites.has(r.id)} onToggleFavorite={toggleFavorite} />)}</div>
-        </div>
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Chef&apos;s Specials</h2><p className="mt-1 text-sm text-muted-foreground">Handpicked by our chefs</p></div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{CHEF_SPECIALS.map((cs) => <ChefSpecialCard key={cs.id} special={cs} onAddToCart={addToCart} />)}</div>
-        </div>
-
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Meal Deals & Combos</h2><p className="mt-1 text-sm text-muted-foreground">Save big on combo meals</p></div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{MEAL_DEALS.map((d) => <MealDealCard key={d.id} deal={d} />)}</div>
-        </div>
-
-        <SpecialOffers />
-
-        <div><div className="mb-6 flex items-end justify-between"><div><h2 className="text-2xl font-bold text-foreground">Our Menu</h2><p className="mt-1 text-sm text-muted-foreground">{filteredItems.length} items available</p></div></div>
-          {filteredItems.length === 0 ? <div className="py-16 text-center"><p className="text-lg text-muted-foreground">No items match your filters.</p></div> : <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{filteredItems.map((item) => <MenuCard key={item.id} item={item} isFavorite={favorites.has(item.id)} onToggleFavorite={toggleFavorite} onAddToCart={addToCart} />)}</div>}
-        </div>
-
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Drinks</h2><p className="mt-1 text-sm text-muted-foreground">Refreshing beverages</p></div>
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">{DRINKS.map((d) => <DrinkCard key={d.id} drink={d} onAddToCart={addToCart} />)}</div>
-        </div>
-
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Desserts</h2><p className="mt-1 text-sm text-muted-foreground">Sweet endings</p></div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{DESSERTS.map((d) => <DessertCard key={d.id} dessert={d} onAddToCart={addToCart} />)}</div>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <ReservationForm />
-          <div className="rounded-2xl border border-border bg-white p-6 dark:border-border dark:bg-zinc-900">
-            <h3 className="mb-4 text-lg font-semibold text-foreground">Recent Orders</h3>
-            <div className="space-y-3">
-              {RECENT_ORDERS.map((o) => (
-                <div key={o.id} className="flex items-center justify-between rounded-xl border border-border p-4 dark:border-border">
-                  <div><p className="text-sm font-medium text-foreground">{o.items}</p><span className="text-xs text-muted-foreground">{o.date}</span></div>
-                  <div className="text-right"><span className="text-sm font-bold text-orange-600 dark:text-orange-400">${o.total.toFixed(2)}</span><span className={`ml-2 rounded-full px-2.5 py-0.5 text-[10px] font-medium ${o.status === "Delivered" ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" : o.status === "In Transit" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300" : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"}`}>{o.status}</span></div>
-                </div>
-              ))}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Featured Restaurants</h3>
+          <p className="text-sm text-muted-foreground">Top restaurant picks with cuisine filters and dietary options.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <RestaurantHeroSection searchQuery={searchQuery} onSearchChange={setSearchQuery} showAutocomplete={showAutocomplete} onShowAutocomplete={setShowAutocomplete} searchSuggestions={searchSuggestions} onSelectSuggestion={setSearchQuery} />
+            <div className="mt-6">
+              <RestaurantHero restaurants={RESTAURANTS} />
             </div>
           </div>
         </div>
 
-        <div><div className="mb-6"><h2 className="text-2xl font-bold text-foreground">Customer Reviews</h2><p className="mt-1 text-sm text-muted-foreground">What our customers say</p></div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{REVIEWS.map((r) => <ReviewCard key={r.id} review={r} />)}</div>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Menu Items</h3>
+          <p className="text-sm text-muted-foreground">Filterable menu grid with chef specials and meal deals.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <div className="space-y-4 mb-6">
+              <CuisineFilter active={activeCuisine} onChange={setActiveCuisine} />
+              <DietaryFilter active={activeDietary} onChange={setActiveDietary} />
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredItems.map((item) => <MenuCard key={item.id} item={item} isFavorite={favorites.has(item.id)} onToggleFavorite={toggleFavorite} onAddToCart={addToCart} />)}
+            </div>
+          </div>
         </div>
 
-        <GallerySection images={GALLERY_IMAGES} />
-        <OperatingHoursSection hours={OPERATING_HOURS} />
-        <Newsletter />
-        <Footer />
-      </div>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Chef Specials & Meal Deals</h3>
+          <p className="text-sm text-muted-foreground">Curated specials and combo meal offers.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+              {CHEF_SPECIALS.map((cs) => <ChefSpecialCard key={cs.id} special={cs} onAddToCart={addToCart} />)}
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {MEAL_DEALS.map((d) => <MealDealCard key={d.id} deal={d} />)}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Drinks & Desserts</h3>
+          <p className="text-sm text-muted-foreground">Beverages and sweet endings with add-to-cart.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6 mb-6">
+              {DRINKS.map((d) => <DrinkCard key={d.id} drink={d} onAddToCart={addToCart} />)}
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {DESSERTS.map((d) => <DessertCard key={d.id} dessert={d} onAddToCart={addToCart} />)}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Reservation & Reviews</h3>
+          <p className="text-sm text-muted-foreground">Table reservation form and customer reviews.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <div className="grid gap-6 lg:grid-cols-2 mb-6">
+              <ReservationForm />
+              <div className="rounded-2xl border border-border bg-white p-6 dark:border-border dark:bg-zinc-900">
+                <h3 className="mb-4 text-lg font-semibold text-foreground">Recent Orders</h3>
+                <div className="space-y-3">
+                  {RECENT_ORDERS.map((o) => (
+                    <div key={o.id} className="flex items-center justify-between rounded-xl border border-border p-4 dark:border-border">
+                      <div><p className="text-sm font-medium text-foreground">{o.items}</p><span className="text-xs text-muted-foreground">{o.date}</span></div>
+                      <div className="text-right"><span className="text-sm font-bold text-orange-600 dark:text-orange-400">${o.total.toFixed(2)}</span></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {REVIEWS.map((r) => <ReviewCard key={r.id} review={r} />)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">restaurant</td>
+                <td className="px-4 py-3 text-muted-foreground">Restaurant</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">items</td>
+                <td className="px-4 py-3 text-muted-foreground">MenuItem[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onAddToCart</td>
+                <td className="px-4 py-3 text-muted-foreground">(item: MenuItem) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">reviews</td>
+                <td className="px-4 py-3 text-muted-foreground">Review[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} cart={cart} cartTotal={cartTotal} deliveryFee={deliveryFee} onAdd={addToCart} onRemove={removeFromCart} />
     </div>

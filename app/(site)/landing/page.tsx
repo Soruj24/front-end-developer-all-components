@@ -2,6 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add landing`;
+
+const usageCode = `import { LandingPage } from "@/features/landing";
+
+<LandingPage />`;
 
 function AnimatedCounter({
   target,
@@ -141,151 +149,172 @@ export default function LandingPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-        Landing
-      </h1>
-      <p className="text-muted-foreground">
-        Full landing page with animated elements, stats, testimonials, and
-        multi-step CTA.
-      </p>
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Landing</h1>
+          <Badge variant="primary">8 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Full landing page with animated elements, stats, testimonials, and multi-step CTA.
+        </p>
+      </header>
 
-      <section className="relative flex flex-col items-center gap-6 overflow-hidden rounded-lg border bg-gradient-to-b from-zinc-50 px-6 py-20 text-center dark:border-border dark:from-zinc-900">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute left-10 top-10 h-20 w-20 rounded-full bg-indigo-400/20 blur-3xl animate-pulse" />
-          <div
-            className="absolute right-20 top-32 h-16 w-16 rounded-full bg-blue-400/20 blur-3xl animate-pulse"
-            style={{ animationDelay: "1s" }}
-          />
-          <div
-            className="absolute bottom-10 left-1/3 h-24 w-24 rounded-full bg-purple-400/20 blur-3xl animate-pulse"
-            style={{ animationDelay: "2s" }}
-          />
-          <div
-            className="absolute left-1/2 top-5 h-8 w-8 rounded-full bg-amber-400/30 blur-2xl animate-bounce"
-            style={{ animationDuration: "3s" }}
-          />
-          <div
-            className="absolute bottom-20 right-10 h-6 w-6 rounded-full bg-rose-400/30 blur-2xl animate-bounce"
-            style={{ animationDuration: "4s", animationDelay: "0.5s" }}
-          />
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Hero Section</h3>
+          <p className="text-sm text-muted-foreground">Gradient hero with animated elements and CTA buttons.</p>
+          <section className="relative flex flex-col items-center gap-6 overflow-hidden rounded-lg border bg-gradient-to-b from-zinc-50 px-6 py-20 text-center dark:border-border dark:from-zinc-900">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute left-10 top-10 h-20 w-20 rounded-full bg-indigo-400/20 blur-3xl animate-pulse" />
+              <div className="absolute right-20 top-32 h-16 w-16 rounded-full bg-blue-400/20 blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+              <div className="absolute bottom-10 left-1/3 h-24 w-24 rounded-full bg-purple-400/20 blur-3xl animate-pulse" style={{ animationDelay: "2s" }} />
+            </div>
+            <h2 className="relative text-5xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse" style={{ animationDuration: "3s" }}>Build Better Products</span>
+            </h2>
+            <p className="relative max-w-xl text-muted-foreground dark:text-muted-foreground/70">A modern platform that helps teams ship faster with fewer bugs.</p>
+            <div className="relative flex gap-4">
+              <Link href="/" className="rounded-md bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-muted dark:bg-muted dark:text-zinc-900 dark:hover:bg-muted">Get Started</Link>
+              <Link href="/" className="rounded-md border px-6 py-2.5 text-sm font-medium hover:bg-muted dark:hover:bg-muted">Learn More</Link>
+            </div>
+          </section>
         </div>
 
-        <h2 className="relative text-5xl font-bold tracking-tight">
-          <span
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse"
-            style={{ animationDuration: "3s" }}
-          >
-            Build Better Products
-          </span>
-        </h2>
-        <p className="relative max-w-xl text-muted-foreground dark:text-muted-foreground/70">
-          A modern platform that helps teams ship faster with fewer bugs.
-        </p>
-        <div className="relative flex gap-4">
-          <Link
-            href="/"
-            className="rounded-md bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-muted dark:bg-muted dark:text-zinc-900 dark:hover:bg-muted"
-          >
-            Get Started
-          </Link>
-          <Link
-            href="/"
-            className="rounded-md border px-6 py-2.5 text-sm font-medium hover:bg-muted dark:hover:bg-muted"
-          >
-            Learn More
-          </Link>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Logo Cloud</h3>
+          <p className="text-sm text-muted-foreground">Partner logos displayed in a dashed border section.</p>
+          <section className="flex flex-wrap items-center justify-center gap-8 rounded-lg border border-dashed px-6 py-8 dark:border-border">
+            {logos.map((logo) => (
+              <span key={logo} className="text-sm font-semibold tracking-wide text-muted-foreground/70 dark:text-muted-foreground">{logo}</span>
+            ))}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Features Grid</h3>
+          <p className="text-sm text-muted-foreground">Feature cards with icons, titles, and descriptions.</p>
+          <section className="grid gap-6 md:grid-cols-3">
+            {features.map((f) => (
+              <div key={f.title} className="group rounded-lg border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-border">
+                <div className="mb-3 text-2xl">{f.icon}</div>
+                <h3 className="mb-2 font-semibold">{f.title}</h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground/70">{f.description}</p>
+              </div>
+            ))}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Animated Stats</h3>
+          <p className="text-sm text-muted-foreground">Counting animation triggered on scroll into view.</p>
+          <section className="grid gap-6 rounded-lg border bg-muted/40 px-6 py-12 text-center dark:border-border dark:bg-zinc-900 md:grid-cols-3">
+            {[{ value: 50000, suffix: "+", label: "Active Users" }, { value: 1000, suffix: "+", label: "Companies" }, { value: 99.9, suffix: "%", label: "Uptime" }].map((stat) => (
+              <div key={stat.label}>
+                <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+              </div>
+            ))}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Testimonials</h3>
+          <p className="text-sm text-muted-foreground">Customer testimonials with star ratings.</p>
+          <section className="grid gap-6 md:grid-cols-3">
+            {testimonials.map((t) => (
+              <div key={t.name} className="rounded-lg border p-6 dark:border-border">
+                <div className="mb-3 text-2xl text-amber-400">{"★".repeat(5)}</div>
+                <p className="mb-4 text-sm italic text-muted-foreground">&ldquo;{t.text}&rdquo;</p>
+                <div>
+                  <div className="text-sm font-semibold">{t.name}</div>
+                  <div className="text-xs text-muted-foreground">{t.role}</div>
+                </div>
+              </div>
+            ))}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Multi-Step CTA</h3>
+          <p className="text-sm text-muted-foreground">Interactive multi-step call-to-action with email input.</p>
+          <section className="flex flex-col items-center gap-6 rounded-lg border bg-zinc-900 px-6 py-16 text-center text-white dark:border-border dark:bg-muted">
+            <h2 className="text-3xl font-bold">{ctaSteps[ctaStep].title}</h2>
+            <p className="max-w-md text-muted-foreground/70">{ctaSteps[ctaStep].subtitle}</p>
+            {ctaSteps[ctaStep].input && (
+              <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full max-w-xs rounded-md border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20" />
+            )}
+            <button onClick={handleCta} className="rounded-md bg-white px-6 py-2.5 text-sm font-medium text-zinc-900 hover:bg-muted">{ctaSteps[ctaStep].action}</button>
+            {ctaStep > 0 && (
+              <button onClick={() => setCtaStep(0)} className="text-xs text-muted-foreground hover:text-zinc-300">Start over</button>
+            )}
+          </section>
         </div>
       </section>
 
-      <section className="flex flex-wrap items-center justify-center gap-8 rounded-lg border border-dashed px-6 py-8 dark:border-border">
-        {logos.map((logo) => (
-          <span
-            key={logo}
-            className="text-sm font-semibold tracking-wide text-muted-foreground/70 dark:text-muted-foreground"
-          >
-            {logo}
-          </span>
-        ))}
-      </section>
-
-      <section className="grid gap-6 md:grid-cols-3">
-        {features.map((f) => (
-          <div
-            key={f.title}
-            className="group rounded-lg border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg dark:border-border"
-          >
-            <div className="mb-3 text-2xl">{f.icon}</div>
-            <h3 className="mb-2 font-semibold">{f.title}</h3>
-            <p className="text-sm text-muted-foreground dark:text-muted-foreground/70">
-              {f.description}
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section className="grid gap-6 rounded-lg border bg-muted/40 px-6 py-12 text-center dark:border-border dark:bg-zinc-900 md:grid-cols-3">
-        {[
-          { value: 50000, suffix: "+", label: "Active Users" },
-          { value: 1000, suffix: "+", label: "Companies" },
-          { value: 99.9, suffix: "%", label: "Uptime" },
-        ].map((stat) => (
-          <div key={stat.label}>
-            <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
-              <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-            </div>
-            <div className="mt-1 text-sm text-muted-foreground">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <section className="grid gap-6 md:grid-cols-3">
-        {testimonials.map((t) => (
-          <div
-            key={t.name}
-            className="rounded-lg border p-6 dark:border-border"
-          >
-            <div className="mb-3 text-2xl text-amber-400">{"★".repeat(5)}</div>
-            <p className="mb-4 text-sm italic text-muted-foreground">
-              &ldquo;{t.text}&rdquo;
-            </p>
-            <div>
-              <div className="text-sm font-semibold">{t.name}</div>
-              <div className="text-xs text-muted-foreground">{t.role}</div>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <section className="flex flex-col items-center gap-6 rounded-lg border bg-zinc-900 px-6 py-16 text-center text-white dark:border-border dark:bg-muted">
-        <h2 className="text-3xl font-bold">{ctaSteps[ctaStep].title}</h2>
-        <p className="max-w-md text-muted-foreground/70">
-          {ctaSteps[ctaStep].subtitle}
-        </p>
-        {ctaSteps[ctaStep].input && (
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full max-w-xs rounded-md border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20"
-          />
-        )}
-        <button
-          onClick={handleCta}
-          className="rounded-md bg-white px-6 py-2.5 text-sm font-medium text-zinc-900 hover:bg-muted"
-        >
-          {ctaSteps[ctaStep].action}
-        </button>
-        {ctaStep > 0 && (
-          <button
-            onClick={() => setCtaStep(0)}
-            className="text-xs text-muted-foreground hover:text-zinc-300"
-          >
-            Start over
-          </button>
-        )}
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">features</td>
+                <td className="px-4 py-3 text-muted-foreground">Feature[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">testimonials</td>
+                <td className="px-4 py-3 text-muted-foreground">Testimonial[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">logos</td>
+                <td className="px-4 py-3 text-muted-foreground">string[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">stats</td>
+                <td className="px-4 py-3 text-muted-foreground">Stat[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

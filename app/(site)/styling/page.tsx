@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { DocsLayout } from "@/components/docs";
-import { Alert, Badge, Button, Card } from "@/components/ui";
+import { Alert, Button, Card } from "@/components/ui";
 import { cn } from "@/lib/cn";
 
 /* ------------------------------------------------------------------ */
@@ -227,6 +229,22 @@ const TYPOGRAPHY_WEIGHTS = [
   { cls: "font-bold", label: "Bold" },
 ];
 
+const installCommand = `npx component-library@latest add styling`;
+
+const usageCode = `// Import design tokens
+import { cn } from "@/lib/cn";
+
+// Use semantic color tokens
+<div className="bg-background text-foreground">...</div>
+<div className="bg-surface border-border">...</div>
+<div className="bg-primary text-primary-foreground">...</div>
+
+// Use spacing tokens
+<div className="gap-4 p-6">...</div>
+
+// Use radius tokens
+<div className="rounded-xl">...</div>`;
+
 /* ------------------------------------------------------------------ */
 /* Animation lab                                                       */
 /* ------------------------------------------------------------------ */
@@ -413,6 +431,27 @@ export default function StylingPage() {
       description="The semantic token system that drives every component — colors, typography, spacing, radius, shadows, and motion. All values resolve live and flip with dark mode."
       contentClassName="flex flex-col gap-14"
     >
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Design Tokens</h1>
+          <Badge variant="primary">28 tokens</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          The semantic token system that drives every component — colors, typography,
+          spacing, radius, shadows, and motion. All values resolve live and flip with dark mode.
+        </p>
+      </header>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="globals.css" label="css" />
+      </section>
+
       {/* Overview */}
       <section className="flex flex-col gap-3">
         <SectionHeading hint="A single source of truth, consumed by every component.">
@@ -699,6 +738,49 @@ export default function StylingPage() {
           Tokens in practice
         </SectionHeading>
         <PracticeDemo />
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Category</th>
+                <th className="px-4 py-3 text-left font-medium">Tokens</th>
+                <th className="px-4 py-3 text-left font-medium">Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Colors</td>
+                <td className="px-4 py-3 text-muted-foreground">--background, --foreground, --primary, etc.</td>
+                <td className="px-4 py-3 text-muted-foreground">bg-background, text-foreground, bg-primary</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Spacing</td>
+                <td className="px-4 py-3 text-muted-foreground">--space-1 through --space-16</td>
+                <td className="px-4 py-3 text-muted-foreground">gap-1, p-4, m-6</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Radius</td>
+                <td className="px-4 py-3 text-muted-foreground">--radius-xs through --radius-full</td>
+                <td className="px-4 py-3 text-muted-foreground">rounded-sm, rounded-xl</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Shadows</td>
+                <td className="px-4 py-3 text-muted-foreground">--shadow-xs through --shadow-toast</td>
+                <td className="px-4 py-3 text-muted-foreground">shadow-sm, shadow-card</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">Motion</td>
+                <td className="px-4 py-3 text-muted-foreground">--duration-*, --ease-*</td>
+                <td className="px-4 py-3 text-muted-foreground">animate-fade-in, animate-pop</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </DocsLayout>
   );

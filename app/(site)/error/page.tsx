@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type ComponentType } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { HttpStatusErrors } from "./components/HttpStatusErrors";
 import { FullPageErrors } from "./components/FullPageErrors";
 import { InlineErrors } from "./components/InlineErrors";
@@ -22,41 +24,110 @@ const ERROR_PATTERNS: Array<{ label: string; Render: ComponentType; registryId: 
   { label: "Use Cases", Render: UseCaseScenarios, registryId: "error-use-case" },
 ];
 
+const installCommand = `npx component-library@latest add error`;
+
+const usageCode = `import { ErrorBoundary } from "@/components/error";
+
+<ErrorBoundary fallback={<ErrorFallback />}>
+  <App />
+</ErrorBoundary>`;
+
+const errorProps = [
+  { prop: "variant", type: "\"http\" | \"full-page\" | \"inline\" | \"form\" | \"summary\"", default: "\"http\"", required: "No" },
+  { prop: "statusCode", type: "number", default: "500", required: "No" },
+  { prop: "title", type: "string", default: "-", required: "No" },
+  { prop: "description", type: "string", default: "-", required: "No" },
+  { prop: "onRetry", type: "() => void", default: "-", required: "No" },
+  { prop: "showDetails", type: "boolean", default: "false", required: "No" },
+];
+
 export default function ErrorPage() {
   const [activePattern, setActivePattern] = useState(0);
   const { Render: Active, registryId } = ERROR_PATTERNS[activePattern];
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 p-6 sm:p-10 lg:p-14">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Error</h1>
-        <p className="mt-1 text-muted-foreground">Error page patterns — 4xx, 5xx, and application errors.</p>
-      </div>
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Error</h1>
+          <Badge variant="primary">{ERROR_PATTERNS.length} examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Error page patterns — 4xx, 5xx, and application errors. Use the tabs to
+          switch between the live preview, source code, CLI, installation, and
+          dependency details for each example.
+        </p>
+      </header>
 
-      <div className="flex flex-wrap gap-2">
-        {ERROR_PATTERNS.map((pattern, i) => (
-          <button
-            key={pattern.label}
-            onClick={() => setActivePattern(i)}
-            className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-              activePattern === i
-                ? "bg-foreground text-background dark:bg-muted dark:text-zinc-900"
-                : "bg-muted text-muted-foreground hover:bg-muted dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-zinc-600"
-            }`}
-          >
-            {i + 1}. {pattern.label}
-          </button>
-        ))}
-      </div>
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-      <ComponentPreview id={registryId} title={ERROR_PATTERNS[activePattern].label + " Errors"}>
-        <Active />
-      </ComponentPreview>
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
-      <p className="text-center text-xs text-muted-foreground/70">
-        Pattern {activePattern + 1} of {ERROR_PATTERNS.length} —{" "}
-        <span className="font-medium">{ERROR_PATTERNS[activePattern].label}</span>
-      </p>
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <p className="text-sm text-muted-foreground">Choose a pattern to preview below.</p>
+
+        <div className="flex flex-wrap gap-2">
+          {ERROR_PATTERNS.map((pattern, i) => (
+            <button
+              key={pattern.label}
+              onClick={() => setActivePattern(i)}
+              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                activePattern === i
+                  ? "bg-foreground text-background dark:bg-muted dark:text-zinc-900"
+                  : "bg-muted text-muted-foreground hover:bg-muted dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-zinc-600"
+              }`}
+            >
+              {i + 1}. {pattern.label}
+            </button>
+          ))}
+        </div>
+
+        <ComponentPreview id={registryId} title={ERROR_PATTERNS[activePattern].label + " Errors"}>
+          <Active />
+        </ComponentPreview>
+
+        <p className="text-center text-xs text-muted-foreground/70">
+          Pattern {activePattern + 1} of {ERROR_PATTERNS.length} —{" "}
+          <span className="font-medium">{ERROR_PATTERNS[activePattern].label}</span>
+        </p>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              {errorProps.map((row, i) => (
+                <tr key={row.prop} className={i < errorProps.length - 1 ? "border-b" : ""}>
+                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
+                  <td className="px-4 py-3">{row.required}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

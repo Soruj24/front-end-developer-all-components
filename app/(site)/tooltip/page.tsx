@@ -1,6 +1,17 @@
 "use client"
 
 import { useState, useRef } from "react"
+import { Badge } from "@/components/design-system/Badge"
+import { CodeBlock } from "@/components/home/CodeBlock"
+
+const installCommand = `npx component-library@latest add tooltip`
+
+const usageCode = `import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/_tooltip"
+
+<Tooltip>
+  <TooltipTrigger>Hover me</TooltipTrigger>
+  <TooltipContent>Tooltip text</TooltipContent>
+</Tooltip>`
 
 const positions = [
   { label: "Top", pos: "bottom-full left-1/2 -translate-x-1/2 mb-2" },
@@ -95,10 +106,25 @@ export default function TooltipPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Tooltip</h1>
-        <p className="mt-1 text-muted-foreground">Hover, click, and delayed tooltips with directional placement.</p>
-      </div>
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Tooltip</h1>
+          <Badge variant="primary">8 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Hover, click, and delayed tooltips with directional placement.
+        </p>
+      </header>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <section>
         <h2 className="mb-4 text-lg font-semibold">Directional</h2>
@@ -315,6 +341,54 @@ export default function TooltipPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">content</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">dir</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Top&quot; | &quot;Bottom&quot; | &quot;Left&quot; | &quot;Right&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Top&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">delay</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">0</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">clickToggle</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </div>

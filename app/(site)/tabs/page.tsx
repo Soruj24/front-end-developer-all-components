@@ -1,7 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add tabs`;
+
+const usageCode = `import { useState } from "react";
+
+function Tabs({ tabs, defaultTab }) {
+  const [active, setActive] = useState(defaultTab || tabs[0]);
+  return (
+    <div>
+      <div className="flex border-b">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActive(tab)}
+            className={active === tab ? "active" : ""}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+      <div>{active} content</div>
+    </div>
+  );
+}
+
+// Usage
+<Tabs tabs={["Tab 1", "Tab 2", "Tab 3"]} />`;
 
 function UnderlineDemo() {
   const [active, setActive] = useState("First");
@@ -646,50 +675,180 @@ function TabsDropdownAccordionMixedGroup() {
 
 export default function TabsPage() {
   return (
-    <div className="flex flex-col gap-8 p-6 sm:p-8">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Tabs</h1>
-        <p className="max-w-2xl text-muted-foreground dark:text-muted-foreground/70">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Tabs</h1>
+          <Badge variant="primary">33 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           33 tab patterns — underline, pills, capsule, icons, badges, vertical,
           scrollable, and more.
         </p>
       </header>
 
-      <ComponentPreview id="tabs-underline">
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Underline Tabs */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Underline Tabs</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Classic underline tab patterns with various styles.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-underline">
         <TabsUnderlineGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-pills-capsule">
+      {/* Pills & Capsule Tabs */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Pills & Capsule Tabs</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pill and capsule style tab patterns.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-pills-capsule">
         <TabsPillsCapsuleGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-icons">
+      {/* Icon Tabs */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Icon Tabs</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tabs with icon support.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-icons">
         <TabsIconsGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-badges-descriptions">
+      {/* Badges & Descriptions */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Badges & Descriptions</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tabs with badges and description text.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-badges-descriptions">
         <TabsBadgesDescriptionsGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-vertical">
+      {/* Vertical Tabs */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Vertical Tabs</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Vertically oriented tab patterns.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-vertical">
         <TabsVerticalGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-boxed-card">
+      {/* Boxed & Card Tabs */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Boxed & Card Tabs</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Boxed and card style tab patterns.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-boxed-card">
         <TabsBoxedCardGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-colored-backgrounds">
+      {/* Colored Backgrounds */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Colored Backgrounds</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tabs with colored background styles.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-colored-backgrounds">
         <TabsColoredBackgroundsGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-animated-scroll-steps">
+      {/* Animated & Scrollable */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Animated & Scrollable</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Animated and scrollable tab patterns.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-animated-scroll-steps">
         <TabsAnimatedScrollStepsGroup />
       </ComponentPreview>
 
-      <ComponentPreview id="tabs-dropdown-accordion-mixed">
+      {/* Dropdown & Accordion */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Dropdown & Accordion</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Dropdown and accordion tab patterns.
+          </p>
+        </div>
+        <ComponentPreview id="tabs-dropdown-accordion-mixed">
         <TabsDropdownAccordionMixedGroup />
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">tabs</td>
+                <td className="px-4 py-3 text-muted-foreground">string[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">defaultTab</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">First tab</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;underline&quot; | &quot;pills&quot; | &quot;capsule&quot; | &quot;boxed&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;underline&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">orientation</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

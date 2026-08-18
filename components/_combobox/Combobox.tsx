@@ -29,7 +29,14 @@ export function Combobox({ options, value, defaultValue, onValueChange, placehol
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  React.useEffect(() => { onValueChange?.(current); }, [current, onValueChange]);
+  const prevRef = React.useRef<string>(JSON.stringify(current));
+  React.useEffect(() => {
+    const next = JSON.stringify(current);
+    if (prevRef.current !== next) {
+      prevRef.current = next;
+      onValueChange?.(current);
+    }
+  }, [current, onValueChange]);
 
   const filteredOptions = React.useMemo(() => {
     const s = search.toLowerCase();

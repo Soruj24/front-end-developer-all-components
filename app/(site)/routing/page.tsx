@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter, useParams } from "next/navigation";
 import { useState, useEffect, useCallback, Suspense } from "react";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { DocsLayout } from "@/components/docs";
 
 const pages = [
@@ -58,6 +60,20 @@ const pages = [
 ];
 
 const categories = [...new Set(pages.map((p) => p.category))];
+
+const installCommand = `npx component-library@latest add routing`;
+
+const usageCode = `import Link from "next/link";
+import { useRouter, usePathname, useSearchParams, useParams } from "next/navigation";
+
+// Link navigation
+<Link href="/dashboard">Dashboard</Link>
+
+// Programmatic navigation
+const router = useRouter();
+router.push("/dashboard");
+router.replace("/");
+router.back();`;
 
 function RoutingPageContent() {
   const pathname = usePathname();
@@ -137,6 +153,27 @@ function RoutingPageContent() {
       description="Interactive guide to all routing concepts in the App Router."
       contentClassName="flex flex-col gap-14"
     >
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Routing</h1>
+          <Badge variant="primary">30 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Interactive guide to all routing concepts in the App Router — file-based routing,
+          dynamic routes, layouts, loading states, error handling, and advanced patterns.
+        </p>
+      </header>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
       <section id="file-based" className="scroll-mt-20">
         <h2 className="text-xl font-semibold">1. File-Based Routing</h2>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -829,6 +866,48 @@ function RoutingPageContent() {
               Both render at same URL level
             </pre>
           </div>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Hook/Component</th>
+                <th className="px-4 py-3 text-left font-medium">Purpose</th>
+                <th className="px-4 py-3 text-left font-medium">Returns</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">Link</td>
+                <td className="px-4 py-3 text-muted-foreground">Declarative navigation</td>
+                <td className="px-4 py-3 text-muted-foreground">JSX anchor element</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">useRouter</td>
+                <td className="px-4 py-3 text-muted-foreground">Programmatic navigation</td>
+                <td className="px-4 py-3 text-muted-foreground">Router object</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">usePathname</td>
+                <td className="px-4 py-3 text-muted-foreground">Read current pathname</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">useSearchParams</td>
+                <td className="px-4 py-3 text-muted-foreground">Read URL search params</td>
+                <td className="px-4 py-3 text-muted-foreground">ReadonlyURLSearchParams</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">useParams</td>
+                <td className="px-4 py-3 text-muted-foreground">Read dynamic route params</td>
+                <td className="px-4 py-3 text-muted-foreground">Record&lt;string, string&gt;</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </DocsLayout>

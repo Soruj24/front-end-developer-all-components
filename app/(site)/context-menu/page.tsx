@@ -2,6 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { ComponentPreview } from "@/components/preview";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add context-menu`;
+
+const usageCode = `import { ContextMenu, ContextMenuItem } from "@/components/_context-menu";
+
+<ContextMenu
+  trigger={<div>Right-click me</div>}
+  items={[
+    { label: "Copy", shortcut: "Ctrl+C" },
+    { label: "Paste", shortcut: "Ctrl+V" },
+    { type: "separator" },
+    { label: "Delete", destructive: true },
+  ]}
+/>`;
 
 interface MenuItem {
   label: string;
@@ -302,7 +318,10 @@ export default function ContextMenuPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Context Menu</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Context Menu</h1>
+          <Badge variant="primary">Overlay</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           Right-click on different zones to see context-specific menus with
           nested submenus. Use the tabs to switch between the live preview,
@@ -310,6 +329,18 @@ export default function ContextMenuPage() {
           example.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="ctx-menu-text">
         <ContextMenuDemo label="Text Area" color="border-blue-300 bg-blue-50 text-primary dark:border-blue-700 dark:bg-blue-900/20 dark:text-blue-300" items={textMenu} menu={menuText} setMenu={setMenuText} />
@@ -362,6 +393,49 @@ export default function ContextMenuPage() {
       <ComponentPreview id="ctx-menu-tab">
         <ContextMenuDemo label="Browser Tab" color="border-lime-300 bg-lime-50 text-lime-600 dark:border-lime-700 dark:bg-lime-900/20 dark:text-lime-300" items={tabMenu} menu={menuTab} setMenu={setMenuTab} />
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">items</td>
+                <td className="px-4 py-3 text-muted-foreground">ContextMenuItem[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">trigger</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onAction</td>
+                <td className="px-4 py-3 text-muted-foreground">(key: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

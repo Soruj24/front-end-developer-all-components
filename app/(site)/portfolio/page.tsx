@@ -1,5 +1,7 @@
 "use client";
 
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   navItems,
   stats,
@@ -18,17 +20,118 @@ import {
   Footer,
 } from "@/features/portfolio";
 
+const installCommand = `npx component-library@latest add portfolio`;
+
+const usageCode = `import {
+  Navbar, HeroSection, ProjectsSection, SkillsSection,
+  ExperienceSection, TestimonialsSection, ContactSection, Footer
+} from "@/features/portfolio";
+
+<Navbar items={navItems} />
+<HeroSection stats={stats} />
+<ProjectsSection projects={projects} />`;
+
 export default function PortfolioPage() {
   return (
-    <div className="min-h-screen bg-black">
-      <Navbar items={navItems} />
-      <HeroSection stats={stats} />
-      <ProjectsSection projects={projects} />
-      <SkillsSection skills={skills} />
-      <ExperienceSection experiences={experiences} />
-      <TestimonialsSection testimonials={testimonials} />
-      <ContactSection contact={contactInfo} />
-      <Footer />
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Portfolio</h1>
+          <Badge variant="primary">7 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Full portfolio page with navbar, hero, projects, skills, experience, testimonials, and contact form.
+        </p>
+      </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <p className="text-sm text-muted-foreground">Complete portfolio with all sections from hero to contact.</p>
+        <div className="min-h-screen bg-black rounded-lg border border-border overflow-hidden">
+          <Navbar items={navItems} />
+          <HeroSection stats={stats} />
+          <ProjectsSection projects={projects} />
+          <SkillsSection skills={skills} />
+          <ExperienceSection experiences={experiences} />
+          <TestimonialsSection testimonials={testimonials} />
+          <ContactSection contact={contactInfo} />
+          <Footer />
+        </div>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">navItems</td>
+                <td className="px-4 py-3 text-muted-foreground">NavItem[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">stats</td>
+                <td className="px-4 py-3 text-muted-foreground">Stat[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">projects</td>
+                <td className="px-4 py-3 text-muted-foreground">Project[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">skills</td>
+                <td className="px-4 py-3 text-muted-foreground">Skill[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">experiences</td>
+                <td className="px-4 py-3 text-muted-foreground">Experience[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">testimonials</td>
+                <td className="px-4 py-3 text-muted-foreground">Testimonial[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">contactInfo</td>
+                <td className="px-4 py-3 text-muted-foreground">ContactInfo</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

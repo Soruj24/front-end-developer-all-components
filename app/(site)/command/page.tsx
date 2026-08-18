@@ -2,8 +2,20 @@
 
 import { useState } from "react";
 import { Command } from "@/components/_command";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import type { CommandItemProps } from "@/components/_command/Command.types";
+
+const installCommand = `npx component-library@latest add command`;
+
+const usageCode = `import { Command } from "@/components/_command"
+
+<Command
+  items={items}
+  onSelect={(item) => console.log(item)}
+  placeholder="Type a command..."
+/>`;
 
 function SearchIcon() {
   return (
@@ -218,12 +230,25 @@ export default function CommandPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Command</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Command</h1>
+          <Badge variant="primary">9 examples</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           Fast, composable, unstyled command menu for React. Search through actions,
           navigation, and tools with keyboard navigation and fuzzy matching.
         </p>
       </header>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
 
       <ComponentPreview id="command-default">
         <div className="flex flex-col gap-3">
@@ -331,6 +356,53 @@ function CommandDialogDemo() {
           </div>
         </div>
       )}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">items</td>
+                <td className="px-4 py-3 text-muted-foreground">CommandItemProps[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Type a command...&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;dialog&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">maxResults</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">emptyMessage</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;No results found.&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,7 +1,33 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const installCommand = `npx component-library@latest add pagination`;
+
+const usageCode = `import { useState } from "react";
+
+function Pagination({ current, total, onChange }) {
+  return (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: total }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          onClick={() => onChange(page)}
+          className={page === current ? "active" : ""}
+        >
+          {page}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// Usage
+const [page, setPage] = useState(1);
+<Pagination current={page} total={10} onChange={setPage} />`;
 
 function ChevronLeft() {
   return <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>;
@@ -119,7 +145,10 @@ export default function PaginationPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Pagination</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Pagination</h1>
+          <Badge variant="primary">12 examples</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           Pagination variants — styles, sizes, page counts, tables, steppers,
           and layout patterns. Use the tabs to switch between the live preview,
@@ -128,7 +157,27 @@ export default function PaginationPage() {
         </p>
       </header>
 
-      <ComponentPreview id="pagination-style-variants">
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Style Variants */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Style Variants</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Different visual styles for pagination buttons.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-style-variants">
         <div className="grid w-full grid-cols-1 gap-6">
           {[
             { label: "Default (Rounded)", v: "default", s: [p1, setP1] as const },
@@ -144,7 +193,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-size-variants">
+      {/* Size Variants */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Size Variants</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Different sizes for pagination buttons.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-size-variants">
         <div className="flex w-full flex-col gap-6">
           <div className="grid grid-cols-1 gap-4">
             {[
@@ -169,7 +226,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-page-counts">
+      {/* Page Counts */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Page Counts</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with different total page counts.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-page-counts">
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
           {[
             { label: "Few Pages (3)", t: 3, s: [p11, setP11] as const },
@@ -185,7 +250,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-page-size">
+      {/* Page Size Selector */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Page Size Selector</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with page size controls.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-page-size">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">With Page Size Selector</p>
@@ -212,7 +285,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-jump-to-page">
+      {/* Jump to Page */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Jump to Page</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with jump-to-page functionality.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-jump-to-page">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">With Jump-to-Page</p>
@@ -249,14 +330,30 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-range-text">
+      {/* Range Text */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Range Text</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with range text display.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-range-text">
         <div className="flex w-full flex-wrap items-center justify-between gap-4">
           <span className="text-sm text-muted-foreground">Showing {(p20 - 1) * 10 + 1}–{Math.min(p20 * 10, 87)} of 87</span>
           <PaginationBar current={p20} total={9} onChange={setP20} />
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-table">
+      {/* Table Integration */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Table Integration</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination integrated with data tables.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-table">
         <div className="w-full">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-border">
@@ -292,7 +389,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-skeleton">
+      {/* Skeleton Loading */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Skeleton Loading</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with skeleton loading state.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-skeleton">
         <div className="w-full">
           <div className="flex flex-col gap-3">
             {Array.from({ length: 3 }, (_, i) => (
@@ -309,7 +414,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-condensed">
+      {/* Condensed */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Condensed</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Condensed pagination styles.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-condensed">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Condensed (No Label)</p>
@@ -353,7 +466,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-card-grid">
+      {/* Card Grid */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Card Grid</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with card grid layout.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-card-grid">
         <div className="w-full">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
             {Array.from({ length: 5 }, (_, i) => (
@@ -369,7 +490,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-comments">
+      {/* Comments */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Comments</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination for comment sections.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-comments">
         <div className="w-full">
           <div className="flex flex-col gap-3">
             {Array.from({ length: 3 }, (_, i) => (
@@ -391,7 +520,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-search-results">
+      {/* Search Results */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Search Results</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination for search results.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-search-results">
         <div className="w-full">
           <p className="mb-3 text-sm text-muted-foreground">Showing results {(p29 - 1) * 10 + 1}–{Math.min(p29 * 10, 142)} of 142 for &ldquo;design&rdquo;</p>
           <div className="flex flex-col gap-2">
@@ -408,7 +545,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-minimal">
+      {/* Minimal */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Minimal</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Minimal pagination styles.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-minimal">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Minimal (Only Prev/Next)</p>
@@ -437,7 +582,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-total-badge">
+      {/* Total Badge */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Total Badge</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with total count badge.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-total-badge">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">With Total Count Badge</p>
@@ -457,7 +610,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-load-more">
+      {/* Load More */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Load More</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Load more pagination pattern.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-load-more">
         <div className="flex w-full flex-col gap-2">
           {Array.from({ length: p33 * 3 }, (_, i) => (
             <div key={i} className="flex items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm dark:border-border">
@@ -474,7 +635,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-button-group">
+      {/* Button Group */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Button Group</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination as connected button group.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-button-group">
         <div className="w-full overflow-x-auto pb-1 scrollbar-thin">
           <div className="inline-flex -space-x-px overflow-hidden rounded-md border border-border shadow-sm dark:border-border">
             <button onClick={() => setP34(Math.max(1, p34 - 1))} disabled={p34 === 1} className="border-r border-border bg-white px-3 py-2 text-sm disabled:opacity-40 dark:border-border dark:bg-zinc-900"><ChevronLeft /></button>
@@ -486,7 +655,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-progress">
+      {/* Progress */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Progress</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with progress indicator.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-progress">
         <div className="w-full">
           <div className="mb-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-zinc-900 transition-all dark:bg-muted" style={{ width: `${(p35 / 8) * 100}%` }} />
@@ -498,7 +675,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-color-themes">
+      {/* Color Themes */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Color Themes</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with different color themes.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-color-themes">
         <div className="flex w-full flex-col gap-4">
           {[
             { label: "Zinc (Default)", bg: "bg-zinc-900 dark:bg-muted", interactive: true },
@@ -519,7 +704,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-stepper">
+      {/* Stepper */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Stepper</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Step-based pagination pattern.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-stepper">
         <div className="w-full">
           <div className="flex items-center justify-between">
             {[1, 2, 3, 4, 5].map((s) => (
@@ -538,7 +731,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-gradient">
+      {/* Gradient */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Gradient</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with gradient styles.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-gradient">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Gradient Active Page</p>
@@ -566,7 +767,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-thumbnails">
+      {/* Thumbnails */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Thumbnails</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Pagination with thumbnail grid.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-thumbnails">
         <div className="w-full">
           <div className="grid grid-cols-4 gap-3 sm:grid-cols-6">
             {Array.from({ length: 8 }, (_, i) => (
@@ -582,7 +791,15 @@ export default function PaginationPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview id="pagination-mobile">
+      {/* Mobile */}
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Mobile</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Mobile-optimized pagination patterns.
+          </p>
+        </div>
+        <ComponentPreview id="pagination-mobile">
         <div className="flex w-full flex-col gap-6">
           <div className="rounded-xl border border-border p-4 dark:border-border">
             <p className="mb-3 text-sm font-medium">Mobile Optimized (Compact)</p>
@@ -614,6 +831,55 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">current</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">total</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(page: number) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">variant</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;pill&quot; | &quot;square&quot; | &quot;outline&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">size</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

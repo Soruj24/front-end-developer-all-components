@@ -2,6 +2,8 @@
 
 import { Suspense, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   ProductGrid,
   ProductFilters,
@@ -11,6 +13,13 @@ import {
   ProductBreadcrumbs,
 } from "@/features/ecommerce";
 import type { ProductCategory, ProductSort } from "@/features/ecommerce";
+
+const installCommand = `npx component-library@latest add e-commerce`;
+
+const usageCode = `import { ProductGrid, ProductFilters, useCart } from "@/features/ecommerce";
+
+<ProductFilters onCategoryChange={setCategory} />
+<ProductGrid products={products} onAddToCart={addToCart} />`;
 
 const POSTS_PER_PAGE = 12;
 
@@ -126,116 +135,134 @@ function EcommerceContent() {
   );
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 p-6 sm:p-8 lg:p-12">
-      <ProductBreadcrumbs
-        items={[{ label: "Home", href: "/" }, { label: "Shop" }]}
-      />
-
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Shop
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          Discover our curated collection of premium products
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Shop</h1>
+          <Badge variant="primary">5 examples</Badge>
+        </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          E-commerce storefront with product grid, filters, search, sorting, pagination, and cart.
         </p>
       </header>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <ProductFilters
-          selectedCategory={category}
-          selectedPriceRange={priceRangeIdx}
-          minRating={minRating}
-          sort={sort}
-          search={search}
-          onCategoryChange={setCategory}
-          onPriceRangeChange={setPriceRange}
-          onMinRatingChange={setMinRating}
-          onSortChange={setSort}
-          onSearchChange={setSearch}
-        />
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
 
-        <div className="flex-1">
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
-              {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
-            </p>
-            <div className="flex items-center gap-2">
-              {cart.totalSavings > 0 && (
-                <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600">
-                  You save ${cart.totalSavings.toFixed(2)}
-                </span>
-              )}
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Product Grid with Filters</h3>
+          <p className="text-sm text-muted-foreground">Filterable product grid with category, price, rating, and sort controls.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <ProductBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
+            <div className="flex flex-col gap-8 lg:flex-row mt-6">
+              <ProductFilters
+                selectedCategory={category}
+                selectedPriceRange={priceRangeIdx}
+                minRating={minRating}
+                sort={sort}
+                search={search}
+                onCategoryChange={setCategory}
+                onPriceRangeChange={setPriceRange}
+                onMinRatingChange={setMinRating}
+                onSortChange={setSort}
+                onSearchChange={setSearch}
+              />
+              <div className="flex-1">
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
+                  </p>
+                  <div className="flex items-center gap-2">
+                    {cart.totalSavings > 0 && (
+                      <span className="rounded-full bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600">
+                        You save ${cart.totalSavings.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <ProductGrid products={paginatedProducts} onAddToCart={cart.addItem} />
+                {totalPages > 1 && (
+                  <div className="mt-8 flex items-center justify-center gap-1.5">
+                    <button onClick={() => setPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40">
+                      Prev
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button key={page} onClick={() => setPage(page)} className={`h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors ${page === currentPage ? "bg-primary text-primary-foreground shadow-sm" : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+                        {page}
+                      </button>
+                    ))}
+                    <button onClick={() => setPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40">
+                      Next
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          <ProductGrid
-            products={paginatedProducts}
-            onAddToCart={cart.addItem}
-          />
-
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-1.5">
-              <button
-                onClick={() => setPage(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
-              >
-                <svg
-                  className="h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Prev
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => setPage(page)}
-                    className={`h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors ${
-                      page === currentPage
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ),
-              )}
-              <button
-                onClick={() =>
-                  setPage(Math.min(totalPages, currentPage + 1))
-                }
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
-              >
-                Next
-                <svg
-                  className="h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
         </div>
-      </div>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">products</td>
+                <td className="px-4 py-3 text-muted-foreground">Product[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onAddToCart</td>
+                <td className="px-4 py-3 text-muted-foreground">(product: Product) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">selectedCategory</td>
+                <td className="px-4 py-3 text-muted-foreground">ProductCategory</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;All&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">sort</td>
+                <td className="px-4 py-3 text-muted-foreground">ProductSort</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;featured&quot;</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }
@@ -244,7 +271,7 @@ export default function EcommercePage() {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 p-6 sm:p-8 lg:p-12">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
           <div className="h-8 w-48 animate-pulse rounded bg-muted" />
           <div className="h-12 w-64 animate-pulse rounded bg-muted" />
           <div className="flex gap-8">

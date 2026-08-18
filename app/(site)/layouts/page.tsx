@@ -1,7 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
+
+const layoutProps = [
+  { prop: "variant", type: "\"sidebar\" | \"header\" | \"holy-grail\" | \"split\" | \"card\"", default: "\"sidebar\"", required: "No" },
+  { prop: "sidebar", type: "ReactNode", default: "-", required: "No" },
+  { prop: "header", type: "ReactNode", default: "-", required: "No" },
+  { prop: "footer", type: "ReactNode", default: "-", required: "No" },
+  { prop: "children", type: "ReactNode", default: "-", required: "Yes" },
+];
+
+const installCommand = `npx component-library@latest add layouts`;
+
+const usageCode = `import { AppShell } from "@/components/layouts";
+
+<AppShell sidebar={<Sidebar />} header={<Header />}>
+  <MainContent />
+</AppShell>`;
 
 export default function LayoutsPage() {
   const [sidebarTab, setSidebarTab] = useState("Overview");
@@ -12,14 +30,31 @@ export default function LayoutsPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Layouts</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Layouts</h1>
+          <Badge variant="primary">12 patterns</Badge>
+        </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
           A collection of page layout patterns — from simple sidebars and
-          headers to app shells, wizards, and overlays. Use the tabs to switch
-          between the live preview, source code, CLI, installation, and
-          dependency details for each example.
+          headers to app shells, wizards, and overlays.
         </p>
       </header>
+
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
       <ComponentPreview id="layout-sidebar-main">
         <div className="flex w-full flex-col gap-4">
@@ -527,6 +562,34 @@ export default function LayoutsPage() {
           </div>
         </div>
       </ComponentPreview>
+    </section>
+
+    {/* API Reference */}
+    <section className="flex flex-col gap-4">
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+      <div className="overflow-hidden rounded-lg border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b bg-muted/50">
+              <th className="px-4 py-3 text-left font-medium">Prop</th>
+              <th className="px-4 py-3 text-left font-medium">Type</th>
+              <th className="px-4 py-3 text-left font-medium">Default</th>
+              <th className="px-4 py-3 text-left font-medium">Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            {layoutProps.map((row, i) => (
+              <tr key={row.prop} className={i < layoutProps.length - 1 ? "border-b" : ""}>
+                <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
+                <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
+                <td className="px-4 py-3">{row.required}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
     </div>
   );
 }

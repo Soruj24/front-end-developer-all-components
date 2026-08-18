@@ -1,19 +1,23 @@
 "use client";
 
-import { Slider } from "@/components/_slider";
+import { useState } from "react";
+import { Slider } from "@/components/ui";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
 
 const installCommand = `npx component-library@latest add slider`;
 
-const usageCode = `import { Slider } from "@/components/_slider";
+const usageCode = `import { Slider } from "@/components/ui";
 
-<Slider value={[50]} />
-<Slider value={[25, 75]} />
-<Slider value={[50]} disabled />`;
+<Slider value={50} onChange={(e) => setValue(Number(e.target.value))} />
+<Slider value={50} onChange={(e) => setValue(Number(e.target.value))} disabled />`;
 
 export default function SliderPage() {
+  const [value1, setValue1] = useState(50);
+  const [value2, setValue2] = useState(25);
+  const [value3, setValue3] = useState(75);
+
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
@@ -45,7 +49,10 @@ export default function SliderPage() {
           <p className="mt-1 text-sm text-muted-foreground">Default slider.</p>
         </div>
         <ComponentPreview id="slider-default">
-          <Slider value={[50]} />
+          <div className="w-full max-w-sm">
+            <Slider value={value1} onChange={(e) => setValue1(Number(e.target.value))} />
+            <p className="mt-2 text-center text-sm text-muted-foreground">Value: {value1}</p>
+          </div>
         </ComponentPreview>
       </section>
 
@@ -56,10 +63,10 @@ export default function SliderPage() {
           <p className="mt-1 text-sm text-muted-foreground">Different sizes for the slider.</p>
         </div>
         <ComponentPreview id="slider-sizes">
-          <div className="flex flex-col gap-6">
-            <Slider value={[50]} size="sm" />
-            <Slider value={[50]} size="md" />
-            <Slider value={[50]} size="lg" />
+          <div className="flex w-full max-w-sm flex-col gap-6">
+            <Slider value={50} size="sm" onChange={(e) => {}} />
+            <Slider value={50} size="md" onChange={(e) => {}} />
+            <Slider value={50} size="lg" onChange={(e) => {}} />
           </div>
         </ComponentPreview>
       </section>
@@ -71,9 +78,15 @@ export default function SliderPage() {
           <p className="mt-1 text-sm text-muted-foreground">Slider with range values.</p>
         </div>
         <ComponentPreview id="slider-range">
-          <div className="flex flex-col gap-4">
-            <Slider value={[25, 75]} />
-            <Slider value={[10, 90]} min={0} max={100} step={5} />
+          <div className="flex w-full max-w-sm flex-col gap-4">
+            <div>
+              <Slider value={value2} onChange={(e) => setValue2(Number(e.target.value))} />
+              <p className="mt-1 text-xs text-muted-foreground">Min: {value2}</p>
+            </div>
+            <div>
+              <Slider value={value3} onChange={(e) => setValue3(Number(e.target.value))} />
+              <p className="mt-1 text-xs text-muted-foreground">Max: {value3}</p>
+            </div>
           </div>
         </ComponentPreview>
       </section>
@@ -94,7 +107,7 @@ export default function SliderPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">value</td>
-                <td className="px-4 py-3 text-muted-foreground">number[]</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
                 <td className="px-4 py-3 text-muted-foreground">-</td>
                 <td className="px-4 py-3">No</td>
               </tr>

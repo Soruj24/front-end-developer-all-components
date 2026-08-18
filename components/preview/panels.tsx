@@ -20,7 +20,7 @@ export function CodePanel({ item }: CodePanelProps) {
     <div className="p-4 sm:p-6">
       <CodeBlock
         code={item.source}
-        filename={item.files[0]}
+        filename={item.files?.[0] ?? `${item.id}.tsx`}
         label="tsx"
         variant="terminal"
       />

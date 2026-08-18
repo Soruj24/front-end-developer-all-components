@@ -1,3 +1,5 @@
+import { Badge } from "@/components/design-system/Badge";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   StoryBar,
   ComposePost,
@@ -19,54 +21,133 @@ import {
   CollaborationCard,
 } from "@/features/social-media";
 
+const installCommand = `npx component-library@latest add social-media`;
+
+const usageCode = `import { FeedPostList, ComposePost, ProfileCard } from "@/features/social-media";
+
+<ComposePost />
+<FeedPostList />
+<ProfileCard />`;
+
 export default function SocialMediaPage() {
   return (
-    <div className="flex flex-col gap-8 p-4 sm:p-8">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">Social</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Connect, share, and discover.</p>
-        </div>
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
+      <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <button className="relative rounded-full bg-zinc-100 p-2.5 text-zinc-500 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700">
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">3</span>
-          </button>
-          <button className="rounded-full bg-zinc-100 p-2.5 text-zinc-500 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700">
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-          </button>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Social</h1>
+          <Badge variant="primary">14 examples</Badge>
         </div>
-      </div>
+        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          Social media platform with feed, stories, reels, polls, live streams, and analytics.
+        </p>
+      </header>
 
-      <div className="flex flex-col gap-8 xl:flex-row">
-        <div className="flex-1 space-y-8">
-          <ComposePost />
-          <StoryBar />
-          <FeedPostList />
-          <CommentSection />
-          <PollSection />
-          <LiveStreamSection />
-          <ReelsSection />
-          <ExploreSection />
-          <SavedItemsSection />
+      {/* Installation */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      </section>
+
+      {/* Usage */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
+      </section>
+
+      {/* Examples */}
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Feed & Compose</h3>
+          <p className="text-sm text-muted-foreground">Social feed with post composer, stories bar, and feed posts.</p>
+          <div className="rounded-lg border border-border bg-background p-6">
+            <ComposePost />
+            <div className="mt-6">
+              <StoryBar />
+            </div>
+            <div className="mt-6">
+              <FeedPostList />
+            </div>
+          </div>
         </div>
 
-        <aside className="w-full space-y-6 xl:w-80">
-          <ProfileCard />
-          <NotificationsCard />
-          <MessagesCard />
-          <SuggestedUsersCard />
-          <TrendingCard />
-          <PostInsightsCard />
-          <AudienceInsightsCard />
-          <ContentSchedulerCard />
-          <CollaborationCard />
-        </aside>
-      </div>
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Engagement Features</h3>
+          <p className="text-sm text-muted-foreground">Comments, polls, reels, and live stream sections.</p>
+          <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
+            <CommentSection />
+            <PollSection />
+            <ReelsSection />
+            <LiveStreamSection />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold text-foreground">Sidebar Widgets</h3>
+          <p className="text-sm text-muted-foreground">Profile, notifications, messages, trending, and insights.</p>
+          <div className="rounded-lg border border-border bg-background p-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ProfileCard />
+            <NotificationsCard />
+            <MessagesCard />
+            <TrendingCard />
+            <SuggestedUsersCard />
+            <PostInsightsCard />
+            <AudienceInsightsCard />
+            <ContentSchedulerCard />
+            <CollaborationCard />
+          </div>
+        </div>
+      </section>
+
+      {/* API Reference */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">posts</td>
+                <td className="px-4 py-3 text-muted-foreground">Post[]</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">user</td>
+                <td className="px-4 py-3 text-muted-foreground">User</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onPost</td>
+                <td className="px-4 py-3 text-muted-foreground">(content: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">onLike</td>
+                <td className="px-4 py-3 text-muted-foreground">(postId: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }
