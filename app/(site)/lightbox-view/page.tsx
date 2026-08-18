@@ -1,11 +1,241 @@
 "use client";
+import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Maximize } from "lucide-react";
+import { Image, Maximize2, ChevronLeft, ChevronRight, ZoomIn, Download, Share2 } from "lucide-react";
 
 const installCommand = `npx component-library@latest add lightbox-view`;
-const usageCode = `// usage`;
+const usageCode = `import { Lightbox } from '@/components/lightbox-view';
+
+export default function Gallery() {
+  const images = [
+    { src: '/img1.jpg', alt: 'Image 1', caption: 'Sunset at the beach' },
+    { src: '/img2.jpg', alt: 'Image 2', caption: 'Mountain landscape' },
+    { src: '/img3.jpg', alt: 'Image 3', caption: 'City skyline' },
+  ];
+
+  return (
+    <Lightbox
+      images={images}
+      initialIndex={0}
+      showThumbnails={true}
+      showCaptions={true}
+      enableZoom={true}
+      onClose={() => console.log('closed')}
+    />
+  );
+}`;
+
+  function ImageLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Image className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">ImageLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 1</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Image className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">ImageLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'ImageLightbox', category: 'Media', icon: 'Image' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function GalleryLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Maximize2 className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">GalleryLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 2</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Maximize2 className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">GalleryLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'GalleryLightbox', category: 'Media', icon: 'Maximize2' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function VideoLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <ChevronLeft className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">VideoLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 3</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <ChevronLeft className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">VideoLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'VideoLightbox', category: 'Media', icon: 'ChevronLeft' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function CarouselLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <ChevronRight className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">CarouselLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 4</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <ChevronRight className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">CarouselLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'CarouselLightbox', category: 'Media', icon: 'ChevronRight' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function CaptionLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <ZoomIn className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">CaptionLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 5</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <ZoomIn className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">CaptionLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'CaptionLightbox', category: 'Media', icon: 'ZoomIn' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function ThumbnailLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Download className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">ThumbnailLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 6</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Download className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">ThumbnailLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'ThumbnailLightbox', category: 'Media', icon: 'Download' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function FullscreenLightbox() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Share2 className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">FullscreenLightbox</h3>
+          <Badge variant="outline" className="ml-auto">Demo 7</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Share2 className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">FullscreenLightbox demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'FullscreenLightbox', category: 'Media', icon: 'Share2' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
 
 export default function LightboxViewPage() {
   return (
@@ -26,18 +256,47 @@ export default function LightboxViewPage() {
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
       <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Preview</h2><p className="mt-1 text-sm text-muted-foreground">Lightbox image viewer with zoom and navigation controls.</p></div>
-        <ComponentPreview id="lightbox-view"><div className="w-full p-4"><div className="flex flex-col gap-4"><div className="grid grid-cols-3 gap-3">{Array.from({length:6},(_,i)=>(<div key={i} className="relative group aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border cursor-pointer"><div className="absolute inset-0 flex items-center justify-center"><svg className="w-8 h-8 text-primary/40 group-hover:text-primary/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100"><div className="w-10 h-10 rounded-full bg-background/90 flex items-center justify-center"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div></div></div>))}</div></div></div></ComponentPreview>
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Interactive demonstrations of Lightbox View variants.</p>
+        </div>
+        <ComponentPreview id="lightbox-view">
+          <div className="w-full p-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ImageLightbox />
+        <GalleryLightbox />
+        <VideoLightbox />
+        <CarouselLightbox />
+        <CaptionLightbox />
+        <ThumbnailLightbox />
+        <FullscreenLightbox />
+            </div>
+          </div>
+        </ComponentPreview>
       </section>
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">images</td><td className="px-4 py-3 text-muted-foreground">string[]</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">Yes</td></tr>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">images</td><td className="px-4 py-3 text-muted-foreground">{src: string; alt: string; caption?: string}[]</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">Yes</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">initialIndex</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">0</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onClose</td><td className="px-4 py-3 text-muted-foreground">{"() => void"}</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">showNavigation</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">showThumbnails</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">showCaptions</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">enableZoom</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onClose</td><td className="px-4 py-3 text-muted-foreground">() => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-        </tbody></table></div>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );

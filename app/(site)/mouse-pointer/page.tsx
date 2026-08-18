@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { MousePointer, Click, Hand, Crosshair, Move, Target, Zap } from "lucide-react";
+import { MousePointer, Hand, Crosshair, Move, Target, Zap, Cursor } from "lucide-react";
 
 const installCommand = `npx component-library@latest add mouse-pointer`;
 
@@ -32,7 +32,7 @@ function CustomCursorDemo() {
         {styles.map((s) => (
           <button
             key={s.id}
-            onClick={() => setCursorStyle(s.id)}
+            onCursor={() => setCursorStyle(s.id)}
             className={`rounded-md border p-3 text-xs font-medium transition-all ${cursorStyle === s.id ? "border-primary bg-primary/5 text-primary" : "border-transparent bg-muted/30 text-muted-foreground hover:bg-muted/50"}`}
             style={{ cursor: s.cursor }}
           >
@@ -50,30 +50,30 @@ function CustomCursorDemo() {
   );
 }
 
-function ClickEffectDemo() {
-  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [clickCount, setClickCount] = useState(0);
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+function CursorEffectDemo() {
+  const [clicks, setCursors] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [clickCount, setCursorCount] = useState(0);
+  const handleCursor = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    setClicks((prev) => [...prev.slice(-4), { id: Date.now(), x, y }]);
-    setClickCount((c) => c + 1);
+    setCursors((prev) => [...prev.slice(-4), { id: Date.now(), x, y }]);
+    setCursorCount((c) => c + 1);
   };
   return (
     <div className="rounded-lg border bg-background p-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Click className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm font-medium">Click Effect</span>
+          <Cursor className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-medium">Cursor Effect</span>
         </div>
-        <span className="text-xs text-muted-foreground">Clicks: {clickCount}</span>
+        <span className="text-xs text-muted-foreground">Cursors: {clickCount}</span>
       </div>
       <div
-        onClick={handleClick}
+        onCursor={handleCursor}
         className="relative flex h-32 cursor-pointer items-center justify-center overflow-hidden rounded-md bg-muted/30 text-xs text-muted-foreground"
       >
-        Click anywhere
+        Cursor anywhere
         {clicks.map((click) => (
           <span
             key={click.id}
@@ -135,7 +135,7 @@ function SelectionAreaDemo() {
         {items.map((item) => (
           <button
             key={item.id}
-            onClick={() => toggle(item.id)}
+            onCursor={() => toggle(item.id)}
             className={`flex flex-col items-start gap-1 rounded-md border p-3 text-left transition-all ${selected.includes(item.id) ? "border-primary bg-primary/5" : "border-transparent bg-muted/30 hover:bg-muted/50"}`}
           >
             <span className="text-xs font-medium">{item.name}</span>
@@ -152,7 +152,7 @@ function HoverCardDemo() {
   const cards = [
     { title: "Analytics", desc: "View detailed metrics", icon: Target },
     { title: "Performance", desc: "Monitor load times", icon: Zap },
-    { title: "Interactions", desc: "Track user clicks", icon: Click },
+    { title: "Interactions", desc: "Track user clicks", icon: Cursor },
   ];
   return (
     <div className="rounded-lg border bg-background p-6">
@@ -191,7 +191,7 @@ function TooltipTriggerDemo() {
         {["top", "bottom", "left", "right"].map((pos) => (
           <button
             key={pos}
-            onClick={() => setPosition(pos)}
+            onCursor={() => setPosition(pos)}
             className={`rounded-md px-2 py-1 text-[10px] font-medium transition-colors ${position === pos ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
           >
             {pos}
@@ -235,7 +235,7 @@ function ContextMenuDemo() {
       </div>
       <div
         onContextMenu={handleContext}
-        onClick={() => setOpen(false)}
+        onCursor={() => setOpen(false)}
         className="relative flex h-32 cursor-pointer items-center justify-center rounded-md bg-muted/30 text-xs text-muted-foreground"
       >
         Right-click here
@@ -244,7 +244,7 @@ function ContextMenuDemo() {
             {menuItems.map((item) => (
               <button
                 key={item}
-                onClick={() => setOpen(false)}
+                onCursor={() => setOpen(false)}
                 className="flex w-full items-center rounded-sm px-3 py-1.5 text-left text-xs hover:bg-muted"
               >
                 {item}
@@ -286,8 +286,8 @@ export default function MousePointerPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">ClickEffect</h2>
-        <ClickEffectDemo />
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">CursorEffect</h2>
+        <CursorEffectDemo />
       </section>
 
       <section className="flex flex-col gap-4">

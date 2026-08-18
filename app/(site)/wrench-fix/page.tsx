@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/design-system/Badge";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Wrench, Settings, Hammer, Screwdriver } from "lucide-react";
+import { Wrench, Settings, Hammer, Toolbox } from "lucide-react";
 
 const installCommand = `npx component-library@latest add wrench-fix`;
 const usageCode = `import { WrenchFix } from "@/components/_wrench-fix";
@@ -64,7 +64,7 @@ export default function WrenchFixPage() {
             { icon: Wrench, label: "Wrench" },
             { icon: Settings, label: "Settings" },
             { icon: Hammer, label: "Hammer" },
-            { icon: Screwdriver, label: "Screwdriver" },
+            { icon: Tool, label: "Tool" },
           ].map((t) => (
             <div key={t.label} className="flex flex-col items-center gap-1">
               <t.icon className="h-6 w-6 text-muted-foreground" />

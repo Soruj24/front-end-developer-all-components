@@ -1,11 +1,236 @@
 "use client";
+import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Loader } from "lucide-react";
+import { Loader, BarChart3, Activity, Zap, Settings, Play, Pause } from "lucide-react";
 
 const installCommand = `npx component-library@latest add loading-bar`;
-const usageCode = `// usage`;
+const usageCode = `import { LoadingBar } from '@/components/loading-bar';
+
+export default function AppLayout() {
+  const [progress, setProgress] = useState(0);
+
+  return (
+    <>
+      <LoadingBar value={progress} className="fixed top-0 left-0 right-0 z-50" />
+      <LoadingBar variant="indeterminate" className="h-1" />
+      <button onClick={() => setProgress(p => Math.min(p + 10, 100))}>
+        Increment Progress
+      </button>
+    </>
+  );
+}`;
+
+  function TopBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Loader className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">TopBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 1</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Loader className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">TopBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'TopBar', category: 'Feedback', icon: 'Loader' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function InlineBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">InlineBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 2</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">InlineBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'InlineBar', category: 'Feedback', icon: 'BarChart3' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function CircularBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Activity className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">CircularBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 3</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Activity className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">CircularBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'CircularBar', category: 'Feedback', icon: 'Activity' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function StepBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Zap className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">StepBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 4</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Zap className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">StepBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'StepBar', category: 'Feedback', icon: 'Zap' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function ProgressBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Settings className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">ProgressBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 5</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Settings className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">ProgressBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'ProgressBar', category: 'Feedback', icon: 'Settings' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function IndeterminateBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Play className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">IndeterminateBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 6</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Play className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">IndeterminateBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'IndeterminateBar', category: 'Feedback', icon: 'Play' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function ColorBar() {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <Pause className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-foreground">ColorBar</h3>
+          <Badge variant="outline" className="ml-auto">Demo 7</Badge>
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <div className="text-center text-muted-foreground">
+            <Pause className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">ColorBar demonstration</p>
+            <button 
+              onClick={() => setOpen(!open)}
+              className="mt-2 text-xs text-primary hover:underline"
+            >
+              {open ? 'Hide' : 'Show'} Details
+            </button>
+          </div>
+        </div>
+        {open && (
+          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
+            {JSON.stringify({ component: 'ColorBar', category: 'Feedback', icon: 'Pause' }, null, 2)}
+          </div>
+        )}
+      </div>
+    );
+  }
 
 export default function LoadingBarPage() {
   return (
@@ -26,18 +251,45 @@ export default function LoadingBarPage() {
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
       <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Preview</h2><p className="mt-1 text-sm text-muted-foreground">Loading bars in indeterminate and determinate modes.</p></div>
-        <ComponentPreview id="loading-bar"><div className="w-full p-4"><div className="flex flex-col gap-6 w-full max-w-md"><div className="flex flex-col gap-2"><span className="text-xs font-medium text-muted-foreground">Indeterminate</span><div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted"><div className="absolute inset-y-0 left-0 w-1/3 bg-primary rounded-full" style={{animation:"loading 1.5s ease-in-out infinite"}}></div></div></div><div className="flex flex-col gap-2"><span className="text-xs font-medium text-muted-foreground">Progress: 65%</span><div className="relative h-2 w-full overflow-hidden rounded-full bg-muted"><div className="absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500" style={{width:"65%"}}></div></div></div><div className="flex flex-col gap-2"><span className="text-xs font-medium text-muted-foreground">Gradient variant</span><div className="relative h-2 w-full overflow-hidden rounded-full bg-muted"><div className="absolute inset-y-0 left-0 w-3/4 bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full"></div></div></div><div className="flex flex-col gap-2"><span className="text-xs font-medium text-muted-foreground">Striped variant</span><div className="relative h-3 w-full overflow-hidden rounded-full bg-muted"><div className="absolute inset-y-0 left-0 w-2/3 bg-primary rounded-full overflow-hidden"></div></div></div></div></div></ComponentPreview>
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Interactive demonstrations of Loading Bar variants.</p>
+        </div>
+        <ComponentPreview id="loading-bar">
+          <div className="w-full p-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <TopBar />
+        <InlineBar />
+        <CircularBar />
+        <StepBar />
+        <ProgressBar />
+        <IndeterminateBar />
+        <ColorBar />
+            </div>
+          </div>
+        </ComponentPreview>
       </section>
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody>
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">value</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">indeterminate</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">variant</td><td className="px-4 py-3 text-muted-foreground">{"default"} | {"gradient"} | {"striped"}</td><td className="px-4 py-3 text-muted-foreground">{"default"}</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">size</td><td className="px-4 py-3 text-muted-foreground">{"sm"} | {"md"} | {"lg"}</td><td className="px-4 py-3 text-muted-foreground">{"md"}</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">variant</td><td className="px-4 py-3 text-muted-foreground">"default" | "gradient" | "striped"</td><td className="px-4 py-3 text-muted-foreground">"default"</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">size</td><td className="px-4 py-3 text-muted-foreground">"sm" | "md" | "lg"</td><td className="px-4 py-3 text-muted-foreground">"md"</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-        </tbody></table></div>
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );
