@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Ghost, Sparkles } from "lucide-react";
+import { Ghost, Sparkles, Moon, Star, Clock, Zap } from "lucide-react";
 
 const installCommand = `npx component-library@latest add ghost-animation`;
 const usageCode = `import { GhostAnimation } from "@/components/ghost-animation";
@@ -13,7 +13,7 @@ const usageCode = `import { GhostAnimation } from "@/components/ghost-animation"
 
 type GhostMood = "happy" | "spooky" | "surprised" | "sleeping";
 
-function GhostDemo({ mood = "happy", size = 100 }: { mood?: GhostMood; size?: number }) {
+function GhostRenderer({ mood = "happy", size = 100 }: { mood?: GhostMood; size?: number }) {
   const [bounce, setBounce] = useState(0);
 
   useEffect(() => {
@@ -67,12 +67,12 @@ function GhostDemo({ mood = "happy", size = 100 }: { mood?: GhostMood; size?: nu
   );
 }
 
-function GhostRowDemo() {
+function GhostMoodsDemo() {
   return (
     <div className="flex gap-6">
       {(["happy", "spooky", "surprised", "sleeping"] as GhostMood[]).map((m) => (
         <div key={m} className="flex flex-col items-center gap-1">
-          <GhostDemo mood={m} size={80} />
+          <GhostRenderer mood={m} size={80} />
           <span className="text-xs text-muted-foreground capitalize">{m}</span>
         </div>
       ))}
@@ -101,22 +101,172 @@ function GhostParadeDemo() {
             opacity: 0.6 + (i / 5) * 0.4,
           }}
         >
-          <GhostDemo mood={i % 2 === 0 ? "happy" : "spooky"} size={40} />
+          <GhostRenderer mood={i % 2 === 0 ? "happy" : "spooky"} size={40} />
         </div>
       ))}
     </div>
   );
 }
 
-function FloatingGhostsDemo() {
+function CollectionDisplayDemo() {
   return (
     <div className="grid grid-cols-4 gap-4">
       {["#f0f0f0", "#e0e7ff", "#fce7f3", "#ecfdf5"].map((bg, i) => (
         <div key={i} className="flex flex-col items-center gap-1 rounded-lg bg-card p-3 border">
-          <GhostDemo mood={["happy", "spooky", "surprised", "sleeping"][i] as GhostMood} size={50} />
+          <GhostRenderer mood={["happy", "spooky", "surprised", "sleeping"][i] as GhostMood} size={50} />
           <span className="text-[10px] text-muted-foreground">{["Happy", "Spooky", "Surprise", "Nap"][i]}</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function HalloweenBannerDemo() {
+  const [active, setActive] = useState(false);
+
+  return (
+    <div className="w-full max-w-lg">
+      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-100 to-purple-100 border border-black/[.08] p-6 dark:from-orange-950/20 dark:to-purple-950/20 dark:border-white/[.145]">
+        <div className="absolute top-4 right-4">
+          <GhostRenderer mood="spooky" size={60} />
+        </div>
+        <div className="absolute bottom-4 left-4">
+          <Moon className="h-8 w-8 text-purple-400 opacity-50" />
+        </div>
+        <div className="relative z-10">
+          <Badge variant="secondary" className="mb-2">Limited Time</Badge>
+          <h2 className="text-2xl font-extrabold">Halloween Sale</h2>
+          <p className="mt-1 max-w-xs text-sm text-muted-foreground">
+            Up to 50% off on all spooky items. Don&apos;t miss out!
+          </p>
+          <button onClick={() => setActive(!active)} className="mt-3 rounded-lg bg-foreground px-4 py-2 text-xs font-medium text-background shadow-sm hover:bg-foreground/90">
+            {active ? "Sale Active!" : "Shop Now"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusIndicatorDemo() {
+  const [status, setStatus] = useState<"online" | "away" | "busy" | "offline">("online");
+  const statuses = {
+    online: { mood: "happy" as GhostMood, label: "Online", color: "bg-emerald-500" },
+    away: { mood: "sleeping" as GhostMood, label: "Away", color: "bg-yellow-500" },
+    busy: { mood: "spooky" as GhostMood, label: "Busy", color: "bg-red-500" },
+    offline: { mood: "surprised" as GhostMood, label: "Offline", color: "bg-gray-400" },
+  };
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm p-4 dark:border-white/[.145]">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="relative">
+            <GhostRenderer mood={statuses[status].mood} size={60} />
+            <div className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${statuses[status].color} ring-2 ring-background`} />
+          </div>
+          <div>
+            <p className="text-sm font-bold">Ghost User</p>
+            <p className="text-xs text-muted-foreground">{statuses[status].label}</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          {(Object.keys(statuses) as Array<keyof typeof statuses>).map((s) => (
+            <button
+              key={s}
+              onClick={() => setStatus(s)}
+              className={`flex-1 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                status === s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              {statuses[s].label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoadingAnimationDemo() {
+  const [dots, setDots] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => setDots((d) => (d >= 3 ? 0 : d + 1)), 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full max-w-sm">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm p-6 dark:border-white/[.145]">
+        <div className="flex flex-col items-center gap-4">
+          <GhostRenderer mood="happy" size={80} />
+          <div className="text-center">
+            <p className="text-sm font-bold">Loading{".".repeat(dots)}</p>
+            <p className="text-xs text-muted-foreground">Summoning ghosts...</p>
+          </div>
+          <div className="flex gap-1">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  i <= dots ? "bg-primary" : "bg-muted"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AchievementCardDemo() {
+  const [unlocked, setUnlocked] = useState([true, true, false]);
+  const achievements = [
+    { name: "First Haunt", desc: "Complete your first scare", icon: "👻", xp: 100 },
+    { name: "Ghost Buster", desc: "Catch 10 ghosts", icon: "🎃", xp: 250 },
+    { name: "Spirit Master", desc: "Unlock all ghost moods", icon: "✨", xp: 500 },
+  ];
+
+  const toggle = (i: number) => {
+    setUnlocked((prev) => prev.map((u, idx) => idx === i ? !u : u));
+  };
+
+  return (
+    <div className="w-full max-w-md">
+      <div className="rounded-xl border border-black/[.08] bg-card shadow-sm overflow-hidden dark:border-white/[.145]">
+        <div className="border-b border-black/[.06] px-4 py-3 dark:border-white/[.1]">
+          <div className="flex items-center gap-2">
+            <Star className="h-4 w-4 text-muted-foreground" />
+            <h3 className="text-sm font-semibold">Ghost Achievements</h3>
+            <span className="ml-auto text-[10px] text-muted-foreground">{unlocked.filter(Boolean).length}/{achievements.length}</span>
+          </div>
+        </div>
+        <div className="p-4 space-y-2">
+          {achievements.map((a, i) => (
+            <button
+              key={i}
+              onClick={() => toggle(i)}
+              className={`flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all ${
+                unlocked[i]
+                  ? "border-primary/30 bg-primary/5"
+                  : "border-black/[.08] opacity-60 dark:border-white/[.145]"
+              }`}
+            >
+              <div className="text-2xl">{a.icon}</div>
+              <div className="flex-1">
+                <p className="text-xs font-bold">{a.name}</p>
+                <p className="text-[10px] text-muted-foreground">{a.desc}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs font-mono font-bold">+{a.xp}</p>
+                <p className="text-[9px] text-muted-foreground">XP</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -126,11 +276,14 @@ export default function GhostAnimationPage() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Ghost Animation</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Ghost Animation
+          </h1>
           <Badge variant="primary">Animation</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Animated ghost characters with mood expressions, floating animation, parade effect, and collection display.
+          Animated ghost characters with mood expressions, floating animation, parade effect, and
+          collection display.
         </p>
       </header>
 
@@ -144,25 +297,78 @@ export default function GhostAnimationPage() {
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Ghost Moods</h2>
-        <ComponentPreview>
-          <GhostRowDemo />
-        </ComponentPreview>
-      </section>
+      <section className="flex flex-col gap-6">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Ghost Parade</h2>
-        <ComponentPreview>
-          <GhostParadeDemo />
-        </ComponentPreview>
-      </section>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Ghost Moods</h3>
+          <p className="text-sm text-muted-foreground">
+            Different ghost expressions and emotions.
+          </p>
+          <ComponentPreview id="ghost-moods">
+            <GhostMoodsDemo />
+          </ComponentPreview>
+        </div>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Collection Display</h2>
-        <ComponentPreview>
-          <FloatingGhostsDemo />
-        </ComponentPreview>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Ghost Parade</h3>
+          <p className="text-sm text-muted-foreground">
+            Animated floating ghosts in a row.
+          </p>
+          <ComponentPreview id="ghost-parade">
+            <GhostParadeDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Collection Display</h3>
+          <p className="text-sm text-muted-foreground">
+            Ghost collection grid with labels.
+          </p>
+          <ComponentPreview id="ghost-collection">
+            <CollectionDisplayDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Halloween Banner</h3>
+          <p className="text-sm text-muted-foreground">
+            Seasonal promotional banner with ghost decoration.
+          </p>
+          <ComponentPreview id="ghost-banner">
+            <HalloweenBannerDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Status Indicator</h3>
+          <p className="text-sm text-muted-foreground">
+            User status with ghost mood feedback.
+          </p>
+          <ComponentPreview id="ghost-status">
+            <StatusIndicatorDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Loading Animation</h3>
+          <p className="text-sm text-muted-foreground">
+            Ghost-themed loading spinner.
+          </p>
+          <ComponentPreview id="ghost-loading">
+            <LoadingAnimationDemo />
+          </ComponentPreview>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="text-lg font-medium text-foreground">Achievement Card</h3>
+          <p className="text-sm text-muted-foreground">
+            Gaming achievement display with unlock states.
+          </p>
+          <ComponentPreview id="ghost-achievements">
+            <AchievementCardDemo />
+          </ComponentPreview>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4">
@@ -178,9 +384,24 @@ export default function GhostAnimationPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">mood</td><td className="px-4 py-3 text-muted-foreground">{'"happy" | "spooky" | "surprised" | "sleeping"'}</td><td className="px-4 py-3 text-muted-foreground">{'"happy"'}</td><td className="px-4 py-3">No</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">size</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">100</td><td className="px-4 py-3">No</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">mood</td>
+                <td className="px-4 py-3 text-muted-foreground">{"\"happy\" | \"spooky\" | \"surprised\" | \"sleeping\""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{"\"happy\""}</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b">
+                <td className="px-4 py-3 font-mono text-xs">size</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">100</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
             </tbody>
           </table>
         </div>
