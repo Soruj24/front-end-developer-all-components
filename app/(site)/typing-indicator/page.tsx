@@ -59,17 +59,17 @@ function TypingChatDemo() {
     let idx = 0;
     const interval = setInterval(() => {
       if (idx < sequence.length) {
-        if (sequence[idx].sender === "them") {
+        const current = idx;
+        if (sequence[current].sender === "them") {
           setTyping(true);
           setTimeout(() => {
             setTyping(false);
-            setMessages((prev) => [...prev, sequence[idx]]);
-            idx++;
+            setMessages((prev) => [...prev, sequence[current]]);
           }, 1500);
         } else {
-          setMessages((prev) => [...prev, sequence[idx]]);
-          idx++;
+          setMessages((prev) => [...prev, sequence[current]]);
         }
+        idx++;
       } else {
         clearInterval(interval);
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
@@ -86,8 +86,8 @@ export default function ComparisonTablePage() {
                 </div>
               ))}
               {featureRows.map((row) => (
-                <>
-                  <div key={`label-${row.key}`} className="flex items-center border-t px-4 py-3 text-sm font-medium text-foreground">
+                <Fragment key={row.key}>
+                  <div className="flex items-center border-t px-4 py-3 text-sm font-medium text-foreground">
                     {row.label}
                   </div>
                   {plans.map((plan, i) => (
@@ -108,7 +108,7 @@ export default function ComparisonTablePage() {
                       )}
                     </div>
                   ))}
-                </>
+                </Fragment>
               ))}
               <div className="border-t p-4" />
               {plans.map((plan, i) => (
