@@ -33,8 +33,8 @@ export default function NotificationBellPage() {
         <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
         <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">count</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">0</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">notifications</td><td className="px-4 py-3 text-muted-foreground">{title: string; time: string}[]</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onDismiss</td><td className="px-4 py-3 text-muted-foreground">(id: string) => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">notifications</td><td className="px-4 py-3 text-muted-foreground">{"{title: string; time: string}[]"}</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onDismiss</td><td className="px-4 py-3 text-muted-foreground">{"(id: string) => void"}</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
         </tbody></table></div>
       </section>

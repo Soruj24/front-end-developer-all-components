@@ -36,8 +36,8 @@ export default function OnboardingCardPage() {
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">description</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">step</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">1</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">totalSteps</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">3</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onNext</td><td className="px-4 py-3 text-muted-foreground">() => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onSkip</td><td className="px-4 py-3 text-muted-foreground">() => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onNext</td><td className="px-4 py-3 text-muted-foreground">{"() => void"}</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onSkip</td><td className="px-4 py-3 text-muted-foreground">{"() => void"}</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
         </tbody></table></div>
       </section>

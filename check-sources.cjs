@@ -1,5 +1,6 @@
-const fs = require("fs");
-const wasm = require("esbuild-wasm");
+import fs from "fs";
+ 
+import { wasm } from "esbuild-wasm";
 
 const file = process.argv[2];
 const s = fs.readFileSync(file, "utf8");
