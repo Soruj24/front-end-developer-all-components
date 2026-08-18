@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-
 import { siteMetadata, siteViewport } from "@/config/site";
 import "@/styles/globals.css";
+import { ThemeInit } from "@/components/theme-init";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,30 +31,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <script
-          id="theme-init"
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const stored = (() => {
-                  try { return localStorage.getItem("theme"); } catch (e) { return null; }
-                })();
-                const mq = window.matchMedia("(prefers-color-scheme: dark)");
-                const apply = (dark) => {
-                  document.documentElement.classList.toggle("dark", dark);
-                };
-                if (stored === "dark") apply(true);
-                else if (stored === "light") apply(false);
-                else {
-                  apply(mq.matches);
-                  mq.addEventListener("change", (e) => {
-                    if (!localStorage.getItem("theme")) apply(e.matches);
-                  });
-                }
-              } catch (e) {}
-            `,
-          }}
-        />
+        <ThemeInit />
         {children}
       </body>
     </html>
