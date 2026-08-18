@@ -192,6 +192,7 @@ export default function PaginationPage() {
           ))}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Size Variants */}
       <section className="flex flex-col gap-4">
@@ -225,6 +226,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Page Counts */}
       <section className="flex flex-col gap-4">
@@ -249,6 +251,7 @@ export default function PaginationPage() {
           ))}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Page Size Selector */}
       <section className="flex flex-col gap-4">
@@ -284,6 +287,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Jump to Page */}
       <section className="flex flex-col gap-4">
@@ -329,6 +333,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Range Text */}
       <section className="flex flex-col gap-4">
@@ -344,6 +349,7 @@ export default function PaginationPage() {
           <PaginationBar current={p20} total={9} onChange={setP20} />
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Table Integration */}
       <section className="flex flex-col gap-4">
@@ -388,6 +394,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Skeleton Loading */}
       <section className="flex flex-col gap-4">
@@ -413,6 +420,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Condensed */}
       <section className="flex flex-col gap-4">
@@ -465,6 +473,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Card Grid */}
       <section className="flex flex-col gap-4">
@@ -489,6 +498,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Comments */}
       <section className="flex flex-col gap-4">
@@ -519,6 +529,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Search Results */}
       <section className="flex flex-col gap-4">
@@ -544,6 +555,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Minimal */}
       <section className="flex flex-col gap-4">
@@ -581,6 +593,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Total Badge */}
       <section className="flex flex-col gap-4">
@@ -609,6 +622,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Load More */}
       <section className="flex flex-col gap-4">
@@ -634,6 +648,7 @@ export default function PaginationPage() {
           {p33 >= 5 && <p className="mt-3 text-center text-xs text-muted-foreground/70">All 15 items loaded</p>}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Button Group */}
       <section className="flex flex-col gap-4">
@@ -654,6 +669,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Progress */}
       <section className="flex flex-col gap-4">
@@ -674,6 +690,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Color Themes */}
       <section className="flex flex-col gap-4">
@@ -703,6 +720,7 @@ export default function PaginationPage() {
           ))}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Stepper */}
       <section className="flex flex-col gap-4">
@@ -730,6 +748,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Gradient */}
       <section className="flex flex-col gap-4">
@@ -766,6 +785,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Thumbnails */}
       <section className="flex flex-col gap-4">
@@ -790,6 +810,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Mobile */}
       <section className="flex flex-col gap-4">
@@ -831,6 +852,7 @@ export default function PaginationPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* API Reference */}
       <section className="flex flex-col gap-4">

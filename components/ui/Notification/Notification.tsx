@@ -27,5 +27,5 @@ export function NotificationTitle({ children, className }: NotificationTitleProp
 }
 
 export function NotificationDescription({ children, className }: NotificationDescriptionProps) {
-  return <p className={cn("text-sm opacity-90", className)}>{children}</p>;
+  return <div className={cn("text-sm opacity-90", className)}>{children}</div>;
 }
