@@ -244,7 +244,7 @@ export default function TooltipPage() {
 
       <section>
         <h2 className="mb-4 text-lg font-semibold">On Text</h2>
-        <p className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground">
           Hover over the{" "}
           <span className="relative group cursor-help underline decoration-dotted underline-offset-2">
             underlined text
@@ -261,7 +261,7 @@ export default function TooltipPage() {
               <Arrow dir="Top" />
             </span>
           </span>
-        </p>
+        </div>
       </section>
 
       <section>

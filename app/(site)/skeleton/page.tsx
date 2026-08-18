@@ -105,6 +105,7 @@ export default function SkeletonPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Media Skeletons */}
       <section className="flex flex-col gap-4">
@@ -176,6 +177,7 @@ export default function SkeletonPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Card Skeletons */}
       <section className="flex flex-col gap-4">
@@ -250,6 +252,7 @@ export default function SkeletonPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Table Skeleton */}
       <section className="flex flex-col gap-4">
@@ -282,6 +285,7 @@ export default function SkeletonPage() {
           ))}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* List Skeletons */}
       <section className="flex flex-col gap-4">
@@ -336,6 +340,7 @@ export default function SkeletonPage() {
           </div>
         </div>
       </ComponentPreview>
+      </section>
 
       {/* Interactive Demo */}
       <section className="flex flex-col gap-4">
@@ -408,6 +413,7 @@ export default function SkeletonPage() {
           )}
         </div>
       </ComponentPreview>
+      </section>
 
       {/* API Reference */}
       <section className="flex flex-col gap-4">
