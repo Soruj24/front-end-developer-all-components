@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 interface ContextSubMenu {
   label: string;
@@ -71,21 +72,19 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
         <div
           ref={menuRef}
           style={{ left: position.x, top: position.y }}
-          className="fixed z-50 min-w-[180px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover"
+          className={cn(
+            "fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
+            "animate-in fade-in-0 zoom-in-95",
+          )}
         >
           {items.map((item, i) =>
             item.divider ? (
-              <div
-                key={i}
-                className="my-1 border-t border-border"
-              />
+              <div key={i} className="-mx-1 my-1 h-px bg-muted" />
             ) : (
               <div
                 key={i}
                 className="relative"
-                onMouseEnter={() =>
-                  item.children ? setSubmenu(item.label) : setSubmenu(null)
-                }
+                onMouseEnter={() => item.children ? setSubmenu(item.label) : setSubmenu(null)}
                 onMouseLeave={() => setSubmenu(null)}
               >
                 <button
@@ -98,13 +97,13 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
                     }
                   }}
                   disabled={item.disabled}
-                  className={`flex w-full items-center gap-2 px-3 py-2 text-sm ${
-                    item.disabled
-                      ? "cursor-not-allowed opacity-40"
-                      : item.danger
-                      ? "text-danger hover:bg-danger-soft"
-                      : "text-foreground hover:bg-muted"
-                  }`}
+                  className={cn(
+                    "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
+                    "hover:bg-accent hover:text-accent-foreground",
+                    "focus:bg-accent focus:text-accent-foreground",
+                    item.disabled && "pointer-events-none opacity-50",
+                    item.danger && "text-destructive focus:bg-destructive/10 focus:text-destructive",
+                  )}
                 >
                   {item.icon && (
                     <span className="flex h-4 w-4 shrink-0 items-center justify-center">
@@ -113,28 +112,24 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
                   )}
                   <span className="flex-1 text-left">{item.label}</span>
                   {item.shortcut && (
-                    <span className="text-[11px] text-muted-foreground">
+                    <span className="ml-auto text-xs tracking-widest opacity-60">
                       {item.shortcut}
                     </span>
                   )}
                   {item.children && (
                     <svg
-                      className="h-3 w-3 text-muted-foreground"
+                      className="h-4 w-4 shrink-0 opacity-60"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   )}
                 </button>
                 {item.children && submenu === item.label && (
-                  <div className="absolute left-full top-0 ml-1 min-w-[160px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover">
+                  <div className="absolute left-full top-0 z-50 ml-1 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95">
                     {item.children.map((child, ci) => (
                       <button
                         key={ci}
@@ -144,7 +139,11 @@ const ContextMenu = ({ items, trigger, onOpenChange }: ContextMenuProps) => {
                           setSubmenu(null);
                           onOpenChange?.(false);
                         }}
-                        className="flex w-full items-center px-3 py-2 text-sm text-foreground hover:bg-muted"
+                        className={cn(
+                          "relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
+                          "hover:bg-accent hover:text-accent-foreground",
+                          "focus:bg-accent focus:text-accent-foreground",
+                        )}
                       >
                         {child.label}
                       </button>

@@ -12,15 +12,10 @@ export interface DropdownMenuItem {
 }
 
 export interface DropdownMenuProps {
-  trigger: ReactNode;
+  trigger: ReactNode | ((open: boolean) => ReactNode);
   children: ReactNode;
   align?: DropdownAlign;
   className?: string;
-}
-
-export interface DropdownMenuTriggerProps {
-  children: ReactNode;
-  asChild?: boolean;
 }
 
 export interface DropdownMenuContentProps {
@@ -36,8 +31,20 @@ export interface DropdownMenuItemProps {
   disabled?: boolean;
   destructive?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 export interface DropdownMenuSeparatorProps {
+  className?: string;
+}
+
+export interface DropdownMenuLabelProps {
+  children: ReactNode;
+  className?: string;
+  inset?: boolean;
+}
+
+export interface DropdownMenuGroupProps {
+  children: ReactNode;
   className?: string;
 }

@@ -45,43 +45,42 @@ export function Menu({ trigger, items, align = "start", width = 200 }: MenuProps
   return (
     <div ref={ref} className="relative inline-flex">
       <div onClick={() => setOpen((v) => !v)}>{trigger}</div>
-      {open && (
-        <div
-          style={{ width, minWidth: 180 }}
-          className={`absolute z-50 mt-1 overflow-hidden rounded-md border border-[#3a3a41] bg-[#252526] py-1 text-[13px] shadow-2xl ${
-            align === "end" ? "right-0" : "left-0"
-          }`}
-        >
-          {items.map((item, i) =>
-            item.divider ? (
-              <div key={i} className="my-1 border-t border-[#333338]" />
-            ) : (
-              <button
-                key={i}
-                type="button"
-                disabled={item.disabled}
-                onClick={() => {
-                  if (!item.disabled) {
-                    item.onSelect?.();
-                    setOpen(false);
-                  }
-                }}
-                className={`flex w-full items-center gap-2 px-3 py-1.5 text-left transition-colors disabled:opacity-40 ${
-                  item.danger
-                    ? "text-[#f48771] hover:bg-[#4d2020]"
-                    : "text-[#d4d4d8] hover:bg-[#37373d]"
-                }`}
-              >
-                {item.icon && (
-                  <Icon name={item.icon} width={14} height={14} className="text-[#9ca3af]" />
-                )}
-                <span className="flex-1 truncate">{item.label}</span>
-                {item.shortcut && <span className="text-[11px] text-[#6a6a72]">{item.shortcut}</span>}
-              </button>
-            )
-          )}
-        </div>
-      )}
+      <div
+        data-state={open ? "open" : "closed"}
+        style={{ width, minWidth: 180 }}
+        className={`pointer-events-none absolute z-50 mt-1 overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md ${
+          align === "end" ? "right-0" : "left-0"
+        } data-[state=open]:pointer-events-auto data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95`}
+      >
+        {items.map((item, i) =>
+          item.divider ? (
+            <div key={i} className="-mx-1 my-1 h-px bg-muted" />
+          ) : (
+            <button
+              key={i}
+              type="button"
+              disabled={item.disabled}
+              onClick={() => {
+                if (!item.disabled) {
+                  item.onSelect?.();
+                  setOpen(false);
+                }
+              }}
+              className={`flex w-full select-none items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none transition-colors disabled:pointer-events-none disabled:opacity-50 ${
+                item.danger
+                  ? "text-destructive hover:bg-destructive/10"
+                  : "hover:bg-accent hover:text-accent-foreground"
+              }`}
+            >
+              {item.icon && (
+                <Icon name={item.icon} width={14} height={14} className="shrink-0 opacity-60" />
+              )}
+              <span className="flex-1 truncate">{item.label}</span>
+              {item.shortcut && <span className="ml-auto text-xs tracking-widest opacity-60">{item.shortcut}</span>}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 }

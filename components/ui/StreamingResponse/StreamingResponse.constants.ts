@@ -38,4 +38,4 @@ export const INLINE_PATTERNS: Array<[string, string]> = [
   ["strike", "~~(?<strikeSrc>[^~]+)~~"],
 ];
 
-export const INLINE_SOURCE = INLINE_PATTERNS.map(([name, pattern]) => `(?<${name}>${pattern})`).join("|");
+export const INLINE_SOURCE = INLINE_PATTERNS.map(([, pattern]) => `(?:${pattern})`).join("|");

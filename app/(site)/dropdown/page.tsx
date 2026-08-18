@@ -42,21 +42,21 @@ function DropdownContent({ items, onClose }: { items: DropdownItem[]; onClose: (
   const [checks, setChecks] = useState<Record<string, boolean>>({ "Show Sidebar": true, "Show Toolbar": true })
 
   return (
-    <div className="min-w-44 rounded-lg border border-border bg-white py-1 shadow-lg dark:border-border dark:bg-zinc-900">
+    <div className="min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md">
       {items.map((item, i) => {
-        if (item.divider) return <div key={i} className="my-1 border-t border-border" />
+        if (item.divider) return <div key={i} className="-mx-1 my-1 h-px bg-muted" />
         if (item.type === "radio") return (
           <button key={item.label} onClick={() => { setRadioIdx(i); onClose() }}
-            className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm ${item.disabled ? "cursor-not-allowed opacity-40" : "text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted"}`}>
-            <span className="w-4 text-xs">{radioIdx === i ? "●" : "○"}</span>{item.label}
+            className={`flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${item.disabled ? "pointer-events-none opacity-50" : ""}`}>
+            <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-primary">{radioIdx === i && <span className="h-2 w-2 rounded-full bg-primary" />}</span>{item.label}
           </button>
         )
         if (item.type === "checkbox") {
           const checked = checks[item.label] ?? false
           return (
             <button key={item.label} onClick={() => setChecks((p) => ({ ...p, [item.label]: !checked }))}
-              className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted`}>
-              <span className="w-4 text-xs">{checked ? "☑" : "☐"}</span>{item.label}
+              className="flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+              <span className="flex h-3.5 w-3.5 items-center justify-center rounded-sm border border-primary">{checked && <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none"><path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>}</span>{item.label}
             </button>
           )
         }
@@ -66,12 +66,12 @@ function DropdownContent({ items, onClose }: { items: DropdownItem[]; onClose: (
             onMouseEnter={() => { if (hasChildren) setOpenNested(item.label) }}
             onMouseLeave={() => { setOpenNested(null) }}>
             <button disabled={item.disabled} onClick={() => { if (!hasChildren) { item.action?.(); onClose() } }}
-              className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm ${item.disabled ? "cursor-not-allowed opacity-40" : item.destructive ? "text-danger hover:bg-danger-soft dark:text-red-400" : "text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted"}`}>
-              {item.icon && <span className="flex h-5 w-5 items-center justify-center rounded text-[10px] font-bold bg-muted dark:bg-muted">{item.icon}</span>}
+              className={`flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground ${item.disabled ? "pointer-events-none opacity-50" : item.destructive ? "text-destructive hover:bg-destructive/10" : "hover:bg-accent hover:text-accent-foreground"}`}>
+              {item.icon && <span className="flex h-4 w-4 shrink-0 items-center justify-center">{item.icon}</span>}
               <span className="flex-1 text-left">{item.label}</span>
-              {item.badge && <span className="rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">{item.badge}</span>}
-              {item.shortcut && <span className="text-[10px] text-muted-foreground/70">{item.shortcut}</span>}
-              {hasChildren && <span className="text-[10px] text-muted-foreground/70">▸</span>}
+              {item.badge && <span className="ml-auto rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">{item.badge}</span>}
+              {item.shortcut && <span className="ml-auto text-xs tracking-widest opacity-60">{item.shortcut}</span>}
+              {hasChildren && <span className="ml-auto opacity-60">▸</span>}
             </button>
             {hasChildren && openNested === item.label && (
               <div className="absolute left-full top-0 z-50 ml-1"><DropdownContent items={item.children!} onClose={onClose} /></div>
@@ -236,7 +236,7 @@ export default function DropdownPage() {
 
       <div className="flex flex-wrap gap-4">
         <Dropdown
-          trigger={<button className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted/40 dark:border-border dark:hover:bg-muted">☰ Button</button>}
+          trigger={<button className="flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground">☰ Button</button>}
           items={avatarItems}
         />
         <Dropdown
@@ -244,7 +244,7 @@ export default function DropdownPage() {
           items={avatarItems}
         />
         <Dropdown
-          trigger={<button className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-lg hover:bg-muted/40 dark:border-border dark:hover:bg-muted">⚙</button>}
+          trigger={<button className="flex h-10 w-10 items-center justify-center rounded-md border border-border text-lg hover:bg-accent hover:text-accent-foreground">⚙</button>}
           items={avatarItems}
         />
         <Dropdown
@@ -265,43 +265,43 @@ export default function DropdownPage() {
                   const [open, setOpen] = stateMap[i + 1]
                   setTimeout(() => setOpen(!open), 10)
                 }}
-                className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted dark:border-border dark:hover:bg-muted"
+                className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
               >
                 Open
               </button>
             </div>
             {stateMap[i + 1]?.[0] && (
               <div className="absolute left-4 top-full z-40 mt-1">
-                <div className="min-w-44 rounded-lg border border-border bg-white py-1 shadow-lg dark:border-border dark:bg-zinc-900">
+                <div className="min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md">
                   {item.items.map((it, j) => {
-                    if (it.divider) return <div key={j} className="my-1 border-t border-border" />
+                    if (it.divider) return <div key={j} className="-mx-1 my-1 h-px bg-muted" />
                     if (it.type === "radio") {
                       const [open] = stateMap[i + 1]
                       return (
                         <button key={it.label} onClick={() => stateMap[i + 1]?.[1](false)}
-                          className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted`}>
-                          <span className="w-4 text-xs">{open && it.checked ? "●" : "○"}</span>{it.label}
+                          className="flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-primary">{open && it.checked && <span className="h-2 w-2 rounded-full bg-primary" />}</span>{it.label}
                         </button>
                       )
                     }
                     if (it.type === "checkbox") {
                       return (
                         <button key={it.label} onClick={() => {}}
-                          className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted`}>
-                          <span className="w-4 text-xs">{it.checked ? "☑" : "☐"}</span>{it.label}
+                          className="flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-sm border border-primary">{it.checked && <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none"><path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>}</span>{it.label}
                         </button>
                       )
                     }
                     const hasChildren = !!(it as DropdownItem).children?.length
                     return (
                       <button key={it.label} disabled={it.disabled}
-                        className={`flex w-full items-center gap-2 px-3 py-1.5 text-sm ${it.disabled ? "cursor-not-allowed opacity-40" : it.destructive ? "text-danger hover:bg-danger-soft dark:text-red-400" : "text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-muted"}`}
+                        className={`flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground ${it.disabled ? "pointer-events-none opacity-50" : it.destructive ? "text-destructive hover:bg-destructive/10" : "hover:bg-accent hover:text-accent-foreground"}`}
                         onClick={() => { if (!hasChildren) stateMap[i + 1]?.[1](false) }}>
-                        {it.icon && <span className="flex h-5 w-5 items-center justify-center rounded bg-muted text-[10px] font-bold dark:bg-muted">{it.icon}</span>}
+                        {it.icon && <span className="flex h-4 w-4 shrink-0 items-center justify-center">{it.icon}</span>}
                         <span className="flex-1 text-left">{it.label}</span>
-                        {it.badge && <span className="rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] text-indigo-700 dark:bg-indigo-900/30">{it.badge}</span>}
-                        {it.shortcut && <span className="text-[10px] text-muted-foreground/70">{it.shortcut}</span>}
-                        {hasChildren && <span className="text-[10px] text-muted-foreground/70">▸</span>}
+                        {it.badge && <span className="ml-auto rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">{it.badge}</span>}
+                        {it.shortcut && <span className="ml-auto text-xs tracking-widest opacity-60">{it.shortcut}</span>}
+                        {hasChildren && <span className="ml-auto opacity-60">▸</span>}
                       </button>
                     )
                   })}

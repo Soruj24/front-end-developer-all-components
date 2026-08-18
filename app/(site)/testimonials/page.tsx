@@ -68,7 +68,6 @@ export default function Testimonials() {
       <section className="flex flex-col gap-6">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section>
         <div className="mb-8 flex flex-wrap justify-center gap-2">
           {STYLES.map((s, i) => (
             <button
