@@ -16,9 +16,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-const icon = (lucideIcon: LucideIcon) =>
+const icon = (LucideIcon: LucideIcon) =>
   function Icon({ className = "h-4 w-4" }: { className?: string }) {
-    return <lucideIcon className={className} aria-hidden="true" />;
+    return <LucideIcon className={className} aria-hidden="true" />;
   };
 
 export const SearchIcon = icon(Search);

@@ -9,9 +9,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-const icon = (lucideIcon: LucideIcon) =>
+const icon = (LucideIcon: LucideIcon) =>
   function Icon({ className = "h-4 w-4", style }: { className?: string; style?: React.CSSProperties }) {
-    return <lucideIcon className={className} style={style} aria-hidden="true" />;
+    return <LucideIcon className={className} style={style} aria-hidden="true" />;
   };
 
 export const TerminalIcon = icon(Terminal);
