@@ -50,7 +50,6 @@ import {
   Crosshair,
   Crown,
   CupSoda,
-  Database,
   Disc,
   Dna,
   DollarSign,
@@ -171,7 +170,6 @@ import {
   Rocket,
   RotateCcw,
   Router,
-  Route,
   Rows3,
   Rss,
   Ruler,
@@ -285,9 +283,6 @@ export const navigationSections: NavSection[] = [
     description: "Core concepts and fundamentals",
     links: [
       { label: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
-      { label: "Routing", href: "/routing", icon: <Route className="h-4 w-4" />, desc: "File-based routing, dynamic routes, layouts, navigation" },
-      { label: "Data Fetching", href: "/data-fetching", icon: <Database className="h-4 w-4" />, desc: "Server-side data loading, caching, streaming" },
-      { label: "Styling", href: "/styling", icon: <Palette className="h-4 w-4" />, desc: "Tailwind CSS, themes, responsive design" },
     ],
   },
   {
