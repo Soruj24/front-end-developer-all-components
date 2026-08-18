@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Tree, TreeItem } from "@/components/ui";
+import { Tree } from "@/components/ui";
+import type { TreeNode } from "@/components/ui";
 
 const installCommand = "npx component-library@latest add file-tree";
 
@@ -21,8 +22,8 @@ export default function Example() {
   );
 }`;
 
-const fileTree: TreeItem[] = [
-  { id: "src", label: "src", defaultOpen: true, children: [
+const fileTree: TreeNode[] = [
+  { id: "src", label: "src", children: [
     { id: "components", label: "components", children: [
       { id: "button", label: "Button.tsx" },
       { id: "card", label: "Card.tsx" },
@@ -73,7 +74,7 @@ export default function FileTreePage() {
           <h3 className="text-lg font-medium text-foreground">Default</h3>
           <ComponentPreview id="file-tree-default">
             <div className="w-full max-w-xs">
-              <Tree items={fileTree} onSelect={(id) => setSelected(id)} selectedId={selected} />
+              <Tree data={fileTree} defaultExpanded={["src"]} onSelect={(id) => setSelected(id)} selected={[selected]} />
             </div>
           </ComponentPreview>
         </div>
@@ -83,7 +84,7 @@ export default function FileTreePage() {
           <ComponentPreview id="file-tree-info">
             <div className="flex w-full gap-4">
               <div className="w-48">
-                <Tree items={fileTree} onSelect={(id) => setSelected(id)} selectedId={selected} />
+                <Tree data={fileTree} defaultExpanded={["src"]} onSelect={(id) => setSelected(id)} selected={[selected]} />
               </div>
               <div className="flex-1 rounded-lg border border-border p-4">
                 <p className="text-sm font-medium">Selected: {selected}</p>
