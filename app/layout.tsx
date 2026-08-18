@@ -30,7 +30,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
+      <body className="flex min-h-full flex-col bg-background text-foreground">
         <Script
           id="theme-init"
           strategy="beforeInteractive"
@@ -56,8 +56,8 @@ export default function RootLayout({
             `,
           }}
         />
-      </head>
-      <body className="flex min-h-full flex-col bg-background text-foreground">{children}</body>
+        {children}
+      </body>
     </html>
   );
 }

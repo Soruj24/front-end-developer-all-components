@@ -23,8 +23,8 @@ export interface TableProps {
 }
 
 function Table({
-  columns,
-  data,
+  columns = [],
+  data = [],
   onSort,
   sortKey,
   sortDirection = "asc",
