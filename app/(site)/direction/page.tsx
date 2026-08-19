@@ -1,372 +1,143 @@
 "use client";
 
 import { useState } from "react";
-import { DirectionProvider, useDirection } from "@/components/_direction";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { DirectionProvider, useDirection } from "@/components/ui";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add direction`;
+const DIRECTION_SOURCE = `"use client";
 
-const usageCode = `import { DirectionProvider, useDirection } from "@/components/_direction"
+import { createContext, useContext } from "react";
+import { cn } from "@/lib/cn";
+
+export type Direction = "ltr" | "rtl";
+
+export interface DirectionProviderProps {
+  dir?: Direction;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const DirectionContext = createContext<Direction>("ltr");
+
+export function useDirection() {
+  return useContext(DirectionContext);
+}
+
+export function DirectionProvider({ dir = "ltr", children, className }: DirectionProviderProps) {
+  return (
+    <DirectionContext.Provider value={dir}>
+      <div dir={dir} className={cn(dir === "rtl" && "text-right", className)}>
+        {children}
+      </div>
+    </DirectionContext.Provider>
+  );
+}`;
+
+const BASIC_CODE = `import { DirectionProvider, useDirection } from "@/components/ui";
 
 <DirectionProvider dir="rtl">
   <YourComponent />
 </DirectionProvider>
 
-// In child component:
-const dir = useDirection(); // "ltr" or "rtl"`;
+// Inside a child component:
+const dir = useDirection(); // "ltr" | "rtl"`;
+
+const HOOK_CODE = `const dir = useDirection(); // "ltr" or "rtl"`;
+
+function DirectionDemo({ label }: { label: string }) {
+  const dir = useDirection();
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-sm font-medium">
+        {label}: <span className="text-blue-500">{dir}</span>
+      </p>
+      <p className="text-xs text-muted-foreground">align: {dir === "ltr" ? "left" : "right"}</p>
+      <div className="flex items-center gap-2 text-sm">
+        <span>{dir === "ltr" ? "← Back" : "Forward →"}</span>
+        <span className="text-muted-foreground">·</span>
+        <span>{dir === "ltr" ? "Forward" : "Back →"}</span>
+      </div>
+    </div>
+  );
+}
 
 export default function DirectionPage() {
-  const [direction, setDirection] = useState<"ltr" | "rtl">("ltr");
-
+  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Direction</h1>
-          <Badge variant="primary">6 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Provides RTL (right-to-left) and LTR (left-to-right) direction context to
-          child components. Essential for building multilingual interfaces that support
-          languages like Arabic, Hebrew, Farsi, and Urdu.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="direction-toggle">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-4">
+    <ComponentDocPage
+      name="Direction"
+      category="Utilities"
+      description="Provides RTL and LTR direction context to child components via DirectionProvider and the useDirection hook. Essential for multilingual interfaces."
+    >
+      <PreviewPanel filename="direction-preview">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => setDirection("ltr")}
-              className={`rounded-md px-4 py-2 text-sm font-medium ${direction === "ltr" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+              onClick={() => setDir("ltr")}
+              className="rounded-md border px-3 py-1 text-sm"
             >
-              LTR (Left to Right)
+              LTR
             </button>
             <button
               type="button"
-              onClick={() => setDirection("rtl")}
-              className={`rounded-md px-4 py-2 text-sm font-medium ${direction === "rtl" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
+              onClick={() => setDir("rtl")}
+              className="rounded-md border px-3 py-1 text-sm"
             >
-              RTL (Right to Left)
+              RTL
             </button>
           </div>
-          <DirectionProvider dir={direction}>
-            <div className="rounded-lg border p-4">
-              <DirectionDemo />
+          <DirectionProvider dir={dir}>
+            <div className="w-full max-w-xs rounded-lg border p-4">
+              <DirectionDemo label="Current" />
             </div>
           </DirectionProvider>
         </div>
-      </ComponentPreview>
+      </PreviewPanel>
 
-      <ComponentPreview id="direction-basic">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">LTR</p>
-            <DirectionProvider dir="ltr">
-              <div className="rounded-lg border p-4">
-                <BasicLayout />
-              </div>
-            </DirectionProvider>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">RTL</p>
-            <DirectionProvider dir="rtl">
-              <div className="rounded-lg border p-4">
-                <BasicLayout />
-              </div>
-            </DirectionProvider>
-          </div>
-        </div>
-      </ComponentPreview>
+      <SourceCodeViewer source={DIRECTION_SOURCE} filename="Direction.tsx" defaultExpanded />
 
-      <ComponentPreview id="direction-form">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">LTR Form</p>
-            <DirectionProvider dir="ltr">
-              <div className="rounded-lg border p-4">
-                <FormDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">RTL Form</p>
-            <DirectionProvider dir="rtl">
-              <div className="rounded-lg border p-4">
-                <FormDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="direction-navigation">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">LTR Navigation</p>
-            <DirectionProvider dir="ltr">
-              <div className="rounded-lg border p-4">
-                <NavigationDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">RTL Navigation</p>
-            <DirectionProvider dir="rtl">
-              <div className="rounded-lg border p-4">
-                <NavigationDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="direction-card">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">LTR Card</p>
-            <DirectionProvider dir="ltr">
-              <div className="rounded-lg border p-4">
-                <CardDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium text-muted-foreground">RTL Card</p>
-            <DirectionProvider dir="rtl">
-              <div className="rounded-lg border p-4">
-                <CardDemo />
-              </div>
-            </DirectionProvider>
-          </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="direction-nested">
-        <div className="flex flex-col gap-2">
-          <p className="text-xs font-medium text-muted-foreground">Nested Direction Providers</p>
-          <DirectionProvider dir="ltr">
-            <div className="rounded-lg border p-4">
-              <p className="mb-2 text-sm font-medium">LTR Container</p>
-              <div className="flex items-center gap-2">
-                <span className="text-sm">←</span>
-                <span className="text-sm">Back</span>
-              </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Basic Usage"
+          description="Wrap any subtree in DirectionProvider and read direction with useDirection."
+          code={BASIC_CODE}
+        >
+          <PreviewPanel filename="basic.tsx">
+            <div className="flex gap-6">
+              <DirectionProvider dir="ltr">
+                <div className="rounded border p-3 w-36">
+                  <DirectionDemo label="LTR" />
+                </div>
+              </DirectionProvider>
               <DirectionProvider dir="rtl">
-                <div className="mt-2 rounded border p-3">
-                  <p className="mb-1 text-xs font-medium">RTL Nested</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">Next →</span>
-                  </div>
+                <div className="rounded border p-3 w-36">
+                  <DirectionDemo label="RTL" />
                 </div>
               </DirectionProvider>
             </div>
-          </DirectionProvider>
-        </div>
-      </ComponentPreview>
+          </PreviewPanel>
+        </ExampleBlock>
 
-      <ComponentPreview id="direction-hook">
-        <DirectionProvider dir={direction}>
-          <DirectionHookDemo />
-        </DirectionProvider>
-      </ComponentPreview>
-
-      <ComponentPreview id="direction-multilingual">
-        <MultilingualDemo />
-      </ComponentPreview>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">dir</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;ltr&quot; | &quot;rtl&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;ltr&quot;</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">children</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function DirectionDemo() {
-  const dir = useDirection();
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm font-medium">Current direction: <span className="text-blue-500">{dir.toUpperCase()}</span></p>
-      <div className="flex items-center gap-2">
-        <span className="text-sm">{dir === "ltr" ? "←" : "→"}</span>
-        <span className="text-sm">{dir === "ltr" ? "Back" : "Forward"}</span>
-        <span className="mx-2">|</span>
-        <span className="text-sm">{dir === "ltr" ? "Forward" : "Back"}</span>
-        <span className="text-sm">{dir === "ltr" ? "→" : "←"}</span>
+        <ExampleBlock
+          title="useDirection Hook"
+          description="Consume the active direction from context anywhere inside a provider."
+          code={HOOK_CODE}
+        >
+          <PreviewPanel filename="hook.tsx">
+            <DirectionProvider dir="rtl">
+              <div className="rounded border p-3 w-48">
+                <DirectionDemo label="RTL" />
+              </div>
+            </DirectionProvider>
+          </PreviewPanel>
+        </ExampleBlock>
       </div>
-      <div className="flex items-center gap-2">
-        <button type="button" className="rounded bg-zinc-200 px-3 py-1 text-sm dark:bg-zinc-700">
-          {dir === "ltr" ? "Left" : "Right"}
-        </button>
-        <button type="button" className="rounded bg-zinc-200 px-3 py-1 text-sm dark:bg-zinc-700">
-          {dir === "ltr" ? "Right" : "Left"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function BasicLayout() {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-        <div className="flex-1">
-          <div className="h-3 w-24 rounded bg-zinc-200 dark:bg-zinc-700" />
-          <div className="mt-1 h-2 w-16 rounded bg-zinc-100 dark:bg-zinc-800" />
-        </div>
-      </div>
-      <div className="h-2 w-full rounded bg-zinc-100 dark:bg-zinc-800" />
-      <div className="h-2 w-3/4 rounded bg-zinc-100 dark:bg-zinc-800" />
-    </div>
-  );
-}
-
-function FormDemo() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium">Name</label>
-        <input type="text" className="rounded-md border px-3 py-1.5 text-sm" placeholder="Enter name" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium">Email</label>
-        <input type="email" className="rounded-md border px-3 py-1.5 text-sm" placeholder="Enter email" />
-      </div>
-      <button type="button" className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
-        Submit
-      </button>
-    </div>
-  );
-}
-
-function NavigationDemo() {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="text-sm font-bold">Logo</span>
-      <div className="flex items-center gap-3">
-        <a href="#" className="text-sm hover:underline">Home</a>
-        <a href="#" className="text-sm hover:underline">About</a>
-        <a href="#" className="text-sm hover:underline">Contact</a>
-      </div>
-    </div>
-  );
-}
-
-function CardDemo() {
-  return (
-    <div className="flex gap-3">
-      <div className="h-12 w-12 shrink-0 rounded bg-zinc-200 dark:bg-zinc-700" />
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium">Card Title</span>
-        <span className="text-xs text-muted-foreground">Card description goes here</span>
-        <button type="button" className="mt-1 w-fit rounded bg-zinc-200 px-2 py-1 text-xs dark:bg-zinc-700">
-          Action
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function DirectionHookDemo() {
-  const dir = useDirection();
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm font-medium">useDirection() hook returns: <span className="text-blue-500">{dir}</span></p>
-      <div className="grid grid-cols-2 gap-2 text-sm">
-        <div className="rounded border p-2">
-          <span className="font-medium">Text align:</span> {dir === "ltr" ? "left" : "right"}
-        </div>
-        <div className="rounded border p-2">
-          <span className="font-medium">Margin start:</span> {dir === "ltr" ? "margin-left" : "margin-right"}
-        </div>
-        <div className="rounded border p-2">
-          <span className="font-medium">Padding end:</span> {dir === "ltr" ? "padding-right" : "padding-left"}
-        </div>
-        <div className="rounded border p-2">
-          <span className="font-medium">Border start:</span> {dir === "ltr" ? "border-left" : "border-right"}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MultilingualDemo() {
-  const [lang, setLang] = useState<"ltr" | "rtl">("ltr");
-
-  const languages = [
-    { code: "ltr", label: "English", flag: "🇺🇸", text: "Hello, welcome to our platform!" },
-    { code: "rtl", label: "Arabic", flag: "🇸🇦", text: "!مرحباً بكم في منصتنا" },
-  ];
-
-  const current = languages.find((l) => l.code === lang) ?? languages[0];
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        {languages.map((l) => (
-          <button
-            key={l.code}
-            type="button"
-            onClick={() => setLang(l.code as "ltr" | "rtl")}
-            className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium ${lang === l.code ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "border hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}
-          >
-            <span>{l.flag}</span>
-            <span>{l.label}</span>
-          </button>
-        ))}
-      </div>
-      <DirectionProvider dir={lang}>
-        <div className="rounded-lg border p-6">
-          <p className="text-lg font-semibold">{current.text}</p>
-          <div className="mt-4 flex items-center gap-3">
-            <button type="button" className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white dark:bg-zinc-100 dark:text-zinc-900">
-              {lang === "ltr" ? "Get Started" : "ابدأ الآن"}
-            </button>
-            <button type="button" className="rounded-md border px-4 py-2 text-sm">
-              {lang === "ltr" ? "Learn More" : "اعرف المزيد"}
-            </button>
-          </div>
-        </div>
-      </DirectionProvider>
-    </div>
+    </ComponentDocPage>
   );
 }

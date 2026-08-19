@@ -1,141 +1,396 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 import { Dock } from "@/components/ui";
 import { dockApps, minimalApps } from "@/components/dock/demo";
 
-const installCommand = `npx component-library@latest add dock`;
+const DOCK_SOURCE = `"use client";
 
-const usageCode = `import { Dock } from "@/components/ui";
+import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/cn";
+
+/* ------------------------------------------------------------------ */
+/* Types                                                               */
+/* ------------------------------------------------------------------ */
+
+export interface DockItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  /** Pinned indicator, independent of the click-to-toggle active state. */
+  active?: boolean;
+  onClick?: () => void;
+}
+
+export interface DockProps {
+  className?: string;
+  items: DockItem[];
+  /** Pointer-driven magnification (auto-disabled on touch). Default true. */
+  magnification?: boolean;
+  /** Max scale of the hovered icon. */
+  magnificationMax?: number;
+  /** Distance in px over which magnification falls off. */
+  magnificationRadius?: number;
+  /** Label tooltip on hover / focus. Default true. */
+  showTooltips?: boolean;
+  /** Allow drag-to-reorder. Default true. */
+  draggable?: boolean;
+  /** Controlled active id. When omitted the dock toggles it internally. */
+  activeId?: string;
+  onActiveChange?: (id: string | undefined) => void;
+  onOrderChange?: (items: DockItem[]) => void;
+  onItemClick?: (item: DockItem) => void;
+  ariaLabel?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dock                                                                */
+/* ------------------------------------------------------------------ */
+
+export function Dock({
+  className,
+  items: initialItems,
+  magnification = true,
+  magnificationMax = 1.55,
+  magnificationRadius = 110,
+  showTooltips = true,
+  draggable = true,
+  activeId: activeIdProp,
+  onActiveChange,
+  onOrderChange,
+  onItemClick,
+  ariaLabel = "Application dock",
+}: DockProps) {
+  const [order, setOrder] = useState<DockItem[]>(initialItems);
+  const [scales, setScales] = useState<number[]>(() => initialItems.map(() => 1));
+  const [activeIdInternal, setActiveIdInternal] = useState<string | undefined>(() =>
+    initialItems.find((i) => i.active)?.id
+  );
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [finePointer, setFinePointer] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches
+  );
+
+  const activeId = activeIdProp ?? activeIdInternal;
+
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const orderRef = useRef(order);
+  const dragStateRef = useRef<{
+    id: string;
+    from: number;
+    moved: boolean;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
+
+  useEffect(() => {
+    orderRef.current = order;
+  }, [order]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine)");
+    const onChange = () => setFinePointer(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const activate = useCallback(
+    (index: number) => {
+      const item = orderRef.current[index];
+      if (!item) return;
+      onItemClick?.(item);
+      item.onClick?.();
+      if (activeIdProp === undefined) {
+        setActiveIdInternal((prev) => (prev === item.id ? undefined : item.id));
+      }
+      onActiveChange?.(item.id === activeId ? undefined : item.id);
+    },
+    [onItemClick, activeIdProp, activeId, onActiveChange]
+  );
+
+  const focusItem = useCallback((index: number) => {
+    const length = orderRef.current.length;
+    const next = Math.max(0, Math.min(length - 1, index));
+    setFocusedIndex(next);
+    buttonRefs.current[next]?.focus();
+  }, []);
+
+  const handleItemKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        focusItem(index + 1);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        focusItem(index - 1);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        focusItem(0);
+      } else if (event.key === "End") {
+        event.preventDefault();
+        focusItem(orderRef.current.length - 1);
+      }
+    },
+    [focusItem]
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!magnification || !finePointer || dragId) return;
+      const radius = magnificationRadius;
+      const x = event.clientX;
+      const order = orderRef.current;
+      setScales(
+        order.map((_, index) => {
+          const el = itemRefs.current[index];
+          if (!el) return 1;
+          const rect = el.getBoundingClientRect();
+          const center = rect.left + rect.width / 2;
+          const dist = Math.abs(x - center);
+          if (dist >= radius) return 1;
+          const falloff = 1 - dist / radius;
+          return 1 + (magnificationMax - 1) * falloff * falloff;
+        })
+      );
+    },
+    [magnification, finePointer, dragId, magnificationMax, magnificationRadius]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setScales(orderRef.current.map(() => 1));
+  }, []);
+
+  const endDrag = useCallback(
+    (commit: boolean) => {
+      const ds = dragStateRef.current;
+      if (!ds) return;
+      dragStateRef.current = null;
+      if (ds.moved) {
+        suppressClickRef.current = true;
+        setDragId(null);
+        if (commit) onOrderChange?.(orderRef.current);
+      }
+    },
+    [onOrderChange]
+  );
+
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>, index: number) => {
+      if (!draggable) return;
+      if (event.button !== 0) return;
+      const item = orderRef.current[index];
+      if (!item) return;
+      dragStateRef.current = {
+        id: item.id,
+        from: index,
+        moved: false,
+        startX: event.clientX,
+        startY: event.clientY,
+      };
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        /* capture unsupported */
+      }
+    },
+    [draggable]
+  );
+
+  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    const ds = dragStateRef.current;
+    if (!ds) return;
+    if (!ds.moved) {
+      const dist = Math.hypot(event.clientX - ds.startX, event.clientY - ds.startY);
+      if (dist < 6) return;
+      ds.moved = true;
+      setDragId(ds.id);
+      setScales(orderRef.current.map(() => 1));
+    }
+    event.preventDefault();
+    const from = ds.from;
+    const draggedRect = itemRefs.current[from]?.getBoundingClientRect();
+    if (!draggedRect) return;
+    const mid = draggedRect.left + draggedRect.width / 2;
+    let to = from;
+    if (event.clientX > mid) {
+      const rightRect = itemRefs.current[from + 1]?.getBoundingClientRect();
+      if (rightRect && event.clientX > rightRect.left + rightRect.width / 2) to = from + 1;
+    } else {
+      const leftRect = itemRefs.current[from - 1]?.getBoundingClientRect();
+      if (leftRect && event.clientX < leftRect.left + leftRect.width / 2) to = from - 1;
+    }
+    if (to !== from) {
+      const next = [...orderRef.current];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      orderRef.current = next;
+      ds.from = to;
+      setOrder(next);
+    }
+  }, []);
+
+  const handlePointerUp = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      } catch {
+        /* capture already released */
+      }
+      endDrag(true);
+    },
+    [endDrag]
+  );
+
+  const handlePointerCancel = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      } catch {
+        /* capture already released */
+      }
+      endDrag(false);
+    },
+    [endDrag]
+  );
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
+      if (suppressClickRef.current) {
+        suppressClickRef.current = false;
+        return;
+      }
+      activate(index);
+    },
+    [activate]
+  );
+
+  return (
+    <div
+      className={cn(
+        "relative flex select-none items-end gap-1 rounded-3xl border border-black/[0.05] bg-white/70 p-2 shadow-card backdrop-blur-2xl sm:gap-1.5 sm:p-2.5 dark:border-white/[0.08] dark:bg-zinc-900/60",
+        className
+      )}
+      role="toolbar"
+      aria-label={ariaLabel}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {order.map((item, index) => {
+        const active = item.active === true || item.id === activeId;
+        const isDraggingItem = dragId === item.id;
+        const scale = isDraggingItem ? 1.3 : scales[index] ?? 1;
+        return (
+          <div
+            key={item.id}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+            className={cn("group relative flex items-center justify-center", isDraggingItem && "z-30")}
+          >
+            {showTooltips && !dragId && (
+              <span className="pointer-events-none absolute bottom-full left-1/2 z-40 mb-2.5 -translate-x-1/2 scale-95 whitespace-nowrap rounded-lg bg-zinc-900/95 px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-150 ease-out group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 dark:bg-zinc-100/95 dark:text-zinc-900">
+                {item.label}
+              </span>
+            )}
+            <button
+              type="button"
+              ref={(el) => {
+                buttonRefs.current[index] = el;
+              }}
+              aria-label={item.label}
+              aria-current={active ? "true" : undefined}
+              tabIndex={focusedIndex === index ? 0 : -1}
+              onFocus={() => setFocusedIndex(index)}
+              onKeyDown={(e) => handleItemKeyDown(e, index)}
+              onClick={(e) => handleClick(e, index)}
+              onPointerDown={(e) => handlePointerDown(e, index)}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerCancel}
+              className={cn(
+                "relative flex size-11 items-center justify-center rounded-[26%] outline-none transition-transform duration-150 ease-spring sm:size-12 md:size-14",
+                "focus-visible:ring-2 focus-visible:ring-ring/70",
+                isDraggingItem ? "cursor-grabbing" : "cursor-default"
+              )}
+              style={{
+                transform: \`scale(\${scale})\`,
+                transformOrigin: "center bottom",
+                zIndex: isDraggingItem ? 40 : scale > 1.01 ? 20 : undefined,
+              }}
+            >
+              {item.icon}
+            </button>
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full transition-all duration-200 ease-out",
+                active
+                  ? "scale-100 bg-zinc-800 dark:bg-zinc-100"
+                  : "scale-0 bg-zinc-800/40 dark:bg-zinc-100/40"
+              )}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}`;
+
+const BASIC_CODE = `import { Dock } from "@/components/ui";
 
 <Dock items={dockApps} ariaLabel="Application dock" />`;
 
+const MINIMAL_CODE = `<Dock items={minimalApps} magnification={false} draggable={false} />`;
+
 export default function DockPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Dock
-          </h1>
-          <Badge variant="primary">3 examples</Badge>
+    <ComponentDocPage
+      name="Dock"
+      category="Navigation"
+      description="A macOS-inspired launcher. Icons magnify around the cursor, labels pop on hover, running apps carry a dot, and everything is draggable, keyboard-accessible, responsive, and theme-aware."
+    >
+      <PreviewPanel filename="dock-preview">
+        <div className="flex w-full items-end justify-center overflow-x-auto py-10">
+          <Dock items={dockApps} ariaLabel="Application dock" />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A macOS-inspired launcher. Icons magnify around the cursor on
-          pointer-capable devices, labels pop above on hover, running apps
-          carry a dot, and everything — order included — is draggable,
-          keyboard-accessible, responsive, and theme-aware.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={DOCK_SOURCE} filename="Dock.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Magnifying Dock</h3>
-            <p className="text-sm text-muted-foreground">Icons magnify around the cursor with smooth CSS transitions.</p>
-          </div>
-          <ComponentPreview id="dock-magnifying">
-            <div className="flex w-full items-end justify-center overflow-x-auto py-14">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Magnifying Dock"
+          description="Icons magnify around the cursor with smooth CSS transitions."
+          code={BASIC_CODE}
+        >
+          <PreviewPanel>
+            <div className="flex w-full items-end justify-center overflow-x-auto py-10">
               <Dock items={dockApps} ariaLabel="Application dock" />
             </div>
-          </ComponentPreview>
-        </div>
+          </PreviewPanel>
+        </ExampleBlock>
 
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Minimal Dock</h3>
-            <p className="text-sm text-muted-foreground">Same component, fewer features — ideal for compact toolbars.</p>
-          </div>
-          <ComponentPreview id="dock-minimal">
+        <ExampleBlock
+          title="Minimal Dock"
+          description="Same component, fewer features — ideal for compact toolbars."
+          code={MINIMAL_CODE}
+        >
+          <PreviewPanel>
             <div className="flex w-full flex-col items-center gap-3 py-10">
               <Dock items={minimalApps} magnification={false} draggable={false} ariaLabel="Quick launch toolbar" />
-              <p className="text-xs text-subtle">
-                Same component, fewer features — ideal for compact toolbars that
-                still need tooltips, active dots, and keyboard focus.
-              </p>
             </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Keyboard Navigation</h3>
-            <p className="text-sm text-muted-foreground">Full keyboard support with arrow keys, Home/End, and Enter to launch.</p>
-          </div>
-          <ComponentPreview id="dock-keyboard">
-            <div className="flex w-full flex-col items-center gap-4 py-10">
-              <Dock items={dockApps} ariaLabel="Dock — keyboard demo" />
-              <p className="text-xs text-subtle">
-                Tab into the dock, then use{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">←</kbd>{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">→</kbd> to
-                move between apps,{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">Home</kbd>/
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">End</kbd> to
-                jump, and{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">Enter</kbd> to
-                launch. Drag any icon to reorder.
-              </p>
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">DockItem[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">magnification</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">draggable</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">ariaLabel</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+          </PreviewPanel>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

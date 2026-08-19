@@ -140,6 +140,8 @@ export { default as Dropdown } from "./Dropdown";
 export { default as EmptyState } from "./EmptyState";
 export { FileUpload } from "./FileUpload";
 export { Input } from "./Input";
+export { InputMask } from "./InputMask";
+export type { InputMaskProps } from "./InputMask";
 export { default as Modal } from "./Modal";
 export { default as Pagination } from "./Pagination";
 export { default as Popover } from "./Popover";

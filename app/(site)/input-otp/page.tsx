@@ -122,7 +122,7 @@ export default function InputOTPPage() {
 
       <SourceCodeViewer
         source={INPUTOTP_SOURCE}
-        filename="components/ui/InputOTP.tsx"
+        filename="components/ui/InputOTP/InputOTP.tsx"
         defaultExpanded
       />
 
@@ -151,7 +151,7 @@ export default function InputOTPPage() {
           code={EIGHT_DIGIT_SOURCE}
           filename="eight-digit.tsx"
         >
-          <InputOTP length={8} />
+          <InputOTP length={8} value={value4} onValueChange={setValue4} />
         </ExampleBlock>
       </div>
     </ComponentDocPage>
