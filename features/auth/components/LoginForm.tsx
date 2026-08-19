@@ -6,8 +6,9 @@ import { Button, Input } from "@/components/ui";
 import { login, type AuthFormState } from "../actions";
 import { OAuthButtons } from "./OAuthButtons";
 import { PasswordField } from "./PasswordField";
-import { AlertIcon, MailIcon, SpinnerIcon } from "./icons";
+import { AlertIcon,   SpinnerIcon } from "./icons";
 import { useRememberMe } from "../hooks/useRememberMe";
+import { MailIcon } from "lucide-react";
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState<AuthFormState, FormData>(login, {});

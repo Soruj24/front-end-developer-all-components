@@ -7,10 +7,14 @@ import { register, type AuthFormState } from "../actions";
 import { OAuthButtons } from "./OAuthButtons";
 import { PasswordField } from "./PasswordField";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
-import { AlertIcon, AtIcon, MailIcon, SpinnerIcon, UserIcon } from "./icons";
+import { AlertIcon, AtIcon, SpinnerIcon, } from "./icons";
+import { MailIcon, UserIcon } from "lucide-react";
 
 export function RegisterForm() {
-  const [state, formAction, pending] = useActionState<AuthFormState, FormData>(register, {});
+  const [state, formAction, pending] = useActionState<AuthFormState, FormData>(
+    register,
+    {},
+  );
   const [password, setPassword] = useState("");
   const [terms, setTerms] = useState(false);
 
@@ -102,7 +106,8 @@ export function RegisterForm() {
         <div className="flex items-start gap-2.5 rounded-lg border border-border bg-muted/50 px-3.5 py-3 text-sm text-muted-foreground">
           <MailIcon className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
           <span>
-            We&apos;ll email you a confirmation link. Verify your account to unlock publishing.
+            We&apos;ll email you a confirmation link. Verify your account to
+            unlock publishing.
           </span>
         </div>
 
@@ -141,7 +146,13 @@ export function RegisterForm() {
           )}
         </div>
 
-        <Button type="submit" size="lg" className="w-full" disabled={pending} aria-busy={pending}>
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full"
+          disabled={pending}
+          aria-busy={pending}
+        >
           {pending && <SpinnerIcon className="h-4 w-4 animate-spin" />}
           {pending ? "Creating account…" : "Create account"}
         </Button>

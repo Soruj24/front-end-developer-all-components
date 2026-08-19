@@ -4,7 +4,14 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { CheckIcon, CopyIcon } from "./icons";
 
-type TokenType = "comment" | "string" | "keyword" | "tag" | "attr" | "number" | "plain";
+type TokenType =
+  | "comment"
+  | "string"
+  | "keyword"
+  | "tag"
+  | "attr"
+  | "number"
+  | "plain";
 
 const TOKEN_RE =
   /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|(\b(?:import|from|export|default|function|return|const|let|var|new|type|interface|extends|class|as|async|await|if|else|for|of)\b)|(<\/?[A-Za-z][\w.-]*|\/?>)|([A-Za-z][\w-]*=)|\b(\d[\w.]*)\b/g;
@@ -130,65 +137,20 @@ export function CodeBlock({
         terminal
           ? "border-zinc-800 bg-[#0b0b10]"
           : "border-border bg-background hover:border-ring/40",
-        className
+        className,
       )}
     >
-      <div
-        className={cn(
-          "flex items-center justify-between border-b px-4 py-2.5",
-          terminal ? "border-zinc-800 bg-zinc-900/60" : "border-border"
-        )}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="flex items-center gap-1.5"
-            aria-hidden="true"
-          >
-            <span className={cn("h-2.5 w-2.5 rounded-full", terminal ? "bg-zinc-600" : "bg-muted-foreground/25")} />
-            <span className={cn("h-2.5 w-2.5 rounded-full", terminal ? "bg-zinc-600" : "bg-muted-foreground/25")} />
-            <span className={cn("h-2.5 w-2.5 rounded-full", terminal ? "bg-zinc-600" : "bg-muted-foreground/25")} />
-          </div>
-          {filename && (
-            <span className={cn("font-mono text-xs", terminal ? "text-muted-foreground/70" : "text-muted-foreground")}>
-              {filename}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-3">
-          {label && (
-            <span className={cn("font-mono text-[10px] uppercase tracking-wider", terminal ? "text-muted-foreground" : "text-muted-foreground/70")}>
-              {label}
-            </span>
-          )}
-          <button
-            type="button"
-            onClick={onCopy}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-[background-color,color,transform] duration-150 ease-out active:scale-95",
-              terminal
-                ? "text-muted-foreground/70 hover:bg-zinc-800 hover:text-zinc-100"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-            aria-label="Copy code"
-          >
-            {copied ? (
-              <span className="inline-flex animate-pop">
-                <CheckIcon className="h-3.5 w-3.5 text-success" />
-              </span>
-            ) : (
-              <CopyIcon className="h-3.5 w-3.5" />
-            )}
-            <span className="sr-only" aria-live="polite">
-              {copied ? "Copied to clipboard" : ""}
-            </span>
-            {copied ? "Copied" : "Copy"}
-          </button>
-        </div>
-      </div>
       <pre className="scrollbar-thin overflow-x-auto p-4 text-[13px] leading-relaxed">
         <code>
           {tokens.map((token, index) => (
-            <span key={index} className={terminal ? TOKEN_STYLE_TERMINAL[token.type] : TOKEN_STYLE[token.type]}>
+            <span
+              key={index}
+              className={
+                terminal
+                  ? TOKEN_STYLE_TERMINAL[token.type]
+                  : TOKEN_STYLE[token.type]
+              }
+            >
               {token.text}
             </span>
           ))}
