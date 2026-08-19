@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, type ComponentType } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Minimal404, Illustrated404, Gradient404, Card404, HandDrawn404, Minimalist404, Colorful404, Typewriter404, Neon404, PixelArt404, Origami404, PopArt404 } from "./Text404";
 import { Funny404, Construction404, TeaTime404, FunFact404, Joke404, Quote404, Pirate404, Zombie404, Ninja404, Cowboy404, Detective404 } from "./Humor404";
 import { Dark404, BrokenRobot404, Glitch404, GameOver404, Terminal404, Matrix404, Cyberpunk404, Retro80s404, Vaporwave404, Steampunk404 } from "./Tech404";
 import { Animated404, LostInSpace404, Floating404, Maze404, Galaxy404, Astronaut404, Alien404, Wormhole404 } from "./Space404";
 import { Search404, Sitemap404, Suggested404, Masonry404, Chalkboard404, Blueprint404, StickyNote404, Map404, Compass404 } from "./Nav404";
 import { Countdown404, Contact404, Language404, Interactive404, Coffee404, Winter404, Autumn404, Ocean404, Fire404 } from "./Social404";
+import { NF404_SOURCE, MINIMAL_EXAMPLE, FUNNY_EXAMPLE, TERMINAL_EXAMPLE } from "./404-source";
 
 const STYLES: Array<{ label: string; Render: ComponentType; registryId: string }> = [
   { label: "Minimal", Render: Minimal404, registryId: "nf-minimal" },
@@ -73,108 +72,58 @@ const STYLES: Array<{ label: string; Render: ComponentType; registryId: string }
   { label: "Fire", Render: Fire404, registryId: "nf-fire" },
 ];
 
-const installCommand = `npx component-library@latest add 404`;
-
-const usageCode = `import { Minimal404 } from "@/components/404/Text404";
-import { Funny404 } from "@/components/404/Humor404";
-import { Terminal404 } from "@/components/404/Tech404";
-
-// Use any 404 style
-<Minimal404 />
-<Funny404 />
-<Terminal404 />`;
-
 export default function NotFoundPage() {
   const [activeStyle, setActiveStyle] = useState(0);
-  const { Render: Active, registryId } = STYLES[activeStyle];
+  const { Render: Active } = STYLES[activeStyle];
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">404 Pages</h1>
-          <Badge variant="primary">{STYLES.length} styles</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A comprehensive collection of 404 page designs. From minimal to
-          interactive, dark to colorful — each style is ready to use.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Examples */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-        <p className="text-sm text-muted-foreground">
-          Browse through {STYLES.length} different 404 page styles. Select a style below to preview it.
-        </p>
-
-        <div className="flex flex-wrap gap-2">
-          {STYLES.map((style, i) => (
-            <button
-              key={style.label}
-              onClick={() => setActiveStyle(i)}
-              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                activeStyle === i
-                  ? "bg-foreground text-background dark:bg-muted dark:text-zinc-900"
-                  : "bg-muted text-muted-foreground hover:bg-muted dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-zinc-600"
-              }`}
-            >
-              {i + 1}. {style.label}
-            </button>
-          ))}
-        </div>
-
-        <ComponentPreview id={registryId} title={STYLES[activeStyle].label + " 404"}>
+    <ComponentDocPage
+      name="404 Pages"
+      category="Feedback"
+      description="A comprehensive collection of 404 page designs. From minimal to interactive, dark to colorful — each style is ready to use."
+    >
+      <PreviewPanel filename="404.tsx">
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex flex-wrap justify-center gap-2">
+            {STYLES.map((style, i) => (
+              <button
+                key={style.label}
+                onClick={() => setActiveStyle(i)}
+                className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                  activeStyle === i
+                    ? "bg-foreground text-background dark:bg-muted dark:text-zinc-900"
+                    : "bg-muted text-muted-foreground hover:bg-muted dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-zinc-600"
+                }`}
+              >
+                {i + 1}. {style.label}
+              </button>
+            ))}
+          </div>
           <Active />
-        </ComponentPreview>
-
-        <p className="mt-4 text-center text-xs text-muted-foreground/70">
-          Style {activeStyle + 1} of {STYLES.length} —{" "}
-          <span className="font-medium">{STYLES[activeStyle].label}</span>
-        </p>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Style</th>
-                <th className="px-4 py-3 text-left font-medium">Registry ID</th>
-                <th className="px-4 py-3 text-left font-medium">Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              {STYLES.slice(0, 10).map((style) => (
-                <tr key={style.registryId} className="border-b">
-                  <td className="px-4 py-3 font-mono text-xs">{style.label}</td>
-                  <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{style.registryId}</td>
-                  <td className="px-4 py-3 text-muted-foreground">404 page variant</td>
-                </tr>
-              ))}
-              <tr>
-                <td colSpan={3} className="px-4 py-3 text-center text-xs text-muted-foreground">
-                  ... and {STYLES.length - 10} more styles
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <p className="text-center text-xs text-muted-foreground/70">
+            Style {activeStyle + 1} of {STYLES.length} —{" "}
+            <span className="font-medium">{STYLES[activeStyle].label}</span>
+          </p>
         </div>
-      </section>
-    </div>
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={NF404_SOURCE}
+        filename="components/ui/NotFound/NotFound.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Minimal" description="Clean, distraction-free 404." code={MINIMAL_EXAMPLE}>
+          <Minimal404 />
+        </ExampleBlock>
+        <ExampleBlock title="Funny" description="Lighthearted humor for broken links." code={FUNNY_EXAMPLE}>
+          <Funny404 />
+        </ExampleBlock>
+        <ExampleBlock title="Terminal" description="Developer-flavored system error." code={TERMINAL_EXAMPLE}>
+          <Terminal404 />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

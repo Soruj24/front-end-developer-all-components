@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import {
   Battery,
   BatteryCharging,
@@ -18,11 +16,17 @@ import {
   Clock,
   Zap,
 } from "lucide-react";
-
-const installCommand = `npx component-library@latest add battery-indicator`;
-const usageCode = `import { BatteryIndicator } from "@/components/battery-indicator";
-
-<BatteryIndicator level={75} charging={false} />`;
+import {
+  BATTERY_INDICATOR_SOURCE,
+  BAR_EXAMPLE,
+  ICON_EXAMPLE,
+  DASHBOARD_EXAMPLE,
+  CHARGING_EXAMPLE,
+  COMPACT_EXAMPLE,
+  TIME_EXAMPLE,
+  LIST_EXAMPLE,
+  ALERT_EXAMPLE,
+} from "./battery-indicator-source";
 
 function getBatteryColor(level: number): string {
   if (level > 60) return "bg-emerald-500";
@@ -116,7 +120,6 @@ function DeviceDashboardDemo() {
       </div>
       <div className="space-y-3">
         {devices.map((device) => {
-          const Icon = device.icon;
           const IconComponent = device.level > 80 ? BatteryFull : device.level > 40 ? BatteryMedium : BatteryLow;
           return (
             <div key={device.name} className="flex items-center gap-3 rounded-lg border border-black/[.06] bg-muted/30 p-3 dark:border-white/[.08]">
@@ -418,173 +421,25 @@ function LowBatteryAlertDemo() {
 
 export default function BatteryIndicatorPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Battery Indicator
-          </h1>
-          <Badge variant="primary">Data Display</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Battery level display with animated charging states, color-coded thresholds, and
-          multiple size variants.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bar Indicators</h3>
-          <p className="text-sm text-muted-foreground">
-            Horizontal bars with color-coded thresholds: green above 60%, yellow 30-60%, red below 30%.
-          </p>
-          <ComponentPreview id="battery-bar">
-            <BarIndicatorDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Icon Indicators</h3>
-          <p className="text-sm text-muted-foreground">
-            Battery icons with colored backgrounds showing different charge levels.
-          </p>
-          <ComponentPreview id="battery-icon">
-            <IconIndicatorDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Device Dashboard</h3>
-          <p className="text-sm text-muted-foreground">
-            Dashboard card showing all connected devices with battery levels and charging status.
-          </p>
-          <ComponentPreview id="battery-dashboard">
-            <DeviceDashboardDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Charging Animation</h3>
-          <p className="text-sm text-muted-foreground">
-            Interactive demo with charge, stop, and drain controls plus estimated time.
-          </p>
-          <ComponentPreview id="battery-charging">
-            <ChargingAnimationDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Compact Inline</h3>
-          <p className="text-sm text-muted-foreground">
-            Minimal inline battery display for status bars and device lists.
-          </p>
-          <ComponentPreview id="battery-compact">
-            <CompactInlineDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">With Time Remaining</h3>
-          <p className="text-sm text-muted-foreground">
-            Battery bar with estimated hours and minutes remaining, plus slider control.
-          </p>
-          <ComponentPreview id="battery-time">
-            <BatteryWithTimeDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Device List</h3>
-          <p className="text-sm text-muted-foreground">
-            Table-style list with device info, connection type, and mini progress bars.
-          </p>
-          <ComponentPreview id="battery-list">
-            <DeviceListDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Low Battery Alert</h3>
-          <p className="text-sm text-muted-foreground">
-            Warning banner for critically low battery with dismiss and find device actions.
-          </p>
-          <ComponentPreview id="battery-alert">
-            <LowBatteryAlertDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">level</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">charging</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"sm\" | \"md\" | \"lg\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"md\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showPercentage</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showTimeRemaining</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"bar\" | \"icon\" | \"compact\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"bar\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Battery Indicator"
+      category="Data Display"
+      description="Battery level display with animated charging states, color-coded thresholds, and multiple size variants."
+    >
+      <PreviewPanel filename="battery-indicator.tsx">
+        <BarIndicatorDemo />
+      </PreviewPanel>
+      <SourceCodeViewer source={BATTERY_INDICATOR_SOURCE} filename="components/ui/BatteryIndicator/BatteryIndicator.tsx" defaultExpanded />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Bar Indicators" description="Horizontal bars with color-coded thresholds: green above 60%, yellow 30-60%, red below 30%." code={BAR_EXAMPLE}><BarIndicatorDemo /></ExampleBlock>
+        <ExampleBlock title="Icon Indicators" description="Battery icons with colored backgrounds showing different charge levels." code={ICON_EXAMPLE}><IconIndicatorDemo /></ExampleBlock>
+        <ExampleBlock title="Device Dashboard" description="Dashboard card showing all connected devices with battery levels and charging status." code={DASHBOARD_EXAMPLE}><DeviceDashboardDemo /></ExampleBlock>
+        <ExampleBlock title="Charging Animation" description="Interactive demo with charge, stop, and drain controls plus estimated time." code={CHARGING_EXAMPLE}><ChargingAnimationDemo /></ExampleBlock>
+        <ExampleBlock title="Compact Inline" description="Minimal inline battery display for status bars and device lists." code={COMPACT_EXAMPLE}><CompactInlineDemo /></ExampleBlock>
+        <ExampleBlock title="With Time Remaining" description="Battery bar with estimated hours and minutes remaining, plus slider control." code={TIME_EXAMPLE}><BatteryWithTimeDemo /></ExampleBlock>
+        <ExampleBlock title="Device List" description="Table-style list with device info, connection type, and mini progress bars." code={LIST_EXAMPLE}><DeviceListDemo /></ExampleBlock>
+        <ExampleBlock title="Low Battery Alert" description="Warning banner for critically low battery with dismiss and find device actions." code={ALERT_EXAMPLE}><LowBatteryAlertDemo /></ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

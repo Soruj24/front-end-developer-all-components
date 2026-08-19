@@ -98,11 +98,21 @@ function ScannerViewDemo() {
 
 function ManualEntryDemo() {
   const [manualCode, setManualCode] = useState("");
-  const addManual = () => setManualCode("");
+  const [entries, setEntries] = useState<string[]>([]);
+  const addManual = () => {
+    if (!manualCode.trim()) return;
+    setEntries((prev) => [manualCode.trim(), ...prev].slice(0, 5));
+    setManualCode("");
+  };
   return (
-    <div className="flex w-full max-w-sm gap-2">
-      <Input placeholder="Enter barcode manually" value={manualCode} onChange={(e) => setManualCode(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addManual()} />
-      <Button onClick={addManual}>Add</Button>
+    <div className="flex w-full max-w-sm flex-col gap-2">
+      <div className="flex gap-2">
+        <Input placeholder="Enter barcode manually" value={manualCode} onChange={(e) => setManualCode(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addManual()} />
+        <Button onClick={addManual}>Add</Button>
+      </div>
+      {entries.length > 0 && (
+        <p className="text-xs font-mono text-muted-foreground">Added: {entries.join(" · ")}</p>
+      )}
     </div>
   );
 }

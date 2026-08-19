@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import {
   BookOpen,
   Bookmark,
@@ -16,15 +14,16 @@ import {
   MoreHorizontal,
   Check,
 } from "lucide-react";
-
-const installCommand = `npx component-library@latest add book-open`;
-const usageCode = `import { BookOpen } from "@/components/book-open";
-
-<BookOpen
-  title="Chapter 1"
-  content="Once upon a time..."
-  pageSize={200}
-/>`;
+import {
+  BOOK_OPEN_SOURCE,
+  SPREAD_EXAMPLE,
+  EREADER_EXAMPLE,
+  LIBRARY_EXAMPLE,
+  TOC_EXAMPLE,
+  PROGRESS_EXAMPLE,
+  BOOKMARKS_EXAMPLE,
+  NOTES_EXAMPLE,
+} from "./book-open-source";
 
 interface Page {
   left: string;
@@ -430,151 +429,24 @@ function BookNotesDemo() {
 
 export default function BookOpenPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Book Open
-          </h1>
-          <Badge variant="primary">Layout</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Book-style page layout with two-column spread, pagination, bookmarks, and reading
-          progress tracking.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Two-Page Spread</h3>
-          <p className="text-sm text-muted-foreground">
-            Classic book layout with page navigation and dot indicators.
-          </p>
-          <ComponentPreview id="book-spread">
-            <TwoPageSpreadDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">E-Reader View</h3>
-          <p className="text-sm text-muted-foreground">
-            Reading mode with adjustable font size and dark/light toggle.
-          </p>
-          <ComponentPreview id="book-ereader">
-            <EReaderViewDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Book Library</h3>
-          <p className="text-sm text-muted-foreground">
-            Grid of books with covers, ratings, and reading progress.
-          </p>
-          <ComponentPreview id="book-library">
-            <BookLibraryDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Table of Contents</h3>
-          <p className="text-sm text-muted-foreground">
-            Collapsible chapter list with page numbers and nested sections.
-          </p>
-          <ComponentPreview id="book-toc">
-            <TableOfContentsDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Reading Progress</h3>
-          <p className="text-sm text-muted-foreground">
-            Progress bar with stats and interactive slider.
-          </p>
-          <ComponentPreview id="book-progress">
-            <ReadingProgressDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bookmarks</h3>
-          <p className="text-sm text-muted-foreground">
-            Saved bookmarks with notes and page references.
-          </p>
-          <ComponentPreview id="book-bookmarks">
-            <BookmarkedListDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Notes & Highlights</h3>
-          <p className="text-sm text-muted-foreground">
-            Annotated passages with page numbers and highlight styles.
-          </p>
-          <ComponentPreview id="book-notes">
-            <BookNotesDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">title</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">content</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">pageSize</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">200</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">darkMode</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Book Open"
+      category="Layout"
+      description="Book-style page layout with two-column spread, pagination, bookmarks, and reading progress tracking."
+    >
+      <PreviewPanel filename="book-open.tsx">
+        <TwoPageSpreadDemo />
+      </PreviewPanel>
+      <SourceCodeViewer source={BOOK_OPEN_SOURCE} filename="components/ui/BookOpen/BookOpen.tsx" defaultExpanded />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Two-Page Spread" description="Classic book layout with page navigation and dot indicators." code={SPREAD_EXAMPLE}><TwoPageSpreadDemo /></ExampleBlock>
+        <ExampleBlock title="E-Reader View" description="Reading mode with adjustable font size and dark/light toggle." code={EREADER_EXAMPLE}><EReaderViewDemo /></ExampleBlock>
+        <ExampleBlock title="Book Library" description="Grid of books with covers, ratings, and reading progress." code={LIBRARY_EXAMPLE}><BookLibraryDemo /></ExampleBlock>
+        <ExampleBlock title="Table of Contents" description="Collapsible chapter list with page numbers and nested sections." code={TOC_EXAMPLE}><TableOfContentsDemo /></ExampleBlock>
+        <ExampleBlock title="Reading Progress" description="Progress bar with stats and interactive slider." code={PROGRESS_EXAMPLE}><ReadingProgressDemo /></ExampleBlock>
+        <ExampleBlock title="Bookmarks" description="Saved bookmarks with notes and page references." code={BOOKMARKS_EXAMPLE}><BookmarkedListDemo /></ExampleBlock>
+        <ExampleBlock title="Notes & Highlights" description="Annotated passages with page numbers and highlight styles." code={NOTES_EXAMPLE}><BookNotesDemo /></ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

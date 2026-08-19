@@ -1,18 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Card, CardContent, Button, Slider } from "@/components/ui";
-
-const installCommand = "npx component-library@latest add audio-player";
-
-const usageCode = `import { AudioPlayer } from "@/components/ui";
-
-export default function Example() {
-  return <AudioPlayer src="/audio.mp3" title="My Song" />;
-}`;
+import { AUDIOPLAYER_SOURCE, PLAYLIST_EXAMPLE, INTERACTIVE_EXAMPLE } from "./audio-player-source";
 
 const tracks = [
   { title: "Ambient Waves", artist: "Nature Sounds", duration: "3:42" },
@@ -59,107 +50,46 @@ function AudioPlayerDemo() {
 
 export default function AudioPlayerPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Audio Player</h1>
-          <Badge variant="primary">Media</Badge>
+    <ComponentDocPage
+      name="Audio Player"
+      category="Data Display"
+      description="Audio player with playback controls, volume adjustment, seek bar, and playlist support for rich media experiences."
+    >
+      <PreviewPanel filename="audio-player.tsx">
+        <div className="flex w-full items-center justify-center py-10">
+          <AudioPlayerDemo />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Audio player with playback controls, volume adjustment, seek bar, and playlist support for rich media experiences.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={AUDIOPLAYER_SOURCE} filename="components/ui/AudioPlayer/AudioPlayer.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Default</h3>
-          <ComponentPreview id="audio-player-default">
-            <div className="flex w-full items-center justify-center py-10">
-              <AudioPlayerDemo />
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Playlist</h3>
-          <ComponentPreview id="audio-player-playlist">
-            <div className="flex w-full items-center justify-center py-10">
-              <Card className="w-full max-w-sm">
-                <CardContent className="p-3">
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Playlist</p>
-                  {tracks.map((t, i) => (
-                    <div key={i} className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-muted cursor-pointer">
-                      <div className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 text-xs text-primary">{i + 1}</div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{t.title}</p>
-                        <p className="text-xs text-muted-foreground">{t.artist}</p>
-                      </div>
-                      <span className="text-xs text-muted-foreground">{t.duration}</span>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Playlist" description="Browse and pick tracks from a playlist list." code={PLAYLIST_EXAMPLE}>
+          <div className="flex w-full items-center justify-center py-10">
+            <Card className="w-full max-w-sm">
+              <CardContent className="p-3">
+                <p className="text-xs font-medium text-muted-foreground mb-2">Playlist</p>
+                {tracks.map((t, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-muted cursor-pointer">
+                    <div className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 text-xs text-primary">{i + 1}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{t.title}</p>
+                      <p className="text-xs text-muted-foreground">{t.artist}</p>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </ComponentPreview>
-        </div>
+                    <span className="text-xs text-muted-foreground">{t.duration}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </ExampleBlock>
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="audio-player-interactive">
-            <div className="flex w-full items-center justify-center py-10">
-              <AudioPlayerDemo />
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">src</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">title</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="Interactive" description="Playback controls with seek and volume sliders." code={INTERACTIVE_EXAMPLE}>
+          <div className="flex w-full items-center justify-center py-10">
+            <AudioPlayerDemo />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

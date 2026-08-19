@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import {
   Bookmark,
   Heart,
@@ -16,11 +14,16 @@ import {
   Check,
   Trash2,
 } from "lucide-react";
-
-const installCommand = `npx component-library@latest add bookmark-ribbon`;
-const usageCode = `import { BookmarkRibbon } from "@/components/bookmark-ribbon";
-
-<BookmarkRibbon label="Saved" color="blue" />`;
+import {
+  BOOKMARK_RIBBON_SOURCE,
+  COLORS_EXAMPLE,
+  ARTICLES_EXAMPLE,
+  CORNER_EXAMPLE,
+  CATEGORIES_EXAMPLE,
+  SAVE_EXAMPLE,
+  GRID_EXAMPLE,
+  NOTES_EXAMPLE,
+} from "./bookmark-ribbon-source";
 
 type RibbonColor = "blue" | "red" | "green" | "yellow" | "purple" | "slate";
 
@@ -375,151 +378,24 @@ function BookmarkWithNotesDemo() {
 
 export default function BookmarkRibbonPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Bookmark Ribbon
-          </h1>
-          <Badge variant="primary">Navigation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Bookmark ribbon indicators with fold effects, color variants, and interactive toggle
-          states for saving content.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Color Ribbons</h3>
-          <p className="text-sm text-muted-foreground">
-            Color variants with fold shadow effect for different categories.
-          </p>
-          <ComponentPreview id="ribbon-colors">
-            <ColorRibbonsDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Saved Articles</h3>
-          <p className="text-sm text-muted-foreground">
-            Article cards with bookmark toggle and "Saved" ribbon badge.
-          </p>
-          <ComponentPreview id="ribbon-articles">
-            <SavedArticlesDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Corner Ribbon</h3>
-          <p className="text-sm text-muted-foreground">
-            Product cards with rotated corner badges (NEW, HOT, SALE).
-          </p>
-          <ComponentPreview id="ribbon-corner">
-            <CornerRibbonDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bookmark Categories</h3>
-          <p className="text-sm text-muted-foreground">
-            Filterable bookmarks grouped by category with count badges.
-          </p>
-          <ComponentPreview id="ribbon-categories">
-            <BookmarkCategoriesDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Save Animation</h3>
-          <p className="text-sm text-muted-foreground">
-            Animated save/unsave with scale effect and checkmark feedback.
-          </p>
-          <ComponentPreview id="ribbon-save">
-            <SaveAnimationDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bookmark Grid</h3>
-          <p className="text-sm text-muted-foreground">
-            Visual grid of saved items with gradient covers and overlay bookmark button.
-          </p>
-          <ComponentPreview id="ribbon-grid">
-            <BookmarkGridDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bookmarks with Notes</h3>
-          <p className="text-sm text-muted-foreground">
-            Saved items with expandable notes, tags, and timestamps.
-          </p>
-          <ComponentPreview id="ribbon-notes">
-            <BookmarkWithNotesDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">color</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"blue\" | \"red\" | \"green\" | \"yellow\" | \"purple\" | \"slate\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"blue\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"sm\" | \"md\" | \"lg\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"md\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">active</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Bookmark Ribbon"
+      category="Navigation"
+      description="Bookmark ribbon indicators with fold effects, color variants, and interactive toggle states for saving content."
+    >
+      <PreviewPanel filename="bookmark-ribbon.tsx">
+        <ColorRibbonsDemo />
+      </PreviewPanel>
+      <SourceCodeViewer source={BOOKMARK_RIBBON_SOURCE} filename="components/ui/BookmarkRibbon/BookmarkRibbon.tsx" defaultExpanded />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Color Ribbons" description="Color variants with fold shadow effect for different categories." code={COLORS_EXAMPLE}><ColorRibbonsDemo /></ExampleBlock>
+        <ExampleBlock title="Saved Articles" description="Article cards with bookmark toggle and 'Saved' ribbon badge." code={ARTICLES_EXAMPLE}><SavedArticlesDemo /></ExampleBlock>
+        <ExampleBlock title="Corner Ribbon" description="Product cards with rotated corner badges (NEW, HOT, SALE)." code={CORNER_EXAMPLE}><CornerRibbonDemo /></ExampleBlock>
+        <ExampleBlock title="Bookmark Categories" description="Filterable bookmarks grouped by category with count badges." code={CATEGORIES_EXAMPLE}><BookmarkCategoriesDemo /></ExampleBlock>
+        <ExampleBlock title="Save Animation" description="Animated save/unsave with scale effect and checkmark feedback." code={SAVE_EXAMPLE}><SaveAnimationDemo /></ExampleBlock>
+        <ExampleBlock title="Bookmark Grid" description="Visual grid of saved items with gradient covers and overlay bookmark button." code={GRID_EXAMPLE}><BookmarkGridDemo /></ExampleBlock>
+        <ExampleBlock title="Bookmarks with Notes" description="Saved items with expandable notes, tags, and timestamps." code={NOTES_EXAMPLE}><BookmarkWithNotesDemo /></ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
