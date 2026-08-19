@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-
-const installCommand = `npx component-library@latest add pulse-ring`;
-
-const usageCode = `import { PulseRing } from "@/components/_pulse-ring";
-
-<PulseRing />
-<PulseRing color="#10b981" size={48} rings={3} />`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  PULSERING_SOURCE,
+  INTERACTIVE_EXAMPLE,
+  SIZES_EXAMPLE,
+  COLORS_EXAMPLE,
+  STATUS_EXAMPLE,
+  CARD_EXAMPLE,
+} from "./pulse-ring-source";
 
 function PulseRingDemo({ color = "#6366f1", size = 48, rings = 3, speed = 1.5 }: { color?: string; size?: number; rings?: number; speed?: number }) {
   return (
@@ -63,38 +62,20 @@ export default function PulseRingPage() {
   const [speed, setSpeed] = useState(1.5);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Pulse Ring</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Expanding pulse ring animation for indicating active status, notifications, or attention on UI elements.
-        </p>
-      </header>
+    <ComponentDocPage name="Pulse Ring" category="Feedback" description="Expanding pulse ring animation for indicating active status, notifications, or attention on UI elements.">
+      <PreviewPanel filename="pulse-ring.tsx">
+        <PulseRingDemo color={color} size={size} rings={rings} speed={speed} />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={PULSERING_SOURCE} filename="components/ui/PulseRing/PulseRing.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Interactive Demo</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Customize the pulse ring animation.</p>
-        </div>
-        <ComponentPreview id="pulse-interactive">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Interactive Demo" description="Customize the pulse ring animation." code={INTERACTIVE_EXAMPLE}>
           <div className="flex flex-col items-center gap-8">
             <div className="flex h-32 items-center justify-center">
               <PulseRingDemo color={color} size={size} rings={rings} speed={speed} />
             </div>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <label className="flex items-center gap-2 text-sm text-muted-foreground">
                 Size <input type="range" min={32} max={120} value={size} onChange={(e) => setSize(+e.target.value)} className="w-20" /> <span className="w-8 text-right text-xs font-mono">{size}px</span>
               </label>
@@ -109,15 +90,9 @@ export default function PulseRingPage() {
               </label>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different pulse ring sizes for various contexts.</p>
-        </div>
-        <ComponentPreview id="pulse-sizes">
+        <ExampleBlock title="Sizes" description="Different pulse ring sizes for various contexts." code={SIZES_EXAMPLE}>
           <div className="flex flex-wrap items-end gap-8">
             {[32, 48, 64, 80, 96].map((s) => (
               <div key={s} className="flex flex-col items-center gap-2">
@@ -126,15 +101,9 @@ export default function PulseRingPage() {
               </div>
             ))}
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Color Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different colors for status indication.</p>
-        </div>
-        <ComponentPreview id="pulse-colors">
+        <ExampleBlock title="Color Variants" description="Different colors for status indication." code={COLORS_EXAMPLE}>
           <div className="flex flex-wrap items-center gap-8">
             {[
               { color: "#10b981", label: "Online" },
@@ -149,15 +118,9 @@ export default function PulseRingPage() {
               </div>
             ))}
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Status Indicators</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Real-world usage with status labels.</p>
-        </div>
-        <ComponentPreview id="pulse-status">
+        <ExampleBlock title="Status Indicators" description="Real-world usage with status labels." code={STATUS_EXAMPLE}>
           <div className="flex flex-col gap-4">
             <PulseStatus label="Online" color="#10b981" active={true} />
             <PulseStatus label="Recording" color="#f94144" active={true} />
@@ -165,15 +128,9 @@ export default function PulseRingPage() {
             <PulseStatus label="Offline" color="#6b7280" active={false} />
             <PulseStatus label="Away" color="#8b5cf6" active={false} />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Card Overlay</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Pulse rings overlaid on card elements.</p>
-        </div>
-        <ComponentPreview id="pulse-card">
+        <ExampleBlock title="Card Overlay" description="Pulse rings overlaid on card elements." code={CARD_EXAMPLE}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="relative overflow-hidden rounded-xl border border-border p-5 dark:border-border">
               <div className="absolute top-3 right-3"><PulseRingDemo color="#10b981" size={24} rings={2} /></div>
@@ -186,39 +143,8 @@ export default function PulseRingPage() {
               <p className="mt-1 text-xs text-muted-foreground">02:34 elapsed</p>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { prop: "color", type: "string", def: "\"#6366f1\"", req: "No" },
-                { prop: "size", type: "number", def: "48", req: "No" },
-                { prop: "rings", type: "number", def: "3", req: "No" },
-                { prop: "speed", type: "number", def: "1.5", req: "No" },
-              ].map((row) => (
-                <tr key={row.prop} className="border-b">
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.def}</td>
-                  <td className="px-4 py-3">{row.req}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

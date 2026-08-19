@@ -1,11 +1,13 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 import { PricingCalculator } from "@/components/ui";
 import {
-  HeadlessPricingDemo,
   saasItems,
   saasCoupons,
   saasPresets,
@@ -14,146 +16,186 @@ import {
   storagePresets,
 } from "@/components/pricing-calculator/demo";
 
-const installCommand = `npx component-library@latest add pricing-calculator`;
+const PRICING_CALCULATOR_SOURCE = `"use client";
 
-const usageCode = `import { PricingCalculator } from "@/components/ui";
+import { useMemo, useState } from "react";
+import { cn } from "@/lib/cn";
+import type { PriceItem, BillingCycle, Coupon, PricingPreset } from "./PricingCalculator.types";
 
-<PricingCalculator
-  title="SaaS billing"
-  items={saasItems}
-  coupons={saasCoupons}
-  presets={saasPresets}
-/>`;
+export interface PricingCalculatorProps {
+  items: PriceItem[];
+  defaultCycle?: BillingCycle;
+  annualDiscountPercent?: number;
+  coupons?: Coupon[];
+  presets?: PricingPreset[];
+  title?: string;
+  description?: string;
+}
+
+export function PricingCalculator({
+  items,
+  defaultCycle = "monthly",
+  annualDiscountPercent = 20,
+  coupons = [],
+  presets = [],
+  title,
+  description,
+}: PricingCalculatorProps) {
+  const [quantities, setQuantities] = useState<Record<string, number>>(() =>
+    Object.fromEntries(items.map((item) => [item.id, item.defaultQuantity ?? item.min ?? 1]))
+  );
+  const [cycle, setCycle] = useState<BillingCycle>(defaultCycle);
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
+
+  const discount = appliedCoupon?.percent ?? 0;
+  const subtotal = useMemo(() => {
+    const base = items.reduce((sum, item) => {
+      const qty = quantities[item.id] ?? item.min ?? 1;
+      const unit = item.tiers?.find((t) => qty <= t.upTo)?.price ?? item.unitPrice ?? 0;
+      return sum + unit * qty;
+    }, 0);
+    const annualized = cycle === "annual" ? base * (1 - annualDiscountPercent / 100) : base;
+    return annualized * (1 - discount / 100);
+  }, [items, quantities, cycle, annualDiscountPercent, discount]);
+
+  return (
+    <div className="w-full rounded-2xl border border-border bg-background">
+      {(title || description) && (
+        <header className="border-b border-border px-5 py-4 sm:px-6">
+          {title && <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>}
+          {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+        </header>
+      )}
+      <div className="grid grid-cols-1 gap-6 p-5 sm:p-6 lg:grid-cols-2 lg:gap-8">
+        <div className="flex flex-col gap-6">
+          {presets.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Quick start</span>
+              <div className="grid grid-cols-3 gap-2">
+                {presets.map((preset) => (
+                  <button key={preset.id} type="button" onClick={() => setQuantities((prev) => ({ ...prev, ...preset.values }))} className="flex flex-col items-start gap-0.5 rounded-lg border border-border bg-surface px-3 py-2.5 text-left transition-colors hover:text-foreground">
+                    <span className="text-sm font-medium">{preset.label}</span>
+                    {preset.description && <span className="text-[11px] leading-tight opacity-80">{preset.description}</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {items.map((item) => {
+            const qty = quantities[item.id] ?? item.min ?? 1;
+            const min = item.min ?? 1;
+            const max = item.max ?? 100;
+            const fillPct = max > min ? Math.min(100, ((qty - min) / (max - min)) * 100) : 100;
+            const unit = item.tiers?.find((t) => qty <= t.upTo)?.price ?? item.unitPrice ?? 0;
+            return (
+              <div key={item.id} className="flex flex-col gap-2.5">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-sm font-medium text-foreground">{item.label}</span>
+                  <span className="text-lg font-semibold tabular-nums text-foreground">
+                    {qty}{item.unit && <span className="ml-1 text-xs font-normal text-muted-foreground">{item.unit}{qty !== 1 ? "s" : ""}</span>}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={min}
+                  max={max}
+                  step={item.step ?? 1}
+                  value={qty}
+                  onChange={(e) => setQuantities((prev) => ({ ...prev, [item.id]: Number(e.target.value) }))}
+                  aria-label={\`\${item.label} quantity\`}
+                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full outline-none"
+                  style={{ background: \`linear-gradient(to right, var(--primary) \${fillPct}%, var(--muted) \${fillPct}%)\` }}
+                />
+              </div>
+            );
+          })}
+          <div className="flex flex-col gap-4 border-t border-border pt-5">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-sm font-medium text-foreground">Billing cycle</span>
+                <div className="grid grid-cols-2 rounded-full border border-border bg-muted/40 p-1">
+                  {(["monthly", "annual"] as const).map((c) => (
+                    <button key={c} type="button" onClick={() => setCycle(c)} className={cn("rounded-full px-3 py-1.5 text-sm font-medium transition-colors", cycle === c ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground")}>
+                      {c[0].toUpperCase() + c.slice(1)}{c === "annual" && <span className="ml-1 text-xs font-semibold text-success">−{annualDiscountPercent}%</span>}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {coupons.length > 0 && (
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-end gap-2">
+                  <input placeholder="e.g. SAVE20" className="h-10 flex-1 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-1" />
+                  <button type="button" className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted">Apply</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface/60 p-5">
+          <div className="flex items-end justify-between">
+            <span className="text-sm text-muted-foreground">Total</span>
+            <span className="text-3xl font-semibold tabular-nums text-foreground">${subtotal.toFixed(2)}</span>
+          </div>
+          {cycle === "annual" && (
+            <p className="text-xs text-success">You save {annualDiscountPercent}% with annual billing.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}`;
 
 export default function PricingCalculatorPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Pricing Calculator
-          </h1>
-          <Badge variant="primary">3 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A reusable quote builder for product pages. Define line items, volume
-          tiers, billing cycles, currencies, and coupon codes — the calculator
-          handles the math and renders a live donut chart with an itemized
-          breakdown. The same price engine is exported as pure functions, so you
-          can drive quotes from your own UI or your backend.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Pricing Calculator"
+      category="Commerce"
+      description="A reusable quote builder with volume tiers, billing cycles, presets, and coupons. The same price engine is exported as pure functions for headless use."
+    >
+      <PreviewPanel filename="pricing-calculator.tsx">
+        <PricingCalculator
+          title="SaaS billing"
+          items={saasItems}
+          coupons={saasCoupons}
+          presets={saasPresets}
+        />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={PRICING_CALCULATOR_SOURCE}
+        filename="components/ui/PricingCalculator/PricingCalculator.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="SaaS Seats"
+          description="Tiered seat pricing with presets and coupons."
+          code={PRICING_CALCULATOR_SOURCE}
+        >
+          <PricingCalculator
+            title="SaaS billing"
+            items={saasItems}
+            coupons={saasCoupons}
+            presets={saasPresets}
+          />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">SaaS Billing</h3>
-            <p className="text-sm text-muted-foreground">Slide team seats to watch volume pricing, annual billing, and coupons apply live.</p>
-          </div>
-          <ComponentPreview id="pricing-calculator-saas">
-            <PricingCalculator
-              title="SaaS billing"
-              description="Slide team seats to watch volume pricing, annual billing, and coupons apply live."
-              items={saasItems}
-              coupons={saasCoupons}
-              presets={saasPresets}
-            />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Usage-Based Pricing</h3>
-            <p className="text-sm text-muted-foreground">Metered line items with a smaller annual incentive and one coupon.</p>
-          </div>
-          <ComponentPreview id="pricing-calculator-storage">
-            <PricingCalculator
-              title="Usage-based pricing"
-              description="Metered line items with a smaller annual incentive and one coupon."
-              items={storageItems}
-              coupons={storageCoupons}
-              presets={storagePresets}
-              annualDiscountPercent={10}
-            />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Headless Mode</h3>
-            <p className="text-sm text-muted-foreground">Use the price engine as pure functions with your own UI.</p>
-          </div>
-          <ComponentPreview id="pricing-calculator-headless">
-            <HeadlessPricingDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">title</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">PricingItem[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">coupons</td>
-                <td className="px-4 py-3 text-muted-foreground">Coupon[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">presets</td>
-                <td className="px-4 py-3 text-muted-foreground">Preset[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">annualDiscountPercent</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">0</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">description</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Storage & Usage"
+          description="Metered items with fine-grained sliders."
+          code={PRICING_CALCULATOR_SOURCE}
+        >
+          <PricingCalculator
+            title="Storage plan"
+            items={storageItems}
+            coupons={storageCoupons}
+            presets={storagePresets}
+            annualDiscountPercent={10}
+          />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

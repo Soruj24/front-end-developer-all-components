@@ -1,127 +1,179 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import type { ComponentType } from "react";
 import {
-  CenteredHero, SplitHero, StatsHero,
-  AnimatedGradientHero, ParticleHero, VideoBackgroundHero,
-  GlassmorphismHero, NeonGlowHero, TypewriterHero,
-  BentoGridHero, ParallaxHero, Card3DHero,
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import {
+  CenteredHero,
+  SplitHero,
+  StatsHero,
+  AnimatedGradientHero,
+  ParticleHero,
+  VideoBackgroundHero,
+  GlassmorphismHero,
+  NeonGlowHero,
+  TypewriterHero,
+  BentoGridHero,
+  ParallaxHero,
+  Card3DHero,
 } from "@/features/hero";
 
-const STYLES: Array<{ label: string; Render: React.ComponentType; registryId: string }> = [
-  { label: "Centered", Render: CenteredHero, registryId: "hero-centered" },
-  { label: "Split", Render: SplitHero, registryId: "hero-split" },
-  { label: "Stats", Render: StatsHero, registryId: "hero-stats" },
-  { label: "Animated Gradient", Render: AnimatedGradientHero, registryId: "hero-animated-gradient" },
-  { label: "Particle", Render: ParticleHero, registryId: "hero-particle" },
-  { label: "Video Background", Render: VideoBackgroundHero, registryId: "hero-video-bg" },
-  { label: "Glassmorphism", Render: GlassmorphismHero, registryId: "hero-glassmorphism" },
-  { label: "Neon Glow", Render: NeonGlowHero, registryId: "hero-neon-glow" },
-  { label: "Typewriter", Render: TypewriterHero, registryId: "hero-typewriter" },
-  { label: "Bento Grid", Render: BentoGridHero, registryId: "hero-bento-grid" },
-  { label: "Parallax", Render: ParallaxHero, registryId: "hero-parallax" },
-  { label: "3D Card", Render: Card3DHero, registryId: "hero-card-3d" },
-];
+const HERO_SOURCE = `"use client";
 
-const installCommand = `npx component-library@latest add hero`;
+import { useEffect, useState } from "react";
 
-const usageCode = `import { Hero } from "@/components/hero";
+export interface HeroProps {
+  title: string;
+  description: string;
+  badge?: string;
+  variant?: "centered" | "split" | "stats" | "typewriter";
+  primaryCta?: string;
+  secondaryCta?: string;
+}
 
-<Hero
-  variant="centered"
-  title="Build faster with modern components"
-  description="A collection of production-ready components"
-/>`;
+export function Hero({
+  title,
+  description,
+  badge = "Now in public beta",
+  variant = "centered",
+  primaryCta = "Get Started",
+  secondaryCta = "Learn More",
+}: HeroProps) {
+  const words = ["developers", "designers", "teams"];
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-const heroProps = [
-  { prop: "variant", type: "\"centered\" | \"split\" | \"stats\" | \"animated\" | \"particle\"", default: "\"centered\"", required: "No" },
-  { prop: "title", type: "string", default: "-", required: "Yes" },
-  { prop: "description", type: "string", default: "-", required: "No" },
-  { prop: "children", type: "ReactNode", default: "-", required: "No" },
-];
+  useEffect(() => {
+    const word = words[index];
+    const timeout = setTimeout(() => {
+      if (!deleting) {
+        setText(word.slice(0, text.length + 1));
+        if (text.length === word.length) setDeleting(true);
+      } else if (text.length === 0) {
+        setDeleting(false);
+        setIndex((prev) => (prev + 1) % words.length);
+      } else {
+        setText(word.slice(0, text.length - 1));
+      }
+    }, deleting ? 50 : 120);
+    return () => clearTimeout(timeout);
+  }, [text, deleting, index]);
 
-export default function HeroPage() {
-  const [activeStyle, setActiveStyle] = useState(0);
-  const { Render: Active, registryId } = STYLES[activeStyle];
+  const actions = (
+    <div className="flex gap-4">
+      <button className="rounded-lg bg-zinc-900 px-6 py-3 font-medium text-white hover:bg-zinc-700 dark:bg-foreground dark:text-background">{primaryCta}</button>
+      <button className="rounded-lg border border-border px-6 py-3 font-medium text-muted-foreground hover:bg-muted">{secondaryCta}</button>
+    </div>
+  );
+
+  const headline = variant === "typewriter" ? (
+    <>
+      Built for{" "}
+      <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">{text}</span>
+      <span className="ml-1 inline-block h-[1em] w-[3px] animate-pulse bg-emerald-500" />
+    </>
+  ) : title;
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Hero Sections</h1>
-          <Badge variant="primary">{STYLES.length} examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          12 hero patterns — centered, split, animated, 3D, glassmorphism, and more.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Examples */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="mb-8 flex flex-wrap gap-2">
-          {STYLES.map((s, i) => (
-            <button
-              key={s.registryId}
-              onClick={() => setActiveStyle(i)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                activeStyle === i
-                  ? "bg-blue-500 text-white shadow"
-                  : "bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted"
-              }`}
-            >
-              {s.label}
-            </button>
+    <div className="flex min-h-[50vh] flex-col items-center justify-center gap-6 rounded-xl border border-border bg-gradient-to-b from-zinc-50 to-white p-8 text-center dark:from-zinc-900 dark:to-black">
+      <span className="rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-200">{badge}</span>
+      <h2 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">{headline}</h2>
+      <p className="max-w-xl text-muted-foreground">{description}</p>
+      {variant === "stats" ? (
+        <div className="grid w-full max-w-lg grid-cols-3 gap-4">
+          {[{ label: "Users", value: "10k+" }, { label: "Components", value: "1000+" }, { label: "Templates", value: "300+" }].map((s) => (
+            <div key={s.label} className="rounded-lg border border-border bg-background/60 p-4">
+              <p className="text-2xl font-bold">{s.value}</p>
+              <p className="text-xs text-muted-foreground">{s.label}</p>
+            </div>
           ))}
         </div>
-
-        <ComponentPreview id={registryId}>
-          <Active />
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {heroProps.map((row, i) => (
-                <tr key={row.prop} className={i < heroProps.length - 1 ? "border-b" : ""}>
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
-                  <td className="px-4 py-3">{row.required}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      ) : null}
+      {actions}
     </div>
+  );
+}`;
+
+const STYLES: Array<{ label: string; Render: ComponentType }> = [
+  { label: "Centered", Render: CenteredHero },
+  { label: "Split", Render: SplitHero },
+  { label: "Stats", Render: StatsHero },
+  { label: "Animated Gradient", Render: AnimatedGradientHero },
+  { label: "Particle", Render: ParticleHero },
+  { label: "Video Background", Render: VideoBackgroundHero },
+  { label: "Glassmorphism", Render: GlassmorphismHero },
+  { label: "Neon Glow", Render: NeonGlowHero },
+  { label: "Typewriter", Render: TypewriterHero },
+  { label: "Bento Grid", Render: BentoGridHero },
+  { label: "Parallax", Render: ParallaxHero },
+  { label: "3D Card", Render: Card3DHero },
+];
+
+function StyleSwitcher() {
+  const [activeStyle, setActiveStyle] = useState(0);
+  const { Render: Active } = STYLES[activeStyle];
+  return (
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex flex-wrap gap-2">
+        {STYLES.map((s, i) => (
+          <button
+            key={s.label}
+            onClick={() => setActiveStyle(i)}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+              activeStyle === i
+                ? "bg-blue-500 text-white shadow"
+                : "bg-muted text-muted-foreground hover:bg-muted"
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+      <Active />
+    </div>
+  );
+}
+
+export default function HeroPage() {
+  return (
+    <ComponentDocPage
+      name="Hero Sections"
+      category="Layout"
+      description="12 hero patterns — centered, split, animated, 3D, glassmorphism, and more."
+    >
+      <PreviewPanel filename="hero.tsx">
+        <StyleSwitcher />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={HERO_SOURCE}
+        filename="components/ui/Hero/Hero.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Centered"
+          description="Badge, headline, subtext, and call-to-action buttons."
+          code={`<Hero title="Build modern web apps faster." description="A powerful platform for building, deploying, and scaling." />`}
+        >
+          <CenteredHero />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Typewriter"
+          description="Headline text that cycles through words."
+          code={`<Hero variant="typewriter" title="Built for teams" description="Animated text that cycles through words." />`}
+        >
+          <TypewriterHero />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

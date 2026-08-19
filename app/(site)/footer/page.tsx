@@ -1,19 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-
-const installCommand = `npx component-library@latest add footer`;
-
-const usageCode = `import { Footer } from "@/components/footer";
-
-<Footer
-  logo="MyApp"
-  columns={footerColumns}
-  socialLinks={socialLinks}
-/>`;
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+} from "@/components/docs";
+import { FOOTER_SOURCE } from "./footer-source";
 
 const products = ["Overview", "Features", "Pricing", "Changelog"];
 const resources = ["Docs", "Blog", "Community", "Support"];
@@ -68,15 +61,7 @@ function PaymentIcon({ type }: { type: string }) {
   );
 }
 
-const footerProps = [
-  { prop: "logo", type: "string | ReactNode", default: "-", required: "Yes" },
-  { prop: "columns", type: "FooterColumn[]", default: "-", required: "Yes" },
-  { prop: "socialLinks", type: "SocialLink[]", default: "[]", required: "No" },
-  { prop: "showNewsletter", type: "boolean", default: "true", required: "No" },
-  { prop: "showBackToTop", type: "boolean", default: "true", required: "No" },
-];
-
-export default function FooterPage() {
+function FooterDemo() {
   const [lang, setLang] = useState("en");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -94,183 +79,122 @@ export default function FooterPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const linkCls =
+    "text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-zinc-50";
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Footer</h1>
-          <Badge variant="primary">1 example</Badge>
+    <footer className="relative w-full rounded-lg border border-border">
+      <div className="grid gap-10 p-8 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="flex flex-col gap-4 lg:col-span-1">
+          <span className="text-lg font-bold tracking-tight">Logo</span>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Building the future of web development, one component at a time.
+          </p>
+          <div className="flex gap-3">
+            <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"><TwitterIcon /></a>
+            <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"><GitHubIcon /></a>
+            <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"><LinkedInIcon /></a>
+            <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground"><YouTubeIcon /></a>
+          </div>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A feature-rich footer with newsletter signup, social SVGs, payment
-          icons, language selector, and back-to-top.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Examples */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <ComponentPreview id="footer-full">
-          <footer className="relative w-full rounded-lg border border-border">
-            <div className="grid gap-10 p-8 sm:grid-cols-2 lg:grid-cols-5">
-              <div className="flex flex-col gap-4 lg:col-span-1">
-                <span className="text-lg font-bold tracking-tight">Logo</span>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Building the future of web development, one component at a time.
-                </p>
-                <div className="flex gap-3">
-                  <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted dark:hover:text-zinc-200">
-                    <TwitterIcon />
-                  </a>
-                  <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted dark:hover:text-zinc-200">
-                    <GitHubIcon />
-                  </a>
-                  <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted dark:hover:text-zinc-200">
-                    <LinkedInIcon />
-                  </a>
-                  <a href="#" className="rounded-full bg-muted p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted dark:hover:text-zinc-200">
-                    <YouTubeIcon />
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <span className="text-sm font-semibold">Product</span>
-                {products.map((item) => (
-                  <a key={item} href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-zinc-50">
-                    {item}
-                  </a>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <span className="text-sm font-semibold">Resources</span>
-                {resources.map((item) => (
-                  <a key={item} href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-zinc-50">
-                    {item}
-                  </a>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <span className="text-sm font-semibold">Company</span>
-                {company.map((item) => (
-                  <a key={item} href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-zinc-50">
-                    {item}
-                  </a>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <span className="text-sm font-semibold">Legal</span>
-                {legal.map((item) => (
-                  <a key={item} href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-zinc-50">
-                    {item}
-                  </a>
-                ))}
-              </div>
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-semibold">Product</span>
+          {products.map((item) => (
+            <a key={item} href="#" className={linkCls}>{item}</a>
+          ))}
+        </div>
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-semibold">Resources</span>
+          {resources.map((item) => (
+            <a key={item} href="#" className={linkCls}>{item}</a>
+          ))}
+        </div>
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-semibold">Company</span>
+          {company.map((item) => (
+            <a key={item} href="#" className={linkCls}>{item}</a>
+          ))}
+        </div>
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-semibold">Legal</span>
+          {legal.map((item) => (
+            <a key={item} href="#" className={linkCls}>{item}</a>
+          ))}
+        </div>
+      </div>
+      <div className="border-t border-black/[.08] px-8 py-6 dark:border-white/[.145]">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground/70">We accept</span>
+            <div className="flex gap-2">
+              <PaymentIcon type="Visa" />
+              <PaymentIcon type="MC" />
+              <PaymentIcon type="Amex" />
+              <PaymentIcon type="PayPal" />
+              <PaymentIcon type="Apple" />
             </div>
-
-            <div className="border-t border-black/[.08] px-8 py-6 dark:border-white/[.145]">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                  <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground/70">We accept</span>
-                  <div className="flex gap-2">
-                    <PaymentIcon type="Visa" />
-                    <PaymentIcon type="MC" />
-                    <PaymentIcon type="Amex" />
-                    <PaymentIcon type="PayPal" />
-                    <PaymentIcon type="Apple" />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-          <select
-            value={lang}
-            aria-label="Language"
-            onChange={(e) => setLang(e.target.value)}
-                    className="rounded-md border border-border bg-white px-3 py-1.5 text-xs text-muted-foreground dark:border-border dark:bg-muted dark:text-muted-foreground"
-                  >
-                    {languages.map((l) => (
-                      <option key={l.code} value={l.code}>
-                        {l.label}
-                      </option>
-                    ))}
-                  </select>
-                  <form onSubmit={handleSubscribe} className="flex gap-2">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Your email"
-                      className="w-44 rounded-md border border-border bg-white px-3 py-1.5 text-xs text-muted-foreground placeholder-zinc-400 dark:border-border dark:bg-muted dark:text-muted-foreground"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-zinc-700 dark:bg-foreground dark:text-background dark:hover:bg-muted"
-                    >
-                      {subscribed ? "✓ Sent!" : "Subscribe"}
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-between gap-4 border-t border-black/[.08] px-8 py-5 dark:border-white/[.145] sm:flex-row">
-              <p className="text-xs text-muted-foreground/70">
-                &copy; {new Date().getFullYear()} Your Company. All rights reserved.
-              </p>
-              <button
-                onClick={scrollToTop}
-                className="flex items-center gap-1.5 text-xs text-muted-foreground/70 transition-colors hover:text-muted-foreground dark:hover:text-zinc-200"
-              >
-                <span>↑</span>
-                Back to top
-              </button>
-            </div>
-          </footer>
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {footerProps.map((row, i) => (
-                <tr key={row.prop} className={i < footerProps.length - 1 ? "border-b" : ""}>
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
-                  <td className="px-4 py-3">{row.required}</td>
-                </tr>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <select
+              value={lang}
+              aria-label="Language"
+              onChange={(e) => setLang(e.target.value)}
+              className="rounded-md border border-border bg-white px-3 py-1.5 text-xs text-muted-foreground dark:border-border dark:bg-muted dark:text-muted-foreground"
+            >
+              {languages.map((l) => (
+                <option key={l.code} value={l.code}>{l.label}</option>
               ))}
-            </tbody>
-          </table>
+            </select>
+            <form onSubmit={handleSubscribe} className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                required
+                className="w-44 rounded-md border border-border bg-white px-3 py-1.5 text-xs text-muted-foreground placeholder-zinc-400 dark:border-border dark:bg-muted dark:text-muted-foreground"
+              />
+              <button
+                type="submit"
+                className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-zinc-700 dark:bg-foreground dark:text-background dark:hover:bg-muted"
+              >
+                {subscribed ? "✓ Sent!" : "Subscribe"}
+              </button>
+            </form>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <div className="flex flex-col items-center justify-between gap-4 border-t border-black/[.08] px-8 py-5 dark:border-white/[.145] sm:flex-row">
+        <p className="text-xs text-muted-foreground/70">
+          &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+        </p>
+        <button
+          onClick={scrollToTop}
+          className="flex items-center gap-1.5 text-xs text-muted-foreground/70 transition-colors hover:text-muted-foreground dark:hover:text-zinc-200"
+        >
+          <span>↑</span> Back to top
+        </button>
+      </div>
+    </footer>
+  );
+}
+
+export default function FooterPage() {
+  return (
+    <ComponentDocPage
+      name="Footer"
+      category="Navigation"
+      description="A feature-rich footer with newsletter signup, social SVGs, payment icons, language selector, and back-to-top."
+    >
+      <PreviewPanel filename="footer.tsx">
+        <FooterDemo />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={FOOTER_SOURCE}
+        filename="components/ui/Footer/Footer.tsx"
+        defaultExpanded
+      />
+    </ComponentDocPage>
   );
 }

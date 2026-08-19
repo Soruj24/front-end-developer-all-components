@@ -1,23 +1,57 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Card, CardContent, Button } from "@/components/ui";
 
-const installCommand = `npx component-library@latest add animated-counter`;
+const ANIMATEDCOUNTER_SOURCE = `"use client";
 
-const usageCode = `import { AnimatedCounter } from "@/components/ui";
+import { useState, useEffect } from "react";
 
-export default function Example() {
-  return <AnimatedCounter target={1000} duration={2000} prefix="$" />;
+interface AnimatedCounterProps {
+  target: number;
+  duration?: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+export function AnimatedCounter({ target, duration = 2000, prefix = "", suffix = "" }: AnimatedCounterProps) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let startTs = 0;
+    let raf = 0;
+    const step = (ts: number) => {
+      if (!startTs) startTs = ts;
+      const progress = Math.min((ts - startTs) / duration, 1);
+      setValue(Math.floor(progress * target));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+
+  return <span>{prefix}{value.toLocaleString()}{suffix}</span>;
 }`;
+
+const BASIC_EXAMPLE = `<AnimatedCounter target={1000} duration={2000} />`;
+
+const PREFIX_EXAMPLE = `<AnimatedCounter target={12450} duration={2000} prefix="$" />
+<AnimatedCounter target={94} duration={1800} suffix="%" />`;
+
+const DASHBOARD_EXAMPLE = `<Card>
+  <CardContent className="text-center">
+    <AnimatedCounter target={12450} duration={2000} prefix="$" />
+  </CardContent>
+</Card>`;
 
 function useCounter(target: number, duration: number, start = false) {
   const [value, setValue] = useState(0);
   useEffect(() => {
-    if (!start) { setValue(0); return; }
+    if (!start) {
+      setValue(0);
+      return;
+    }
     let startTs = 0;
     let raf: number;
     const step = (ts: number) => {
@@ -49,7 +83,7 @@ const counters = [
   { label: "Growth", target: 94, suffix: "%", duration: 1800 },
 ];
 
-export default function AnimatedCounterPage() {
+function DashboardMetrics() {
   const [running, setRunning] = useState(false);
   const [vals, setVals] = useState([0, 0, 0]);
   const targets = [12450, 8920, 94];
@@ -71,110 +105,55 @@ export default function AnimatedCounterPage() {
   }, [running]);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Animated Counter</h1>
-          <Badge variant="primary">Animation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Animated number counter with easing, configurable duration, prefix/suffix, and smooth transitions for metrics.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Basic Counter</h3>
-          <ComponentPreview id="animated-counter-default">
-            <div className="flex w-full items-center justify-center py-10">
-              <Counter target={1000} duration={2000} />
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">With Prefix/Suffix</h3>
-          <ComponentPreview id="animated-counter-prefix">
-            <div className="flex w-full items-center justify-center gap-8 py-10">
-              <Counter target={12450} duration={2000} prefix="$" />
-              <Counter target={94} duration={1800} suffix="%" />
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Dashboard Metrics</h3>
-          <ComponentPreview id="animated-counter-dashboard">
-            <div className="flex w-full items-center justify-center py-10">
-              <div className="flex gap-6">
-                {counters.map((c, i) => (
-                  <Card key={i} className="w-36">
-                    <CardContent className="flex flex-col items-center gap-1 py-4">
-                      <span className="text-3xl font-bold tabular-nums">{prefixes[i]}{vals[i].toLocaleString()}{suffixes[i]}</span>
-                      <span className="text-xs text-muted-foreground">{c.label}</span>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              <Button className="mt-4" onClick={() => { setRunning(false); setVals([0, 0, 0]); setTimeout(() => setRunning(true), 50); }}>Replay</Button>
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">target</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">duration</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">2000</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">prefix</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">{'""'}</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">suffix</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">{'""'}</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex flex-wrap justify-center gap-6">
+        {counters.map((c, i) => (
+          <Card key={i} className="w-36">
+            <CardContent className="flex flex-col items-center gap-1 py-4">
+              <span className="text-3xl font-bold tabular-nums">{prefixes[i]}{vals[i].toLocaleString()}{suffixes[i]}</span>
+              <span className="text-xs text-muted-foreground">{c.label}</span>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Button size="sm" onClick={() => { setRunning(false); setVals([0, 0, 0]); setTimeout(() => setRunning(true), 50); }}>Replay</Button>
     </div>
+  );
+}
+
+export default function AnimatedCounterPage() {
+  return (
+    <ComponentDocPage
+      name="Animated Counter"
+      category="Animation"
+      description="Animated number counter with easing, configurable duration, prefix/suffix, and smooth transitions for metrics."
+    >
+      <PreviewPanel filename="animated-counter.tsx">
+        <Counter target={1000} duration={2000} />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={ANIMATEDCOUNTER_SOURCE}
+        filename="components/ui/AnimatedCounter/AnimatedCounter.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic Counter" description="Count from zero to a target value." code={BASIC_EXAMPLE}>
+          <Counter target={1000} duration={2000} />
+        </ExampleBlock>
+
+        <ExampleBlock title="With Prefix/Suffix" description="Add currency symbols or units to the count." code={PREFIX_EXAMPLE}>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            <Counter target={12450} duration={2000} prefix="$" />
+            <Counter target={94} duration={1800} suffix="%" />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Dashboard Metrics" description="Animated counters inside stat cards." code={DASHBOARD_EXAMPLE}>
+          <DashboardMetrics />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

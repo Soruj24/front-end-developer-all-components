@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { TYPING_INDICATOR_SOURCE } from "./typing-indicator-source";
 
-const installCommand = `npx component-library@latest add typing-indicator`;
+const CHAT_BUBBLES_CODE = `<TypingBubble dots={3} color="#6366f1" label="Alice" />
+<TypingBubble dots={4} color="#10b981" label="Bob" />
+<TypingBubble dots={3} color="#f94144" label="Charlie" />
+<TypingBubble dots={5} color="#8b5cf6" label="Diana" />`;
 
-const usageCode = `import { TypingIndicator } from "@/components/_typing-indicator";
+const LIVE_CHAT_CODE = `<TypingChatDemo />`;
 
-<TypingIndicator />
-<TypingIndicator dots={4} color="#6366f1" label="Someone is typing..." />`;
+const USE_CASES_CODE = `<div className="flex items-center gap-2">
+  <TypingDots dots={3} color="#6366f1" size={6} />
+  <span className="text-sm font-medium">AI Generating...</span>
+</div>`;
 
 function TypingDots({ dots = 3, color = "#6366f1", size = 8, gap = 4 }: { dots?: number; color?: string; size?: number; gap?: number }) {
   return (
@@ -106,83 +110,51 @@ export default function TypingIndicatorPage() {
   const [dotSize, setDotSize] = useState(8);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Typing Indicator</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Animated dots indicating that someone is typing or processing. Ideal for chat interfaces, search bars, and real-time collaboration.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Interactive Demo</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Customize the typing indicator dots.</p>
-        </div>
-        <ComponentPreview id="typing-interactive">
-          <div className="flex flex-col items-center gap-8">
-            <div className="flex h-16 items-center">
-              <TypingDots dots={dotCount} color={color} size={dotSize} />
-            </div>
-            <div className="flex flex-wrap items-center gap-4">
-              <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                Dots <input type="range" min={2} max={6} value={dotCount} onChange={(e) => setDotCount(+e.target.value)} className="w-20" /> <span className="w-4 text-right text-xs font-mono">{dotCount}</span>
-              </label>
-              <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                Size <input type="range" min={4} max={16} value={dotSize} onChange={(e) => setDotSize(+e.target.value)} className="w-20" /> <span className="w-6 text-right text-xs font-mono">{dotSize}px</span>
-              </label>
-              <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-6 w-6 cursor-pointer" /> Color
-              </label>
-            </div>
+    <ComponentDocPage
+      name="Typing Indicator"
+      category="Feedback"
+      description="Animated dots indicating that someone is typing or processing. Ideal for chat interfaces, search bars, and real-time collaboration."
+    >
+      <PreviewPanel filename="typing-indicator.tsx">
+        <div className="flex flex-col items-center gap-8">
+          <div className="flex h-16 items-center">
+            <TypingDots dots={dotCount} color={color} size={dotSize} />
           </div>
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Chat Bubbles</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Typing indicator inside chat message bubbles.</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Dots <input type="range" min={2} max={6} value={dotCount} onChange={(e) => setDotCount(+e.target.value)} className="w-20" /> <span className="w-4 text-right text-xs font-mono">{dotCount}</span>
+            </label>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              Size <input type="range" min={4} max={16} value={dotSize} onChange={(e) => setDotSize(+e.target.value)} className="w-20" /> <span className="w-6 text-right text-xs font-mono">{dotSize}px</span>
+            </label>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="h-6 w-6 cursor-pointer" /> Color
+            </label>
+          </div>
         </div>
-        <ComponentPreview id="typing-bubbles">
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={TYPING_INDICATOR_SOURCE}
+        filename="components/ui/TypingIndicator/TypingIndicator.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Chat Bubbles" description="Typing indicator inside chat message bubbles." code={CHAT_BUBBLES_CODE}>
           <div className="flex flex-col gap-4">
             <TypingBubble dots={3} color="#6366f1" label="Alice" />
             <TypingBubble dots={4} color="#10b981" label="Bob" />
             <TypingBubble dots={3} color="#f94144" label="Charlie" />
             <TypingBubble dots={5} color="#8b5cf6" label="Diana" />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Live Chat Demo</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Typing indicator in a realistic chat context.</p>
-        </div>
-        <ComponentPreview id="typing-chat">
+        <ExampleBlock title="Live Chat Demo" description="Typing indicator in a realistic chat context." code={LIVE_CHAT_CODE}>
           <TypingChatDemo />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Use Cases</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Various scenarios for typing indicators.</p>
-        </div>
-        <ComponentPreview id="typing-usecases">
+        <ExampleBlock title="Use Cases" description="Various scenarios for typing indicators." code={USE_CASES_CODE}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-border p-4 dark:border-border">
               <div className="mb-2 flex items-center gap-2">
@@ -213,40 +185,8 @@ export default function TypingIndicatorPage() {
               <p className="text-xs text-muted-foreground">3 people editing</p>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { prop: "dots", type: "number", def: "3", req: "No" },
-                { prop: "color", type: "string", def: "\"#6366f1\"", req: "No" },
-                { prop: "size", type: "number", def: "8", req: "No" },
-                { prop: "gap", type: "number", def: "4", req: "No" },
-                { prop: "label", type: "string", def: "-", req: "No" },
-              ].map((row) => (
-                <tr key={row.prop} className="border-b">
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.def}</td>
-                  <td className="px-4 py-3">{row.req}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

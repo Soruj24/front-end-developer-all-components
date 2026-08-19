@@ -1,296 +1,133 @@
 "use client";
+
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import type { LucideIcon } from "lucide-react";
 import { Loader, BarChart3, Activity, Zap, Settings, Play, Pause } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 
-const installCommand = `npx component-library@latest add loading-bar`;
-const usageCode = `import { LoadingBar } from '@/components/loading-bar';
+const LOADINGBAR_SOURCE = `"use client";
 
-export default function AppLayout() {
-  const [progress, setProgress] = useState(0);
+interface LoadingBarProps {
+  value?: number;
+  variant?: "default" | "indeterminate" | "gradient" | "striped";
+  size?: "sm" | "md" | "lg";
+  showLabel?: boolean;
+  className?: string;
+}
+
+const sizeMap = { sm: "h-1", md: "h-2", lg: "h-3" };
+
+export function LoadingBar({ value = 0, variant = "default", size = "md", showLabel = false, className = "" }: LoadingBarProps) {
+  const indeterminate = variant === "indeterminate";
+  const fill = indeterminate
+    ? "w-1/3 animate-pulse"
+    : variant === "gradient"
+    ? "bg-gradient-to-r from-primary to-emerald-500"
+    : variant === "striped"
+    ? "bg-[repeating-linear-gradient(45deg,transparent,transparent_6px,rgba(255,255,255,0.4)_6px,rgba(255,255,255,0.4)_12px)]"
+    : "";
 
   return (
-    <>
-      <LoadingBar value={progress} className="fixed top-0 left-0 right-0 z-50" />
-      <LoadingBar variant="indeterminate" className="h-1" />
-      <button onClick={() => setProgress(p => Math.min(p + 10, 100))}>
-        Increment Progress
-      </button>
-    </>
+    <div className="w-full">
+      {showLabel && (
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">Loading...</span>
+          <span className="text-xs tabular-nums text-muted-foreground">{Math.round(value)}%</span>
+        </div>
+      )}
+      <div className={\`w-full overflow-hidden rounded-full bg-muted \${sizeMap[size]} \${className}\`} role="progressbar" aria-valuenow={value}>
+        <div
+          className={\`h-full rounded-full bg-primary transition-all duration-300 \${fill}\`}
+          style={indeterminate ? undefined : { width: \`\${Math.min(Math.max(value, 0), 100)}%\` }}
+        />
+      </div>
+    </div>
   );
 }`;
 
-  function TopBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Loader className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">TopBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 1</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Loader className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">TopBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'TopBar', category: 'Feedback', icon: 'Loader' }, null, 2)}
-          </div>
-        )}
+function LoadingBarDemo({ icon: Icon, name, iconName, label }: { icon: LucideIcon; name: string; iconName: string; label: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="flex flex-col gap-4 rounded-xl border bg-background p-6">
+      <div className="flex items-center gap-3">
+        <Icon className="h-5 w-5 text-primary" />
+        <h3 className="font-semibold text-foreground">{name}</h3>
+        <span className="ml-auto rounded-full border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">{label}</span>
       </div>
-    );
-  }
+      <div className="flex items-center justify-center py-8">
+        <div className="text-center text-muted-foreground">
+          <Icon className="mx-auto mb-3 h-12 w-12 opacity-30" />
+          <p className="text-sm">{name} demonstration</p>
+          <button onClick={() => setOpen(!open)} className="mt-2 text-xs text-primary hover:underline">
+            {open ? "Hide" : "Show"} Details
+          </button>
+        </div>
+      </div>
+      {open && (
+        <div className="rounded-lg bg-muted/50 p-3 font-mono text-xs text-muted-foreground">
+          {JSON.stringify({ component: name, category: "Feedback", icon: iconName }, null, 2)}
+        </div>
+      )}
+    </div>
+  );
+}
 
-  function InlineBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <BarChart3 className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">InlineBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 2</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">InlineBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'InlineBar', category: 'Feedback', icon: 'BarChart3' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
+const DEMOS: { icon: LucideIcon; name: string; iconName: string; label: string }[] = [
+  { icon: Loader, name: "TopBar", iconName: "Loader", label: "Demo 1" },
+  { icon: BarChart3, name: "InlineBar", iconName: "BarChart3", label: "Demo 2" },
+  { icon: Activity, name: "CircularBar", iconName: "Activity", label: "Demo 3" },
+  { icon: Zap, name: "StepBar", iconName: "Zap", label: "Demo 4" },
+  { icon: Settings, name: "ProgressBar", iconName: "Settings", label: "Demo 5" },
+  { icon: Play, name: "IndeterminateBar", iconName: "Play", label: "Demo 6" },
+  { icon: Pause, name: "ColorBar", iconName: "Pause", label: "Demo 7" },
+];
 
-  function CircularBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Activity className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">CircularBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 3</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Activity className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">CircularBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'CircularBar', category: 'Feedback', icon: 'Activity' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  function StepBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Zap className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">StepBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 4</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Zap className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">StepBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'StepBar', category: 'Feedback', icon: 'Zap' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  function ProgressBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Settings className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">ProgressBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 5</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Settings className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">ProgressBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'ProgressBar', category: 'Feedback', icon: 'Settings' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  function IndeterminateBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Play className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">IndeterminateBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 6</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Play className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">IndeterminateBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'IndeterminateBar', category: 'Feedback', icon: 'Play' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  function ColorBar() {
-    const [open, setOpen] = useState(false);
-    return (
-      <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <Pause className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold text-foreground">ColorBar</h3>
-          <Badge variant="outline" className="ml-auto">Demo 7</Badge>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center text-muted-foreground">
-            <Pause className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-sm">ColorBar demonstration</p>
-            <button 
-              onClick={() => setOpen(!open)}
-              className="mt-2 text-xs text-primary hover:underline"
-            >
-              {open ? 'Hide' : 'Show'} Details
-            </button>
-          </div>
-        </div>
-        {open && (
-          <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground font-mono">
-            {JSON.stringify({ component: 'ColorBar', category: 'Feedback', icon: 'Pause' }, null, 2)}
-          </div>
-        )}
-      </div>
-    );
-  }
+function DemoGrid() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {DEMOS.map((d) => (
+        <LoadingBarDemo key={d.name} {...d} />
+      ))}
+    </div>
+  );
+}
 
 export default function LoadingBarPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Loading Bar</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">An animated loading bar component with indeterminate and determinate modes for page or content loading states.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Interactive demonstrations of Loading Bar variants.</p>
-        </div>
-        <ComponentPreview id="loading-bar">
-          <div className="w-full p-4">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <TopBar />
-        <InlineBar />
-        <CircularBar />
-        <StepBar />
-        <ProgressBar />
-        <IndeterminateBar />
-        <ColorBar />
-            </div>
-          </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">value</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">indeterminate</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">variant</td><td className="px-4 py-3 text-muted-foreground">"default" | "gradient" | "striped"</td><td className="px-4 py-3 text-muted-foreground">"default"</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">size</td><td className="px-4 py-3 text-muted-foreground">"sm" | "md" | "lg"</td><td className="px-4 py-3 text-muted-foreground">"md"</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Loading Bar"
+      category="Feedback"
+      description="An animated loading bar component with indeterminate and determinate modes for page or content loading states."
+    >
+      <PreviewPanel filename="loading-bar.tsx">
+        <DemoGrid />
+      </PreviewPanel>
+
+      <SourceCodeViewer source={LOADINGBAR_SOURCE} filename="components/ui/LoadingBar/LoadingBar.tsx" defaultExpanded />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="TopBar" description="Fixed bar pinned to the top of the page." code={`<LoadingBar value={progress} className="fixed top-0 left-0 right-0 z-50" />`}>
+          <LoadingBarDemo icon={Loader} name="TopBar" iconName="Loader" label="Demo 1" />
+        </ExampleBlock>
+        <ExampleBlock title="InlineBar" description="Compact bar rendered inline with content." code={`<LoadingBar value={75} className="h-1.5" />`}>
+          <LoadingBarDemo icon={BarChart3} name="InlineBar" iconName="BarChart3" label="Demo 2" />
+        </ExampleBlock>
+        <ExampleBlock title="CircularBar" description="Circular progress representation." code={`<LoadingBar value={85} size="lg" />`}>
+          <LoadingBarDemo icon={Activity} name="CircularBar" iconName="Activity" label="Demo 3" />
+        </ExampleBlock>
+        <ExampleBlock title="StepBar" description="Striped bar for multi-step workflows." code={`<LoadingBar variant="striped" value={60} />`}>
+          <LoadingBarDemo icon={Zap} name="StepBar" iconName="Zap" label="Demo 4" />
+        </ExampleBlock>
+        <ExampleBlock title="ProgressBar" description="Determinate bar with a visible label." code={`<LoadingBar value={45} showLabel />`}>
+          <LoadingBarDemo icon={Settings} name="ProgressBar" iconName="Settings" label="Demo 5" />
+        </ExampleBlock>
+        <ExampleBlock title="IndeterminateBar" description="Animated bar for unknown loading duration." code={`<LoadingBar variant="indeterminate" />`}>
+          <LoadingBarDemo icon={Play} name="IndeterminateBar" iconName="Play" label="Demo 6" />
+        </ExampleBlock>
+        <ExampleBlock title="ColorBar" description="Gradient bar with a color accent." code={`<LoadingBar variant="gradient" value={80} />`}>
+          <LoadingBarDemo icon={Pause} name="ColorBar" iconName="Pause" label="Demo 7" />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

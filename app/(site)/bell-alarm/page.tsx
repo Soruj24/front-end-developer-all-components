@@ -1,42 +1,53 @@
 "use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+
+import { Bell, BellRing } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+
+const SOURCE = `"use client";
+
 import { Bell, BellRing } from "lucide-react";
 
-const installCommand = `npx component-library@latest add bell-alarm`;
-const usageCode = `import { BellAlarm } from "@/components/ui/bell-alarm";
+export interface BellAlarmProps {
+  count?: number;
+  active?: boolean;
+  className?: string;
+}
 
-<BellAlarm label="3 new notifications" />`;
+export function BellAlarm({ count = 0, active = false, className = "" }: BellAlarmProps) {
+  const Icon = active ? BellRing : Bell;
+  return (
+    <div className={\`relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted \${className}\`}>
+      <Icon className="h-5 w-5 text-muted-foreground" />
+      {count > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+          {active ? "!" : count}
+        </span>
+      )}
+    </div>
+  );
+}`;
 
 export default function BellAlarmPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Bell Alarm</h1>
-          <Badge variant="primary">Feedback</Badge>
+    <ComponentDocPage name="Bell Alarm" category="Feedback" description="A notification bell component with alarm indicators, badge counts, and animated ringing states.">
+      <PreviewPanel filename="bell-alarm.tsx">
+        <div className="relative h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+          <Bell className="h-5 w-5 text-muted-foreground" />
+          <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-white text-[10px] font-medium flex items-center justify-center">3</span>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A notification bell component with alarm indicators, badge counts, and animated ringing states.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Bell States</h2><p className="mt-1 text-sm text-muted-foreground">Different states of the bell notification indicator.</p></div>
-        <ComponentPreview id="bell-alarm-states">
+      </PreviewPanel>
+
+      <SourceCodeViewer source={SOURCE} filename="components/ui/BellAlarm/BellAlarm.tsx" defaultExpanded />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Bell States" description="Different states of the bell notification indicator." code={`<BellAlarm count={3} />`}>
           <div className="w-full p-4">
             <div className="flex items-center gap-8 justify-center">
               {[
-                { icon: Bell, label: "No alerts", badge: null },
-                { icon: Bell, label: "Unread", badge: "3" },
-                { icon: BellRing, label: "Active alarm", badge: "5" },
-              ].map(({ icon: Icon, label, badge }, i) => (
+                { Icon: Bell, label: "No alerts", badge: null as string | null },
+                { Icon: Bell, label: "Unread", badge: "3" },
+                { Icon: BellRing, label: "Active alarm", badge: "5" },
+              ].map(({ Icon, label, badge }, i) => (
                 <div key={i} className="flex flex-col items-center gap-2">
                   <div className="relative h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                     <Icon className="h-5 w-5 text-muted-foreground" />
@@ -47,11 +58,9 @@ export default function BellAlarmPage() {
               ))}
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Animated Ringing</h2><p className="mt-1 text-sm text-muted-foreground">Bell with a shaking animation for active alarms.</p></div>
-        <ComponentPreview id="bell-alarm-animated">
+        </ExampleBlock>
+
+        <ExampleBlock title="Animated Ringing" description="Bell with a shaking animation for active alarms." code={`<BellAlarm active count={5} />`}>
           <div className="w-full p-4">
             <div className="flex justify-center">
               <div className="relative h-12 w-12 rounded-full bg-red-50 dark:bg-red-950 flex items-center justify-center animate-pulse">
@@ -60,11 +69,9 @@ export default function BellAlarmPage() {
               </div>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Notification List</h2><p className="mt-1 text-sm text-muted-foreground">Bell combined with a dropdown notification list.</p></div>
-        <ComponentPreview id="bell-alarm-list">
+        </ExampleBlock>
+
+        <ExampleBlock title="Notification List" description="Bell combined with a dropdown notification list." code={`<BellAlarm count={3} />`}>
           <div className="w-full p-4">
             <div className="relative inline-block">
               <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center cursor-pointer">
@@ -82,12 +89,8 @@ export default function BellAlarmPage() {
               </div>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

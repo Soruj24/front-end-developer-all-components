@@ -1,19 +1,18 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
 import { Eraser, Download, Pen } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { SIGNATURE_PAD_SOURCE } from "./signature-pad-source";
 
-const installCommand = `npx component-library@latest add signature-pad`;
+const BASIC_CODE = `<SignaturePad width={400} height={150} />`;
 
-const usageCode = `import { SignaturePad } from "@/components/ui";
+const CUSTOM_CODE = `<SignaturePad width={400} height={150} penColor="#2563eb" penWidth={4} />`;
 
-<SignaturePad
-  onSave={(dataUrl) => console.log(dataUrl)}
+const SAVE_CODE = `<SignaturePad
   width={400}
-  height={200}
+  height={150}
+  onSave={(dataUrl) => console.log(dataUrl)}
 />`;
 
 function useSignatureCanvas(width: number, height: number, penColor: string, penWidth: number) {
@@ -149,104 +148,26 @@ function ClearButtonDemo() {
 
 export default function SignaturePadPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Signature Pad</h1>
-          <Badge variant="primary">Input</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A canvas-based signature capture component. Draw signatures with customizable pen color, width, and clear/save actions.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Signature Pad"
+      category="Forms"
+      description="A canvas-based signature capture component. Draw signatures with customizable pen color, width, and clear/save actions."
+    >
+      <PreviewPanel filename="signature-pad.tsx">
+        <BasicSignatureDemo />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={SIGNATURE_PAD_SOURCE} filename="components/ui/SignaturePad/SignaturePad.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Basic Signature</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Draw on the canvas and clear when needed.</p>
-        </div>
-        <ComponentPreview id="signature-pad-basic">
-          <BasicSignatureDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Custom Pen</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Signature with a custom blue pen and thicker stroke.</p>
-        </div>
-        <ComponentPreview id="signature-pad-custom">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Custom Pen" description="Signature with a custom blue pen and thicker stroke." code={CUSTOM_CODE}>
           <CustomPenDemo />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Clear &amp; Save</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Signature pad with clear and save actions.</p>
-        </div>
-        <ComponentPreview id="signature-pad-save">
+        <ExampleBlock title="Clear & Save" description="Signature pad with clear and save actions." code={SAVE_CODE}>
           <ClearButtonDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">width</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">400</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">height</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">200</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">penColor</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;#000000&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">penWidth</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">2</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">onSave</td>
-                <td className="px-4 py-3 text-muted-foreground">(dataUrl: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

@@ -1,44 +1,164 @@
 "use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { MoveHorizontal } from "lucide-react";
 
-const installCommand = `npx component-library@latest add marquee-scroll`;
-const usageCode = `// usage`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+
+const MARQUEE_SCROLL_SOURCE = `"use client";
+
+import type { ReactNode } from "react";
+
+interface MarqueeScrollProps {
+  children: ReactNode;
+  speed?: number;
+  reverse?: boolean;
+  pauseOnHover?: boolean;
+  className?: string;
+}
+
+const MARQUEE_KEYFRAMES =
+  "@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }";
+
+export function MarqueeScroll({
+  children,
+  speed = 15,
+  reverse = false,
+  pauseOnHover = true,
+  className,
+}: MarqueeScrollProps) {
+  return (
+    <div className={"relative overflow-hidden py-4 " + (className ?? "")}>
+      <div
+        className="flex w-max gap-8 whitespace-nowrap"
+        style={{
+          animation:
+            "marquee-scroll " + speed + "s linear infinite" + (reverse ? " reverse" : ""),
+        }}
+        onMouseEnter={
+          pauseOnHover
+            ? (e) => {
+                e.currentTarget.style.animationPlayState = "paused";
+              }
+            : undefined
+        }
+        onMouseLeave={
+          pauseOnHover
+            ? (e) => {
+                e.currentTarget.style.animationPlayState = "running";
+              }
+            : undefined
+        }
+      >
+        {children}
+        {children}
+      </div>
+      <style>{MARQUEE_KEYFRAMES}</style>
+    </div>
+  );
+}`;
+
+const TEXT_MARQUEE_CODE = `const words = ["React", "TypeScript", "Next.js", "Tailwind", "Node.js", "Prisma", "Vercel", "Figma"];
+
+<MarqueeScroll speed={15}>
+  {words.map((word) => (
+    <span key={word} className="text-2xl font-bold text-foreground/10">{word}</span>
+  ))}
+</MarqueeScroll>`;
+
+const TAG_MARQUEE_CODE = `const tags = Array.from({ length: 6 }, (_, i) => "Tag " + (i + 1));
+
+<MarqueeScroll speed={12} reverse pauseOnHover>
+  {tags.map((tag) => (
+    <div key={tag} className="flex-none rounded-full border px-6 py-3">
+      <span className="text-sm font-medium text-foreground">{tag}</span>
+    </div>
+  ))}
+</MarqueeScroll>`;
+
+function MarqueeDemo() {
+  const words = ["React", "TypeScript", "Next.js", "Tailwind", "Node.js", "Prisma", "Vercel", "Figma"];
+  const tags = Array.from({ length: 6 }, (_, i) => `Tag ${i + 1}`);
+
+  return (
+    <div className="w-full p-4">
+      <style>{`
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
+      <div className="flex flex-col gap-6 overflow-hidden">
+        <div className="relative overflow-hidden py-4">
+          <div className="flex gap-8 whitespace-nowrap" style={{ animation: "marquee 15s linear infinite" }}>
+            {[...words, ...words].map((w, i) => (
+              <span key={i} className="text-2xl font-bold text-foreground/10">{w}</span>
+            ))}
+          </div>
+        </div>
+        <div className="relative overflow-hidden py-4">
+          <div className="flex gap-6 whitespace-nowrap" style={{ animation: "marquee 12s linear infinite reverse" }}>
+            {[...tags, ...tags].map((t, i) => (
+              <div key={i} className="flex-none rounded-full border px-6 py-3">
+                <span className="text-sm font-medium text-foreground">{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function MarqueeScrollPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Marquee Scroll</h1>
-          <Badge variant="primary">Animation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">An infinite scrolling marquee component that continuously moves content horizontally or vertically.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Preview</h2><p className="mt-1 text-sm text-muted-foreground">Infinite marquee scroll with pause on hover.</p></div>
-        <ComponentPreview id="marquee-scroll"><div className="w-full p-4"><div className="flex flex-col gap-6 overflow-hidden"><div className="relative overflow-hidden py-4"><div className="flex gap-8 animate-[scroll_15s_linear_infinite] whitespace-nowrap">{Array.from({length:8},(_,i)=>(<span key={i} className="text-2xl font-bold text-foreground/10">{["React","TypeScript","Next.js","Tailwind","Node.js","Prisma","Vercel","Figma"][i]}</span>))}</div></div><div className="relative overflow-hidden py-4"><div className="flex gap-6 animate-[scroll-reverse_12s_linear_infinite] whitespace-nowrap">{Array.from({length:6},(_,i)=>(<div key={i} className="flex-none px-6 py-3 rounded-full border"><span className="text-sm font-medium text-foreground">Tag {i+1}</span></div>))}</div></div></div></div></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">children</td><td className="px-4 py-3 text-muted-foreground">ReactNode</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">speed</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">20</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">direction</td><td className="px-4 py-3 text-muted-foreground">{"left"} | {"right"}</td><td className="px-4 py-3 text-muted-foreground">{"left"}</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">pauseOnHover</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-        </tbody></table></div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Marquee Scroll"
+      category="Animation"
+      description="An infinite scrolling marquee component that continuously moves content horizontally or vertically."
+    >
+      <PreviewPanel filename="marquee-scroll.tsx">
+        <MarqueeDemo />
+      </PreviewPanel>
+
+      <SourceCodeViewer source={MARQUEE_SCROLL_SOURCE} filename="components/ui/MarqueeScroll/MarqueeScroll.tsx" defaultExpanded />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Text Marquee" description="Large words scrolling continuously." code={TEXT_MARQUEE_CODE} filename="text-marquee.tsx">
+          <div className="w-full p-4">
+            <style>{`
+              @keyframes marquee {
+                from { transform: translateX(0); }
+                to { transform: translateX(-50%); }
+              }
+            `}</style>
+            <div className="relative overflow-hidden py-4">
+              <div className="flex gap-8 whitespace-nowrap" style={{ animation: "marquee 15s linear infinite" }}>
+                {[...words, ...words].map((w, i) => (
+                  <span key={i} className="text-2xl font-bold text-foreground/10">{w}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Tag Marquee" description="Pill tags scrolling in reverse with pause on hover." code={TAG_MARQUEE_CODE} filename="tag-marquee.tsx">
+          <div className="w-full p-4">
+            <style>{`
+              @keyframes marquee {
+                from { transform: translateX(0); }
+                to { transform: translateX(-50%); }
+              }
+            `}</style>
+            <div className="relative overflow-hidden py-4">
+              <div className="flex gap-6 whitespace-nowrap" style={{ animation: "marquee 12s linear infinite reverse" }}>
+                {[...tags, ...tags].map((t, i) => (
+                  <div key={i} className="flex-none rounded-full border px-6 py-3">
+                    <span className="text-sm font-medium text-foreground">{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

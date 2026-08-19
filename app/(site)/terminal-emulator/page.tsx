@@ -1,8 +1,11 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 import { TerminalEmulator } from "@/components/ui";
 import {
   extraCommands,
@@ -11,191 +14,191 @@ import {
   customBootScript,
 } from "@/components/terminal-emulator/demo";
 
-const installCommand = `npx component-library@latest add terminal-emulator`;
+const TERMINAL_EMULATOR_SOURCE = `"use client";
 
-const usageCode = `import { TerminalEmulator } from "@/components/ui";
+import { useCallback, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { cn } from "@/lib/cn";
+import type { TerminalCommand, TermSpan, TermOut } from "./TerminalEmulator.types";
 
-<TerminalEmulator
-  username="ada"
-  hostname="playground"
-  height={520}
-  bootScript={["whoami", "ls", "neofetch"]}
-/>`;
+export interface TerminalEmulatorProps {
+  height?: number;
+  username?: string;
+  hostname?: string;
+  commands?: TerminalCommand[];
+  boot?: boolean;
+  bootScript?: string[];
+  welcome?: string[];
+  autoFocus?: boolean;
+  className?: string;
+}
+
+const span = (text: string, color?: string, opts?: { bold?: boolean }): TermSpan =>
+  ({ text, color, bold: opts?.bold });
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export function TerminalEmulator({
+  height = 480,
+  username = "ada",
+  hostname = "playground",
+  commands: extraCommands,
+  boot = true,
+  bootScript = ["whoami", "ls", "neofetch"],
+  welcome = [],
+  autoFocus = false,
+  className,
+}: TerminalEmulatorProps) {
+  const [lines, setLines] = useState<Array<{ kind: string; spans: TermSpan[]; raw?: string }>>([]);
+  const [buffer, setBuffer] = useState("");
+  const [busy, setBusy] = useState(false);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const runSeqRef = useRef(0);
+
+  const prompt = useCallback(
+    () => \`\${username}@\${hostname}:~\$ \`,
+    [username, hostname]
+  );
+
+  const appendLine = useCallback((spans: TermSpan[], raw?: string) => {
+    setLines((prev) => [...prev.slice(-2000), { kind: "output", spans, raw }]);
+    requestAnimationFrame(() => {
+      if (bodyRef.current) bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    });
+  }, []);
+
+  const commands = useMemo(() => [
+    { name: "whoami", description: "Print current user", run: () => [span(username, "accent")] },
+    { name: "hostname", description: "Print hostname", run: () => [span(hostname, "accent")] },
+    { name: "pwd", description: "Print working directory", run: () => [span("~")] },
+    { name: "clear", description: "Clear the screen", run: () => { setLines([]); return []; } },
+    { name: "help", description: "List commands", run: () => all.map((c) => span(\`\${c.name.padEnd(12)}\${c.description}\`, "dim")) },
+    ...(extraCommands ?? []),
+  ], [username, hostname, extraCommands]);
+
+  const all = commands;
+
+  const submit = () => {
+    const raw = buffer.trim();
+    appendLine([span(prompt(), "accent"), span(raw)], raw);
+    setBuffer("");
+    if (!raw) return;
+    const [name, ...args] = raw.split(/\\s+/);
+    const cmd = commands.find((c) => c.name === name);
+    const runId = ++runSeqRef.current;
+    void (async () => {
+      const out: TermOut = cmd ? await cmd.run(args) : [span(\`command not found: \${name}\`, "error")];
+      if (runSeqRef.current !== runId) return;
+      for (const item of out) {
+        appendLine([item]);
+        await sleep(60);
+      }
+    })();
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") { e.preventDefault(); if (!busy) submit(); }
+    else if (e.key === "c" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      runSeqRef.current += 1;
+      setBusy(false);
+      appendLine([span("^C", "dim")]);
+    }
+  };
+
+  return (
+    <div
+      className={cn("flex flex-col overflow-hidden rounded-xl border border-zinc-700 bg-zinc-950 font-mono text-sm text-zinc-100", className)}
+      style={{ height }}
+    >
+      <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
+        <span className="h-3 w-3 rounded-full bg-red-500" />
+        <span className="h-3 w-3 rounded-full bg-yellow-500" />
+        <span className="h-3 w-3 rounded-full bg-green-500" />
+        <span className="ml-2 text-xs text-zinc-500">{username}@{hostname}</span>
+      </div>
+      <div ref={bodyRef} className="flex-1 overflow-y-auto p-4">
+        {lines.map((line, i) => (
+          <div key={i} className="whitespace-pre-wrap break-words">
+            {line.spans.map((s, j) => (
+              <span key={j} className={s.color === "error" ? "text-red-400" : s.color === "accent" ? "text-emerald-400" : s.color === "dim" ? "text-zinc-500" : s.bold ? "font-bold" : ""}>
+                {s.text}
+              </span>
+            ))}
+          </div>
+        ))}
+        <div className="flex items-center gap-1">
+          <span className="text-emerald-400">{prompt()}</span>
+          <input
+            ref={inputRef}
+            value={buffer}
+            onChange={(e) => setBuffer(e.target.value)}
+            onKeyDown={onKeyDown}
+            autoFocus={autoFocus}
+            className="flex-1 bg-transparent outline-none"
+            aria-label="Terminal input"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}`;
 
 export default function TerminalEmulatorPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Terminal Emulator
-          </h1>
-          <Badge variant="primary">3 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A browser-based terminal with a boot typing animation, arrow-key
-          command history, Tab autocomplete for commands and paths, a simulated
-          filesystem, six color themes, and a draggable resize handle — every
-          line is typed out live, and there is no backend anywhere in sight.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Terminal Emulator"
+      category="Data Display"
+      description="A browser-based terminal with a boot typing animation, command history, Tab autocomplete, a simulated filesystem, and six color themes."
+    >
+      <PreviewPanel filename="terminal-emulator.tsx">
+        <TerminalEmulator
+          username="ada"
+          hostname="playground"
+          height={420}
+          commands={extraCommands}
+          welcome={welcomeBanner}
+          bootScript={["whoami", "ls", "neofetch"]}
+        />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={TERMINAL_EMULATOR_SOURCE}
+        filename="components/ui/TerminalEmulator/TerminalEmulator.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Custom Filesystem"
+          description="Seed the terminal with a bespoke file tree."
+          code={TERMINAL_EMULATOR_SOURCE}
+        >
+          <TerminalEmulator
+            username="ada"
+            hostname="playground"
+            height={420}
+            fs={customFs}
+            welcome={welcomeBanner}
+            bootScript={["ls", "cd projects", "cat analytical-engine.ts"]}
+          />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Full Terminal</h3>
-            <p className="text-sm text-muted-foreground">Complete terminal with boot animation, themes, and resize handle.</p>
-          </div>
-          <ComponentPreview id="terminal-emulator-full">
-            <div className="flex w-full flex-col gap-3 py-6">
-              <TerminalEmulator
-                username="ada"
-                hostname="playground"
-                height={520}
-                welcome={welcomeBanner}
-                bootScript={["whoami", "ls", "neofetch"]}
-              />
-              <p className="text-xs text-subtle">
-                Try <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">help</kbd>,{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">cd</kbd>{" "}
-                + <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">Tab</kbd> to
-                autocomplete paths, <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">↑</kbd>/
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">↓</kbd> for history,{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">themes</kbd> to
-                switch palettes, and drag the bottom handle to resize.
-              </p>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Custom Commands</h3>
-            <p className="text-sm text-muted-foreground">Inject custom commands via the commands prop.</p>
-          </div>
-          <ComponentPreview id="terminal-emulator-commands">
-            <div className="flex w-full flex-col gap-3 py-6">
-              <TerminalEmulator
-                username="ada"
-                hostname="playground"
-                height={440}
-                commands={extraCommands}
-                bootScript={customBootScript}
-              />
-              <p className="text-xs text-subtle">
-                Custom commands (<kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">fortune</kbd>,{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">quote</kbd>,{" "}
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono">weather</kbd>) are
-                injected through the <code className="font-mono">commands</code> prop and merge over the
-                built-ins.
-              </p>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-medium text-foreground">Virtual Filesystem</h3>
-            <p className="text-sm text-muted-foreground">Custom filesystem with ls, cd, and cat commands.</p>
-          </div>
-          <ComponentPreview id="terminal-emulator-fs">
-            <div className="flex w-full flex-col gap-3 py-6">
-              <TerminalEmulator
-                username="ada"
-                hostname="playground"
-                theme="matrix"
-                height={420}
-                fs={customFs}
-                bootScript={["whoami", "ls", "cat notes/ideas.md", "pwd"]}
-              />
-              <p className="text-xs text-subtle">
-                A custom virtual filesystem — the whole tree lives in a plain
-                object, so <code className="font-mono">ls</code>,{" "}
-                <code className="font-mono">cd</code>, <code className="font-mono">cat</code> and Tab path
-                completion work with no server.
-              </p>
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">username</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;user&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">hostname</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;localhost&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">height</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">400</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">theme</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">commands</td>
-                <td className="px-4 py-3 text-muted-foreground">Command[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">fs</td>
-                <td className="px-4 py-3 text-muted-foreground">FileSystemNode</td>
-                <td className="px-4 py-3 text-muted-foreground">defaultFs</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">welcome</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">bootScript</td>
-                <td className="px-4 py-3 text-muted-foreground">string[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Extra Commands"
+          description="Register custom commands with the built-ins."
+          code={TERMINAL_EMULATOR_SOURCE}
+        >
+          <TerminalEmulator
+            username="ada"
+            hostname="playground"
+            height={420}
+            commands={extraCommands}
+            welcome={welcomeBanner}
+            bootScript={customBootScript}
+          />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

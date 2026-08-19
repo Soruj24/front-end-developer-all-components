@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-
-const installCommand = `npx component-library@latest add wave-loader`;
-
-const usageCode = `import { WaveLoader } from "@/components/_wave-loader";
-
-<WaveLoader />
-<WaveLoader bars={7} color="#6366f1" height={40} />`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  WAVELOADER_SOURCE,
+  INTERACTIVE_EXAMPLE,
+  BARS_EXAMPLE,
+  SINE_EXAMPLE,
+  USECASES_EXAMPLE,
+} from "./wave-loader-source";
 
 function WaveBar({ bars = 5, color = "#6366f1", barWidth = 4, gap = 3, height = 30, speed = 1.2 }: { bars?: number; color?: string; barWidth?: number; gap?: number; height?: number; speed?: number }) {
   return (
@@ -25,12 +23,7 @@ function WaveBar({ bars = 5, color = "#6366f1", barWidth = 4, gap = 3, height = 
           }}
         />
       ))}
-      <style>{`
-        @keyframes wave-bar {
-          0%, 100% { height: 20%; }
-          50% { height: 100%; }
-        }
-      `}</style>
+      <style>{`@keyframes wave-bar { 0%, 100% { height: 20%; } 50% { height: 100%; } }`}</style>
     </div>
   );
 }
@@ -48,13 +41,7 @@ function WaveSine({ color = "#6366f1", width = 200, height = 40 }: { color?: str
           style={{ animation: "wave-sine 2s ease-in-out infinite" }}
         />
       </svg>
-      <style>{`
-        @keyframes wave-sine {
-          0% { transform: translateX(-20%); }
-          50% { transform: translateX(20%); }
-          100% { transform: translateX(-20%); }
-        }
-      `}</style>
+      <style>{`@keyframes wave-sine { 0% { transform: translateX(-20%); } 50% { transform: translateX(20%); } 100% { transform: translateX(-20%); } }`}</style>
     </div>
   );
 }
@@ -75,12 +62,7 @@ function WaveCircle({ color = "#6366f1", size = 60 }: { color?: string; size?: n
           />
         ))}
       </svg>
-      <style>{`
-        @keyframes wave-circle {
-          0% { r: 10; opacity: 0.8; }
-          100% { r: 40; opacity: 0; }
-        }
-      `}</style>
+      <style>{`@keyframes wave-circle { 0% { r: 10; opacity: 0.8; } 100% { r: 40; opacity: 0; } }`}</style>
     </div>
   );
 }
@@ -92,38 +74,20 @@ export default function WaveLoaderPage() {
   const [speed, setSpeed] = useState(1.2);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Wave Loader</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Wave animation loader with bar, sine, and circle variants. Pure CSS animations for loading indicators and audio visualizations.
-        </p>
-      </header>
+    <ComponentDocPage name="Wave Loader" category="Feedback" description="Wave animation loader with bar, sine, and circle variants. Pure CSS animations for loading indicators and audio visualizations.">
+      <PreviewPanel filename="wave-loader.tsx">
+        <WaveBar bars={bars} color={color} height={height} speed={speed} />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={WAVELOADER_SOURCE} filename="components/ui/WaveLoader/WaveLoader.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Interactive Demo</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Customize the wave loader bars.</p>
-        </div>
-        <ComponentPreview id="wave-interactive">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Interactive Demo" description="Customize the wave loader bars." code={INTERACTIVE_EXAMPLE}>
           <div className="flex flex-col items-center gap-8">
             <div className="flex h-16 items-center justify-center">
               <WaveBar bars={bars} color={color} height={height} speed={speed} />
             </div>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <label className="flex items-center gap-2 text-sm text-muted-foreground">
                 Bars <input type="range" min={3} max={12} value={bars} onChange={(e) => setBars(+e.target.value)} className="w-20" /> <span className="w-4 text-right text-xs font-mono">{bars}</span>
               </label>
@@ -138,15 +102,9 @@ export default function WaveLoaderPage() {
               </label>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Bar Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different bar configurations.</p>
-        </div>
-        <ComponentPreview id="wave-bars">
+        <ExampleBlock title="Bar Variants" description="Different bar configurations." code={BARS_EXAMPLE}>
           <div className="flex flex-wrap items-end gap-10">
             <div className="flex flex-col items-center gap-2">
               <WaveBar bars={3} color="#6366f1" />
@@ -165,15 +123,9 @@ export default function WaveLoaderPage() {
               <span className="text-xs text-muted-foreground">Wide</span>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sine & Circle</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Alternative wave animation styles.</p>
-        </div>
-        <ComponentPreview id="wave-alternatives">
+        <ExampleBlock title="Sine & Circle" description="Alternative wave animation styles." code={SINE_EXAMPLE}>
           <div className="flex flex-wrap items-center gap-10">
             <div className="flex flex-col items-center gap-2">
               <WaveSine color="#6366f1" />
@@ -192,15 +144,9 @@ export default function WaveLoaderPage() {
               <span className="text-xs text-muted-foreground">Large circle</span>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Use Cases</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Loading states and audio visualizations.</p>
-        </div>
-        <ComponentPreview id="wave-usecases">
+        <ExampleBlock title="Use Cases" description="Loading states and audio visualizations." code={USECASES_EXAMPLE}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-border p-5 dark:border-border">
               <div className="mb-3 flex items-center gap-3">
@@ -234,41 +180,8 @@ export default function WaveLoaderPage() {
               <p className="text-xs text-muted-foreground">Speak now...</p>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { prop: "bars", type: "number", def: "5", req: "No" },
-                { prop: "color", type: "string", def: "\"#6366f1\"", req: "No" },
-                { prop: "height", type: "number", def: "30", req: "No" },
-                { prop: "barWidth", type: "number", def: "4", req: "No" },
-                { prop: "gap", type: "number", def: "3", req: "No" },
-                { prop: "speed", type: "number", def: "1.2", req: "No" },
-              ].map((row) => (
-                <tr key={row.prop} className="border-b">
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.def}</td>
-                  <td className="px-4 py-3">{row.req}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-
-const installCommand = `npx component-library@latest add bounce-loader`;
-
-const usageCode = `import { BounceLoader } from "@/components/_bounce-loader";
-
-<BounceLoader />
-<BounceLoader count={5} color="#6366f1" size={12} />`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  BOUNCELOADER_SOURCE,
+  INTERACTIVE_EXAMPLE,
+  DOTS_EXAMPLE,
+  BALL_EXAMPLE,
+  USECASES_EXAMPLE,
+} from "./bounce-loader-source";
 
 function BounceDots({ count = 5, color = "currentColor", size = 10, gap = 6 }: { count?: number; color?: string; size?: number; gap?: number }) {
   return (
@@ -64,38 +62,20 @@ export default function BounceLoaderPage() {
   const [demoCount, setDemoCount] = useState(5);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Bounce Loader</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Animated bouncing dots and balls for loading states. Lightweight, pure CSS animation with customizable count, color, and size.
-        </p>
-      </header>
+    <ComponentDocPage name="Bounce Loader" category="Feedback" description="Animated bouncing dots and balls for loading states. Lightweight, pure CSS animation with customizable count, color, and size.">
+      <PreviewPanel filename="bounce-loader.tsx">
+        <BounceDots count={demoCount} color={demoColor} size={demoSize} />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={BOUNCELOADER_SOURCE} filename="components/ui/BounceLoader/BounceLoader.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Interactive Demo</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Customize the bounce loader appearance.</p>
-        </div>
-        <ComponentPreview id="bounce-interactive">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Interactive Demo" description="Customize the bounce loader appearance." code={INTERACTIVE_EXAMPLE}>
           <div className="flex flex-col items-center gap-6">
             <div className="flex h-24 items-center justify-center">
               <BounceDots count={demoCount} color={demoColor} size={demoSize} />
             </div>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <label className="flex items-center gap-2 text-sm text-muted-foreground">
                 Count <input type="range" min={3} max={8} value={demoCount} onChange={(e) => setDemoCount(+e.target.value)} className="w-20" /> <span className="w-4 text-right text-xs font-mono">{demoCount}</span>
               </label>
@@ -107,15 +87,9 @@ export default function BounceLoaderPage() {
               </label>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Dot Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different dot styles and configurations.</p>
-        </div>
-        <ComponentPreview id="bounce-dots">
+        <ExampleBlock title="Dot Variants" description="Different dot styles and configurations." code={DOTS_EXAMPLE}>
           <div className="flex flex-wrap items-center gap-10">
             <div className="flex flex-col items-center gap-2">
               <BounceDots count={3} />
@@ -138,15 +112,9 @@ export default function BounceLoaderPage() {
               <span className="text-xs text-muted-foreground">Large spaced</span>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Ball Bounce</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Bouncing ball animation variant.</p>
-        </div>
-        <ComponentPreview id="bounce-ball">
+        <ExampleBlock title="Ball Bounce" description="Bouncing ball animation variant." code={BALL_EXAMPLE}>
           <div className="flex flex-wrap items-center gap-10">
             <div className="flex flex-col items-center gap-2">
               <BounceBall count={3} />
@@ -161,15 +129,9 @@ export default function BounceLoaderPage() {
               <span className="text-xs text-muted-foreground">Large red</span>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Use Cases</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Common loading scenarios with the bounce loader.</p>
-        </div>
-        <ComponentPreview id="bounce-usecases">
+        <ExampleBlock title="Use Cases" description="Common loading scenarios with the bounce loader." code={USECASES_EXAMPLE}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-border p-5 dark:border-border">
               <div className="mb-3 flex items-center gap-2">
@@ -202,39 +164,8 @@ export default function BounceLoaderPage() {
               </div>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { prop: "count", type: "number", def: "5", req: "No" },
-                { prop: "color", type: "string", def: "\"currentColor\"", req: "No" },
-                { prop: "size", type: "number", def: "10", req: "No" },
-                { prop: "gap", type: "number", def: "6", req: "No" },
-              ].map((row) => (
-                <tr key={row.prop} className="border-b">
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.def}</td>
-                  <td className="px-4 py-3">{row.req}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

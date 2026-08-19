@@ -1,34 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Home, ChevronRight, MoreHorizontal, Folder, FileText, Settings } from "lucide-react";
-
-const installCommand = `npx component-library@latest add breadcrumb-bar`;
-
-const usageCode = `import { Home, ChevronRight } from "lucide-react";
-
-function BreadcrumbBar({ items, separator = "/" }) {
-  return (
-    <nav className="flex items-center gap-1.5 text-sm">
-      {items.map((item, i) => (
-        <span key={i} className="flex items-center gap-1.5">
-          {i > 0 && <span className="text-muted-foreground">{separator}</span>}
-          {item.href ? (
-            <a href={item.href} className="text-muted-foreground hover:text-foreground transition-colors">
-              {item.icon && <span className="mr-1">{item.icon}</span>}
-              {item.label}
-            </a>
-          ) : (
-            <span className="font-medium text-foreground">{item.label}</span>
-          )}
-        </span>
-      ))}
-    </nav>
-  );
-}`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Home, ChevronRight, Folder, FileText } from "lucide-react";
+import { BREADCRUMB_SOURCE, ICONS_EXAMPLE, SEPARATORS_EXAMPLE, DEEP_EXAMPLE, PILL_EXAMPLE, COMPACT_EXAMPLE, OVERFLOW_EXAMPLE } from "./breadcrumb-bar-source";
 
 type BreadcrumbItem = { label: string; href?: string; icon?: React.ReactNode };
 
@@ -90,49 +64,25 @@ function BreadcrumbBar({
 
 export default function BreadcrumbBarPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Breadcrumb Bar</h1>
-          <Badge variant="primary">Navigation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A horizontal breadcrumb navigation bar showing the current page location within a hierarchy. Helps users understand where they are and navigate back.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Breadcrumb Bar"
+      category="Navigation"
+      description="A horizontal breadcrumb navigation bar showing the current page location within a hierarchy. Helps users understand where they are and navigate back."
+    >
+      <PreviewPanel filename="breadcrumb-bar.tsx">
+        <BreadcrumbBar
+          items={[
+            { label: "Home", href: "/", icon: <Home className="h-3.5 w-3.5" /> },
+            { label: "Components", href: "/components" },
+            { label: "Breadcrumb Bar" },
+          ]}
+        />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={BREADCRUMB_SOURCE} filename="components/ui/BreadcrumbBar/BreadcrumbBar.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Basic breadcrumb with slash separators.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-default">
-          <BreadcrumbBar
-            items={[
-              { label: "Home", href: "/", icon: <Home className="h-3.5 w-3.5" /> },
-              { label: "Components", href: "/components" },
-              { label: "Breadcrumb Bar" },
-            ]}
-          />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Icons</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Breadcrumb items with leading icons.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-icons">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="With Icons" description="Breadcrumb items with leading icons." code={ICONS_EXAMPLE} filename="breadcrumb-icons.tsx">
           <BreadcrumbBar
             items={[
               { label: "Home", href: "/", icon: <Home className="h-3.5 w-3.5" /> },
@@ -140,15 +90,9 @@ export default function BreadcrumbBarPage() {
               { label: "Report.pdf", icon: <FileText className="h-3.5 w-3.5" /> },
             ]}
           />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Different Separators</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Various separator styles.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-separators">
+        <ExampleBlock title="Different Separators" description="Various separator styles." code={SEPARATORS_EXAMPLE} filename="breadcrumb-separators.tsx">
           <div className="flex flex-col gap-4">
             {[
               { label: "Slash", sep: "/" },
@@ -170,15 +114,9 @@ export default function BreadcrumbBarPage() {
               </div>
             ))}
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Deep Hierarchy</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Breadcrumb with many nested levels.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-deep">
+        <ExampleBlock title="Deep Hierarchy" description="Breadcrumb with many nested levels." code={DEEP_EXAMPLE} filename="breadcrumb-deep.tsx">
           <BreadcrumbBar
             items={[
               { label: "Home", href: "/" },
@@ -188,15 +126,9 @@ export default function BreadcrumbBarPage() {
               { label: "Images" },
             ]}
           />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Pill Variant</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Breadcrumb items styled as pills.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-pill">
+        <ExampleBlock title="Pill Variant" description="Breadcrumb items styled as pills." code={PILL_EXAMPLE} filename="breadcrumb-pill.tsx">
           <BreadcrumbBar
             items={[
               { label: "Home", href: "/" },
@@ -205,15 +137,9 @@ export default function BreadcrumbBarPage() {
             ]}
             variant="pill"
           />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Compact</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Compact breadcrumb for tight spaces.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-compact">
+        <ExampleBlock title="Compact" description="Compact breadcrumb for tight spaces." code={COMPACT_EXAMPLE} filename="breadcrumb-compact.tsx">
           <BreadcrumbBar
             items={[
               { label: "Home", href: "/" },
@@ -222,15 +148,9 @@ export default function BreadcrumbBarPage() {
             ]}
             compact
           />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Overflow</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Collapsed intermediate items with ellipsis.</p>
-        </div>
-        <ComponentPreview id="breadcrumb-bar-overflow">
+        <ExampleBlock title="With Overflow" description="Collapsed intermediate items with ellipsis." code={OVERFLOW_EXAMPLE} filename="breadcrumb-overflow.tsx">
           <BreadcrumbBar
             items={[
               { label: "Home", href: "/" },
@@ -239,50 +159,8 @@ export default function BreadcrumbBarPage() {
               { label: "Nested Page" },
             ]}
           />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">BreadcrumbItem[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">separator</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{"/"}'}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"default" | "pill" | "muted"`}'}</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"default"`}'}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">compact</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
