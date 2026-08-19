@@ -2,26 +2,84 @@
 
 import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import {
-  timeRanges,
-  kpiData,
-  deviceData,
-  KpiSection,
-  DevicesSection,
-  TrafficChartSection,
-  TrafficSourcesSection,
-  GeographicSection,
-  TopPagesSection,
-} from "@/features/analytics";
-import {
-  ANALYTICS_SOURCE,
-  KPI_EXAMPLE,
-  TRAFFIC_EXAMPLE,
-  SOURCES_EXAMPLE,
-  GEO_EXAMPLE,
-  PAGES_EXAMPLE,
-  DEVICES_EXAMPLE,
-} from "./analytics-source";
+
+const SOURCE = `"use client";
+
+import { useState } from "react";
+
+interface Kpi {
+  title: string;
+  value: string;
+  change: string;
+  up: boolean;
+  color: string;
+  spark: number[];
+}
+
+const defaultKpis: Kpi[] = [
+  { title: "Page Views", value: "284,730", change: "+12.5%", up: true, color: "#3b82f6", spark: [35, 42, 38, 55, 48, 62, 58, 70] },
+  { title: "Unique Visitors", value: "124,580", change: "+8.3%", up: true, color: "#22c55e", spark: [40, 52, 48, 60, 55, 68, 62, 75] },
+  { title: "Bounce Rate", value: "32.1%", change: "-2.1%", up: false, color: "#f59e0b", spark: [80, 75, 72, 68, 65, 60, 55, 50] },
+];
+
+interface TrafficChartProps {
+  range: string;
+}
+
+export function TrafficChart({ range }: TrafficChartProps) {
+  return <div className="h-64 rounded-lg border border-border bg-card p-4">Traffic chart for {range}</div>;
+}
+
+interface TrafficSourcesProps {
+  range: string;
+}
+
+export function TrafficSources({ range }: TrafficSourcesProps) {
+  return <div className="rounded-lg border border-border bg-card p-4">Traffic sources for {range}</div>;
+}
+
+interface GeographicProps {
+  range: string;
+}
+
+export function Geographic({ range }: GeographicProps) {
+  return <div className="rounded-lg border border-border bg-card p-4">Geographic data for {range}</div>;
+}
+
+interface TopPagesProps {
+  range: string;
+}
+
+export function TopPages({ range }: TopPagesProps) {
+  return <div className="rounded-lg border border-border bg-card p-4">Top pages for {range}</div>;
+}
+
+interface DevicesProps {
+  devices: any[];
+}
+
+export function Devices({ devices }: DevicesProps) {
+  return <div className="rounded-lg border border-border bg-card p-4">Devices: {devices.length}</div>;
+}`;
+
+const KPI_EXAMPLE = `<KpiSection kpis={kpiData} />`;
+const TRAFFIC_EXAMPLE = `<TrafficChartSection />`;
+const SOURCES_EXAMPLE = `<TrafficSourcesSection />`;
+const GEO_EXAMPLE = `<GeographicSection />`;
+const PAGES_EXAMPLE = `<TopPagesSection />`;
+const DEVICES_EXAMPLE = `<DevicesSection devices={deviceData} />`;
+
+const kpiData = [
+  { title: "Page Views", value: "284,730", change: "+12.5%", up: true, color: "#3b82f6", spark: [35, 42, 38, 55, 48, 62, 58, 70] },
+  { title: "Unique Visitors", value: "124,580", change: "+8.3%", up: true, color: "#22c55e", spark: [40, 52, 48, 60, 55, 68, 62, 75] },
+  { title: "Bounce Rate", value: "32.1%", change: "-2.1%", up: false, color: "#f59e0b", spark: [80, 75, 72, 68, 65, 60, 55, 50] },
+];
+
+const deviceData = [
+  { id: 1, type: "Mobile", visitors: 124, online: 45 },
+  { id: 2, type: "Desktop", visitors: 96, online: 32 },
+  { id: 3, type: "Tablet", visitors: 24, online: 12 },
+];
 
 export default function AnalyticsPage() {
   const [selectedRange, setSelectedRange] = useState("30D");
@@ -56,7 +114,7 @@ export default function AnalyticsPage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            {timeRanges.map((r) => (
+            {["1H", "24H", "7D", "30D", "90D"].map((r) => (
               <button
                 key={r}
                 onClick={() => setSelectedRange(r)}
@@ -70,19 +128,21 @@ export default function AnalyticsPage() {
               </button>
             ))}
           </div>
-          <KpiSection kpis={kpiData} />
-          <TrafficChartSection />
           <div className="grid gap-6 lg:grid-cols-2">
-            <TrafficSourcesSection />
-            <GeographicSection />
+            <div>KPI Section</div>
+            <div>Geographic Section</div>
           </div>
-          <TopPagesSection />
-          <DevicesSection devices={deviceData} />
+          <TrafficChart range={selectedRange} />
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div>Traffic Sources Section</div>
+            <div>Top Pages Section</div>
+          </div>
+          <Devices devices={deviceData} />
         </div>
       </PreviewPanel>
 
       <SourceCodeViewer
-        source={ANALYTICS_SOURCE}
+        source={SOURCE}
         filename="components/ui/Analytics/Analytics.tsx"
         defaultExpanded
       />
@@ -90,37 +150,47 @@ export default function AnalyticsPage() {
       <div className="flex flex-col gap-6">
         <ExampleBlock title="KPI Cards" description="Key performance indicators with trend indicators." code={KPI_EXAMPLE}>
           <div className="w-full">
-            <KpiSection kpis={kpiData} />
+            <div className="grid gap-4 sm:grid-cols-3">
+              {kpiData.map((kpi) => (
+                <div key={kpi.title} className="rounded-xl border border-border bg-card p-4">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{kpi.title}</p>
+                  <p className="mt-1 text-2xl font-bold">{kpi.value}</p>
+                  <span className={`text-sm font-medium ${kpi.up ? "text-green-600" : "text-red-500"}`}>
+                    {kpi.change}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </ExampleBlock>
 
         <ExampleBlock title="Traffic Chart" description="Visitors over time for the selected range." code={TRAFFIC_EXAMPLE}>
           <div className="w-full">
-            <TrafficChartSection />
+            <TrafficChart range={selectedRange} />
           </div>
         </ExampleBlock>
 
         <ExampleBlock title="Traffic Sources" description="Breakdown of where visitors come from." code={SOURCES_EXAMPLE}>
           <div className="w-full">
-            <TrafficSourcesSection />
+            <TrafficSources range={selectedRange} />
           </div>
         </ExampleBlock>
 
         <ExampleBlock title="Geographic" description="Visitor distribution across regions." code={GEO_EXAMPLE}>
           <div className="w-full">
-            <GeographicSection />
+            <Geographic range={selectedRange} />
           </div>
         </ExampleBlock>
 
         <ExampleBlock title="Top Pages" description="Most visited pages with engagement metrics." code={PAGES_EXAMPLE}>
           <div className="w-full">
-            <TopPagesSection />
+            <TopPages range={selectedRange} />
           </div>
         </ExampleBlock>
 
         <ExampleBlock title="Devices" description="Live device breakdown with real-time visitors." code={DEVICES_EXAMPLE}>
           <div className="w-full">
-            <DevicesSection devices={deviceData} />
+            <Devices devices={deviceData} />
           </div>
         </ExampleBlock>
       </div>
