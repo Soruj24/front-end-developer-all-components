@@ -1,247 +1,169 @@
 "use client";
 
-import { Bubble } from "@/components/_bubble";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add bubble`;
+const BUBBLE_SOURCE = `"use client";
 
-const usageCode = `import { Bubble } from "@/components/_bubble"
+import { cn } from "@/lib/cn";
 
-<Bubble variant="default">
-  Hello, how are you?
-</Bubble>
-<Bubble variant="primary" tail>
-  I'm doing well, thanks!
-</Bubble>`;
+type BubbleVariant = "sent" | "received";
 
-const variants = ["default", "primary", "secondary", "muted"] as const;
-const sizes = ["sm", "md", "lg"] as const;
-
-function UserIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-    </svg>
-  );
+interface BubbleProps {
+  message: string;
+  sender?: string;
+  timestamp?: string;
+  variant?: BubbleVariant;
+  avatar?: string;
+  className?: string;
 }
 
-function BotIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  );
-}
+export function Bubble({
+  message,
+  sender,
+  timestamp,
+  variant = "received",
+  avatar,
+  className,
+}: BubbleProps) {
+  const isSent = variant === "sent";
 
-function CheckIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
+    <div className={cn("flex gap-2", isSent ? "justify-end" : "justify-start", className)}>
+      {!isSent && avatar && (
+        <img src={avatar} alt={sender ?? "avatar"} className="h-8 w-8 shrink-0 rounded-full object-cover" />
+      )}
+      <div className="max-w-[75%]">
+        {!isSent && sender && (
+          <p className="mb-1 text-xs font-medium text-zinc-500">{sender}</p>
+        )}
+        <div className={cn(
+          "rounded-2xl px-4 py-2 text-sm",
+          isSent ? "bg-blue-600 text-white" : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+        )}>
+          {message}
+        </div>
+        {timestamp && (
+          <p className={cn("mt-1 text-xs text-zinc-400", isSent ? "text-right" : "text-left")}>
+            {timestamp}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}`;
+
+const BASIC_SOURCE = `import { Bubble } from "@/components/ui/Bubble";
+
+<Bubble variant="received" message="Hey, how's the project going?" />
+<Bubble variant="sent" message="It's going well! Just finished the new components." />
+<Bubble variant="received" message="Nice! Can you show me a demo?" />`;
+
+const SENDER_SOURCE = `import { Bubble } from "@/components/ui/Bubble";
+
+<Bubble variant="received" sender="Alice" message="What time is the meeting?" />
+<Bubble variant="sent" sender="Bob" message="It's at 3 PM in the conference room." />
+<Bubble variant="received" sender="Alice" message="Got it, thanks!" />`;
+
+const AVATAR_SOURCE = `import { Bubble } from "@/components/ui/Bubble";
+
+<Bubble
+  variant="received"
+  sender="Alice"
+  avatar="https://i.pravatar.cc/150?u=alice"
+  message="Hey, did you see the new design?"
+/>
+<Bubble
+  variant="sent"
+  avatar="https://i.pravatar.cc/150?u=bob"
+  message="Yes! They look amazing."
+/>`;
+
+const TIMESTAMP_SOURCE = `import { Bubble } from "@/components/ui/Bubble";
+
+<Bubble variant="received" message="Meeting scheduled for tomorrow" timestamp="9:41 AM" />
+<Bubble variant="sent" message="Project deadline extended to Friday" timestamp="10:15 AM" />`;
+
+function B({ variant, message, sender, timestamp, avatar }: {
+  variant?: "sent" | "received";
+  message: string;
+  sender?: string;
+  timestamp?: string;
+  avatar?: string;
+}) {
+  const isSent = variant === "sent";
+  return (
+    <div className={`flex gap-2 ${isSent ? "justify-end" : "justify-start"}`}>
+      {!isSent && avatar && (
+        <img src={avatar} alt={sender ?? "avatar"} className="h-8 w-8 shrink-0 rounded-full object-cover" />
+      )}
+      <div className="max-w-[75%]">
+        {!isSent && sender && (
+          <p className="mb-1 text-xs font-medium text-zinc-500">{sender}</p>
+        )}
+        <div className={`rounded-2xl px-4 py-2 text-sm ${
+          isSent ? "bg-blue-600 text-white" : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+        }`}>
+          {message}
+        </div>
+        {timestamp && (
+          <p className={`mt-1 text-xs text-zinc-400 ${isSent ? "text-right" : "text-left"}`}>
+            {timestamp}
+          </p>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default function BubblePage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Bubble</h1>
-          <Badge variant="primary">6 examples</Badge>
+    <ComponentDocPage name="Bubble" category="Data Display" description="Chat bubble component for displaying messages in a conversation UI. Supports sent/received variants, sender names, avatars, and timestamps.">
+      <PreviewPanel filename="bubble-preview.tsx">
+        <div className="flex w-full max-w-md flex-col gap-3">
+          <B variant="received" sender="Alice" message="Hey, how's the project going?" />
+          <B variant="sent" sender="Bob" message="It's going well! Just finished the new components." />
+          <B variant="received" sender="Alice" message="Nice! Can you show me a demo?" />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Chat bubble component for displaying messages in a conversation UI.
-          Supports different variants, sizes, and optional tails for message threading.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={BUBBLE_SOURCE} filename="components/ui/Bubble.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="bubble-default">
-        <div className="flex flex-col gap-3">
-          <Bubble variant="default">
-            Hey, how&apos;s the project going?
-          </Bubble>
-          <Bubble variant="primary">
-            It&apos;s going well! Just finished the new components.
-          </Bubble>
-          <Bubble variant="default">
-            Nice! Can you show me a demo?
-          </Bubble>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-variants">
-        <div className="flex flex-col gap-3">
-          {variants.map((variant) => (
-            <div key={variant} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{variant}</p>
-              <Bubble variant={variant}>
-                This is a {variant} bubble message.
-              </Bubble>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-sizes">
-        <div className="flex flex-col gap-3">
-          {sizes.map((size) => (
-            <div key={size} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{size}</p>
-              <Bubble size={size}>
-                {size === "sm" ? "Short message" : size === "md" ? "Medium length message" : "This is a longer message with more content to demonstrate the large size variant."}
-              </Bubble>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-with-tail">
-        <div className="flex flex-col gap-3">
-          <Bubble variant="default" tail>
-            Hello! What time is the meeting?
-          </Bubble>
-          <Bubble variant="primary" tail>
-            It&apos;s at 3 PM in the conference room.
-          </Bubble>
-          <Bubble variant="default" tail>
-            Got it, thanks!
-          </Bubble>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-chat-layout">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700">
-              <UserIcon />
-            </div>
-            <Bubble variant="default" tail>
-              Hey, did you see the new design mockups?
-            </Bubble>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic" description="Simple received and sent message bubbles." code={BASIC_SOURCE} filename="basic.tsx">
+          <div className="flex w-full max-w-md flex-col gap-3">
+            <B variant="received" message="Hey, how's the project going?" />
+            <B variant="sent" message="It's going well! Just finished the new components." />
+            <B variant="received" message="Nice! Can you show me a demo?" />
           </div>
+        </ExampleBlock>
 
-          <div className="flex items-start gap-3 flex-row-reverse">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-              <BotIcon />
-            </div>
-            <Bubble variant="primary" tail>
-              Yes! They look amazing. The new color scheme is perfect.
-            </Bubble>
+        <ExampleBlock title="Sender" description="Messages with sender names displayed above the bubble." code={SENDER_SOURCE} filename="sender.tsx">
+          <div className="flex w-full max-w-md flex-col gap-3">
+            <B variant="received" sender="Alice" message="What time is the meeting?" />
+            <B variant="sent" sender="Bob" message="It's at 3 PM in the conference room." />
+            <B variant="received" sender="Alice" message="Got it, thanks!" />
           </div>
+        </ExampleBlock>
 
-          <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700">
-              <UserIcon />
-            </div>
-            <Bubble variant="default" tail>
-              Should we schedule a review meeting?
-            </Bubble>
+        <ExampleBlock title="Avatar" description="Avatar images shown alongside received messages." code={AVATAR_SOURCE} filename="avatar.tsx">
+          <div className="flex w-full max-w-md flex-col gap-3">
+            <B variant="received" sender="Alice" avatar="https://i.pravatar.cc/150?u=alice" message="Hey, did you see the new design?" />
+            <B variant="sent" avatar="https://i.pravatar.cc/150?u=bob" message="Yes! They look amazing." />
           </div>
+        </ExampleBlock>
 
-          <div className="flex items-start gap-3 flex-row-reverse">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-              <BotIcon />
-            </div>
-            <Bubble variant="primary" tail>
-              Sure! How about tomorrow at 2 PM?
-            </Bubble>
+        <ExampleBlock title="Timestamp" description="Optional timestamps displayed below each message." code={TIMESTAMP_SOURCE} filename="timestamp.tsx">
+          <div className="flex w-full max-w-md flex-col gap-3">
+            <B variant="received" message="Meeting scheduled for tomorrow" timestamp="9:41 AM" />
+            <B variant="sent" message="Project deadline extended to Friday" timestamp="10:15 AM" />
           </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-with-icon">
-        <div className="flex flex-col gap-3">
-          <Bubble variant="default" icon={<UserIcon />}>
-            Can you help me with this task?
-          </Bubble>
-          <Bubble variant="primary" icon={<BotIcon />}>
-            Of course! Let me take a look.
-          </Bubble>
-          <Bubble variant="secondary" icon={<CheckIcon />}>
-            Task completed successfully.
-          </Bubble>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="bubble-status">
-        <div className="flex flex-col gap-3">
-          <Bubble variant="default">
-            <div className="flex flex-col gap-1">
-              <span>Meeting scheduled for tomorrow</span>
-              <span className="text-xs opacity-70">9:41 AM</span>
-            </div>
-          </Bubble>
-          <Bubble variant="primary">
-            <div className="flex flex-col gap-1">
-              <span>Project deadline extended to Friday</span>
-              <span className="text-xs opacity-70">10:15 AM</span>
-            </div>
-          </Bubble>
-          <Bubble variant="muted">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-              </span>
-              <span>User is online</span>
-            </div>
-          </Bubble>
-        </div>
-      </ComponentPreview>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;primary&quot; | &quot;secondary&quot; | &quot;muted&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">tail</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">icon</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

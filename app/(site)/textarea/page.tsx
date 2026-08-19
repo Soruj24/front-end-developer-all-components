@@ -1,130 +1,196 @@
 "use client";
 
-import { Textarea } from "@/components/_textarea";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { useState } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add textarea`;
+const TEXTAREA_SOURCE = `import { TextareaHTMLAttributes, forwardRef, useId, useState } from "react";
 
-const usageCode = `import { Textarea } from "@/components/_textarea";
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  error?: string;
+  showCount?: boolean;
+  maxLength?: number;
+}
 
-<Textarea label="Message" placeholder="Type your message..." />
-<Textarea label="Bio" error helperText="Required" />`;
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className = "", label, error, showCount, maxLength, ...props }, ref) => {
+    const uid = useId();
+    const textareaId = props.id ?? uid;
+    const [charCount, setCharCount] = useState(
+      typeof props.defaultValue === "string" ? props.defaultValue.length : 0
+    );
+
+    const displayCount = props.value !== undefined ? String(props.value).length : charCount;
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setCharCount(e.target.value.length);
+      props.onChange?.(e);
+    };
+
+    return (
+      <div className="flex flex-col gap-1.5">
+        {label && (
+          <label htmlFor={textareaId} className="text-sm font-medium text-foreground">
+            {label}
+          </label>
+        )}
+        <textarea
+          ref={ref}
+          id={textareaId}
+          maxLength={maxLength}
+          className={\`flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-subtle transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 \${
+            error
+              ? "border-danger focus:border-danger focus:ring-danger"
+              : "border-input focus:border-ring focus:ring-ring"
+          } \${className}\`}
+          onChange={handleChange}
+          {...props}
+        />
+        <div className="flex items-center justify-between">
+          {error ? (
+            <p className="text-sm text-danger">{error}</p>
+          ) : (
+            <div />
+          )}
+          {showCount && (
+            <p className="ml-auto text-xs text-muted-foreground">
+              {displayCount}{maxLength ? \` / \${maxLength}\` : ""}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+Textarea.displayName = "Textarea";
+
+export default Textarea;
+export { Textarea };`;
+
+const SIZES_SOURCE = `import Textarea from "@/components/ui/Textarea";
+
+<div className="flex flex-col gap-4 w-full">
+  <Textarea label="Small" placeholder="Small textarea" className="min-h-[60px]" />
+  <Textarea label="Medium" placeholder="Medium textarea" />
+  <Textarea label="Large" placeholder="Large textarea" className="min-h-[120px]" />
+</div>`;
+
+const HELPER_SOURCE = `import Textarea from "@/components/ui/Textarea";
+
+<div className="flex flex-col gap-4 w-full">
+  <Textarea label="Bio" placeholder="Tell us about yourself..." />
+  <Textarea label="Description" error="This field is required" placeholder="Enter description..." />
+</div>`;
+
+const COUNT_SOURCE = `import Textarea from "@/components/ui/Textarea";
+
+<Textarea
+  label="Feedback"
+  placeholder="Share your thoughts..."
+  showCount
+  maxLength={200}
+/>`;
+
+function T({
+  label,
+  error,
+  placeholder,
+  showCount,
+  maxLength,
+  className,
+}: {
+  label?: string;
+  error?: string;
+  placeholder?: string;
+  showCount?: boolean;
+  maxLength?: number;
+  className?: string;
+}) {
+  const [value, setValue] = useState("");
+  const count = value.length;
+  return (
+    <div className="flex w-full flex-col gap-1.5">
+      {label && <label className="text-sm font-medium text-foreground">{label}</label>}
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        className={`flex min-h-[80px] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-subtle transition-colors focus:outline-none focus:ring-1 ${
+          error
+            ? "border-danger focus:border-danger focus:ring-danger"
+            : "border-input focus:border-ring focus:ring-ring"
+        } ${className ?? ""}`}
+      />
+      <div className="flex items-center justify-between">
+        {error ? <p className="text-sm text-danger">{error}</p> : <div />}
+        {showCount && (
+          <p className="ml-auto text-xs text-muted-foreground">
+            {count}{maxLength ? ` / ${maxLength}` : ""}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function TextareaPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Textarea</h1>
-          <Badge variant="primary">Forms</Badge>
+    <ComponentDocPage
+      name="Textarea"
+      category="Forms"
+      description="A multi-line text input with label, error states, helper text, and character count."
+    >
+      <PreviewPanel filename="textarea-preview.tsx">
+        <div className="w-full max-w-md">
+          <T label="Message" placeholder="Type your message..." />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A multi-line text input with label, helper text, and error states.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={TEXTAREA_SOURCE} filename="components/ui/Textarea.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Default textarea.</p>
-        </div>
-        <ComponentPreview id="textarea-default">
-          <Textarea label="Message" placeholder="Type your message..." />
-        </ComponentPreview>
-      </section>
-
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different sizes for the textarea.</p>
-        </div>
-        <ComponentPreview id="textarea-sizes">
-          <div className="flex flex-col gap-4">
-            <Textarea size="sm" label="Small" placeholder="Small textarea" />
-            <Textarea size="md" label="Medium" placeholder="Medium textarea" />
-            <Textarea size="lg" label="Large" placeholder="Large textarea" />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Sizes"
+          description="Adjust height with className for different use cases."
+          code={SIZES_SOURCE}
+          filename="sizes.tsx"
+        >
+          <div className="flex w-full max-w-md flex-col gap-4">
+            <T label="Small" placeholder="Small textarea" className="min-h-[60px]" />
+            <T label="Medium" placeholder="Medium textarea" />
+            <T label="Large" placeholder="Large textarea" className="min-h-[120px]" />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Helper Text */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Helper Text</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Textarea with helper text and error state.</p>
-        </div>
-        <ComponentPreview id="textarea-helper">
-          <div className="flex flex-col gap-4">
-            <Textarea label="Bio" helperText="Tell us about yourself" placeholder="Enter your bio..." />
-            <Textarea label="Description" error helperText="This field is required" placeholder="Enter description..." />
+        <ExampleBlock
+          title="Helper Text & Errors"
+          description="Display helper text or validation errors below the textarea."
+          code={HELPER_SOURCE}
+          filename="helper.tsx"
+        >
+          <div className="flex w-full max-w-md flex-col gap-4">
+            <T label="Bio" placeholder="Tell us about yourself..." />
+            <T label="Description" error="This field is required" placeholder="Enter description..." />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;outlined&quot; | &quot;filled&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">error</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">helperText</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Character Count"
+          description="Show a live character counter with a maximum length."
+          code={COUNT_SOURCE}
+          filename="character-count.tsx"
+        >
+          <div className="w-full max-w-md">
+            <T label="Feedback" placeholder="Share your thoughts..." showCount maxLength={200} />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

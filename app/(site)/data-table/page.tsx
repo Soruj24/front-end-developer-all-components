@@ -1,177 +1,217 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { DataTable } from "@/components/ui/DataTable";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add data-table`;
+const DATATABLE_SOURCE = `"use client";
 
-const usageCode = `import { DataTable } from "@/components/_data-table";
+import { useMemo, useState } from "react";
+import { cn } from "@/lib/cn";
+import type { DataTableProps, DataTableColumn } from "./DataTable.types";
 
-<DataTable
-  columns={[
-    { key: "name", header: "Name" },
-    { key: "email", header: "Email" },
-  ]}
-  data={users}
-  sortable
-  pagination
-/>`;
+export function DataTable<T extends Record<string, unknown>>({
+  columns,
+  data,
+  pageSize = 10,
+  className,
+}: DataTableProps<T>) {
+  const [page, setPage] = useState(0);
+  const [sortKey, setSortKey] = useState<string | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  const sorted = useMemo(() => {
+    if (!sortKey) return data;
+    return [...data].sort((a, b) => {
+      const av = a[sortKey];
+      const bv = b[sortKey];
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      const cmp = String(av).localeCompare(String(bv), undefined, { numeric: true });
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [data, sortKey, sortDir]);
+
+  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paged = sorted.slice(page * pageSize, (page + 1) * pageSize);
+
+  const toggleSort = (key: string) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+
+  const SortIcon = ({ col }: { col: DataTableColumn<T> }) => {
+    if (!col.sortable) return null;
+    return (
+      <svg
+        className={cn("ml-1 inline h-3 w-3", sortKey === col.key ? "text-blue-600" : "text-zinc-300")}
+        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      </svg>
+    );
+  };
+
+  return (
+    <div className={cn("w-full", className)}>
+      <div className="overflow-x-auto rounded-lg border">
+        <table className="w-full text-sm">
+          <thead className="bg-zinc-50 dark:bg-zinc-800">
+            <tr>
+              {columns.map((col) => (
+                <th key={col.key} onClick={() => col.sortable && toggleSort(col.key)}
+                  className={cn("px-4 py-3 text-left font-medium text-zinc-500 dark:text-zinc-400",
+                    col.sortable && "cursor-pointer select-none hover:text-zinc-700", col.className)}>
+                  {col.header}<SortIcon col={col} />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+            {paged.map((row, i) => (
+              <tr key={i} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                {columns.map((col) => (
+                  <td key={col.key} className={cn("px-4 py-3", col.className)}>
+                    {col.render ? col.render(row, i) : (row[col.key] as React.ReactNode) ?? "—"}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {totalPages > 1 && (
+        <div className="mt-3 flex items-center justify-between text-sm">
+          <span className="text-zinc-500">Page {page + 1} of {totalPages}</span>
+          <div className="flex gap-1">
+            <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}
+              className="rounded border px-3 py-1 text-sm disabled:opacity-50">Prev</button>
+            <button disabled={page >= totalPages - 1} onClick={() => setPage((p) => p + 1)}
+              className="rounded border px-3 py-1 text-sm disabled:opacity-50">Next</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}`;
+
+const BASIC_CODE = `import { DataTable } from "@/components/ui/DataTable";
+
+const columns = [
+  { key: "name", header: "Name" },
+  { key: "email", header: "Email" },
+];
+
+<DataTable columns={columns} data={users} />`;
+
+const SORTABLE_CODE = `import { DataTable } from "@/components/ui/DataTable";
+
+const columns = [
+  { key: "name", header: "Name", sortable: true },
+  { key: "email", header: "Email", sortable: true },
+];
+
+<DataTable columns={columns} data={users} />`;
+
+const CUSTOM_RENDER_CODE = `import { DataTable } from "@/components/ui/DataTable";
+
+const columns = [
+  { key: "name", header: "Name" },
+  { key: "status", header: "Status", render: (row) => (
+    <span className={row.status === "Active" ? "text-green-600" : "text-zinc-400"}>
+      {row.status}
+    </span>
+  )},
+];
+
+<DataTable columns={columns} data={users} />`;
 
 const sampleData = [
   { name: "Alice Johnson", email: "alice@example.com", role: "Admin", status: "Active" },
   { name: "Bob Smith", email: "bob@example.com", role: "Editor", status: "Active" },
   { name: "Carol White", email: "carol@example.com", role: "Viewer", status: "Inactive" },
   { name: "David Brown", email: "david@example.com", role: "Editor", status: "Active" },
+  { name: "Eva Green", email: "eva@example.com", role: "Admin", status: "Active" },
 ];
 
 export default function DataTablePage() {
-  const [sortKey, setSortKey] = useState<string | null>(null);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
-  const [page, setPage] = useState(0);
-  const perPage = 3;
-
-  function handleSort(key: string) {
-    if (sortKey === key) {
-      setSortDir(sortDir === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortDir("asc");
-    }
-  }
-
-  const sorted = [...sampleData].sort((a, b) => {
-    if (!sortKey) return 0;
-    const aVal = a[sortKey as keyof typeof a];
-    const bVal = b[sortKey as keyof typeof b];
-    return sortDir === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-  });
-
-  const paged = sorted.slice(page * perPage, (page + 1) * perPage);
-
-  function SortIcon({ col }: { col: string }) {
-    if (sortKey !== col) return <svg className="h-4 w-4 text-muted-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>;
-    return <svg className="h-4 w-4 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d={sortDir === "asc" ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} /></svg>;
-  }
-
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Data Table</h1>
-          <Badge variant="primary">Data Display</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A feature-rich data table with sorting, pagination, and selectable
-          rows. Built on top of native HTML tables with Tailwind styling.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Data Table"
+      category="Data Display"
+      description="A feature-rich data table with sorting, pagination, and custom cell rendering. Supports column definitions, sortable headers, and flexible content via render functions."
+    >
+      <PreviewPanel filename="data-table-demo.tsx">
+        <DataTable
+          columns={[
+            { key: "name", header: "Name", sortable: true },
+            { key: "email", header: "Email", sortable: true },
+            { key: "role", header: "Role" },
+            { key: "status", header: "Status" },
+          ]}
+          data={sampleData}
+          pageSize={3}
+        />
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={DATATABLE_SOURCE}
+        filename="components/ui/DataTable/DataTable.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <ExampleBlock title="Basic" code={BASIC_CODE} filename="basic.tsx">
+        <DataTable
+          columns={[
+            { key: "name", header: "Name" },
+            { key: "email", header: "Email" },
+          ]}
+          data={sampleData.slice(0, 3)}
+        />
+      </ExampleBlock>
 
-      {/* Sortable */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sortable</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Click column headers to sort.</p>
-        </div>
-        <ComponentPreview id="data-table-sortable">
-          <div className="w-full overflow-hidden rounded-lg border border-border">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b bg-muted/40">
-                  {(["name", "email", "role", "status"] as const).map((col) => (
-                    <th
-                      key={col}
-                      onClick={() => handleSort(col)}
-                      className="cursor-pointer px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground"
-                    >
-                      <span className="flex items-center gap-1">
-                        {col} <SortIcon col={col} />
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {paged.map((row, i) => (
-                  <tr key={i} className="border-b last:border-0 hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{row.name}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{row.email}</td>
-                    <td className="px-4 py-3">{row.role}</td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${row.status === "Active" ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}>
-                        {row.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex items-center justify-between border-t px-4 py-3">
-              <p className="text-sm text-muted-foreground">Page {page + 1} of {Math.ceil(sampleData.length / perPage)}</p>
-              <div className="flex gap-2">
-                <button type="button" onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} className="rounded-md border px-3 py-1 text-sm hover:bg-muted disabled:opacity-50">Prev</button>
-                <button type="button" onClick={() => setPage(Math.min(Math.ceil(sampleData.length / perPage) - 1, page + 1))} disabled={page >= Math.ceil(sampleData.length / perPage) - 1} className="rounded-md border px-3 py-1 text-sm hover:bg-muted disabled:opacity-50">Next</button>
-              </div>
-            </div>
-          </div>
-        </ComponentPreview>
-      </section>
+      <ExampleBlock title="Sortable Columns" code={SORTABLE_CODE} filename="sortable.tsx">
+        <DataTable
+          columns={[
+            { key: "name", header: "Name", sortable: true },
+            { key: "email", header: "Email", sortable: true },
+            { key: "role", header: "Role" },
+          ]}
+          data={sampleData.slice(0, 3)}
+        />
+      </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">columns</td>
-                <td className="px-4 py-3 text-muted-foreground">ColumnDef[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">data</td>
-                <td className="px-4 py-3 text-muted-foreground">Record&lt;string, any&gt;[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">sortable</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">pagination</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <ExampleBlock title="Custom Cell Rendering" code={CUSTOM_RENDER_CODE} filename="custom-render.tsx">
+        <DataTable
+          columns={[
+            { key: "name", header: "Name" },
+            {
+              key: "status",
+              header: "Status",
+              render: (row: Record<string, unknown>) => (
+                <span
+                  className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
+                    row.status === "Active"
+                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                      : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                  }`}
+                >
+                  {row.status as string}
+                </span>
+              ),
+            },
+          ]}
+          data={sampleData.slice(0, 3)}
+        />
+      </ExampleBlock>
+    </ComponentDocPage>
   );
 }

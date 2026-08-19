@@ -64,7 +64,7 @@ export default function WrenchFixPage() {
             { icon: Wrench, label: "Wrench" },
             { icon: Settings, label: "Settings" },
             { icon: Hammer, label: "Hammer" },
-            { icon: Tool, label: "Tool" },
+            { icon: Toolbox, label: "Toolbox" },
           ].map((t) => (
             <div key={t.label} className="flex flex-col items-center gap-1">
               <t.icon className="h-6 w-6 text-muted-foreground" />

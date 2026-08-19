@@ -1,126 +1,115 @@
 "use client";
 
-import { Toggle } from "@/components/_toggle";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { useState } from "react";
+import { Toggle } from "@/components/ui/Toggle";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add toggle`;
+const TOGGLE_SOURCE = `"use client";
 
-const usageCode = `import { Toggle } from "@/components/_toggle";
+import { cn } from "@/lib/cn";
+import { ToggleProps } from "./Toggle.types";
 
-<Toggle>Toggle</Toggle>
-<Toggle pressed>Pressed</Toggle>
-<Toggle variant="outline" size="lg">Large Outline</Toggle>`;
+const sizeClasses = {
+  default: "h-10 px-3",
+  sm: "h-9 px-2",
+  lg: "h-11 px-4",
+};
+
+export default function Toggle({
+  pressed = false,
+  onPressedChange,
+  disabled = false,
+  size = "default",
+  className,
+  children,
+}: ToggleProps) {
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      disabled={disabled}
+      data-state={pressed ? "on" : "off"}
+      onClick={() => onPressedChange?.(!pressed)}
+      className={cn(
+        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors",
+        "hover:bg-muted hover:text-muted-foreground",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "disabled:pointer-events-none disabled:opacity-50",
+        pressed && "bg-accent text-accent-foreground",
+        sizeClasses[size],
+        className
+      )}
+    >
+      {children}
+    </button>
+  );
+}`;
+
+const BASIC_CODE = `import { Toggle } from "@/components/ui/Toggle";
+
+<Toggle>Toggle</Toggle>`;
+
+const WITH_ICON_CODE = `import { Toggle } from "@/components/ui/Toggle";
+
+<Toggle>
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+  </svg>
+  Watch
+</Toggle>`;
+
+const DISABLED_CODE = `import { Toggle } from "@/components/ui/Toggle";
+
+<Toggle disabled>Disabled</Toggle>`;
 
 export default function TogglePage() {
+  const [pressed, setPressed] = useState(false);
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Toggle</h1>
-          <Badge variant="primary">Forms</Badge>
+    <ComponentDocPage
+      name="Toggle"
+      category="Forms"
+      description="A two-state button that can be either on or off. Use toggles for boolean settings or to switch between two states."
+    >
+      <PreviewPanel filename="toggle-demo.tsx">
+        <div className="flex items-center gap-4">
+          <Toggle pressed={pressed} onPressedChange={setPressed}>
+            {pressed ? "On" : "Off"}
+          </Toggle>
+          <Toggle pressed>Always On</Toggle>
+          <Toggle disabled>Disabled</Toggle>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A two-state button that can be either on or off.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={TOGGLE_SOURCE}
+        filename="Toggle.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <ExampleBlock title="Basic" code={BASIC_CODE}>
+        <Toggle>Toggle</Toggle>
+      </ExampleBlock>
 
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Default toggle button.</p>
-        </div>
-        <ComponentPreview id="toggle-default">
-          <Toggle>Toggle</Toggle>
-        </ComponentPreview>
-      </section>
+      <ExampleBlock title="With Icon" code={WITH_ICON_CODE}>
+        <Toggle>
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          Watch
+        </Toggle>
+      </ExampleBlock>
 
-      {/* Variants */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different visual styles.</p>
-        </div>
-        <ComponentPreview id="toggle-variants">
-          <div className="flex items-center gap-4">
-            <Toggle variant="default">Default</Toggle>
-            <Toggle variant="outline">Outline</Toggle>
-            <Toggle variant="ghost">Ghost</Toggle>
-          </div>
-        </ComponentPreview>
-      </section>
-
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different sizes for the toggle.</p>
-        </div>
-        <ComponentPreview id="toggle-sizes">
-          <div className="flex items-center gap-4">
-            <Toggle size="sm">Small</Toggle>
-            <Toggle size="md">Medium</Toggle>
-            <Toggle size="lg">Large</Toggle>
-          </div>
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;outline&quot; | &quot;ghost&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">pressed</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">defaultPressed</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <ExampleBlock title="Disabled" code={DISABLED_CODE}>
+        <Toggle disabled>Disabled</Toggle>
+      </ExampleBlock>
+    </ComponentDocPage>
   );
 }

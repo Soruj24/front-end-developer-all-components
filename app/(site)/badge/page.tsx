@@ -1,46 +1,183 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const variants = [
-  { name: "default", class: "bg-muted text-zinc-900 dark:bg-muted dark:text-zinc-100" },
-  { name: "primary", class: "bg-primary-soft text-blue-800 dark:bg-blue-900 dark:text-blue-100" },
-  { name: "secondary", class: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100" },
-  { name: "success", class: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" },
-  { name: "warning", class: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100" },
-  { name: "error", class: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100" },
-  { name: "outline", class: "border border-border text-muted-foreground dark:border-border dark:text-muted-foreground" },
-];
+const BADGE_SOURCE = `import { HTMLAttributes, forwardRef } from "react";
 
-const sizes = ["sm", "md", "lg"] as const;
-const installCommand = `npx component-library@latest add badge`;
+type Variant = "default" | "primary" | "secondary" | "success" | "warning" | "error" | "outline";
+type Size = "sm" | "md" | "lg";
 
-const usageCode = `import { Badge } from "@/components/design-system/Badge";
+const variantClasses: Record<Variant, string> = {
+  default: "bg-secondary text-secondary-foreground",
+  primary: "bg-primary text-primary-foreground",
+  secondary: "bg-secondary text-secondary-foreground",
+  success: "bg-success-soft text-success border border-success/25",
+  warning: "bg-warning-soft text-warning border border-warning/25",
+  error: "bg-danger-soft text-danger border border-danger/25",
+  outline: "border border-border text-foreground",
+};
 
-<Badge variant="primary">New</Badge>
-<Badge variant="success">Active</Badge>
-<Badge variant="outline" size="lg">Large</Badge>`;
+const sizeClasses: Record<Size, string> = {
+  sm: "px-2 py-0.5 text-xs",
+  md: "px-2.5 py-0.5 text-sm",
+  lg: "px-3 py-1 text-sm",
+};
 
-const sizeClasses = { sm: "px-1.5 py-0.5 text-xs", md: "px-2 py-1 text-sm", lg: "px-3 py-1.5 text-base" };
-
-function BellIcon() {
-  return (
-    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-    </svg>
-  );
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: Variant;
+  size?: Size;
+  dot?: boolean;
 }
 
-function XIcon() {
+const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ className = "", variant = "default", size = "md", dot, children, ...props }, ref) => {
+    return (
+      <span
+        ref={ref}
+        className={\`inline-flex items-center gap-1.5 rounded-full font-medium \${variantClasses[variant]} \${sizeClasses[size]} \${className}\`}
+        {...props}
+      >
+        {dot && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+        {children}
+      </span>
+    );
+  }
+);
+Badge.displayName = "Badge";
+
+export default Badge;`;
+
+const VARIANTS_SOURCE = `import Badge from "@/components/ui/Badge";
+
+function BadgesShowcase() {
   return (
-    <svg className="h-3 w-3 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge variant="default">Default</Badge>
+      <Badge variant="primary">Primary</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="error">Error</Badge>
+      <Badge variant="outline">Outline</Badge>
+    </div>
   );
-}
+}`;
+
+const SIZES_SOURCE = `import Badge from "@/components/ui/Badge";
+
+function SizesShowcase() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge size="sm">Small</Badge>
+      <Badge size="md">Medium</Badge>
+      <Badge size="lg">Large</Badge>
+    </div>
+  );
+}`;
+
+const WITH_ICONS_SOURCE = `import Badge from "@/components/ui/Badge";
+import { CheckIcon, StarIcon } from "lucide-react";
+
+function IconsShowcase() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge variant="success">
+        <CheckIcon className="h-3 w-3" />
+        Verified
+      </Badge>
+      <Badge variant="primary">
+        <StarIcon className="h-3 w-3" />
+        Featured
+      </Badge>
+      <Badge variant="warning">
+        <StarIcon className="h-3 w-3" />
+        Popular
+      </Badge>
+    </div>
+  );
+}`;
+
+const DISMISSIBLE_SOURCE = `"use client";
+
+import { useState } from "react";
+import Badge from "@/components/ui/Badge";
+
+function DismissibleShowcase() {
+  const [visible, setVisible] = useState([true, true, true]);
+  const labels = ["New", "Beta", "Updated"];
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {labels.map((label, i) =>
+        visible[i] ? (
+          <Badge key={label} variant={i === 0 ? "primary" : i === 1 ? "secondary" : "success"}>
+            {label}
+            <button
+              onClick={() => {
+                const next = [...visible];
+                next[i] = false;
+                setVisible(next);
+              }}
+              className="ml-1 rounded-full p-0.5 hover:bg-black/10"
+            >
+              ✕
+            </button>
+          </Badge>
+        ) : null
+      )}
+    </div>
+  );
+}`;
+
+const DOT_SOURCE = `import Badge from "@/components/ui/Badge";
+
+function DotShowcase() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge variant="success" dot>Online</Badge>
+      <Badge variant="warning" dot>Away</Badge>
+      <Badge variant="error" dot>Offline</Badge>
+      <Badge variant="primary" dot>Active</Badge>
+    </div>
+  );
+}`;
+
+const PULSATING_SOURCE = `import Badge from "@/components/ui/Badge";
+
+function PulsatingShowcase() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <span className="relative flex h-3 w-3">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+        <span className="relative inline-flex h-3 w-3 rounded-full bg-success" />
+      </span>
+      <span className="relative flex h-3 w-3">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+        <span className="relative inline-flex h-3 w-3 rounded-full bg-danger" />
+      </span>
+      <Badge variant="success">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+        </span>
+        Live
+      </Badge>
+      <Badge variant="error">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-danger" />
+        </span>
+        Recording
+      </Badge>
+    </div>
+  );
+}`;
 
 function StarIcon() {
   return (
@@ -58,226 +195,225 @@ function CheckIcon() {
   );
 }
 
+function BellIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg className="h-3 w-3 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+function InlineBadge({
+  variant = "default",
+  size = "md",
+  dot,
+  children,
+  className = "",
+}: {
+  variant?: string;
+  size?: string;
+  dot?: boolean;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const variantClasses: Record<string, string> = {
+    default: "bg-secondary text-secondary-foreground",
+    primary: "bg-primary text-primary-foreground",
+    secondary: "bg-secondary text-secondary-foreground",
+    success: "bg-success-soft text-success border border-success/25",
+    warning: "bg-warning-soft text-warning border border-warning/25",
+    error: "bg-danger-soft text-danger border border-danger/25",
+    outline: "border border-border text-foreground",
+  };
+  const sizeClasses: Record<string, string> = {
+    sm: "px-2 py-0.5 text-xs",
+    md: "px-2.5 py-0.5 text-sm",
+    lg: "px-3 py-1 text-sm",
+  };
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full font-medium ${variantClasses[variant] || variantClasses.default} ${sizeClasses[size] || sizeClasses.md} ${className}`}
+    >
+      {dot && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+      {children}
+    </span>
+  );
+}
+
 export default function BadgePage() {
   const [visibleBadges, setVisibleBadges] = useState([true, true, true]);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Badge</h1>
-          <Badge variant="primary">7 variants</Badge>
+    <ComponentDocPage
+      name="Badge"
+      category="Elements"
+      description="A versatile label component for status indicators, tags, and categories. Supports multiple variants, sizes, dot indicators, and dismissible state."
+    >
+      <PreviewPanel filename="badge-preview.tsx">
+        <div className="flex flex-wrap items-center gap-3">
+          <InlineBadge variant="default">Default</InlineBadge>
+          <InlineBadge variant="primary">Primary</InlineBadge>
+          <InlineBadge variant="secondary">Secondary</InlineBadge>
+          <InlineBadge variant="success">Success</InlineBadge>
+          <InlineBadge variant="warning">Warning</InlineBadge>
+          <InlineBadge variant="error">Error</InlineBadge>
+          <InlineBadge variant="outline">Outline</InlineBadge>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Badge variants, sizes, and usage on icons and buttons. Each example is
-          interactive — use the tabs to inspect source, CLI, installation, and
-          dependencies.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={BADGE_SOURCE}
+        filename="components/ui/Badge.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="badge-variants">
-        <div className="flex flex-wrap items-center gap-4">
-          {variants.map((v) => (
-            <span key={v.name} className={`rounded-full font-medium ${sizeClasses.md} ${v.class}`}>
-              {v.name}
-            </span>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="badge-sizes">
-        <div className="flex flex-wrap items-center gap-4">
-          {sizes.map((s) => (
-            <span key={s} className={`rounded-full bg-muted font-medium dark:bg-muted ${sizeClasses[s]}`}>
-              {s} badge
-            </span>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="badge-with-icon">
-        <div className="flex flex-wrap items-center gap-4">
-          {variants.slice(0, 5).map((v) => (
-            <span key={v.name} className={`inline-flex items-center gap-1 rounded-full font-medium ${sizeClasses.md} ${v.class}`}>
-              {v.name === "success" ? <CheckIcon /> : <StarIcon />}
-              {v.name}
-            </span>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="badge-dismissible">
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-4">
-            {variants.slice(0, 3).map((v, i) => (
-              visibleBadges[i] && (
-                <span key={v.name} className={`inline-flex items-center gap-1 rounded-full font-medium ${sizeClasses.md} ${v.class}`}>
-                  {v.name}
-                  <button
-                    type="button"
-                    aria-label={`Dismiss ${v.name} badge`}
-                    onClick={() => { const next = [...visibleBadges]; next[i] = false; setVisibleBadges(next); }}
-                    className="rounded-full p-0.5 focus-visible:ring-ring outline-none focus-visible:ring-2"
-                  >
-                    <XIcon />
-                  </button>
-                </span>
-              )
-            ))}
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Variants"
+          description="Seven built-in variants for different semantic contexts."
+          code={VARIANTS_SOURCE}
+          filename="variants.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <InlineBadge variant="default">Default</InlineBadge>
+            <InlineBadge variant="primary">Primary</InlineBadge>
+            <InlineBadge variant="secondary">Secondary</InlineBadge>
+            <InlineBadge variant="success">Success</InlineBadge>
+            <InlineBadge variant="warning">Warning</InlineBadge>
+            <InlineBadge variant="error">Error</InlineBadge>
+            <InlineBadge variant="outline">Outline</InlineBadge>
           </div>
-          {!visibleBadges.every(Boolean) && (
-            <button
-              onClick={() => setVisibleBadges([true, true, true])}
-              className="text-sm text-primary hover:underline dark:text-blue-400"
-            >
-              Reset badges
-            </button>
-          )}
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="badge-as-link">
-        <div className="flex flex-wrap items-center gap-4">
-          <a href="#" className={`rounded-full font-medium ${sizeClasses.md} bg-primary-soft text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-100 dark:hover:bg-blue-800`}>
-            Documentation
-          </a>
-          <a href="#" className={`rounded-full font-medium ${sizeClasses.md} bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-100 dark:hover:bg-purple-800`}>
-            API Reference
-          </a>
-          <a href="#" className={`rounded-full font-medium ${sizeClasses.md} bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-100 dark:hover:bg-green-800`}>
-            Changelog
-          </a>
-        </div>
-      </ComponentPreview>
+        <ExampleBlock
+          title="Sizes"
+          description="Three size options: sm, md, and lg."
+          code={SIZES_SOURCE}
+          filename="sizes.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <InlineBadge size="sm">Small</InlineBadge>
+            <InlineBadge size="md">Medium</InlineBadge>
+            <InlineBadge size="lg">Large</InlineBadge>
+          </div>
+        </ExampleBlock>
 
-      <ComponentPreview id="badge-on-bell">
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="group relative">
-            <BellIcon />
-            <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-xs font-bold text-danger-foreground">3</span>
+        <ExampleBlock
+          title="With Icons"
+          description="Combine badges with inline icons for richer context."
+          code={WITH_ICONS_SOURCE}
+          filename="with-icons.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <InlineBadge variant="success">
+              <CheckIcon /> Verified
+            </InlineBadge>
+            <InlineBadge variant="primary">
+              <StarIcon /> Featured
+            </InlineBadge>
+            <InlineBadge variant="warning">
+              <StarIcon /> Popular
+            </InlineBadge>
           </div>
-          <div className="group relative">
-            <BellIcon />
-            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-danger-foreground">9+</span>
-          </div>
-          <div className="group relative">
-            <button className="rounded-md bg-zinc-900 px-4 py-2 text-sm text-white dark:bg-muted dark:text-zinc-900">
-              Notifications
-            </button>
-            <span className={`${sizeClasses.sm} absolute -right-2 -top-2 rounded-full bg-danger font-medium text-danger-foreground`}>
-              12
-            </span>
-          </div>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="badge-dot">
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-success"></span>
-            <span className="text-sm">Online</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-yellow-500"></span>
-            <span className="text-sm">Away</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-danger"></span>
-            <span className="text-sm">Offline</span>
-          </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-6">
-          {variants.slice(0, 5).map((v) => (
-            <div key={v.name} className="flex items-center gap-2">
-              <span className={`h-2.5 w-2.5 rounded-full ${v.class.replace(/text-\w+(-\d+)?\s*/g, "").replace(/bg-\w+-\d+/g, (m) => m).split(" ").filter(c => c.startsWith("bg-")).join(" ")}`}></span>
-              <span className="text-sm">{v.name}</span>
+        <ExampleBlock
+          title="Dismissible"
+          description="Badges that can be dismissed by the user."
+          code={DISMISSIBLE_SOURCE}
+          filename="dismissible.tsx"
+        >
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {[
+                { label: "New", variant: "primary" },
+                { label: "Beta", variant: "secondary" },
+                { label: "Updated", variant: "success" },
+              ].map((badge, i) =>
+                visibleBadges[i] ? (
+                  <InlineBadge key={badge.label} variant={badge.variant}>
+                    {badge.label}
+                    <button
+                      type="button"
+                      aria-label={`Dismiss ${badge.label} badge`}
+                      onClick={() => {
+                        const next = [...visibleBadges];
+                        next[i] = false;
+                        setVisibleBadges(next);
+                      }}
+                      className="ml-0.5 rounded-full p-0.5 hover:bg-black/10"
+                    >
+                      <XIcon />
+                    </button>
+                  </InlineBadge>
+                ) : null
+              )}
             </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="badge-pulsating">
-        <div className="flex flex-wrap items-center gap-6">
-          <span className="relative flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-success"></span>
-          </span>
-          <span className="relative flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-danger"></span>
-          </span>
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-500"></span>
-            </span>
-            <span className="text-sm font-medium">Live</span>
+            {!visibleBadges.every(Boolean) && (
+              <button
+                onClick={() => setVisibleBadges([true, true, true])}
+                className="w-fit text-sm text-primary hover:underline"
+              >
+                Reset badges
+              </button>
+            )}
           </div>
-          <span className={`inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-100`}>
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-success"></span>
-            </span>
-            Live
-          </span>
-          <span className={`inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800 dark:bg-red-900 dark:text-red-100`}>
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-danger"></span>
-            </span>
-            Recording
-          </span>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;primary&quot; | &quot;secondary&quot; | &quot;success&quot; | &quot;warning&quot; | &quot;error&quot; | &quot;outline&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Dot Status"
+          description="Compact dot indicators for status displays."
+          code={DOT_SOURCE}
+          filename="dot-status.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <InlineBadge variant="success" dot>Online</InlineBadge>
+            <InlineBadge variant="warning" dot>Away</InlineBadge>
+            <InlineBadge variant="error" dot>Offline</InlineBadge>
+            <InlineBadge variant="primary" dot>Active</InlineBadge>
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Pulsating"
+          description="Animated pulsating indicators for real-time status."
+          code={PULSATING_SOURCE}
+          filename="pulsating.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="relative flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-success" />
+            </span>
+            <span className="relative flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-danger" />
+            </span>
+            <InlineBadge variant="success">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+              </span>
+              Live
+            </InlineBadge>
+            <InlineBadge variant="error">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-danger" />
+              </span>
+              Recording
+            </InlineBadge>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

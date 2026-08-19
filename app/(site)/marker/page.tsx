@@ -1,141 +1,136 @@
 "use client";
 
-import { Marker } from "@/components/_marker";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { Marker } from "@/components/ui/Marker";
 
-const installCommand = `npx component-library@latest add marker`;
+const MARKER_SOURCE = `"use client";
 
-const usageCode = `import { Marker } from "@/components/_marker"
+import { cn } from "@/lib/cn";
+import type { MarkerProps } from "./Marker.types";
 
-<Marker />
-<Marker variant="primary" />
-<Marker shape="square" size={12} />`;
+export function Marker({ children, active = false, className }: MarkerProps) {
+  return (
+    <span
+      className={cn(
+        "rounded px-0.5 transition-colors duration-200",
+        active
+          ? "bg-yellow-200 text-yellow-900 dark:bg-yellow-800 dark:text-yellow-100"
+          : "bg-transparent",
+        className
+      )}
+    >
+      {children}
+    </span>
+  );
+}`;
+
+const USAGE_SOURCE = `import { Marker } from "@/components/ui/Marker";
+
+<Marker>Plain text</Marker>
+<Marker active>Highlighted text</Marker>`;
+
+const ACTIVE_SOURCE = `import { Marker } from "@/components/ui/Marker";
+
+<Marker active>Important note</Marker>
+<Marker active>Another highlighted item</Marker>
+<Marker>Non-active text</Marker>`;
+
+const CUSTOM_STYLE_SOURCE = `import { Marker } from "@/components/ui/Marker";
+
+<Marker active className="bg-green-200 text-green-900 dark:bg-green-800 dark:text-green-100">
+  Custom green highlight
+</Marker>
+<Marker active className="bg-pink-200 text-pink-900 dark:bg-pink-800 dark:text-pink-100">
+  Custom pink highlight
+</Marker>`;
+
+const INLINE_SOURCE = `import { Marker } from "@/components/ui/Marker";
+
+<p>
+  This is a paragraph with <Marker active>highlighted text</Marker> mixed
+  with <Marker>non-highlighted text</Marker> for emphasis.
+</p>`;
 
 export default function MarkerPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Marker
-          </h1>
-          <Badge variant="primary">Base UI</Badge>
+    <ComponentDocPage
+      name="Marker"
+      category="Data Display"
+      description="A simple inline text highlight component. Use it to draw attention to specific words or phrases within a block of text."
+    >
+      <PreviewPanel filename="marker-preview.tsx">
+        <div className="flex flex-wrap items-center gap-4 text-lg">
+          <span>Plain text</span>
+          <Marker active>Highlighted text</Marker>
+          <span>More text</span>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A small indicator dot for status, notifications, or presence.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">
-          Installation
-        </h2>
-        <CodeBlock
-          code={installCommand}
-          filename="Terminal"
-          label="bash"
-          variant="terminal"
-        />
-      </section>
+      <SourceCodeViewer
+        source={MARKER_SOURCE}
+        filename="components/ui/Marker/Marker.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">
-          Usage
-        </h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Variants */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Variants
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Different color variants for the marker.
-          </p>
-        </div>
-        <ComponentPreview id="marker-variants">
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-center gap-1">
-              <Marker variant="default" />
-              <span className="text-xs text-muted-foreground">Default</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker variant="primary" />
-              <span className="text-xs text-muted-foreground">Primary</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker variant="secondary" />
-              <span className="text-xs text-muted-foreground">Secondary</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker variant="danger" />
-              <span className="text-xs text-muted-foreground">Danger</span>
-            </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Basic Usage"
+          description="Wrap any text content with the Marker component."
+          code={USAGE_SOURCE}
+          filename="basic.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-4 text-base">
+            <span>Plain text</span>
+            <Marker active>Highlighted text</Marker>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Shapes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Shapes
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Different shapes for the marker.
-          </p>
-        </div>
-        <ComponentPreview id="marker-shapes">
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-center gap-1">
-              <Marker shape="circle" />
-              <span className="text-xs text-muted-foreground">Circle</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker shape="square" />
-              <span className="text-xs text-muted-foreground">Square</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker shape="dot" />
-              <span className="text-xs text-muted-foreground">Dot</span>
-            </div>
+        <ExampleBlock
+          title="Active State"
+          description="Toggle the active prop to highlight text with a yellow background."
+          code={ACTIVE_SOURCE}
+          filename="active.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-4 text-base">
+            <Marker active>Important note</Marker>
+            <Marker active>Another highlighted item</Marker>
+            <Marker>Non-active text</Marker>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Sizes
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Different sizes for the marker.
-          </p>
-        </div>
-        <ComponentPreview id="marker-sizes">
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-center gap-1">
-              <Marker size={8} />
-              <span className="text-xs text-muted-foreground">8px</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker size={12} />
-              <span className="text-xs text-muted-foreground">12px</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Marker size={16} />
-              <span className="text-xs text-muted-foreground">16px</span>
-            </div>
+        <ExampleBlock
+          title="Custom Styles"
+          description="Override the default highlight color using className."
+          code={CUSTOM_STYLE_SOURCE}
+          filename="custom-styles.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-4 text-base">
+            <Marker active className="bg-green-200 text-green-900 dark:bg-green-800 dark:text-green-100">
+              Custom green
+            </Marker>
+            <Marker active className="bg-pink-200 text-pink-900 dark:bg-pink-800 dark:text-pink-100">
+              Custom pink
+            </Marker>
           </div>
-        </ComponentPreview>
-      </section>
-    </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Inline Usage"
+          description="Use Marker inline within paragraphs to highlight specific words."
+          code={INLINE_SOURCE}
+          filename="inline.tsx"
+        >
+          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+            This is a paragraph with <Marker active>highlighted text</Marker> mixed
+            with <Marker>non-highlighted text</Marker> for emphasis.
+          </p>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

@@ -1,305 +1,154 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const sizes = [
-  { name: "sm", class: "h-8 w-8 text-xs" },
-  { name: "md", class: "h-10 w-10 text-sm" },
-  { name: "lg", class: "h-14 w-14 text-lg" },
-  { name: "xl", class: "h-20 w-20 text-2xl" },
-];
+const AVATAR_SOURCE = `import { HTMLAttributes, forwardRef } from "react";
 
-const statusColors: Record<string, string> = {
+type Size = "sm" | "md" | "lg" | "xl";
+type Status = "online" | "offline" | "away" | "busy";
+
+const sizeClasses: Record<Size, string> = {
+  sm: "h-8 w-8 text-xs",
+  md: "h-10 w-10 text-sm",
+  lg: "h-12 w-12 text-base",
+  xl: "h-16 w-16 text-lg",
+};
+
+const statusClasses: Record<Status, string> = {
   online: "bg-success",
-  offline: "bg-zinc-400",
-  away: "bg-yellow-500",
+  offline: "bg-muted-foreground",
+  away: "bg-warning",
   busy: "bg-danger",
 };
 
-const installCommand = `npx component-library@latest add avatar`;
-
-const usageCode = `import { Avatar } from "@/components/_avatar";
-
-<Avatar src="/photo.jpg" alt="User" fallback="JD" />
-<Avatar fallback="AB" size="lg" />
-<Avatar src="/photo.jpg" status="online" />`;
-
-const statusSizes: Record<string, string> = {
-  sm: "h-2.5 w-2.5 ring-1.5",
-  md: "h-3 w-3 ring-2",
-  lg: "h-3.5 w-3.5 ring-2",
-  xl: "h-4 w-4 ring-2",
+const statusSizeClasses: Record<Size, string> = {
+  sm: "h-2 w-2 right-0 bottom-0",
+  md: "h-2.5 w-2.5 right-0 bottom-0",
+  lg: "h-3 w-3 right-0 bottom-0",
+  xl: "h-3.5 w-3.5 right-0.5 bottom-0.5",
 };
 
-function AvatarImage({ src, initials, className }: { src: string; initials: string; className?: string }) {
-  const [failed, setFailed] = useState(false);
-  return (
-    <div className={`overflow-hidden rounded-full ${className ?? ""}`}>
-      {!failed ? (
-        <img
-          src={src}
-          alt=""
-          className="h-full w-full object-cover"
-          onError={() => setFailed(true)}
-        />
+export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
+  size?: Size;
+  src?: string;
+  alt: string;
+  fallback: string;
+  status?: Status;
+}
+
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+  ({ className = "", size = "md", src, alt, fallback, status, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={\`relative inline-flex items-center justify-center rounded-full bg-muted \${sizeClasses[size]} \${className}\`}
+      {...props}
+    >
+      {src ? (
+        <img src={src} alt={alt} className="h-full w-full rounded-full object-cover" />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 font-medium text-white">
-          {initials}
-        </div>
+        <span className="font-medium text-muted-foreground">{fallback}</span>
       )}
+      {status && (
+        <span
+          className={\`absolute rounded-full border-2 border-background \${statusClasses[status]} \${statusSizeClasses[size]}\`}
+        />
+      )}
+    </div>
+  )
+);
+Avatar.displayName = "Avatar";
+
+export default Avatar;
+export { Avatar };`;
+
+const SIZES_SOURCE = `import Avatar from "@/components/ui/Avatar";
+
+<div className="flex items-end gap-4">
+  <Avatar size="sm" alt="User" fallback="SM" />
+  <Avatar size="md" alt="User" fallback="MD" />
+  <Avatar size="lg" alt="User" fallback="LG" />
+  <Avatar size="xl" alt="User" fallback="XL" />
+</div>`;
+
+const STATUS_SOURCE = `import Avatar from "@/components/ui/Avatar";
+
+<div className="flex items-end gap-4">
+  <Avatar size="lg" alt="Alice" fallback="AK" status="online" />
+  <Avatar size="lg" alt="Bob" fallback="BM" status="away" />
+  <Avatar size="lg" alt="Carol" fallback="CL" status="busy" />
+  <Avatar size="lg" alt="Dave" fallback="DV" status="offline" />
+</div>`;
+
+const FALLBACK_SOURCE = `import Avatar from "@/components/ui/Avatar";
+
+<div className="flex items-end gap-4">
+  <Avatar size="lg" alt="User" fallback="JD" />
+  <Avatar size="lg" src="https://valid.url/photo.jpg" alt="User" fallback="AK" />
+  <Avatar size="xl" src="https://invalid.url/img.jpg" alt="User" fallback="ML" />
+</div>`;
+
+const SIZES: Record<string, string> = { sm: "h-8 w-8 text-xs", md: "h-10 w-10 text-sm", lg: "h-12 w-12 text-base", xl: "h-16 w-16 text-lg" };
+const STATUS_CLR: Record<string, string> = { online: "bg-success", offline: "bg-muted-foreground", away: "bg-warning", busy: "bg-danger" };
+const STATUS_SZ: Record<string, string> = { sm: "h-2 w-2", md: "h-2.5 w-2.5", lg: "h-3 w-3", xl: "h-3.5 w-3.5" };
+
+function A({ size = "md", src, alt, fallback, status }: { size?: string; src?: string; alt: string; fallback: string; status?: string }) {
+  const [fail, setFail] = useState(false);
+  const show = src && !fail;
+  return (
+    <div className={`relative inline-flex items-center justify-center rounded-full bg-muted ${SIZES[size]}`}>
+      {show ? <img src={src} alt={alt} className="h-full w-full rounded-full object-cover" onError={() => setFail(true)} /> : <span className="font-medium text-muted-foreground">{fallback}</span>}
+      {status && <span className={`absolute rounded-full border-2 border-background ${STATUS_CLR[status]} ${STATUS_SZ[size]} right-0 bottom-0`} />}
     </div>
   );
 }
 
 export default function AvatarPage() {
-  const [status, setStatus] = useState<string>("online");
-
-  const statusList = [
-    { key: "online", label: "Online", color: "bg-success" },
-    { key: "offline", label: "Offline", color: "bg-zinc-400" },
-    { key: "away", label: "Away", color: "bg-yellow-500" },
-    { key: "busy", label: "Busy", color: "bg-danger" },
-  ];
-
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Avatar</h1>
-          <Badge variant="primary">8 examples</Badge>
+    <ComponentDocPage name="Avatar" category="Data Display" description="User avatars with image support, initials fallback, size variants, and online status indicators.">
+      <PreviewPanel filename="avatar-preview.tsx">
+        <div className="flex items-end gap-4">
+          <A size="sm" alt="User" fallback="SM" />
+          <A size="md" alt="User" fallback="MD" />
+          <A size="lg" alt="User" fallback="LG" status="online" />
+          <A size="xl" src="https://i.pravatar.cc/150?u=a" alt="User" fallback="XL" />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Avatars with initials, images, status indicators, groups, and badges.
-          Each example is interactive — use the tabs to inspect source, CLI,
-          installation, and dependencies.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={AVATAR_SOURCE} filename="components/ui/Avatar.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="avatar-sizes-initials">
-        <div className="flex flex-wrap items-end gap-6">
-          {sizes.map((s) => (
-            <div key={s.name} className={`flex items-center justify-center rounded-full bg-muted font-medium text-muted-foreground dark:bg-muted dark:text-muted-foreground ${s.class}`}>
-              JD
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-sizes-image">
-        <div className="flex flex-wrap items-end gap-6">
-          {sizes.map((s) => (
-            <div key={s.name} className={`overflow-hidden rounded-full bg-muted ${s.class}`}>
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 font-medium text-white">
-                {s.name === "xl" || s.name === "lg" ? "AK" : ""}
-              </div>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-group">
-        <div className="flex items-center">
-          <div className="flex -space-x-2">
-            {["JD", "AK", "ML", "RS"].map((initials, i) => (
-              <div key={i} className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-muted text-sm font-medium text-muted-foreground dark:border-zinc-900 dark:bg-muted dark:text-muted-foreground">
-                {initials}
-              </div>
-            ))}
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-muted text-sm font-medium text-muted-foreground dark:border-zinc-900 dark:bg-muted dark:text-muted-foreground/70">
-              +3
-            </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Sizes" description="Four size options: sm, md, lg, and xl." code={SIZES_SOURCE} filename="sizes.tsx">
+          <div className="flex items-end gap-4">
+            <A size="sm" alt="User" fallback="SM" />
+            <A size="md" alt="User" fallback="MD" />
+            <A size="lg" alt="User" fallback="LG" />
+            <A size="xl" alt="User" fallback="XL" />
           </div>
-        </div>
-        <div className="flex -space-x-3">
-          {sizes.slice(0, 3).map((s, i) => (
-            <div key={i} className={`overflow-hidden rounded-full border-2 border-white dark:border-zinc-900 ${s.class}`}>
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-400 to-orange-500 font-medium text-white">
-                {["ML", "RS", "JD"][i]}
-              </div>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="avatar-status">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-end gap-8">
-            {sizes.slice(0, 3).map((s) => (
-              <div key={s.name} className="relative">
-                <div className={`flex items-center justify-center rounded-full bg-muted font-medium text-muted-foreground ${s.class}`}>
-                  JD
-                </div>
-                <span className={`absolute bottom-0 right-0 rounded-full ${statusColors[status]} ${statusSizes[s.name]} ring-2 ring-background`}></span>
-              </div>
-            ))}
+        <ExampleBlock title="Status" description="Online status indicators with four states." code={STATUS_SOURCE} filename="status.tsx">
+          <div className="flex items-end gap-4">
+            <A size="lg" alt="Alice" fallback="AK" status="online" />
+            <A size="lg" alt="Bob" fallback="BM" status="away" />
+            <A size="lg" alt="Carol" fallback="CL" status="busy" />
+            <A size="lg" alt="Dave" fallback="DV" status="offline" />
           </div>
-          <div className="flex flex-wrap gap-2">
-            {statusList.map((s) => (
-              <button
-                key={s.key}
-                onClick={() => setStatus(s.key)}
-                className={`rounded-full px-3 py-1 text-sm ${
-                  status === s.key
-                    ? "bg-foreground text-background"
-                    : "bg-muted text-muted-foreground hover:bg-muted/70"
-                }`}
-              >
-                {s.label}
-              </button>
-            ))}
+        </ExampleBlock>
+
+        <ExampleBlock title="Fallback" description="Shows initials when image fails to load." code={FALLBACK_SOURCE} filename="fallback.tsx">
+          <div className="flex items-end gap-4">
+            <A size="lg" alt="User" fallback="JD" />
+            <A size="lg" src="https://i.pravatar.cc/150?u=ok" alt="User" fallback="AK" />
+            <A size="xl" src="https://invalid.url/img.jpg" alt="User" fallback="ML" />
           </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-fallback">
-        <div className="flex flex-wrap items-end gap-6">
-          <AvatarImage src="https://i.pravatar.cc/150?u=success" initials="AK" className="h-14 w-14" />
-          <AvatarImage src="https://invalid-url.example.com/photo.jpg" initials="AK" className="h-14 w-14" />
-          <AvatarImage src="https://invalid-url.example.com/photo2.jpg" initials="ML" className="h-10 w-10 text-sm" />
-          <AvatarImage src="https://i.pravatar.cc/150?u=jd" initials="JD" className="h-20 w-20 text-2xl" />
-        </div>
-        <p className="text-xs text-muted-foreground">The second avatar has an invalid image URL so it falls back to initials.</p>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-badge-overlay">
-        <div className="flex flex-wrap items-end gap-8">
-          <div className="relative">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-lg font-medium text-white">
-              JD
-            </div>
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-danger-foreground ring-2 ring-background">3</span>
-          </div>
-          <div className="relative">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 text-sm font-medium text-white">
-              AK
-            </div>
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground ring-2 ring-background">
-              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </span>
-          </div>
-          <div className="relative">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-pink-400 to-orange-500 text-2xl font-medium text-white">
-              ML
-            </div>
-            <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-success text-xs font-bold text-success-foreground ring-2 ring-background">
-              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-with-label">
-        <div className="flex flex-wrap items-end gap-8">
-          {[
-            { initials: "JD", name: "John Doe", color: "from-blue-400 to-purple-500" },
-            { initials: "AK", name: "Alice Kim", color: "from-emerald-400 to-cyan-500" },
-            { initials: "ML", name: "Mike Lee", color: "from-pink-400 to-orange-500" },
-            { initials: "RS", name: "Rachel Sun", color: "from-yellow-400 to-red-500" },
-          ].map((person, i) => (
-            <div key={i} className="flex flex-col items-center gap-2">
-              <div className={`flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br ${person.color} text-lg font-medium text-white`}>
-                {person.initials}
-              </div>
-              <div className="text-center">
-                <p className="text-sm font-medium">{person.name}</p>
-                <p className="text-xs text-muted-foreground">@{(person.name.toLowerCase().replace(" ", "."))}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="avatar-presence">
-        <div className="flex flex-col gap-4">
-          {[
-            { initials: "JD", name: "John Doe", status: "online", color: "from-blue-400 to-purple-500", text: "Active now" },
-            { initials: "AK", name: "Alice Kim", status: "away", color: "from-emerald-400 to-cyan-500", text: "Away for 10m" },
-            { initials: "ML", name: "Mike Lee", status: "busy", color: "from-pink-400 to-orange-500", text: "In a meeting" },
-            { initials: "RS", name: "Rachel Sun", status: "offline", color: "from-yellow-400 to-red-500", text: "Offline" },
-          ].map((person, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div className="relative">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${person.color} text-sm font-medium text-white`}>
-                  {person.initials}
-                </div>
-                <span className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${statusColors[person.status]} ring-2 ring-background`}></span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">{person.name}</p>
-                <p className="text-xs text-muted-foreground">{person.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">src</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">alt</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">fallback</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">status</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;online&quot; | &quot;offline&quot; | &quot;away&quot; | &quot;busy&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

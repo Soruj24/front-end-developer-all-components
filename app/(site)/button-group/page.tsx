@@ -1,314 +1,157 @@
 "use client";
 
-import { useState } from "react";
-import { ButtonGroup } from "@/components/_button-group";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { ButtonGroup } from "@/components/ui/ButtonGroup";
 
-const installCommand = `npx component-library@latest add button-group`;
+const BUTTONGROUP_SOURCE = `import { cn } from "@/lib/cn";
 
-const usageCode = `import { ButtonGroup } from "@/components/_button-group"
+type ButtonGroupOrientation = "horizontal" | "vertical";
 
-<ButtonGroup>
-  <button>Left</button>
-  <button>Center</button>
-  <button>Right</button>
-</ButtonGroup>`;
+interface ButtonGroupProps {
+  className?: string;
+  children: React.ReactNode;
+  orientation?: ButtonGroupOrientation;
+}
 
-const sizes = ["sm", "md", "lg"] as const;
-const variants = ["default", "outline", "ghost"] as const;
-const gaps = ["none", "xs", "sm", "md"] as const;
-
-export default function ButtonGroupPage() {
-  const [activeView, setActiveView] = useState("grid");
-  const [activeSort, setActiveSort] = useState("date");
-  const [activeAlign, setActiveAlign] = useState("left");
+export function ButtonGroup({
+  className,
+  children,
+  orientation = "horizontal",
+}: ButtonGroupProps) {
+  const isVertical = orientation === "vertical";
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Button Group</h1>
-          <Badge variant="primary">10 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Groups related buttons together with shared styling. Perfect for toggle
-          groups, toolbars, and segmented controls.
-        </p>
-      </header>
+    <div
+      role="group"
+      className={cn(
+        "inline-flex",
+        isVertical ? "flex-col" : "flex-row",
+        "[&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:border-l-0 [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none",
+        isVertical &&
+          "[&>*:not(:first-child)]:-ml-0 [&>*:not(:first-child)]:-mt-px [&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-t-0 [&>*:not(:first-child)]:rounded-none [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}`;
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+const DEFAULT_SOURCE = `import { ButtonGroup } from "@/components/ui/ButtonGroup";
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+<ButtonGroup>
+  <button type="button" className="px-4 py-2 text-sm font-medium">Left</button>
+  <button type="button" className="px-4 py-2 text-sm font-medium">Center</button>
+  <button type="button" className="px-4 py-2 text-sm font-medium">Right</button>
+</ButtonGroup>`;
 
-      <ComponentPreview id="button-group-default">
+const VERTICAL_SOURCE = `import { ButtonGroup } from "@/components/ui/ButtonGroup";
+
+<ButtonGroup orientation="vertical">
+  <button type="button" className="px-4 py-2 text-sm font-medium">Top</button>
+  <button type="button" className="px-4 py-2 text-sm font-medium">Middle</button>
+  <button type="button" className="px-4 py-2 text-sm font-medium">Bottom</button>
+</ButtonGroup>`;
+
+const WITH_ICONS_SOURCE = `import { ButtonGroup } from "@/components/ui/ButtonGroup";
+import { Pencil, Copy, Trash2 } from "lucide-react";
+
+<ButtonGroup>
+  <button type="button" className="px-3 py-2"><Pencil className="h-4 w-4" /></button>
+  <button type="button" className="px-3 py-2"><Copy className="h-4 w-4" /></button>
+  <button type="button" className="px-3 py-2"><Trash2 className="h-4 w-4" /></button>
+</ButtonGroup>`;
+
+const PAGINATION_SOURCE = `import { ButtonGroup } from "@/components/ui/ButtonGroup";
+
+<ButtonGroup>
+  <button type="button" className="px-3 py-2" disabled>&larr;</button>
+  {[1, 2, 3].map((page) => (
+    <button key={page} type="button"
+      className={\`px-4 py-2 text-sm font-medium \${
+        page === 1 ? "bg-zinc-900 text-white" : ""
+      }\`}>
+      {page}
+    </button>
+  ))}
+  <button type="button" className="px-3 py-2">&rarr;</button>
+</ButtonGroup>`;
+
+const SvgIcon = ({ d, className = "h-4 w-4" }: { d: string; className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+  </svg>
+);
+
+const ICONS = {
+  edit: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+  copy: "M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z",
+  trash: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16",
+};
+
+export default function ButtonGroupPage() {
+  return (
+    <ComponentDocPage
+      name="Button Group"
+      category="Elements"
+      description="Groups related buttons together with shared border styling. Supports horizontal and vertical orientations."
+    >
+      <PreviewPanel filename="button-group-preview.tsx">
         <ButtonGroup>
           <button type="button" className="px-4 py-2 text-sm font-medium">Left</button>
           <button type="button" className="px-4 py-2 text-sm font-medium">Center</button>
           <button type="button" className="px-4 py-2 text-sm font-medium">Right</button>
         </ButtonGroup>
-      </ComponentPreview>
+      </PreviewPanel>
 
-      <ComponentPreview id="button-group-variants">
-        <div className="flex flex-col gap-4">
-          {variants.map((variant) => (
-            <div key={variant} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{variant}</p>
-              <ButtonGroup variant={variant}>
-                <button type="button" className="px-4 py-2 text-sm font-medium">One</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">Two</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">Three</button>
-              </ButtonGroup>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
+      <SourceCodeViewer
+        source={BUTTONGROUP_SOURCE}
+        filename="components/ui/ButtonGroup/ButtonGroup.tsx"
+        defaultExpanded
+      />
 
-      <ComponentPreview id="button-group-sizes">
-        <div className="flex flex-col gap-4">
-          {sizes.map((size) => (
-            <div key={size} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{size}</p>
-              <ButtonGroup size={size}>
-                <button type="button" className="px-4 py-2 text-sm font-medium">Small</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">Medium</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">Large</button>
-              </ButtonGroup>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="button-group-gap">
-        <div className="flex flex-col gap-4">
-          {gaps.map((gap) => (
-            <div key={gap} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">Gap: {gap}</p>
-              <ButtonGroup gap={gap}>
-                <button type="button" className="px-4 py-2 text-sm font-medium">A</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">B</button>
-                <button type="button" className="px-4 py-2 text-sm font-medium">C</button>
-              </ButtonGroup>
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="button-group-vertical">
-        <ButtonGroup orientation="vertical">
-          <button type="button" className="px-4 py-2 text-sm font-medium">Top</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">Middle</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">Bottom</button>
-        </ButtonGroup>
-      </ComponentPreview>
-
-      <ComponentPreview id="button-group-rounded">
-        <div className="flex gap-4">
-          <ButtonGroup rounded>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Rounded</button>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Group</button>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Buttons</button>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Default" description="Basic horizontal button group with shared borders." code={DEFAULT_SOURCE} filename="default.tsx">
+          <ButtonGroup>
+            <button type="button" className="px-4 py-2 text-sm font-medium">Left</button>
+            <button type="button" className="px-4 py-2 text-sm font-medium">Center</button>
+            <button type="button" className="px-4 py-2 text-sm font-medium">Right</button>
           </ButtonGroup>
-          <ButtonGroup rounded={false}>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Square</button>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Group</button>
-            <button type="button" className="px-4 py-2 text-sm font-medium">Buttons</button>
-          </ButtonGroup>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="button-group-view-toggle">
-        <div className="flex flex-col gap-3">
-          <p className="text-xs font-medium text-muted-foreground">View Mode</p>
-          <ButtonGroup variant="outline">
-            <button
-              type="button"
-              onClick={() => setActiveView("list")}
-              className={`px-4 py-2 text-sm font-medium ${activeView === "list" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveView("grid")}
-              className={`px-4 py-2 text-sm font-medium ${activeView === "grid" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveView("kanban")}
-              className={`px-4 py-2 text-sm font-medium ${activeView === "kanban" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7" />
-              </svg>
-            </button>
+        <ExampleBlock title="Vertical" description="Stack buttons vertically with top-to-bottom border merging." code={VERTICAL_SOURCE} filename="vertical.tsx">
+          <ButtonGroup orientation="vertical">
+            <button type="button" className="px-4 py-2 text-sm font-medium">Top</button>
+            <button type="button" className="px-4 py-2 text-sm font-medium">Middle</button>
+            <button type="button" className="px-4 py-2 text-sm font-medium">Bottom</button>
           </ButtonGroup>
-          <p className="text-xs text-muted-foreground">Active: {activeView}</p>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="button-group-sort">
-        <div className="flex flex-col gap-3">
-          <p className="text-xs font-medium text-muted-foreground">Sort By</p>
-          <ButtonGroup variant="outline" size="sm">
-            {["date", "name", "size"].map((sort) => (
-              <button
-                key={sort}
-                type="button"
-                onClick={() => setActiveSort(sort)}
-                className={`px-4 py-2 text-sm font-medium capitalize ${activeSort === sort ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}
-              >
-                {sort}
+        <ExampleBlock title="With Icons" description="Group icon-only buttons for toolbar actions." code={WITH_ICONS_SOURCE} filename="with-icons.tsx">
+          <ButtonGroup>
+            {(["edit", "copy", "trash"] as const).map((key) => (
+              <button key={key} type="button" className="px-3 py-2 text-sm font-medium">
+                <SvgIcon d={ICONS[key]} />
               </button>
             ))}
           </ButtonGroup>
-          <p className="text-xs text-muted-foreground">Active: {activeSort}</p>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      <ComponentPreview id="button-group-toolbar">
-        <div className="flex flex-col gap-4">
-          <ButtonGroup variant="ghost" gap="xs">
-            <button type="button" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </button>
-            <button type="button" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-            </button>
-            <button type="button" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
-          </ButtonGroup>
-
-          <ButtonGroup variant="outline" gap="xs">
-            <button type="button" className="px-3 py-2 text-sm font-medium">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16" />
-              </svg>
-            </button>
-            <button type="button" className="px-3 py-2 text-sm font-medium">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 12h16" />
-              </svg>
-            </button>
-            <button type="button" className="px-3 py-2 text-sm font-medium">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 18h16" />
-              </svg>
-            </button>
-          </ButtonGroup>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="button-group-text-align">
-        <div className="flex flex-col gap-3">
-          <p className="text-xs font-medium text-muted-foreground">Text Alignment</p>
-          <ButtonGroup variant="outline">
-            {[
-              { value: "left", icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h8M4 18h16" /></svg> },
-              { value: "center", icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M8 12h8M4 18h16" /></svg> },
-              { value: "right", icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M12 12h8M4 18h16" /></svg> },
-            ].map((align) => (
-              <button
-                key={align.value}
-                type="button"
-                onClick={() => setActiveAlign(align.value)}
-                className={`px-4 py-2 ${activeAlign === align.value ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}
-              >
-                {align.icon}
-              </button>
+        <ExampleBlock title="Pagination" description="Common pagination pattern using a button group." code={PAGINATION_SOURCE} filename="pagination.tsx">
+          <ButtonGroup>
+            <button type="button" className="px-3 py-2 text-sm font-medium" disabled>&larr;</button>
+            {[1, 2, 3].map((page) => (
+              <button key={page} type="button" className={`px-4 py-2 text-sm font-medium ${page === 1 ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : ""}`}>{page}</button>
             ))}
+            <button type="button" className="px-3 py-2 text-sm font-medium">&rarr;</button>
           </ButtonGroup>
-          <p className="text-xs text-muted-foreground">Active: {activeAlign}</p>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="button-group-pagination">
-        <ButtonGroup variant="outline" size="sm">
-          <button type="button" className="px-3 py-2 text-sm font-medium" disabled>
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button type="button" className="px-4 py-2 text-sm font-medium bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">1</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">2</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">3</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">...</button>
-          <button type="button" className="px-4 py-2 text-sm font-medium">10</button>
-          <button type="button" className="px-3 py-2 text-sm font-medium">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </ButtonGroup>
-      </ComponentPreview>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;outline&quot; | &quot;ghost&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">gap</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;none&quot; | &quot;xs&quot; | &quot;sm&quot; | &quot;md&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;none&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">orientation</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">rounded</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

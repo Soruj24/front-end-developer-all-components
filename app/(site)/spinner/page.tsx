@@ -1,120 +1,107 @@
 "use client";
 
-import { Spinner } from "@/components/_spinner";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { Spinner } from "@/components/ui/Spinner";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add spinner`;
+const SPINNER_SOURCE = `import { SpinnerProps } from "@/components/ui/Spinner";
 
-const usageCode = `import { Spinner } from "@/components/_spinner";
+const sizeMap: Record<string, string> = {
+  sm: "h-4 w-4",
+  md: "h-6 w-6",
+  lg: "h-10 w-10",
+};
 
-<Spinner />
-<Spinner variant="primary" size="lg" />
-<Spinner label="Loading..." />`;
+function Spinner({ size = "md", color, className = "" }: SpinnerProps) {
+  return (
+    <svg
+      className={\`animate-spin \${sizeMap[size]} \${className}\`}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" stroke={color || "currentColor"} strokeWidth="3" strokeLinecap="round" className="opacity-20" />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke={color || "currentColor"} strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export default Spinner;`;
+
+const DEFAULT_CODE = `<Spinner />`;
+
+const SIZE_CODE = `<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />`;
+
+const COLOR_CODE = `<Spinner color="#3b82f6" />
+<Spinner color="#ef4444" />
+<Spinner color="#22c55e" />`;
 
 export default function SpinnerPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Spinner</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          An animated spinner for indicating loading states.
-        </p>
-      </header>
-
-      {/* Installation */}
+    <ComponentDocPage
+      name="Spinner"
+      category="Feedback"
+      description="An animated spinner for indicating loading states."
+    >
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Default spinner.</p>
-        </div>
-        <ComponentPreview id="spinner-default">
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          Preview
+        </h2>
+        <PreviewPanel filename="Spinner.tsx">
           <Spinner />
-        </ComponentPreview>
+        </PreviewPanel>
+        <SourceCodeViewer
+          source={SPINNER_SOURCE}
+          filename="components/ui/Spinner.tsx"
+          defaultExpanded
+        />
       </section>
 
-      {/* Variants */}
       <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different color variants.</p>
-        </div>
-        <ComponentPreview id="spinner-variants">
-          <div className="flex items-center gap-6">
-            <Spinner variant="default" />
-            <Spinner variant="primary" />
-            <Spinner variant="secondary" />
-          </div>
-        </ComponentPreview>
-      </section>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+        <ExampleBlock
+          title="Default"
+          description="The default spinner with medium size."
+          code={DEFAULT_CODE}
+          filename="Example.tsx"
+        >
+          <Spinner />
+        </ExampleBlock>
 
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different sizes for the spinner.</p>
-        </div>
-        <ComponentPreview id="spinner-sizes">
+        <ExampleBlock
+          title="Sizes"
+          description="Three available sizes: small, medium, and large."
+          code={SIZE_CODE}
+          filename="Sizes.tsx"
+        >
           <div className="flex items-center gap-6">
             <Spinner size="sm" />
             <Spinner size="md" />
             <Spinner size="lg" />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;primary&quot; | &quot;secondary&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ExampleBlock
+          title="Custom Colors"
+          description="Pass a color prop to customize the spinner color."
+          code={COLOR_CODE}
+          filename="Colors.tsx"
+        >
+          <div className="flex items-center gap-6">
+            <Spinner color="#3b82f6" />
+            <Spinner color="#ef4444" />
+            <Spinner color="#22c55e" />
+          </div>
+        </ExampleBlock>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

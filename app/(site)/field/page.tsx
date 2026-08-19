@@ -1,57 +1,98 @@
 "use client";
 
-import { Field } from "@/components/_field";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { Field } from "@/components/ui/Field";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add field`;
+const FIELD_SOURCE = `"use client";
 
-const usageCode = `import { Field, FieldLabel, FieldError, FieldHint } from "@/components/_field";
+import { useId, cloneElement, isValidElement } from "react";
+import { cn } from "@/lib/cn";
+import type { FieldProps } from "./Field.types";
 
-<Field>
-  <FieldLabel>Email</FieldLabel>
-  <Input placeholder="you@example.com" />
-  <FieldHint>We'll never share your email.</FieldHint>
-  <FieldError>This field is required.</FieldError>
+export function Field({ label, description, error, required, children, className, htmlFor }: FieldProps) {
+  const autoId = useId();
+  const id = htmlFor ?? autoId;
+
+  return (
+    <div className={cn("space-y-1.5", className)}>
+      {label && (
+        <label htmlFor={id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </label>
+      )}
+
+      <div>
+        {isValidElement(children)
+          ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+          : children}
+      </div>
+
+      {description && !error && (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      )}
+
+      {error && (
+        <p className="text-xs text-red-500">{error}</p>
+      )}
+    </div>
+  );
+}`;
+
+const DEFAULT_CODE = `import { Field } from "@/components/ui/Field";
+
+<Field label="Email">
+  <input type="email" placeholder="you@example.com" />
+</Field>`;
+
+const WITH_HINT_CODE = `import { Field } from "@/components/ui/Field";
+
+<Field label="Password" description="Must be at least 8 characters.">
+  <input type="password" placeholder="Enter password" />
+</Field>`;
+
+const WITH_ERROR_CODE = `import { Field } from "@/components/ui/Field";
+
+<Field label="Username" error="Username must be at least 3 characters.">
+  <input type="text" defaultValue="ab" />
+</Field>`;
+
+const REQUIRED_CODE = `import { Field } from "@/components/ui/Field";
+
+<Field label="Email" required>
+  <input type="email" placeholder="you@example.com" />
 </Field>`;
 
 export default function FieldPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Field</h1>
-          <Badge variant="primary">Forms</Badge>
+    <ComponentDocPage
+      name="Field"
+      category="Forms"
+      description="Form field wrapper with label, hint, and validation error messages. Provides accessible grouping of form controls with their labels."
+    >
+      <PreviewPanel filename="field-demo.tsx">
+        <div className="w-full max-w-sm">
+          <Field label="Email">
+            <input
+              type="email"
+              placeholder="you@example.com"
+              className="flex h-10 w-full rounded-lg border border-black/[.08] bg-white px-3 py-2 text-sm placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring dark:border-white/[.145] dark:bg-zinc-900"
+            />
+          </Field>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Form field wrapper with label, hint, and validation error messages.
-          Provides accessible grouping of form controls with their labels.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={FIELD_SOURCE} filename="Field.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Basic form field with label and input.</p>
-        </div>
-        <ComponentPreview id="field-default">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Default" description="Basic form field with label and input." code={DEFAULT_CODE}>
           <div className="w-full max-w-sm">
-            <Field>
-              <label className="text-sm font-medium text-foreground">Email</label>
+            <Field label="Email">
               <input
                 type="email"
                 placeholder="you@example.com"
@@ -59,93 +100,44 @@ export default function FieldPage() {
               />
             </Field>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* With Hint */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Hint</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Field with helper text below the input.</p>
-        </div>
-        <ComponentPreview id="field-hint">
+        <ExampleBlock title="With Hint" description="Field with helper text below the input." code={WITH_HINT_CODE}>
           <div className="w-full max-w-sm">
-            <Field>
-              <label className="text-sm font-medium text-foreground">Password</label>
+            <Field label="Password" description="Must be at least 8 characters.">
               <input
                 type="password"
                 placeholder="Enter password"
                 className="flex h-10 w-full rounded-lg border border-black/[.08] bg-white px-3 py-2 text-sm placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring dark:border-white/[.145] dark:bg-zinc-900"
               />
-              <p className="text-xs text-muted-foreground">Must be at least 8 characters.</p>
             </Field>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* With Error */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Error</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Field with validation error state.</p>
-        </div>
-        <ComponentPreview id="field-error">
+        <ExampleBlock title="With Error" description="Field with validation error state." code={WITH_ERROR_CODE}>
           <div className="w-full max-w-sm">
-            <Field>
-              <label className="text-sm font-medium text-foreground">Username</label>
+            <Field label="Username" error="Username must be at least 3 characters.">
               <input
                 type="text"
                 defaultValue="ab"
                 className="flex h-10 w-full rounded-lg border border-red-500 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 dark:border-red-500 dark:bg-zinc-900"
               />
-              <p className="text-xs text-red-500">Username must be at least 3 characters.</p>
             </Field>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">children</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">disabled</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">required</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="Required" description="Mark a field as required with an asterisk." code={REQUIRED_CODE}>
+          <div className="w-full max-w-sm">
+            <Field label="Email" required>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="flex h-10 w-full rounded-lg border border-black/[.08] bg-white px-3 py-2 text-sm placeholder:text-muted-foreground/70 focus:outline-none focus:ring-2 focus:ring-ring dark:border-white/[.145] dark:bg-zinc-900"
+              />
+            </Field>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

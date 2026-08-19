@@ -1,122 +1,149 @@
 "use client";
 
-import { Progress } from "@/components/_progress";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { Progress } from "@/components/ui/Progress";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add progress`;
+const PROGRESS_SOURCE = `"use client";
 
-const usageCode = `import { Progress } from "@/components/_progress"
+import { cn } from "@/lib/cn";
 
-<Progress value={60} />
-<Progress value={75} variant="success" />
-<Progress value={50} size="lg" label="Loading..." />`;
+export interface ProgressProps {
+  value?: number;
+  max?: number;
+  label?: string;
+  showValue?: boolean;
+  className?: string;
+}
+
+export function Progress({
+  value = 0,
+  max = 100,
+  label,
+  showValue = false,
+  className,
+}: ProgressProps) {
+  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+
+  return (
+    <div className={cn("w-full space-y-1", className)}>
+      {(label || showValue) && (
+        <div className="flex items-center justify-between">
+          {label && <span className="text-sm font-medium">{label}</span>}
+          {showValue && <span className="text-sm text-zinc-500">{Math.round(percentage)}%</span>}
+        </div>
+      )}
+      <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+        <div
+          className="h-full rounded-full bg-zinc-900 transition-all duration-300 ease-in-out dark:bg-zinc-50"
+          style={{ width: \`\${percentage}%\` }}
+        />
+      </div>
+    </div>
+  );
+}`;
+
+const BASIC_SOURCE = `import { Progress } from "@/components/ui/Progress";
+
+<Progress value={60} />`;
+
+const SHOW_VALUE_SOURCE = `import { Progress } from "@/components/ui/Progress";
+
+<Progress value={75} showValue />`;
+
+const LABEL_SOURCE = `import { Progress } from "@/components/ui/Progress";
+
+<Progress value={50} label="Uploading..." showValue />`;
+
+const MAX_SOURCE = `import { Progress } from "@/components/ui/Progress";
+
+<Progress value={3} max={5} label="Steps completed" showValue />`;
+
+const CUSTOM_STYLE_SOURCE = `import { Progress } from "@/components/ui/Progress";
+
+<div className="w-1/2">
+  <Progress value={80} showValue />
+</div>`;
 
 export default function ProgressPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Progress</h1>
-          <Badge variant="primary">Feedback</Badge>
+    <ComponentDocPage
+      name="Progress"
+      category="Feedback"
+      description="Displays an indicator showing completion progress of a task. Supports labels, percentage display, and custom max values."
+    >
+      <PreviewPanel filename="progress-preview.tsx">
+        <div className="w-full max-w-sm">
+          <Progress value={60} showValue label="Loading..." />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Displays an indicator showing completion progress of a task.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={PROGRESS_SOURCE}
+        filename="components/ui/Progress.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Variants */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different color variants for the progress bar.</p>
-        </div>
-        <ComponentPreview id="progress-variants">
-          <div className="flex flex-col gap-3">
-            <Progress value={60} variant="default" />
-            <Progress value={75} variant="success" />
-            <Progress value={50} variant="warning" />
-            <Progress value={40} variant="danger" />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Basic"
+          description="Simple progress bar with a percentage value."
+          code={BASIC_SOURCE}
+          filename="basic.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <Progress value={60} />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sizes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Different sizes for the progress bar.</p>
-        </div>
-        <ComponentPreview id="progress-sizes">
-          <div className="flex flex-col gap-3">
-            <Progress value={60} size="sm" />
-            <Progress value={60} size="md" />
-            <Progress value={60} size="lg" />
+        <ExampleBlock
+          title="Show Value"
+          description="Display the current percentage next to the bar."
+          code={SHOW_VALUE_SOURCE}
+          filename="show-value.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <Progress value={75} showValue />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">value</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">0</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">max</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">100</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;success&quot; | &quot;warning&quot; | &quot;danger&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">label</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="With Label"
+          description="Add a descriptive label above the progress bar."
+          code={LABEL_SOURCE}
+          filename="label.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <Progress value={50} label="Uploading..." showValue />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Max"
+          description="Set a custom max value to represent partial progress."
+          code={MAX_SOURCE}
+          filename="custom-max.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <Progress value={3} max={5} label="Steps completed" showValue />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Width"
+          description="Wrap the progress bar to control its width."
+          code={CUSTOM_STYLE_SOURCE}
+          filename="custom-width.tsx"
+        >
+          <div className="w-1/2">
+            <Progress value={80} showValue />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

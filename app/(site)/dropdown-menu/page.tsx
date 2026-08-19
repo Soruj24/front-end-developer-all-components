@@ -1,177 +1,200 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuGroup,
+} from "@/components/ui/DropdownMenu";
 
-const installCommand = `npx component-library@latest add dropdown-menu`;
+const DROPDOWNMENU_SOURCE = `"use client";
 
-const usageCode = `import { DropdownMenu } from "@/components/_dropdown-menu";
+import { useState, useRef, useEffect, createContext, useContext, type ReactNode } from "react";
+import { cn } from "@/lib/cn";
+import type { DropdownAlign, DropdownMenuProps } from "./DropdownMenu.types";
 
-<DropdownMenu
-  trigger={<button>Open</button>}
-  items={[
-    { label: "Profile", onClick: () => {} },
-    { label: "Settings", onClick: () => {} },
-    { divider: true },
-    { label: "Logout", onClick: () => {}, variant: "danger" },
-  ]}
-/>`;
+interface MenuCtx { open: boolean; setOpen: (v: boolean) => void; align: DropdownAlign; }
+const MenuContext = createContext<MenuCtx>({ open: false, setOpen: () => {}, align: "start" });
 
-function CopyIcon() {
+function useClickOutside(onClose: () => void, enabled: boolean) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) onClose(); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [onClose, enabled]);
+  return ref;
+}
+
+export function DropdownMenu({ trigger, children, align = "start", className }: DropdownMenuProps) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useClickOutside(() => setOpen(false), open);
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-    </svg>
+    <MenuContext.Provider value={{ open, setOpen, align }}>
+      <div ref={containerRef} className={cn("relative inline-block", className)}>
+        <div onClick={() => setOpen(!open)} className="outline-none">
+          {typeof trigger === "function" ? trigger(open) : trigger}
+        </div>
+        <div data-state={open ? "open" : "closed"} className={cn(
+          "pointer-events-none absolute z-50 mt-1 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
+          "data-[state=open]:pointer-events-auto data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          align === "end" ? "right-0" : align === "center" ? "left-1/2 -translate-x-1/2" : "left-0", className,
+        )}>{children}</div>
+      </div>
+    </MenuContext.Provider>
   );
 }
 
-function TrashIcon() {
+export function DropdownMenuTrigger({ children }: { children: ReactNode }) {
+  const { setOpen, open } = useContext(MenuContext);
+  return <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} data-state={open ? "open" : "closed"} className="outline-none">{children}</button>;
+}
+
+export function DropdownMenuContent({ children, className }: { children: ReactNode; className?: string }) {
+  const { align } = useContext(MenuContext);
+  const alignClass = align === "end" ? "right-0" : align === "center" ? "left-1/2 -translate-x-1/2" : "left-0";
+  return <div data-state="open" className={cn("min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md", alignClass, className)}>{children}</div>;
+}
+
+export function DropdownMenuItem({ children, shortcut, icon, disabled, destructive, onClick, className }: {
+  children: ReactNode; shortcut?: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean; onClick?: () => void; className?: string;
+}) {
+  const { setOpen } = useContext(MenuContext);
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-    </svg>
+    <button type="button" disabled={disabled} onClick={() => { onClick?.(); setOpen(false); }}
+      className={cn("relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+        destructive && "text-destructive focus:bg-destructive/10 focus:text-destructive", disabled && "pointer-events-none opacity-50", className)}>
+      {icon && <span className="h-4 w-4 shrink-0">{icon}</span>}
+      <span className="flex-1 text-left">{children}</span>
+      {shortcut && <span className="ml-auto text-xs tracking-widest opacity-60">{shortcut}</span>}
+    </button>
   );
 }
 
-function DownloadIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-    </svg>
-  );
+export function DropdownMenuSeparator({ className }: { className?: string }) {
+  return <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />;
 }
 
+export function DropdownMenuLabel({ children, className, inset }: { children: ReactNode; className?: string; inset?: boolean }) {
+  return <div className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}>{children}</div>;
+}
+
+export function DropdownMenuGroup({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("p-1", className)}>{children}</div>;
+}`;
+
+const BASIC_CODE = `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/DropdownMenu";
+
+<DropdownMenu trigger={<button>Actions</button>}>
+  <DropdownMenuItem>Edit</DropdownMenuItem>
+  <DropdownMenuItem>Duplicate</DropdownMenuItem>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem destructive>Delete</DropdownMenuItem>
+</DropdownMenu>`;
+
+const ICONS_CODE = `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/DropdownMenu";
+
+<DropdownMenu trigger={<button>Profile</button>}>
+  <DropdownMenuItem icon={<UserIcon />}>My Account</DropdownMenuItem>
+  <DropdownMenuItem icon={<SettingsIcon />}>Settings</DropdownMenuItem>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem icon={<LogoutIcon />} destructive>Log out</DropdownMenuItem>
+</DropdownMenu>`;
+
+const SHORTCUTS_CODE = `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem } from "@/components/ui/DropdownMenu";
+
+<DropdownMenu trigger={<button>Options</button>}>
+  <DropdownMenuItem shortcut="⌘P">Profile</DropdownMenuItem>
+  <DropdownMenuItem shortcut="⌘S">Settings</DropdownMenuItem>
+  <DropdownMenuItem shortcut="⌘Q" destructive>Sign out</DropdownMenuItem>
+</DropdownMenu>`;
+
+const LABEL_GROUP_CODE = `import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuLabel, DropdownMenuGroup, DropdownMenuSeparator } from "@/components/ui/DropdownMenu";
+
+<DropdownMenu trigger={<button>Actions</button>}>
+  <DropdownMenuGroup>
+    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuItem>Archive</DropdownMenuItem>
+  </DropdownMenuGroup>
+  <DropdownMenuSeparator />
+  <DropdownMenuGroup>
+    <DropdownMenuLabel>Danger zone</DropdownMenuLabel>
+    <DropdownMenuItem destructive>Delete project</DropdownMenuItem>
+  </DropdownMenuGroup>
+</DropdownMenu>`;
+
+const Svg = ({ d }: { d: string }) => <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d={d} /></svg>;
+const ChevronDown = () => <Svg d="M19 9l-7 7-7-7" />;
+const PersonIcon = () => <><Svg d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></>;
+const SettingsIcon = () => <><Svg d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><Svg d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></>;
+const HelpIcon = () => <Svg d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />;
+
+const darkBtn = "rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300";
+const lightBtn = "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900";
 export default function DropdownMenuPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Dropdown Menu</h1>
-          <Badge variant="primary">Overlay</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A menu that drops down from a trigger element, displaying a list of
-          actions or navigation links. Use for context menus and command palettes.
-        </p>
-      </header>
+    <ComponentDocPage name="Dropdown Menu" category="Overlays"
+      description="A menu that drops down from a trigger element, displaying a list of actions or navigation links. Use for context menus and command palettes.">
+      <PreviewPanel filename="dropdown-menu-preview.tsx">
+        <DropdownMenu trigger={<button className={`${lightBtn} inline-flex items-center gap-2`}>Actions <ChevronDown /></button>}>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>Copy</DropdownMenuItem>
+          <DropdownMenuItem>Download</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem destructive>Delete</DropdownMenuItem>
+        </DropdownMenu>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={DROPDOWNMENU_SOURCE} filename="DropdownMenu.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic" description="Simple dropdown with actions and dividers." code={BASIC_CODE}>
+          <DropdownMenu trigger={<button className={lightBtn}>Actions</button>}>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem destructive>Delete</DropdownMenuItem>
+          </DropdownMenu>
+        </ExampleBlock>
 
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Basic dropdown menu with items and dividers.</p>
-        </div>
-        <ComponentPreview id="dropdown-menu-default">
-          <div className="flex items-center gap-4">
-            <div className="relative inline-block text-left">
-              <button type="button" className="inline-flex items-center gap-2 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900">
-                Actions
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 dark:bg-zinc-900">
-                <div className="py-1">
-                  <button type="button" className="flex w-full items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                    <CopyIcon /> Copy
-                  </button>
-                  <button type="button" className="flex w-full items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                    <DownloadIcon /> Download
-                  </button>
-                  <div className="my-1 border-t border-zinc-200 dark:border-zinc-700" />
-                  <button type="button" className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
-                    <TrashIcon /> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ComponentPreview>
-      </section>
+        <ExampleBlock title="With Icons" description="Items with leading icons." code={ICONS_CODE}>
+          <DropdownMenu trigger={<button className={darkBtn}>Profile</button>}>
+            <DropdownMenuItem icon={<PersonIcon />}>My Account</DropdownMenuItem>
+            <DropdownMenuItem icon={<SettingsIcon />}>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem icon={<HelpIcon />}>Help</DropdownMenuItem>
+          </DropdownMenu>
+        </ExampleBlock>
 
-      {/* With Icons */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Icons</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Items with leading icons for better recognition.</p>
-        </div>
-        <ComponentPreview id="dropdown-menu-icons">
-          <div className="relative inline-block text-left">
-            <button type="button" className="inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-              Profile
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 dark:bg-zinc-900">
-              <div className="py-1">
-                <button type="button" className="flex w-full items-center gap-3 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                  My Account
-                </button>
-                <button type="button" className="flex w-full items-center gap-3 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                  Settings
-                </button>
-                <button type="button" className="flex w-full items-center gap-3 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  Help
-                </button>
-              </div>
-            </div>
-          </div>
-        </ComponentPreview>
-      </section>
+        <ExampleBlock title="With Shortcuts" description="Keyboard shortcuts on the right." code={SHORTCUTS_CODE}>
+          <DropdownMenu trigger={<button className={darkBtn}>Options</button>}>
+            <DropdownMenuItem shortcut="⌘P">Profile</DropdownMenuItem>
+            <DropdownMenuItem shortcut="⌘S">Settings</DropdownMenuItem>
+            <DropdownMenuItem shortcut="⌘Q" destructive>Sign out</DropdownMenuItem>
+          </DropdownMenu>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">trigger</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">MenuItem[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">align</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;start&quot; | &quot;center&quot; | &quot;end&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;end&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="Labels & Groups" description="Organize items with labels and groups." code={LABEL_GROUP_CODE}>
+          <DropdownMenu trigger={<button className={darkBtn}>Actions</button>}>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Archive</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Danger zone</DropdownMenuLabel>
+              <DropdownMenuItem destructive>Delete project</DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenu>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

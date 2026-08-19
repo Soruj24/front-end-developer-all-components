@@ -1,119 +1,196 @@
 "use client";
 
-import { Typography } from "@/components/_typography";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add typography`;
+const TYPOGRAPHY_SOURCE = `import { cn } from "@/lib/cn";
+import { TypographyProps } from "./Typography.types";
 
-const usageCode = `import { Typography } from "@/components/_typography"
+const elementClasses = {
+  h1: "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+  h2: "scroll-m-20 text-3xl font-semibold tracking-tight",
+  h3: "scroll-m-20 text-2xl font-semibold tracking-tight",
+  h4: "scroll-m-20 text-xl font-semibold tracking-tight",
+  h5: "scroll-m-20 text-lg font-semibold tracking-tight",
+  h6: "scroll-m-20 text-base font-semibold tracking-tight",
+  p: "leading-7",
+  blockquote: "border-l-2 border-border pl-6 italic text-muted-foreground",
+  code: "rounded-md bg-muted px-1.5 py-0.5 font-mono text-sm font-semibold",
+  lead: "text-xl text-muted-foreground",
+  large: "text-lg font-semibold",
+  small: "text-sm font-medium leading-none",
+  muted: "text-sm text-muted-foreground",
+};
 
-<Typography variant="h1">Heading 1</Typography>
-<Typography variant="p">Paragraph text</Typography>
-<Typography variant="code">inline code</Typography>`;
+const defaultElement = {
+  h1: "h1", h2: "h2", h3: "h3", h4: "h4", h5: "h5", h6: "h6",
+  p: "p", blockquote: "blockquote", code: "code",
+  lead: "p", large: "p", small: "p", muted: "p",
+} as const;
+
+export default function Typography({ as = "p", className, children }: TypographyProps) {
+  const Component = defaultElement[as] as keyof React.JSX.IntrinsicElements;
+  return <Component className={cn(elementClasses[as], className)}>{children}</Component>;
+}`;
+
+const HEADINGS_SOURCE = `import Typography from "@/components/ui/Typography";
+
+function HeadingsShowcase() {
+  return (
+    <div className="flex flex-col gap-2">
+      <Typography as="h1">Heading 1</Typography>
+      <Typography as="h2">Heading 2</Typography>
+      <Typography as="h3">Heading 3</Typography>
+      <Typography as="h4">Heading 4</Typography>
+      <Typography as="h5">Heading 5</Typography>
+      <Typography as="h6">Heading 6</Typography>
+    </div>
+  );
+}`;
+
+const BODY_SOURCE = `import Typography from "@/components/ui/Typography";
+
+function BodyShowcase() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Typography as="p">
+        The quick brown fox jumps over the lazy dog. This is a paragraph of
+        text that demonstrates the default body styling.
+      </Typography>
+      <Typography as="small">
+        This is smaller text for captions and fine print.
+      </Typography>
+      <Typography as="blockquote">
+        "Design is not just what it looks like and feels like. Design is how it works."
+      </Typography>
+    </div>
+  );
+}`;
+
+const INLINE_SOURCE = `import Typography from "@/components/ui/Typography";
+
+function InlineShowcase() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Typography as="lead">This is lead text — larger and muted for introductions.</Typography>
+      <Typography as="large">This is large text for emphasis.</Typography>
+      <Typography as="p">
+        Use <Typography as="code">inline code</Typography> for code references
+        and <Typography as="small">small text</Typography> for fine print.
+      </Typography>
+      <Typography as="muted">This is muted text for secondary content.</Typography>
+    </div>
+  );
+}`;
+
+const TAG: Record<string, string> = {
+  h1:"h1",h2:"h2",h3:"h3",h4:"h4",h5:"h5",h6:"h6",
+  p:"p",blockquote:"blockquote",code:"code",
+  lead:"p",large:"p",small:"p",muted:"p",
+};
+const CLS: Record<string, string> = {
+  h1:"scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+  h2:"scroll-m-20 text-3xl font-semibold tracking-tight",
+  h3:"scroll-m-20 text-2xl font-semibold tracking-tight",
+  h4:"scroll-m-20 text-xl font-semibold tracking-tight",
+  h5:"scroll-m-20 text-lg font-semibold tracking-tight",
+  h6:"scroll-m-20 text-base font-semibold tracking-tight",
+  p:"leading-7",
+  blockquote:"border-l-2 border-border pl-6 italic text-muted-foreground",
+  code:"rounded-md bg-muted px-1.5 py-0.5 font-mono text-sm font-semibold",
+  lead:"text-xl text-muted-foreground",large:"text-lg font-semibold",
+  small:"text-sm font-medium leading-none",muted:"text-sm text-muted-foreground",
+};
+function Inline({ as = "p", className = "", children }: { as?: string; className?: string; children: React.ReactNode }) {
+  const Tag = TAG[as] || "p";
+  return <Tag className={`${CLS[as] || CLS.p} ${className}`}>{children}</Tag>;
+}
 
 export default function TypographyPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Typography</h1>
-          <Badge variant="primary">Base UI</Badge>
+    <ComponentDocPage
+      name="Typography"
+      category="Data Display"
+      description="Styles for headings, paragraphs, lists, and other text elements. Provides semantic typography variants out of the box."
+    >
+      <PreviewPanel filename="typography-preview.tsx">
+        <div className="flex flex-col gap-2">
+          <Inline as="h1">Heading 1</Inline>
+          <Inline as="h2">Heading 2</Inline>
+          <Inline as="h3">Heading 3</Inline>
+          <Inline as="p">
+            The quick brown fox jumps over the lazy dog. This is a paragraph of
+            text that demonstrates the default body styling.
+          </Inline>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Styles for headings, paragraphs, lists, and other text elements.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Headings */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Headings</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Heading variants from h1 to h6.</p>
-        </div>
-        <ComponentPreview id="typography-headings">
+      </PreviewPanel>
+      <SourceCodeViewer
+        source={TYPOGRAPHY_SOURCE}
+        filename="components/ui/Typography/Typography.tsx"
+        defaultExpanded
+      />
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Headings"
+          description="Heading variants from h1 to h6."
+          code={HEADINGS_SOURCE}
+          filename="headings.tsx"
+        >
           <div className="flex flex-col gap-2">
-            <Typography variant="h1">Heading 1</Typography>
-            <Typography variant="h2">Heading 2</Typography>
-            <Typography variant="h3">Heading 3</Typography>
-            <Typography variant="h4">Heading 4</Typography>
-            <Typography variant="h5">Heading 5</Typography>
-            <Typography variant="h6">Heading 6</Typography>
+            <Inline as="h1">Heading 1</Inline>
+            <Inline as="h2">Heading 2</Inline>
+            <Inline as="h3">Heading 3</Inline>
+            <Inline as="h4">Heading 4</Inline>
+            <Inline as="h5">Heading 5</Inline>
+            <Inline as="h6">Heading 6</Inline>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Body */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Body</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Body text and paragraph styles.</p>
-        </div>
-        <ComponentPreview id="typography-body">
+        <ExampleBlock
+          title="Body"
+          description="Body text, small text, and blockquote styles."
+          code={BODY_SOURCE}
+          filename="body.tsx"
+        >
           <div className="flex flex-col gap-4">
-            <Typography variant="p">
-              The quick brown fox jumps over the lazy dog. This is a paragraph
-              of text that demonstrates the default body styling.
-            </Typography>
-            <Typography variant="small">
+            <Inline as="p">
+              The quick brown fox jumps over the lazy dog. This is a paragraph of
+              text that demonstrates the default body styling.
+            </Inline>
+            <Inline as="small">
               This is smaller text for captions and fine print.
-            </Typography>
-            <Typography variant="blockquote">
+            </Inline>
+            <Inline as="blockquote">
               &ldquo;Design is not just what it looks like and feels like. Design is how it works.&rdquo;
-            </Typography>
+            </Inline>
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;h1&quot; | &quot;h2&quot; | ... | &quot;p&quot; | &quot;code&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;p&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">as</td>
-                <td className="px-4 py-3 text-muted-foreground">ElementType</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Inline Variants"
+          description="Lead, large, code, small, and muted text for specialized contexts."
+          code={INLINE_SOURCE}
+          filename="inline-variants.tsx"
+        >
+          <div className="flex flex-col gap-4">
+            <Inline as="lead">
+              This is lead text — larger and muted for introductions.
+            </Inline>
+            <Inline as="large">
+              This is large text for emphasis.
+            </Inline>
+            <Inline as="p">
+              Use <Inline as="code">inline code</Inline> for code references
+              and <Inline as="small">small text</Inline> for fine print.
+            </Inline>
+            <Inline as="muted">This is muted text for secondary content.</Inline>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

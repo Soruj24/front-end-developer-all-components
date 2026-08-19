@@ -1,118 +1,174 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { FullCalendar } from "./components/FullCalendar";
-import { MiniCalendar } from "./components/MiniCalendar";
-import { WeekView } from "./components/WeekView";
-import { EventSummary } from "./components/EventSummary";
-import { CalendarLegend } from "./components/CalendarLegend";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import Calendar from "@/components/ui/Calendar";
 
-const calendarProps = [
-  { prop: "variant", type: "\"full\" | \"mini\" | \"week\" | \"summary\"", default: "\"full\"", required: "No" },
-  { prop: "events", type: "CalendarEvent[]", default: "[]", required: "No" },
-  { prop: "selectedDate", type: "Date", default: "-", required: "No" },
-  { prop: "onDateSelect", type: "(date: Date) => void", default: "-", required: "No" },
-  { prop: "showLegend", type: "boolean", default: "true", required: "No" },
-];
+const CALENDAR_SOURCE = `import { useMemo } from "react";
 
-const installCommand = `npx component-library@latest add calendar`;
+interface CalendarEvent {
+  title: string;
+  type?: string;
+}
 
-const usageCode = `import { Calendar } from "@/components/calendar";
+export interface CalendarProps {
+  month: Date;
+  events?: Record<number, CalendarEvent[]>;
+  onDateClick?: (day: number) => void;
+  className?: string;
+}
 
-<Calendar
-  events={calendarEvents}
-  onDateSelect={handleDateSelect}
-/>`;
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const STYLES: Array<{ label: string; Render: React.ComponentType; registryId: string }> = [
-  { label: "Full Calendar", Render: FullCalendar, registryId: "calendar-full" },
-  { label: "Mini Calendar", Render: MiniCalendar, registryId: "calendar-mini" },
-  { label: "Week View", Render: WeekView, registryId: "calendar-week-view" },
-  { label: "Event Summary", Render: EventSummary, registryId: "calendar-event-summary" },
-  { label: "Legend", Render: CalendarLegend, registryId: "calendar-legend" },
-];
+const Calendar = ({
+  month,
+  events = {},
+  onDateClick,
+  className = "",
+}: CalendarProps) => {
+  const grid = useMemo(() => {
+    const year = month.getFullYear();
+    const m = month.getMonth();
+    const first = new Date(year, m, 1).getDay();
+    const daysInMonth = new Date(year, m + 1, 0).getDate();
+    const cells: (number | null)[] = [];
+    for (let i = 0; i < first; i++) cells.push(null);
+    for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+    while (cells.length % 7 !== 0) cells.push(null);
+    return cells;
+  }, [month]);
 
-export default function CalendarPage() {
-  const [activeStyle, setActiveStyle] = useState(0);
-  const { Render: Active, registryId } = STYLES[activeStyle];
+  const today = new Date();
+  const todayStr = \`\${today.getFullYear()}-\${today.getMonth()}-\${today.getDate()}\`;
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <div>
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Calendar</h1>
-          <Badge variant="primary">{STYLES.length} views</Badge>
-        </div>
-        <p className="text-muted-foreground">Multiple calendar examples and views.</p>
+    <div className={className}>
+      <div className="mb-2 grid grid-cols-7 text-center text-xs font-medium text-muted-foreground">
+        {DAYS.map((d) => (
+          <div key={d} className="py-1">{d}</div>
+        ))}
       </div>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Examples */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-      <section>
-        <div className="mb-8 flex flex-wrap gap-2">
-          {STYLES.map((s, i) => (
-            <button
-              key={s.registryId}
-              onClick={() => setActiveStyle(i)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                activeStyle === i
-                  ? "bg-blue-500 text-white shadow"
-                  : "bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted"
-              }`}
+      <div className="grid grid-cols-7 text-center text-sm">
+        {grid.map((day, i) => {
+          const dateStr =
+            day !== null
+              ? \`\${month.getFullYear()}-\${month.getMonth()}-\${day}\`
+              : null;
+          const isToday = dateStr === todayStr;
+          const dayEvents = day !== null ? events[day] || [] : [];
+          return (
+            <div
+              key={i}
+              onClick={() => day !== null && onDateClick?.(day)}
+              className={\`relative min-h-[56px] border-b border-r border-border p-1 \${
+                day !== null ? "cursor-pointer hover:bg-muted" : ""
+              }\`}
             >
-              {s.label}
-            </button>
-          ))}
-        </div>
-
-        <ComponentPreview id={registryId}>
-          <Active />
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              {calendarProps.map((row, i) => (
-                <tr key={row.prop} className={i < calendarProps.length - 1 ? "border-b" : ""}>
-                  <td className="px-4 py-3 font-mono text-xs">{row.prop}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.type}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{row.default}</td>
-                  <td className="px-4 py-3">{row.required}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              {day !== null && (
+                <>
+                  <span
+                    className={\`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs \${
+                      isToday
+                        ? "bg-foreground text-background font-semibold"
+                        : "text-foreground"
+                    }\`}
+                  >
+                    {day}
+                  </span>
+                  <div className="mt-0.5 flex flex-col gap-0.5">
+                    {dayEvents.slice(0, 2).map((ev, ei) => (
+                      <div
+                        key={ei}
+                        className="truncate rounded bg-muted px-1 py-0.5 text-[10px] leading-tight text-foreground"
+                      >
+                        {ev.title}
+                      </div>
+                    ))}
+                    {dayEvents.length > 2 && (
+                      <span className="text-[10px] text-muted-foreground">
+                        +{dayEvents.length - 2} more
+                      </span>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
+  );
+};
+
+export default Calendar;
+export { Calendar };
+export type { CalendarProps, CalendarEvent };`;
+
+const DEMO_MONTH = new Date(2026, 7, 1);
+
+const DEMO_EVENTS: Record<number, { title: string; type?: string }[]> = {
+  5: [{ title: "Sprint Review" }, { title: "Lunch" }],
+  12: [{ title: "Design Sync" }],
+  15: [{ title: "Team Standup" }, { title: "1:1 Meeting" }, { title: "Happy Hour" }],
+  20: [{ title: "Release Planning" }],
+  25: [{ title: "Retrospective" }],
+};
+
+const BASIC_EXAMPLE = `<Calendar month={new Date(2026, 7, 1)} />`;
+
+const EVENTS_EXAMPLE = `<Calendar
+  month={new Date(2026, 7, 1)}
+  events={{
+    5: [{ title: "Sprint Review" }],
+    15: [{ title: "Team Standup" }, { title: "Happy Hour" }],
+    25: [{ title: "Retrospective" }],
+  }}
+  onDateClick={(day) => console.log("Clicked day:", day)}
+/>`;
+
+const CLICKABLE_EXAMPLE = `<Calendar
+  month={new Date(2026, 7, 1)}
+  onDateClick={(day) => alert(\`Day \${day} clicked!\`)}
+/>`;
+
+const CUSTOM_CLASS_EXAMPLE = `<Calendar
+  month={new Date(2026, 7, 1)}
+  className="w-full max-w-sm rounded-lg border p-4"
+/>`;
+
+export default function CalendarPage() {
+  return (
+    <ComponentDocPage
+      name="Calendar"
+      category="Data Display"
+      description="A monthly calendar grid that displays days with optional event markers. Supports date click handling and custom styling for scheduling and date-oriented interfaces."
+    >
+      <PreviewPanel filename="calendar-preview">
+        <Calendar month={DEMO_MONTH} events={DEMO_EVENTS} className="w-full max-w-sm" />
+      </PreviewPanel>
+
+      <SourceCodeViewer source={CALENDAR_SOURCE} filename="Calendar.tsx" defaultExpanded />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic Calendar" description="A simple calendar showing the current month grid." code={BASIC_EXAMPLE}>
+          <Calendar month={DEMO_MONTH} className="w-full max-w-sm" />
+        </ExampleBlock>
+
+        <ExampleBlock title="With Events" description="Calendar displaying event markers on specific days." code={EVENTS_EXAMPLE}>
+          <Calendar month={DEMO_MONTH} events={DEMO_EVENTS} className="w-full max-w-sm" />
+        </ExampleBlock>
+
+        <ExampleBlock title="Clickable Dates" description="Calendar with date click handling for interaction." code={CLICKABLE_EXAMPLE}>
+          <Calendar
+            month={DEMO_MONTH}
+            onDateClick={(day) => alert(`Day ${day} clicked!`)}
+            className="w-full max-w-sm"
+          />
+        </ExampleBlock>
+
+        <ExampleBlock title="Custom Styling" description="Calendar with custom wrapper classes for layout control." code={CUSTOM_CLASS_EXAMPLE}>
+          <Calendar month={DEMO_MONTH} className="w-full max-w-sm rounded-lg border p-4" />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

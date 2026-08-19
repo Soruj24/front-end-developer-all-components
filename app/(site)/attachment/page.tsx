@@ -1,243 +1,133 @@
 "use client";
 
 import { useState } from "react";
-import { Attachment } from "@/components/_attachment";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Attachment } from "@/components/ui/Attachment";
 
-const installCommand = `npx component-library@latest add attachment`;
+const ATTACHMENT_SOURCE = `import { cn } from "@/lib/cn";
+import type { AttachmentProps } from "./Attachment.types";
 
-const usageCode = `import { Attachment } from "@/components/_attachment"
+function formatSize(bytes?: number): string {
+  if (bytes === undefined) return "";
+  if (bytes < 1024) return \`\${bytes} B\`;
+  if (bytes < 1024 * 1024) return \`\${(bytes / 1024).toFixed(1)} KB\`;
+  return \`\${(bytes / (1024 * 1024)).toFixed(1)} MB\`;
+}
 
-<Attachment
-  filename="document.pdf"
-  size="2.4 MB"
-  icon={<FileIcon />}
-  removable
-  onRemove={() => handleRemove()}
+function getFileIcon(type?: string): string {
+  if (!type) return "📄";
+  if (type.startsWith("image/")) return "🖼️";
+  if (type.includes("pdf")) return "📕";
+  if (type.includes("zip") || type.includes("archive")) return "📦";
+  if (type.includes("video")) return "🎬";
+  if (type.includes("audio")) return "🎵";
+  return "📄";
+}
+
+export function Attachment({ name, size, type, url, onRemove, className }: AttachmentProps) {
+  return (
+    <div className={cn("flex items-center gap-3 rounded-md border bg-zinc-50 px-3 py-2 dark:bg-zinc-800", className)}>
+      <span className="text-xl">{getFileIcon(type)}</span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium">{name}</p>
+        {size !== undefined && (
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">{formatSize(size)}</p>
+        )}
+      </div>
+      <div className="flex items-center gap-1">
+        {url && (
+          <a href={url} download className="rounded p-1 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700" aria-label={\`Download \${name}\`}>
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </a>
+        )}
+        {onRemove && (
+          <button onClick={onRemove} className="rounded p-1 text-zinc-500 hover:bg-red-100 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-900/30" aria-label={\`Remove \${name}\`}>
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}`;
+
+const BASIC_EXAMPLE = `<Attachment name="report.pdf" size={876544} type="application/pdf" />`;
+
+const WITH_URL_EXAMPLE = `<Attachment name="photo.png" size={2202009} type="image/png" url="/downloads/photo.png" />`;
+
+const REMOVABLE_EXAMPLE = `<Attachment
+  name="document.docx"
+  size={524288}
+  type="application/msword"
+  onRemove={() => console.log("removed")}
 />`;
 
-const variants = ["default", "outline", "ghost"] as const;
-const sizes = ["sm", "md", "lg"] as const;
-
-function FileIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-    </svg>
-  );
-}
-
-function ImageIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-    </svg>
-  );
-}
-
-function PdfIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-  );
-}
-
-function ZipIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-    </svg>
-  );
-}
-
-const files = [
-  { filename: "design-system-v3.fig", size: "12.4 MB", icon: <FileIcon /> },
-  { filename: "hero-banner.png", size: "2.1 MB", icon: <ImageIcon /> },
-  { filename: "quarterly-report.pdf", size: "856 KB", icon: <PdfIcon /> },
-  { filename: "source-code.zip", size: "4.7 MB", icon: <ZipIcon /> },
-];
+const MULTIPLE_EXAMPLE = `<Attachment name="image.png" size={2202009} type="image/png" />
+<Attachment name="report.pdf" size={876544} type="application/pdf" />
+<Attachment name="archive.zip" size={4928307} type="application/zip" />`;
 
 export default function AttachmentPage() {
-  const [attachments, setAttachments] = useState(files);
+  const [attachments, setAttachments] = useState([
+    { name: "design-v3.fig", size: 13000000, type: "application/octet-stream" },
+    { name: "hero.png", size: 2200000, type: "image/png" },
+    { name: "report.pdf", size: 876000, type: "application/pdf" },
+    { name: "source.zip", size: 4900000, type: "application/zip" },
+  ]);
 
-  function removeFile(filename: string) {
-    setAttachments((prev) => prev.filter((f) => f.filename !== filename));
+  function removeFile(name: string) {
+    setAttachments((prev) => prev.filter((f) => f.name !== name));
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Attachment</h1>
-          <Badge variant="primary">4 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Displays a file attachment with icon, name, and size. Supports removable
-          attachments, different variants, and sizes for various use cases.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="attachment-default">
-        <div className="flex flex-col gap-2">
-          {files.map((file) => (
-            <Attachment key={file.filename} filename={file.filename} size={file.size} icon={file.icon} />
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="attachment-variants">
-        <div className="flex flex-col gap-3">
-          {variants.map((variant) => (
-            <div key={variant} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{variant}</p>
-              <Attachment filename="report.pdf" size="1.2 MB" variant={variant} icon={<PdfIcon />} />
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="attachment-sizes">
-        <div className="flex flex-col gap-3">
-          {sizes.map((size) => (
-            <div key={size} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground capitalize">{size}</p>
-              <Attachment filename="design.fig" size="8.5 MB" sizeProp={size} icon={<FileIcon />} />
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="attachment-removable">
-        <div className="flex flex-col gap-2">
+    <ComponentDocPage name="Attachment" category="Forms" description="Displays a file attachment with icon, name, and size. Supports removable attachments and download links.">
+      <PreviewPanel filename="attachment-preview">
+        <div className="flex w-full max-w-lg flex-col gap-2">
           {attachments.map((file) => (
-            <Attachment
-              key={file.filename}
-              filename={file.filename}
-              size={file.size}
-              icon={file.icon}
-              removable
-              onRemove={() => removeFile(file.filename)}
-            />
+            <Attachment key={file.name} name={file.name} size={file.size} type={file.type} onRemove={() => removeFile(file.name)} />
           ))}
           {attachments.length === 0 && (
-            <p className="text-sm text-muted-foreground">All files removed.</p>
-          )}
-          {attachments.length < files.length && (
-            <button
-              type="button"
-              onClick={() => setAttachments(files)}
-              className="text-sm text-blue-500 hover:underline"
-            >
-              Reset files
-            </button>
+            <button type="button" onClick={() => setAttachments([
+              { name: "design-v3.fig", size: 13000000, type: "application/octet-stream" },
+              { name: "hero.png", size: 2200000, type: "image/png" },
+              { name: "report.pdf", size: 876000, type: "application/pdf" },
+              { name: "source.zip", size: 4900000, type: "application/zip" },
+            ])} className="text-sm text-blue-500 hover:underline">Reset files</button>
           )}
         </div>
-      </ComponentPreview>
+      </PreviewPanel>
 
-      <ComponentPreview id="attachment-custom-icon">
-        <div className="flex flex-col gap-2">
-          <Attachment
-            filename="presentation.pptx"
-            size="15.3 MB"
-            icon={
-              <svg className="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-              </svg>
-            }
-          />
-          <Attachment
-            filename="database.sql"
-            size="340 KB"
-            icon={
-              <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-              </svg>
-            }
-          />
-          <Attachment
-            filename="video-demo.mp4"
-            size="256 MB"
-            icon={
-              <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-            }
-          />
-        </div>
-      </ComponentPreview>
+      <SourceCodeViewer source={ATTACHMENT_SOURCE} filename="Attachment.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">filename</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;outline&quot; | &quot;ghost&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">sizeProp</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">icon</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">removable</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">onRemove</td>
-                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic" description="Simple file attachment with name and formatted size." code={BASIC_EXAMPLE}>
+          <div className="flex w-full max-w-lg flex-col gap-2">
+            <Attachment name="report.pdf" size={876544} type="application/pdf" />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="With Download" description="Attachment with a download URL link." code={WITH_URL_EXAMPLE}>
+          <div className="flex w-full max-w-lg flex-col gap-2">
+            <Attachment name="photo.png" size={2202009} type="image/png" url="/downloads/photo.png" />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Removable" description="Attachment with a remove button." code={REMOVABLE_EXAMPLE}>
+          <div className="flex w-full max-w-lg flex-col gap-2">
+            <Attachment name="document.docx" size={524288} type="application/msword" onRemove={() => {}} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Multiple Files" description="List of attachments with different file types." code={MULTIPLE_EXAMPLE}>
+          <div className="flex w-full max-w-lg flex-col gap-2">
+            <Attachment name="image.png" size={2202009} type="image/png" />
+            <Attachment name="report.pdf" size={876544} type="application/pdf" />
+            <Attachment name="archive.zip" size={4928307} type="application/zip" />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

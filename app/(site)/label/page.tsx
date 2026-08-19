@@ -1,126 +1,84 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Label } from "@/components/ui/Label";
 
-const installCommand = `npx component-library@latest add label`;
+const LABEL_SOURCE = `"use client";
 
-const usageCode = `import { Label } from "@/components/_label";
+import { cn } from "@/lib/cn";
 
-<Label>Email</Label>
-<Label required>Required field</Label>
-<Label disabled>Disabled</Label>`;
+export interface LabelProps {
+  htmlFor?: string;
+  children: React.ReactNode;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+}
+
+export function Label({ htmlFor, children, required, disabled, className }: LabelProps) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className={cn(
+        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        disabled && "opacity-50 cursor-not-allowed",
+        className,
+      )}
+    >
+      {children}
+      {required && <span className="text-red-500 ml-1">*</span>}
+    </label>
+  );
+}`;
+
+const BASIC_EXAMPLE = `<Label>Email</Label>`;
+
+const REQUIRED_EXAMPLE = `<Label required>Required field</Label>`;
+
+const DISABLED_EXAMPLE = `<Label disabled>Disabled label</Label>`;
+
+const HTMLFOR_EXAMPLE = `<div className="flex flex-col gap-2">
+  <Label htmlFor="email">Email</Label>
+  <input id="email" type="email" className="rounded border px-3 py-2 text-sm" />
+</div>`;
 
 export default function LabelPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Label
-          </h1>
-          <Badge variant="primary">Forms</Badge>
+    <ComponentDocPage
+      name="Label"
+      category="Forms"
+      description="A form label with optional required indicator, disabled state, and accessible connection to form inputs."
+    >
+      <PreviewPanel filename="label-preview">
+        <div className="flex w-full max-w-lg flex-col gap-4">
+          <Label>Email</Label>
+          <Label required>Required field</Label>
+          <Label disabled>Disabled label</Label>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A form label with optional required indicator, disabled state, and
-          accessible connection to form inputs.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">
-          Installation
-        </h2>
-        <CodeBlock
-          code={installCommand}
-          filename="Terminal"
-          label="bash"
-          variant="terminal"
-        />
-      </section>
+      <SourceCodeViewer source={LABEL_SOURCE} filename="Label.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">
-          Usage
-        </h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic" description="Simple label for form inputs." code={BASIC_EXAMPLE}>
+          <Label>Email</Label>
+        </ExampleBlock>
 
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Default
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Basic label with optional required indicator.
-          </p>
-        </div>
-        <ComponentPreview id="label-default">
-          <div className="flex flex-col gap-4">
-            <label className="text-sm font-medium text-foreground">Email</label>
-            <label className="text-sm font-medium text-foreground">
-              Required <span className="text-red-500">*</span>
-            </label>
-            <label className="text-sm font-medium text-foreground">
-              Optional (no indicator)
-            </label>
+        <ExampleBlock title="Required" description="Label with a required indicator." code={REQUIRED_EXAMPLE}>
+          <Label required>Required field</Label>
+        </ExampleBlock>
+
+        <ExampleBlock title="Disabled" description="Label in a disabled state." code={DISABLED_EXAMPLE}>
+          <Label disabled>Disabled label</Label>
+        </ExampleBlock>
+
+        <ExampleBlock title="With Input" description="Label connected to a form input via htmlFor." code={HTMLFOR_EXAMPLE}>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="email">Email</Label>
+            <input id="email" type="email" className="rounded border px-3 py-2 text-sm" />
           </div>
-        </ComponentPreview>
-      </section>
-
-      {/* Sizes */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Sizes
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Different label sizes.
-          </p>
-        </div>
-        <ComponentPreview id="label-sizes">
-          <div className="flex flex-col gap-4">
-            <label className="text-xs font-medium text-muted-foreground">
-              Small label
-            </label>
-            <label className="text-sm font-medium text-foreground">
-              Default label
-            </label>
-            <label className="text-base font-semibold text-foreground">
-              Large label
-            </label>
-          </div>
-        </ComponentPreview>
-      </section>
-
-      {/* Disabled */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">
-            Disabled
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Label in disabled state.
-          </p>
-        </div>
-        <ComponentPreview id="label-disabled">
-          <div className="flex flex-col gap-4">
-            <label className="text-sm font-medium text-muted-foreground/50">
-              Disabled label
-            </label>
-            <div className="flex items-center gap-2">
-              <input type="checkbox" disabled className="rounded" />
-              <label className="text-sm font-medium text-muted-foreground/50">
-                Accept terms (disabled)
-              </label>
-            </div>
-          </div>
-        </ComponentPreview>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

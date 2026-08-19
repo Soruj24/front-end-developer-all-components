@@ -1,334 +1,173 @@
-"use client"
+"use client";
 
-import { useState, useCallback, useEffect } from "react"
-import { Badge } from "@/components/design-system/Badge";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { useState, useCallback } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import Toast, { type ToastItem } from "@/components/ui/Toast";
 
-const installCommand = `npx component-library@latest add toast`;
+const TOAST_SOURCE = `import { forwardRef } from "react";
 
-const usageCode = `import { useToast } from "@/components/_toast";
+type ToastType = "success" | "error" | "warning" | "info";
+type Position = "top-right" | "top-left" | "bottom-right" | "bottom-left" | "top-center";
 
-const { add, remove } = useToast();
-
-add("success", "Saved successfully!");
-add("error", "Something went wrong.");
-add("info", "Here is some information.");`;
-
-let nextId = 0
-
-type ToastType = "success" | "error" | "warning" | "info" | "loading"
-type Position = "top-right" | "top-left" | "bottom-right" | "bottom-left" | "top-center" | "bottom-center"
-
-interface Toast {
-  id: number; type: ToastType; message: string; action?: { label: string; onClick: () => void }; duration: number
-}
-
-const positionStyles: Record<Position, string> = {
+const typeIcons: Record<ToastType, string> = { success: "✓", error: "✕", warning: "⚠", info: "ℹ" };
+const typeClasses: Record<ToastType, string> = { success: "border-success", error: "border-danger", warning: "border-warning", info: "border-info" };
+const typeIconClasses: Record<ToastType, string> = { success: "text-success", error: "text-danger", warning: "text-warning", info: "text-info" };
+const positionClasses: Record<Position, string> = {
   "top-right": "top-4 right-4", "top-left": "top-4 left-4",
   "bottom-right": "bottom-4 right-4", "bottom-left": "bottom-4 left-4",
-  "top-center": "top-4 left-1/2 -translate-x-1/2", "bottom-center": "bottom-4 left-1/2 -translate-x-1/2",
-}
+  "top-center": "top-4 left-1/2 -translate-x-1/2",
+};
 
-const toastColors: Record<ToastType, string> = {
-  success: "bg-success text-success-foreground",
-  error: "bg-danger text-danger-foreground",
-  warning: "bg-warning text-warning-foreground",
-  info: "bg-primary text-primary-foreground",
-  loading: "bg-zinc-800 text-white dark:bg-muted dark:text-black",
-}
+export interface ToastItem { id: string; type: ToastType; message: string; action?: { label: string; onClick: () => void } }
+export interface ToastProps { toasts: ToastItem[]; onDismiss: (id: string) => void; position?: Position }
 
-const toastIcons: Record<ToastType, string> = {
-  success: "✓", error: "✕", warning: "!", info: "i", loading: "⟳",
+const Toast = forwardRef<HTMLDivElement, ToastProps>(({ toasts, onDismiss, position = "top-right" }, ref) => (
+  <div ref={ref} className={\`fixed z-50 flex flex-col gap-2 \${positionClasses[position]}\`}>
+    {toasts.map((t) => (
+      <div key={t.id} className={\`flex items-center gap-3 min-w-[18rem] max-w-sm rounded-lg border-l-4 px-4 py-3 bg-surface text-foreground shadow-toast animate-in slide-in-from-top-2 \${typeClasses[t.type]}\`}>
+        <span className={\`text-base font-bold \${typeIconClasses[t.type]}\`}>{typeIcons[t.type]}</span>
+        <p className="flex-1 text-sm font-medium">{t.message}</p>
+        {t.action && <button onClick={t.action.onClick} className="whitespace-nowrap text-sm font-semibold underline underline-offset-2">{t.action.label}</button>}
+        <button onClick={() => onDismiss(t.id)} className="flex h-6 w-6 items-center justify-center rounded-full text-current opacity-60 hover:opacity-100">✕</button>
+      </div>
+    ))}
+  </div>
+));
+Toast.displayName = "Toast";
+export default Toast;`;
+
+const TYPES_SOURCE = `import { useState } from "react";
+import Toast, { type ToastItem } from "@/components/ui/Toast";
+
+function ToastTypesDemo() {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const add = (type: ToastItem["type"], message: string) => {
+    const id = crypto.randomUUID();
+    setToasts((prev) => [...prev, { id, type, message }]);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3000);
+  };
+  return (
+    <>
+      <Toast toasts={toasts} onDismiss={(id) => setToasts((p) => p.filter((t) => t.id !== id))} />
+      <div className="flex flex-wrap gap-3">
+        <button onClick={() => add("success", "Saved successfully!")}>Success</button>
+        <button onClick={() => add("error", "Something went wrong.")}>Error</button>
+        <button onClick={() => add("warning", "Check your input.")}>Warning</button>
+        <button onClick={() => add("info", "Some information.")}>Info</button>
+      </div>
+    </>
+  );
+}`;
+
+const ACTIONS_SOURCE = `import { useState } from "react";
+import Toast, { type ToastItem } from "@/components/ui/Toast";
+
+function ToastActionsDemo() {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const add = (message: string, action: ToastItem["action"]) => {
+    const id = crypto.randomUUID();
+    setToasts((prev) => [...prev, { id, type: "info", message, action }]);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 5000);
+  };
+  return (
+    <>
+      <Toast toasts={toasts} onDismiss={(id) => setToasts((p) => p.filter((t) => t.id !== id))} />
+      <div className="flex flex-wrap gap-3">
+        <button onClick={() => add("File uploaded", { label: "Undo", onClick: () => {} })}>Undo</button>
+        <button onClick={() => add("Changes saved", { label: "View", onClick: () => {} })}>View</button>
+      </div>
+    </>
+  );
+}`;
+
+const POSITIONS_SOURCE = `import { useState } from "react";
+import Toast, { type ToastItem, type ToastProps } from "@/components/ui/Toast";
+
+function ToastPositionsDemo() {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const [position, setPosition] = useState<ToastProps["position"]>("top-right");
+  const add = (message: string) => {
+    const id = crypto.randomUUID();
+    setToasts((prev) => [...prev, { id, type: "info", message }]);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3000);
+  };
+  return (
+    <>
+      <Toast toasts={toasts} onDismiss={(id) => setToasts((p) => p.filter((t) => t.id !== id))} position={position} />
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap gap-2">
+          {(["top-right", "top-left", "bottom-right", "bottom-left", "top-center"] as const).map((p) => (
+            <button key={p} onClick={() => setPosition(p)} className={position === p ? "bg-primary text-white" : ""}>{p}</button>
+          ))}
+        </div>
+        <button onClick={() => add("Toast notification")}>Show Toast</button>
+      </div>
+    </>
+  );
+}`;
+
+let nextId = 0;
+
+function ToastDemo({ type = "info", message, action, duration = 3000 }: { type?: ToastItem["type"]; message: string; action?: ToastItem["action"]; duration?: number }) {
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const dismiss = useCallback((id: string) => setToasts((p) => p.filter((t) => t.id !== id)), []);
+  const show = () => {
+    const id = String(nextId++);
+    setToasts((p) => [...p, { id, type, message, action }]);
+    if (type !== "loading") setTimeout(() => dismiss(id), duration);
+  };
+  return (
+    <>
+      <Toast toasts={toasts} onDismiss={dismiss} />
+      <button onClick={show} className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted">{message}</button>
+    </>
+  );
 }
 
 export default function ToastPage() {
-  const [toasts, setToasts] = useState<Toast[]>([])
-  const [position, setPosition] = useState<Position>("bottom-right")
-
-  const remove = useCallback((id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id))
-  }, [])
-
-  const add = useCallback((type: ToastType, message?: string, action?: { label: string; onClick: () => void }, dur?: number) => {
-    const id = nextId++
-    const defaults: Record<ToastType, string> = {
-      success: "Saved successfully!", error: "Something went wrong.", warning: "Please check your input.", info: "Here is some information.", loading: "Loading...",
-    }
-    const d = dur ?? 3000
-    const t: Toast = { id, type, message: message || defaults[type], action, duration: d }
-    setToasts((prev) => [...prev, t])
-    if (type !== "loading") setTimeout(() => remove(id), d)
-  }, [remove])
-
-  const bulkAdd = useCallback((n: number) => {
-    const types: ToastType[] = ["success", "info", "warning", "error"]
-    for (let i = 0; i < n; i++) add(types[i % 4], `Toast ${nextId} - ${types[i % 4]} notification`)
-  }, [add])
-
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Toast</h1>
-          <Badge variant="primary">10 examples</Badge>
+    <ComponentDocPage name="Toast" category="Feedback" description="Toast notifications with types, positions, actions, and auto-dismiss.">
+      <PreviewPanel filename="toast-preview.tsx">
+        <div className="flex flex-wrap items-center gap-3">
+          <ToastDemo type="success" message="Success" />
+          <ToastDemo type="error" message="Error" />
+          <ToastDemo type="warning" message="Warning" />
+          <ToastDemo type="info" message="Info" />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Toast notifications with types, positions, actions, and auto-dismiss.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={TOAST_SOURCE} filename="components/ui/Toast.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Types</h2>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => add("success")} className="rounded-lg bg-success px-4 py-2 text-sm font-medium text-success-foreground hover:bg-success/90">Success</button>
-          <button onClick={() => add("error")} className="rounded-lg bg-danger px-4 py-2 text-sm font-medium text-danger-foreground hover:bg-danger/90">Error</button>
-          <button onClick={() => add("warning")} className="rounded-lg bg-warning px-4 py-2 text-sm font-medium text-warning-foreground hover:bg-warning">Warning</button>
-          <button onClick={() => add("info")} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">Info</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Positions</h2>
-        <div className="flex flex-wrap gap-2">
-          {(["top-right", "top-left", "bottom-right", "bottom-left", "top-center", "bottom-center"] as Position[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPosition(p)}
-              className={`rounded-lg border px-3 py-1.5 text-xs font-medium ${position === p ? "border-zinc-900 bg-foreground text-background dark:border-border dark:bg-muted dark:text-zinc-900" : "border-border hover:bg-muted dark:border-border dark:hover:bg-muted"}`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">With Actions</h2>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => add("info", "File uploaded", { label: "Undo", onClick: () => alert("Undone!") })} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Undo Action</button>
-          <button onClick={() => add("success", "Changes saved", { label: "View", onClick: () => alert("Viewed!") })} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">View Action</button>
-          <button onClick={() => add("warning", "Update available", { label: "Update", onClick: () => alert("Updating!") })} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Update Action</button>
-          <button onClick={() => add("error", "Upload failed", { label: "Retry", onClick: () => alert("Retrying!") })} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Retry Action</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Duration Variants</h2>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => add("info", "Short (1s)", undefined, 1000)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">1s</button>
-          <button onClick={() => add("info", "Default (3s)", undefined, 3000)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">3s</button>
-          <button onClick={() => add("info", "Long (6s)", undefined, 6000)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">6s</button>
-          <button onClick={() => add("info", "Sticky (10s)", undefined, 10000)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">10s</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Loading Toast</h2>
-        <button
-          onClick={() => {
-            const id = nextId
-            add("loading", "Processing...", undefined, 99999)
-            setTimeout(() => remove(id), 2000)
-          }}
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-        >
-          Show Loading (2s)
-        </button>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Batch / Stacking</h2>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => bulkAdd(3)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Add 3</button>
-          <button onClick={() => bulkAdd(5)} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Add 5</button>
-          <button onClick={() => { for (let i = 0; i < 10; i++) setTimeout(() => add("success", `Toast ${nextId}`), i * 200) }} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Queue 10</button>
-          <button onClick={() => setToasts([])} className="rounded-lg bg-danger px-4 py-2 text-sm font-medium text-danger-foreground hover:bg-danger/90">Clear All</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Custom Messages</h2>
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => add("success", "Profile updated successfully")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Profile</button>
-          <button onClick={() => add("error", "Network request failed")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Network</button>
-          <button onClick={() => add("warning", "Session will expire in 5 minutes")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Session</button>
-          <button onClick={() => add("info", "New version 4.2.1 is available")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Version</button>
-          <button onClick={() => add("success", "$49.00 payment received")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Payment</button>
-          <button onClick={() => add("warning", "Disk space is running low (12% remaining)")} className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border">Disk</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Compound Actions</h2>
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => add("info", "2 files exported", { label: "Download", onClick: () => alert("Downloading...") })}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Export
-          </button>
-          <button
-            onClick={() => add("success", "Team member added", { label: "Invite more", onClick: () => alert("Opening invite...") })}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Team
-          </button>
-          <button
-            onClick={() => add("warning", "Subscription expiring", { label: "Renew", onClick: () => alert("Opening billing...") })}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Subscription
-          </button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Rich Content</h2>
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => add("success", "✓ Task completed — 4/5 remaining")}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Task Progress
-          </button>
-          <button
-            onClick={() => add("info", "👋 Welcome back, Jane! You have 3 notifications.")}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Welcome
-          </button>
-          <button
-            onClick={() => add("warning", "⚠️ Your trial ends in 3 days. Upgrade to keep access.")}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Trial
-          </button>
-          <button
-            onClick={() => add("error", "✕ Failed to connect. Check your internet and try again.")}
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium dark:border-border"
-          >
-            Connection
-          </button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">Use Case Scenarios</h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { label: "Saved", msg: "Document saved as draft", type: "success" as ToastType },
-            { label: "Deleted", msg: "Item moved to trash", type: "info" as ToastType, action: { label: "Undo", onClick: () => alert("Restored!") } },
-            { label: "Copied", msg: "Link copied to clipboard", type: "success" as ToastType },
-            { label: "Offline", msg: "You are offline. Changes will sync when reconnected.", type: "warning" as ToastType },
-            { label: "Uploaded", msg: "3 files uploaded to /projects", type: "success" as ToastType },
-            { label: "Reminder", msg: "Meeting with Design team in 15 minutes", type: "info" as ToastType },
-          ].map((item) => (
-            <button
-              key={item.label}
-              onClick={() => add(item.type, item.msg, "action" in item ? item.action : undefined)}
-              className="rounded-xl border border-border p-4 text-left transition-colors hover:bg-muted/40 dark:border-border dark:hover:bg-muted/50"
-            >
-              <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium dark:bg-muted">{item.label.charAt(0)}</span>
-                <span className="text-sm font-medium">{item.label}</span>
-              </div>
-              <span className="mt-1 text-xs text-muted-foreground">{item.msg}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {toasts.length > 0 && (
-        <>
-          <div className={`fixed z-50 flex flex-col gap-2 ${positionStyles[position]}`}>
-            {toasts.map((t) => (
-              <div
-                key={t.id}
-                className={`flex items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm font-medium shadow-lg transition-all duration-300 ${toastColors[t.type]} min-w-[280px] max-w-[380px]`}
-              >
-                <div className="flex items-center gap-2">
-                  {t.type === "loading" && (
-                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                  )}
-                  <span>{t.message}</span>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {t.action && (
-                    <button
-                      onClick={() => { t.action!.onClick(); remove(t.id) }}
-                      className="whitespace-nowrap rounded bg-white/20 px-2 py-0.5 text-xs font-semibold hover:bg-white/30"
-                    >
-                      {t.action.label}
-                    </button>
-                  )}
-                  <button onClick={() => remove(t.id)} className="text-white/70 hover:text-white">&times;</button>
-                </div>
-              </div>
-            ))}
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Types" description="Different toast styles for various severity levels." code={TYPES_SOURCE} filename="toast-types.tsx">
+          <div className="flex flex-wrap gap-3">
+            <ToastDemo type="success" message="Saved successfully!" />
+            <ToastDemo type="error" message="Something went wrong." />
+            <ToastDemo type="warning" message="Check your input." />
+            <ToastDemo type="info" message="Some information." />
           </div>
-          <button
-            onClick={() => setToasts([])}
-            className="fixed bottom-4 left-4 z-50 rounded-lg border border-border bg-white px-3 py-1.5 text-xs font-medium shadow-lg hover:bg-muted dark:border-border dark:bg-zinc-900 dark:hover:bg-muted"
-          >
-            Clear All ({toasts.length})
-          </button>
-        </>
-      )}
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">type</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;success&quot; | &quot;error&quot; | &quot;warning&quot; | &quot;info&quot; | &quot;loading&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">message</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">duration</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">3000</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">position</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;top-right&quot; | &quot;top-left&quot; | &quot;bottom-right&quot; | &quot;bottom-left&quot; | &quot;top-center&quot; | &quot;bottom-center&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;bottom-right&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  )
+        <ExampleBlock title="Actions" description="Toasts with interactive action buttons." code={ACTIONS_SOURCE} filename="toast-actions.tsx">
+          <div className="flex flex-wrap gap-3">
+            <ToastDemo type="info" message="File uploaded" action={{ label: "Undo", onClick: () => {} }} duration={5000} />
+            <ToastDemo type="success" message="Changes saved" action={{ label: "View", onClick: () => {} }} duration={5000} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Positions" description="Control where toasts appear on screen." code={POSITIONS_SOURCE} filename="toast-positions.tsx">
+          <div className="flex flex-wrap gap-3">
+            <ToastDemo type="success" message="Top Right" />
+            <ToastDemo type="info" message="Top Left" />
+            <ToastDemo type="warning" message="Bottom Right" />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
+  );
 }

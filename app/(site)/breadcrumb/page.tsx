@@ -1,75 +1,104 @@
 "use client";
 
-import { Breadcrumb } from "@/components/_breadcrumb";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
-function HomeIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-    </svg>
-  );
+const BREADCRUMB_SOURCE = `import Link from "next/link";
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
 }
 
-function FolderIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-    </svg>
-  );
+export interface BreadcrumbProps {
+  items: BreadcrumbItem[];
 }
 
-function FileIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-    </svg>
-  );
-}
+const Breadcrumb = ({ items }: BreadcrumbProps) => (
+  <nav aria-label="Breadcrumb">
+    <ol className="flex items-center gap-1.5 text-sm text-muted-foreground">
+      {items.map((item, i) => {
+        const isLast = i === items.length - 1;
+        return (
+          <li key={i} className="flex items-center gap-1.5">
+            {i > 0 && (
+              <svg className="h-4 w-4 shrink-0 text-subtle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            )}
+            {isLast || !item.href ? (
+              <span className={isLast ? "font-medium text-foreground" : ""}>{item.label}</span>
+            ) : (
+              <Link href={item.href} className="transition-colors hover:text-foreground">{item.label}</Link>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </nav>
+);
 
-const installCommand = `npx component-library@latest add breadcrumb`;
+export default Breadcrumb;`;
 
-const usageCode = `import { Breadcrumb } from "@/components/_breadcrumb";
+const BASIC_SOURCE = `import Breadcrumb from "@/components/ui/Breadcrumb";
 
 <Breadcrumb
   items={[
     { label: "Home", href: "/" },
-    { label: "Docs", href: "/docs" },
-    { label: "Components" },
+    { label: "Components", href: "/components" },
+    { label: "Breadcrumb" },
   ]}
 />`;
 
-const separators = ["/", ">", "→", "|", "•"] as const;
+const DEEP_NESTED_SOURCE = `import Breadcrumb from "@/components/ui/Breadcrumb";
+
+<Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Projects", href: "/projects" },
+    { label: "Website Redesign", href: "/projects/website" },
+    { label: "Assets", href: "/projects/website/assets" },
+    { label: "Images" },
+  ]}
+/>`;
+
+const TRUNCATED_SOURCE = `import Breadcrumb from "@/components/ui/Breadcrumb";
+
+<Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "...", href: "/collapsed" },
+    { label: "Deeply", href: "/a/b/c/deeply" },
+    { label: "Nested", href: "/a/b/c/deeply/nested" },
+    { label: "Page" },
+  ]}
+/>`;
+
+const CUSTOM_STYLES_SOURCE = `import Breadcrumb from "@/components/ui/Breadcrumb";
+
+<div className="rounded-lg bg-zinc-100 px-4 py-2">
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Analytics" },
+    ]}
+  />
+</div>`;
 
 export default function BreadcrumbPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Breadcrumb</h1>
-          <Badge variant="primary">7 variants</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Displays the current page location within a hierarchy. Helps users
-          understand where they are and navigate back to parent pages.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="breadcrumb-default">
+    <ComponentDocPage
+      name="Breadcrumb"
+      category="Navigation"
+      description="Displays the current page location within a hierarchy. Helps users understand where they are and navigate back to parent pages."
+    >
+      <PreviewPanel filename="breadcrumb-preview.tsx">
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -77,136 +106,92 @@ export default function BreadcrumbPage() {
             { label: "Breadcrumb" },
           ]}
         />
-      </ComponentPreview>
+      </PreviewPanel>
 
-      <ComponentPreview id="breadcrumb-with-icons">
-        <Breadcrumb
-          items={[
-            { label: "Home", href: "/", icon: <HomeIcon /> },
-            { label: "Documents", href: "/docs", icon: <FolderIcon /> },
-            { label: "Report.pdf", icon: <FileIcon /> },
-          ]}
-        />
-      </ComponentPreview>
+      <SourceCodeViewer
+        source={BREADCRUMB_SOURCE}
+        filename="components/ui/Breadcrumb.tsx"
+        defaultExpanded
+      />
 
-      <ComponentPreview id="breadcrumb-separators">
-        <div className="flex flex-col gap-4">
-          {separators.map((sep) => (
-            <div key={sep} className="flex flex-col gap-1">
-              <p className="text-xs font-medium text-muted-foreground">
-                Separator: <code className="rounded bg-zinc-100 px-1 dark:bg-zinc-800">{sep}</code>
-              </p>
-              <Breadcrumb
-                separator={sep}
-                items={[
-                  { label: "Home", href: "/" },
-                  { label: "Library", href: "/library" },
-                  { label: "Components" },
-                ]}
-              />
-            </div>
-          ))}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="breadcrumb-deep">
-        <Breadcrumb
-          items={[
-            { label: "Home", href: "/", icon: <HomeIcon /> },
-            { label: "Projects", href: "/projects" },
-            { label: "Website Redesign", href: "/projects/website" },
-            { label: "Assets", href: "/projects/website/assets" },
-            { label: "Images" },
-          ]}
-        />
-      </ComponentPreview>
-
-      <ComponentPreview id="breadcrumb-clickable">
-        <div className="flex flex-col gap-4">
-          <Breadcrumb
-            items={[
-              { label: "Home", href: "/", onClick: () => alert("Navigate to Home") },
-              { label: "Settings", href: "/settings", onClick: () => alert("Navigate to Settings") },
-              { label: "Profile", onClick: () => alert("Navigate to Profile") },
-            ]}
-          />
-          <p className="text-xs text-muted-foreground">Click any breadcrumb item to see the onClick handler fire.</p>
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="breadcrumb-custom-styles">
-        <div className="flex flex-col gap-4">
-          <Breadcrumb
-            className="rounded-lg bg-zinc-100 px-4 py-2 dark:bg-zinc-800"
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Dashboard", href: "/dashboard" },
-              { label: "Analytics" },
-            ]}
-          />
-          <Breadcrumb
-            className="rounded-full border px-4 py-2"
-            separator="›"
-            items={[
-              { label: "Acme Inc", href: "/" },
-              { label: "Team", href: "/team" },
-              { label: "Members" },
-            ]}
-          />
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview id="breadcrumb-truncated">
-        <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Basic"
+          description="Simple breadcrumb with linked and active items."
+          code={BASIC_SOURCE}
+          filename="basic.tsx"
+        >
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "...", onClick: () => alert("Show collapsed items") },
+              { label: "Components", href: "/components" },
+              { label: "Breadcrumb" },
+            ]}
+          />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Deep Nested"
+          description="Works well with deeply nested navigation paths."
+          code={DEEP_NESTED_SOURCE}
+          filename="deep-nested.tsx"
+        >
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Projects", href: "/projects" },
+              { label: "Website Redesign", href: "/projects/website" },
+              { label: "Assets", href: "/projects/website/assets" },
+              { label: "Images" },
+            ]}
+          />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Truncated Path"
+          description='Use "..." as a label to indicate collapsed intermediate items.'
+          code={TRUNCATED_SOURCE}
+          filename="truncated.tsx"
+        >
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "...", href: "/collapsed" },
               { label: "Deeply", href: "/a/b/c/deeply" },
               { label: "Nested", href: "/a/b/c/deeply/nested" },
               { label: "Page" },
             ]}
           />
-          <p className="text-xs text-muted-foreground">Use &quot;...&quot; as a label to indicate collapsed intermediate items.</p>
-        </div>
-      </ComponentPreview>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">{`{ label: string; href?: string }[]`}</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">separator</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{"/"}'}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock
+          title="Custom Styles"
+          description="Wrap the breadcrumb in a container for custom appearance."
+          code={CUSTOM_STYLES_SOURCE}
+          filename="custom-styles.tsx"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="rounded-lg bg-zinc-100 px-4 py-2 dark:bg-zinc-800">
+              <Breadcrumb
+                items={[
+                  { label: "Home", href: "/" },
+                  { label: "Dashboard", href: "/dashboard" },
+                  { label: "Analytics" },
+                ]}
+              />
+            </div>
+            <div className="rounded-full border px-4 py-2">
+              <Breadcrumb
+                items={[
+                  { label: "Acme Inc", href: "/" },
+                  { label: "Team", href: "/team" },
+                  { label: "Members" },
+                ]}
+              />
+            </div>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

@@ -1,157 +1,179 @@
 "use client";
 
-import { NavigationMenu } from "@/components/_navigation-menu";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/NavigationMenu";
 
-const installCommand = `npx component-library@latest add navigation-menu`;
+const NAVIGATIONMENU_SOURCE = `"use client";
 
-const usageCode = `import { NavigationMenu } from "@/components/_navigation-menu";
+import { useState, createContext, useContext } from "react";
+import { cn } from "@/lib/cn";
 
-const items = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Components", href: "/components" },
-];
+interface NavigationMenuContextType {
+  openItem: string | null;
+  setOpenItem: (id: string | null) => void;
+}
 
-<NavigationMenu items={items} />`;
+const NavigationMenuContext = createContext<NavigationMenuContextType>({
+  openItem: null,
+  setOpenItem: () => {},
+});
 
-const defaultItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Components", href: "/components" },
-  { label: "Docs", href: "/docs" },
-];
+export function NavigationMenu({ className, children }) {
+  const [openItem, setOpenItem] = useState(null);
+  return (
+    <NavigationMenuContext.Provider value={{ openItem, setOpenItem }}>
+      <nav className={cn("relative", className)}>{children}</nav>
+    </NavigationMenuContext.Provider>
+  );
+}
 
-const verticalItems = [
-  { label: "Getting Started", href: "/docs" },
-  { label: "Components", href: "/components" },
-  { label: "Examples", href: "/examples" },
-  { label: "Themes", href: "/themes" },
-];
+export function NavigationMenuList({ children, className }) {
+  return <ul className={cn("flex items-center space-x-1", className)}>{children}</ul>;
+}
 
-const submenuItems = [
-  { label: "Home", href: "/" },
-  {
-    label: "Components",
-    children: [
-      { label: "Button", href: "/components/button" },
-      { label: "Card", href: "/components/card" },
-      { label: "Input", href: "/components/input" },
-    ],
-  },
-  {
-    label: "Docs",
-    children: [
-      { label: "Installation", href: "/docs/installation" },
-      { label: "Theming", href: "/docs/theming" },
-    ],
-  },
-];
+export function NavigationMenuItem({ children, className }) {
+  return <li className={cn("relative", className)}>{children}</li>;
+}
+
+export function NavigationMenuTrigger({ children, className }) {
+  const { openItem, setOpenItem } = useContext(NavigationMenuContext);
+  return (
+    <button
+      type="button"
+      onClick={() => setOpenItem(openItem ? null : "nav")}
+      className={cn("flex items-center space-x-1 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800", className)}
+    >
+      {children}
+      <svg className={cn("h-3 w-3 transition-transform", openItem && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+  );
+}
+
+export function NavigationMenuContent({ children, className }) {
+  const { openItem, setOpenItem } = useContext(NavigationMenuContext);
+  if (!openItem) return null;
+  return (
+    <>
+      <div className="fixed inset-0 z-40" onClick={() => setOpenItem(null)} />
+      <div className={cn("absolute left-0 top-full z-50 mt-1 min-w-[200px] rounded-md border bg-white p-2 shadow-md dark:bg-zinc-900", className)}>
+        {children}
+      </div>
+    </>
+  );
+}
+
+export function NavigationMenuLink({ href, children, className }) {
+  return (
+    <a href={href} className={cn("block rounded-sm px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800", className)}>
+      {children}
+    </a>
+  );
+}`;
+
+const DEFAULT_EXAMPLE = `<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/about">About</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`;
+
+const VERTICAL_EXAMPLE = `<NavigationMenu className="w-48">
+  <NavigationMenuList className="flex-col items-start space-x-0">
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Getting Started</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/components">Components</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/examples">Examples</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`;
+
+const SUBMENU_EXAMPLE = `<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+        <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
+        <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`;
 
 export default function NavigationMenuPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Navigation Menu</h1>
-          <Badge variant="primary">Navigation</Badge>
+    <ComponentDocPage
+      name="Navigation Menu"
+      category="Navigation"
+      description="Accessible navigation menu with support for horizontal and vertical orientations, nested dropdowns, and keyboard navigation."
+    >
+      <PreviewPanel filename="navigation-menu-preview">
+        <div className="flex w-full flex-col gap-6">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem><NavigationMenuLink href="/about">About</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+                  <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
+                  <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A accessible navigation menu with support for horizontal and vertical orientations.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={NAVIGATIONMENU_SOURCE} filename="NavigationMenu.tsx" defaultExpanded />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Default" description="Horizontal navigation menu with simple links." code={DEFAULT_EXAMPLE}>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem><NavigationMenuLink href="/about">About</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </ExampleBlock>
 
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Horizontal navigation menu.
-          </p>
-        </div>
-        <ComponentPreview id="navigation-menu-default">
-          <NavigationMenu items={defaultItems} />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock title="Vertical" description="Vertical orientation for sidebars." code={VERTICAL_EXAMPLE}>
+          <NavigationMenu className="w-48">
+            <NavigationMenuList className="flex-col items-start space-x-0">
+              <NavigationMenuItem><NavigationMenuLink href="/docs">Getting Started</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem><NavigationMenuLink href="/components">Components</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem><NavigationMenuLink href="/examples">Examples</NavigationMenuLink></NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </ExampleBlock>
 
-      {/* Vertical */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Vertical</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Vertical navigation menu for sidebars.
-          </p>
-        </div>
-        <ComponentPreview id="navigation-menu-vertical">
-          <div className="w-48">
-            <NavigationMenu items={verticalItems} orientation="vertical" />
-          </div>
-        </ComponentPreview>
-      </section>
-
-      {/* With Submenu */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Submenu</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Navigation menu with nested dropdown items.
-          </p>
-        </div>
-        <ComponentPreview id="navigation-menu-submenu">
-          <NavigationMenu items={submenuItems} />
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">NavigationMenuItems[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">orientation</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="With Submenu" description="Navigation menu with nested dropdown content." code={SUBMENU_EXAMPLE}>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+                  <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
+                  <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

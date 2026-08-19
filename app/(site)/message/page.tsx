@@ -1,163 +1,163 @@
 "use client";
 
-import { Message } from "@/components/_message";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { Message } from "@/components/ui/Message";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
-const installCommand = `npx component-library@latest add message`;
+const MESSAGE_SOURCE = `"use client";
 
-const usageCode = `import { Message } from "@/components/_message"
+import { cn } from "@/lib/cn";
 
-<Message position="received" author="Alice">
-  Hey, how are you?
-</Message>
-<Message position="sent" author="You">
-  I'm doing great!
-</Message>`;
+type MessageVariant = "info" | "success" | "warning" | "error";
+
+interface MessageProps {
+  variant?: MessageVariant;
+  title?: string;
+  description?: string;
+  className?: string;
+}
+
+const variantStyles: Record<MessageVariant, string> = {
+  info: "border-blue-200 bg-blue-50 text-blue-900",
+  success: "border-green-200 bg-green-50 text-green-900",
+  warning: "border-yellow-200 bg-yellow-50 text-yellow-900",
+  error: "border-red-200 bg-red-50 text-red-900",
+};
+
+const variantIcons: Record<MessageVariant, string> = {
+  info: "ℹ",
+  success: "✓",
+  warning: "⚠",
+  error: "✕",
+};
+
+export function Message({
+  variant = "info",
+  title,
+  description,
+  className,
+}: MessageProps) {
+  return (
+    <div className={cn("flex items-start gap-3 rounded-md border p-4", variantStyles[variant], className)}>
+      <span className="mt-0.5 text-lg leading-none">{variantIcons[variant]}</span>
+      <div className="flex-1 space-y-1">
+        {title && <p className="text-sm font-medium leading-none">{title}</p>}
+        {description && <p className="text-sm leading-relaxed opacity-80">{description}</p>}
+      </div>
+    </div>
+  );
+}`;
+
+const VARIANTS_SOURCE = `import { Message } from "@/components/ui/Message";
+
+function VariantsShowcase() {
+  return (
+    <div className="flex flex-col gap-3 w-full max-w-lg">
+      <Message variant="info" title="Info" description="This is an informational message." />
+      <Message variant="success" title="Success" description="Operation completed successfully." />
+      <Message variant="warning" title="Warning" description="Please review before proceeding." />
+      <Message variant="error" title="Error" description="Something went wrong." />
+    </div>
+  );
+}`;
+
+const TITLE_ONLY_SOURCE = `import { Message } from "@/components/ui/Message";
+
+function TitleOnlyShowcase() {
+  return (
+    <div className="flex flex-col gap-3 w-full max-w-lg">
+      <Message variant="info" title="Server is starting..." />
+      <Message variant="success" title="Changes saved" />
+      <Message variant="error" title="Connection failed" />
+    </div>
+  );
+}`;
+
+const CUSTOM_CLASS_SOURCE = `import { Message } from "@/components/ui/Message";
+
+function CustomClassShowcase() {
+  return (
+    <div className="flex flex-col gap-3 w-full max-w-lg">
+      <Message
+        variant="success"
+        title="Deployed"
+        description="Your app is live."
+        className="max-w-sm"
+      />
+    </div>
+  );
+}`;
 
 export default function MessagePage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Message</h1>
-          <Badge variant="primary">Data Display</Badge>
+    <ComponentDocPage
+      name="Message"
+      category="Feedback"
+      description="A styled alert message component with variant-based colors, icons, title, and description for inline feedback."
+    >
+      <PreviewPanel filename="message-preview.tsx">
+        <div className="flex flex-col gap-3 w-full max-w-lg">
+          <Message variant="info" title="Info" description="This is an informational message." />
+          <Message variant="success" title="Success" description="Operation completed successfully." />
+          <Message variant="warning" title="Warning" description="Please review before proceeding." />
+          <Message variant="error" title="Error" description="Something went wrong." />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Displays a single chat message with author, timestamp, and status.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={MESSAGE_SOURCE}
+        filename="components/ui/Message.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Default message with author and timestamp.
-          </p>
-        </div>
-        <ComponentPreview id="message-default">
-          <div className="flex flex-col gap-3">
-            <Message position="received" author="Alice" timestamp="2:30 PM">
-              Hey, how are you doing?
-            </Message>
-            <Message position="sent" author="You" timestamp="2:31 PM">
-              I&apos;m doing great, thanks!
-            </Message>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Variants"
+          description="Four semantic variants: info, success, warning, and error."
+          code={VARIANTS_SOURCE}
+          filename="variants.tsx"
+        >
+          <div className="flex flex-col gap-3 w-full max-w-lg">
+            <Message variant="info" title="Info" description="This is an informational message." />
+            <Message variant="success" title="Success" description="Operation completed successfully." />
+            <Message variant="warning" title="Warning" description="Please review before proceeding." />
+            <Message variant="error" title="Error" description="Something went wrong." />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Bubble */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Bubble</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Message with bubble variant styling.
-          </p>
-        </div>
-        <ComponentPreview id="message-bubble">
-          <div className="flex flex-col gap-3">
-            <Message variant="bubble" position="received" author="Alice">
-              This is a bubble message!
-            </Message>
-            <Message variant="bubble" position="sent">
-              Looks great!
-            </Message>
+        <ExampleBlock
+          title="Title Only"
+          description="Messages can display just a title without description."
+          code={TITLE_ONLY_SOURCE}
+          filename="title-only.tsx"
+        >
+          <div className="flex flex-col gap-3 w-full max-w-lg">
+            <Message variant="info" title="Server is starting..." />
+            <Message variant="success" title="Changes saved" />
+            <Message variant="error" title="Connection failed" />
           </div>
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      {/* Status */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Status</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Message with delivery status indicators.
-          </p>
-        </div>
-        <ComponentPreview id="message-status">
-          <div className="flex flex-col gap-3">
-            <Message position="sent" status="sent" timestamp="2:30 PM">
-              Message sent
-            </Message>
-            <Message position="sent" status="delivered" timestamp="2:31 PM">
-              Message delivered
-            </Message>
-            <Message position="sent" status="read" timestamp="2:32 PM">
-              Message read
-            </Message>
+        <ExampleBlock
+          title="Custom Width"
+          description="Apply custom classes to constrain or expand the message width."
+          code={CUSTOM_CLASS_SOURCE}
+          filename="custom-class.tsx"
+        >
+          <div className="flex flex-col gap-3 w-full max-w-lg">
+            <Message
+              variant="success"
+              title="Deployed"
+              description="Your app is live."
+              className="max-w-sm"
+            />
           </div>
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;bubble&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">position</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sent&quot; | &quot;received&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">author</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">timestamp</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">status</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sent&quot; | &quot;delivered&quot; | &quot;read&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">avatar</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
