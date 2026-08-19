@@ -1,144 +1,161 @@
 "use client";
 
-import { MessageScroller } from "@/components/_message-scroller";
-import { Message } from "@/components/_message";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { useState, useRef, useEffect } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { MessageScroller } from "@/components/ui/MessageScroller";
 
-const installCommand = `npx component-library@latest add message-scroller`;
+const MESSAGE_SCROLLER_SOURCE = `"use client";
 
-const usageCode = `import { MessageScroller } from "@/components/_message-scroller";
-import { Message } from "@/components/_message";
+import { useEffect, useRef } from "react";
+import { cn } from "@/lib/cn";
 
-<MessageScroller className="h-64" showScrollButton>
-  <Message position="received" author="Alice">Hello!</Message>
-  <Message position="sent" author="You">Hi there!</Message>
-</MessageScroller>`;
+export interface MessageItem {
+  id: string;
+  content: string;
+  timestamp?: string;
+}
+
+export interface MessageScrollerProps {
+  messages: MessageItem[];
+  autoScroll?: boolean;
+  className?: string;
+}
+
+export function MessageScroller({
+  messages,
+  autoScroll = true,
+  className,
+}: MessageScrollerProps) {
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (autoScroll && endRef.current) {
+      endRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, autoScroll]);
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-2 overflow-y-auto rounded-md border bg-white p-3 dark:bg-zinc-900",
+        className
+      )}
+    >
+      {messages.map((msg) => (
+        <div key={msg.id} className="flex flex-col gap-0.2">
+          <p className="text-sm text-zinc-900 dark:text-zinc-100">{msg.content}</p>
+          {msg.timestamp && (
+            <span className="text-xs text-zinc-400">{msg.timestamp}</span>
+          )}
+        </div>
+      ))}
+      <div ref={endRef} />
+    </div>
+  );
+}`;
+
+function ChatDemo() {
+  const [messages, setMessages] = useState([
+    { id: "1", content: "Hello! How can I help you today?", timestamp: "10:00 AM" },
+    { id: "2", content: "I need help with my account settings.", timestamp: "10:01 AM" },
+    { id: "3", content: "Sure, let me check that for you.", timestamp: "10:01 AM" },
+  ]);
+  const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    setMessages((prev) => [...prev, {
+      id: Date.now().toString(),
+      content: input.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    }]);
+    setInput("");
+    inputRef.current?.focus();
+  };
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      <div className="border border-border rounded-lg bg-background p-3 h-64">
+        <MessageScroller messages={messages} />
+      </div>
+      <div className="flex gap-2">
+        <input
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="Type a message..."
+          className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1"
+        />
+        <button
+          onClick={sendMessage}
+          disabled={!input.trim()}
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function MessageScrollerPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Message Scroller</h1>
-          <Badge variant="primary">Data Display</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A scrollable container for chat messages with auto-scroll and scroll-to-bottom button.
-        </p>
-      </header>
-
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Default */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Default</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Default message scroller with auto-scroll.
-          </p>
-        </div>
-        <ComponentPreview id="message-scroller-default">
-          <MessageScroller className="h-64">
-            <Message position="received" author="Alice">Message 1</Message>
-            <Message position="sent" author="You">Message 2</Message>
-            <Message position="received" author="Alice">Message 3</Message>
-            <Message position="sent" author="You">Message 4</Message>
-            <Message position="received" author="Alice">Message 5</Message>
-          </MessageScroller>
-        </ComponentPreview>
-      </section>
-
-      {/* Scroll Button */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Scroll Button</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Message scroller with scroll-to-bottom button.
-          </p>
-        </div>
-        <ComponentPreview id="message-scroller-scroll-button">
-          <MessageScroller className="h-64" showScrollButton>
-            <Message position="received" author="Alice">Old message</Message>
-            <Message position="sent" author="You">Reply</Message>
-            <Message position="received" author="Alice">Another message</Message>
-            <Message position="sent" author="You">Another reply</Message>
-            <Message position="received" author="Alice">Latest message</Message>
-          </MessageScroller>
-        </ComponentPreview>
-      </section>
-
-      {/* Empty State */}
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Empty State</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Message scroller with empty state message.
-          </p>
-        </div>
-        <ComponentPreview id="message-scroller-empty">
+    <ComponentDocPage
+      name="Message Scroller"
+      category="Data Display"
+      description="An auto-scrolling message container that smoothly scrolls to the latest message."
+    >
+      <PreviewPanel filename="MessageScroller.tsx">
+        <div className="border border-border rounded-lg bg-background p-3 w-full max-w-md h-64">
           <MessageScroller
-            className="h-64"
-            emptyMessage="No messages yet. Start a conversation!"
-          >
-            {null}
-          </MessageScroller>
-        </ComponentPreview>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">autoScroll</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showScrollButton</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">emptyMessage</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
+            messages={[
+              { id: "1", content: "Welcome to the support chat!", timestamp: "10:00 AM" },
+              { id: "2", content: "How can I assist you today?", timestamp: "10:00 AM" },
+              { id: "3", content: "I have a question about my order.", timestamp: "10:01 AM" },
+            ]}
+          />
         </div>
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={MESSAGE_SCROLLER_SOURCE}
+        filename="MessageScroller.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-6">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock title="Chat Interface" code={MESSAGE_SCROLLER_SOURCE}>
+          <ChatDemo />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Log Viewer"
+          code={`<MessageScroller messages={logs} autoScroll />`}
+        >
+          <div className="w-full max-w-md border border-border rounded-lg bg-background p-3 h-64">
+            <MessageScroller
+              autoScroll={false}
+              messages={[
+                { id: "1", content: "[INFO] Server started on port 3000", timestamp: "09:00:00" },
+                { id: "2", content: "[DEBUG] Database connection established", timestamp: "09:00:01" },
+                { id: "3", content: "[WARN] High memory usage detected", timestamp: "09:00:02" },
+                { id: "4", content: "[INFO] Request processed successfully", timestamp: "09:00:03" },
+              ]}
+            />
+          </div>
+        </ExampleBlock>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

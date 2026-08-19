@@ -1,283 +1,195 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Search, X, Filter, Clock, Star, ArrowRight, Command } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import SearchInput from "@/components/ui/SearchInput";
 
-const installCommand = `npx component-library@latest add search-bar`;
+const SEARCHINPUT_SOURCE = `"use client";
 
-const usageCode = `import { SearchBar } from "@/components/ui/search-bar";
+import { forwardRef, useState, useRef, useEffect } from "react";
 
-export default function Demo() {
-  return <SearchBar placeholder="Search..." onSearch={(q) => console.log(q)} />;
-}`;
-
-function SearchInputDemo() {
-  const [query, setQuery] = useState("");
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="relative w-full max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search components..." className="w-full rounded-lg border bg-background pl-10 pr-10 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-        {query && <button onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button>}
-      </div>
-    </div>
-  );
+export interface SearchInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  onClear: () => void;
+  shortcut?: string;
+  recentSearches?: string[];
+  onRecentClick?: (search: string) => void;
+  className?: string;
 }
 
-function AutocompleteDemo() {
-  const [query, setQuery] = useState("");
-  const suggestions = ["Button", "Badge", "Card", "Dialog", "Input", "Table", "Tabs"].filter((s) => s.toLowerCase().includes(query.toLowerCase()));
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="relative w-full max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Type to search..." className="w-full rounded-lg border bg-background pl-10 pr-10 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-        {query && (
-          <div className="absolute top-full left-0 right-0 mt-1 rounded-lg border bg-background shadow-lg z-10">
-            {suggestions.map((s) => (
-              <button key={s} onClick={() => setQuery(s)} className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-muted/50 text-left">
-                <Search className="h-3 w-3 text-muted-foreground" /> {s}
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
+  ({ value, onChange, placeholder, onClear, shortcut, recentSearches, onRecentClick, className = "" }, ref) => {
+    const [focused, setFocused] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const handler = (e: MouseEvent) => {
+        if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) setFocused(false);
+      };
+      document.addEventListener("mousedown", handler);
+      return () => document.removeEventListener("mousedown", handler);
+    }, []);
+
+    return (
+      <div ref={wrapperRef} className={\`relative \${className}\`}>
+        <div className={\`flex items-center gap-2 rounded-xl border bg-background px-3 py-2.5 transition-colors \${focused ? "border-ring" : "border-border"}\`}>
+          <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+          </svg>
+          <input ref={ref} type="text" value={value} onChange={(e) => onChange(e.target.value)}
+            onFocus={() => setFocused(true)} placeholder={placeholder}
+            className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-subtle" />
+          {value && (
+            <button onClick={() => { onClear(); onChange(""); }}
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+          {!value && shortcut && (
+            <span className="shrink-0 rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">{shortcut}</span>
+          )}
+        </div>
+        {focused && recentSearches && recentSearches.length > 0 && (
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-border bg-surface py-1 shadow-popover">
+            <div className="px-3 py-1.5 text-xs font-medium text-muted-foreground">Recent searches</div>
+            {recentSearches.map((s) => (
+              <button key={s} onClick={() => onRecentClick?.(s)} className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-foreground hover:bg-muted">
+                <svg className="h-3.5 w-3.5 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>{s}
               </button>
             ))}
-            {suggestions.length === 0 && <div className="px-3 py-2 text-sm text-muted-foreground">No results</div>}
           </div>
         )}
       </div>
-    </div>
+    );
+  }
+);
+SearchInput.displayName = "SearchInput";
+
+export default SearchInput;`;
+
+const BASIC_CODE = `import SearchInput from "@/components/ui/SearchInput";
+
+function BasicSearch() {
+  const [value, setValue] = useState("");
+  return <SearchInput value={value} onChange={setValue} placeholder="Search..." onClear={() => setValue("")} />;
+}
+
+export default BasicSearch;`;
+
+const SHORTCUT_CODE = `import SearchInput from "@/components/ui/SearchInput";
+
+function ShortcutSearch() {
+  const [value, setValue] = useState("");
+  return <SearchInput value={value} onChange={setValue} placeholder="Search..." onClear={() => setValue("")} shortcut="⌘K" />;
+}
+
+export default ShortcutSearch;`;
+
+const RECENT_CODE = `import SearchInput from "@/components/ui/SearchInput";
+
+function RecentSearches() {
+  const [value, setValue] = useState("");
+  return (
+    <SearchInput
+      value={value}
+      onChange={setValue}
+      placeholder="Search components..."
+      onClear={() => setValue("")}
+      shortcut="⌘K"
+      recentSearches={["Button", "Dialog", "Table"]}
+      onRecentClick={(s) => setValue(s)}
+    />
   );
 }
 
-function FilterSearchDemo() {
-  const [filter, setFilter] = useState("all");
-  const [query, setQuery] = useState("");
+export default RecentSearches;`;
+
+const RESULTS_CODE = `import SearchInput from "@/components/ui/SearchInput";
+
+function SearchWithResults() {
+  const [value, setValue] = useState("");
+  const results = ["Button", "Badge", "Card"].filter((r) => r.toLowerCase().includes(value.toLowerCase()));
   return (
-    <div className="flex flex-col items-center gap-4 p-8">
-      <div className="w-full max-w-md space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search with filters..." className="w-full rounded-lg border bg-background pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20" />
-        </div>
-        <div className="flex gap-2">
-          {["all", "components", "blocks", "templates"].map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${filter === f ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
-              <Filter className="h-3 w-3" /> {f}
-            </button>
-          ))}
-        </div>
+    <div className="w-full max-w-md">
+      <SearchInput value={value} onChange={setValue} placeholder="Search..." onClear={() => setValue("")} />
+      <div className="mt-2 rounded-lg border divide-y">
+        {results.map((r) => <button key={r} className="w-full px-3 py-2 text-sm text-left hover:bg-muted">{r}</button>)}
       </div>
     </div>
   );
 }
 
-function RecentSearchesDemo() {
-  const [recent] = useState(["button variants", "card layout", "form validation", "modal dialog"]);
-  const [query, setQuery] = useState("");
+export default SearchWithResults;`;
+
+function AutocompleteSearch() {
+  const [value, setValue] = useState("");
+  const suggestions = ["Button", "Badge", "Card", "Dialog", "Input", "Table", "Tabs"].filter((s) => s.toLowerCase().includes(value.toLowerCase()));
   return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-full max-w-md space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className="w-full rounded-lg border bg-background pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20" />
-        </div>
-        <div className="space-y-1">
-          {recent.map((item, i) => (
-            <button key={i} onClick={() => setQuery(item)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-muted/50 hover:text-foreground text-left transition-colors">
-              <Clock className="h-3 w-3" /> {item}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="w-full max-w-md space-y-3">
+      <SearchInput value={value} onChange={setValue} placeholder="Type to search..." onClear={() => setValue("")} shortcut="⌘K" recentSearches={suggestions} onRecentClick={setValue} />
     </div>
   );
 }
 
-function QuickSearchDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-full max-w-md">
-        <button onClick={() => setOpen(!open)} className="flex w-full items-center gap-3 rounded-lg border bg-background px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-muted/50">
-          <Search className="h-4 w-4" />
-          <span>Quick search...</span>
-          <div className="ml-auto flex items-center gap-1 rounded border bg-muted px-1.5 py-0.5 text-[10px] font-medium">
-            <Command className="h-2.5 w-2.5" /> K
-          </div>
-        </button>
-        {open && (
-          <div className="mt-2 rounded-xl border bg-background shadow-xl p-3 space-y-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input type="text" autoFocus placeholder="Type a command or search..." className="w-full rounded-lg bg-muted/50 pl-10 pr-3 py-2 text-sm outline-none" />
-            </div>
-            <div className="space-y-1">
-              <p className="px-2 text-[10px] font-medium text-muted-foreground uppercase">Suggestions</p>
-              {["Go to Dashboard", "Open Settings", "View Profile"].map((item) => (
-                <button key={item} className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-sm hover:bg-muted/50 text-left">
-                  {item} <ArrowRight className="h-3 w-3 text-muted-foreground" />
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+const AUTOCOMPLETE_CODE = `import SearchInput from "@/components/ui/SearchInput";
 
-function SearchResultsDemo() {
-  const results = [
-    { title: "Button", desc: "Interactive button component with variants", tag: "Component" },
-    { title: "Card", desc: "Container for grouping related content", tag: "Component" },
-    { title: "Dashboard Block", desc: "Pre-built dashboard layout section", tag: "Block" },
-  ];
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-full max-w-md rounded-xl border bg-background shadow-sm">
-        <div className="border-b px-4 py-3 text-sm font-medium">Search Results (3)</div>
-        <div className="divide-y">
-          {results.map((r, i) => (
-            <div key={i} className="flex items-start gap-3 px-4 py-3 hover:bg-muted/30 cursor-pointer transition-colors">
-              <div className="mt-0.5 h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"><Search className="h-4 w-4 text-primary" /></div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium">{r.title}</p>
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">{r.tag}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{r.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CommandSearchDemo() {
-  const [query, setQuery] = useState("");
-  return (
-    <div className="flex items-center justify-center p-8">
-      <div className="w-full max-w-md rounded-xl border bg-background shadow-xl overflow-hidden">
-        <div className="flex items-center gap-3 border-b px-4 py-3">
-          <Command className="h-4 w-4 text-muted-foreground" />
-          <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search commands..." className="flex-1 bg-transparent text-sm outline-none" />
-          <kbd className="rounded border bg-muted px-1.5 py-0.5 text-[10px] font-medium">ESC</kbd>
-        </div>
-        <div className="max-h-64 overflow-y-auto p-2">
-          <p className="px-2 py-1 text-[10px] font-medium text-muted-foreground uppercase">Navigation</p>
-          {["Dashboard", "Components", "Templates", "Documentation"].map((item) => (
-            <button key={item} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-muted/50 text-left">
-              <ArrowRight className="h-3 w-3 text-muted-foreground" /> {item}
-            </button>
-          ))}
-          <p className="px-2 py-1 mt-1 text-[10px] font-medium text-muted-foreground uppercase">Actions</p>
-          {["Toggle Theme", "Copy Code", "Report Issue"].map((item) => (
-            <button key={item} className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-muted/50 text-left">
-              <Star className="h-3 w-3 text-muted-foreground" /> {item}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+<SearchInput value={value} onChange={setValue} placeholder="Type to search..." onClear={() => setValue("")} shortcut="⌘K" recentSearches={suggestions} onRecentClick={setValue} />`;
 
 export default function SearchBarPage() {
+  const [basicValue, setBasicValue] = useState("");
+  const [shortcutValue, setShortcutValue] = useState("");
+  const [recentValue, setRecentValue] = useState("");
+  const [resultsValue, setResultsValue] = useState("");
+  const results = ["Button", "Badge", "Card"].filter((r) => r.toLowerCase().includes(resultsValue.toLowerCase()));
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Search Bar</h1>
-          <Badge variant="primary">Input</Badge>
+    <ComponentDocPage
+      name="Search Bar"
+      category="Forms"
+      description="A search input with clear button, keyboard shortcut badge, recent searches dropdown, and autocomplete support."
+    >
+      <PreviewPanel filename="search-bar-preview.tsx">
+        <div className="w-full max-w-md">
+          <SearchInput value={basicValue} onChange={setBasicValue} placeholder="Search components..." onClear={() => setBasicValue("")} shortcut="⌘K" recentSearches={["Button", "Dialog", "Table"]} onRecentClick={setBasicValue} />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A versatile search bar component with autocomplete, filters, and command palette support.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={SEARCHINPUT_SOURCE} filename="components/ui/SearchInput.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic" description="Simple search input with a clear button." code={BASIC_CODE}>
+          <div className="w-full max-w-sm"><SearchInput value={basicValue} onChange={setBasicValue} placeholder="Search..." onClear={() => setBasicValue("")} /></div>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Various search bar demonstrations.</p>
-        </div>
+        <ExampleBlock title="Keyboard Shortcut" description="Displays a shortcut badge when the input is empty." code={SHORTCUT_CODE}>
+          <div className="w-full max-w-sm"><SearchInput value={shortcutValue} onChange={setShortcutValue} placeholder="Search..." onClear={() => setShortcutValue("")} shortcut="⌘K" /></div>
+        </ExampleBlock>
 
-        <ComponentPreview id="search-bar-input">
-          <SearchInputDemo />
-        </ComponentPreview>
+        <ExampleBlock title="Recent Searches" description="Shows a dropdown of recent search terms when focused." code={RECENT_CODE}>
+          <div className="w-full max-w-sm">
+            <SearchInput value={recentValue} onChange={setRecentValue} placeholder="Search components..." onClear={() => setRecentValue("")} shortcut="⌘K" recentSearches={["Button", "Dialog", "Table"]} onRecentClick={setRecentValue} />
+          </div>
+        </ExampleBlock>
 
-        <ComponentPreview id="search-bar-autocomplete">
-          <AutocompleteDemo />
-        </ComponentPreview>
+        <ExampleBlock title="Autocomplete" description="Live suggestions as you type, using the recent searches dropdown." code={AUTOCOMPLETE_CODE}>
+          <AutocompleteSearch />
+        </ExampleBlock>
 
-        <ComponentPreview id="search-bar-filter">
-          <FilterSearchDemo />
-        </ComponentPreview>
-
-        <ComponentPreview id="search-bar-recent">
-          <RecentSearchesDemo />
-        </ComponentPreview>
-
-        <ComponentPreview id="search-bar-quick">
-          <QuickSearchDemo />
-        </ComponentPreview>
-
-        <ComponentPreview id="search-bar-results">
-          <SearchResultsDemo />
-        </ComponentPreview>
-
-        <ComponentPreview id="search-bar-command">
-          <CommandSearchDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">placeholder</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">"Search..."</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onSearch</td>
-                <td className="px-4 py-3 text-muted-foreground">(query: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="Search Results" description="Results list that updates as you type." code={RESULTS_CODE}>
+          <div className="w-full max-w-md">
+            <SearchInput value={resultsValue} onChange={setResultsValue} placeholder="Search..." onClear={() => setResultsValue("")} shortcut="⌘K" />
+            <div className="mt-2 rounded-lg border divide-y">
+              {results.map((r) => <button key={r} className="w-full px-3 py-2 text-sm text-left hover:bg-muted">{r}</button>)}
+            </div>
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
