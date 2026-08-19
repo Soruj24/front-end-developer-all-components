@@ -29,8 +29,6 @@ export function CodePlayground({
   const source = edits[activeFile.name] ?? activeFile.source;
 
   const run = () => {
-    // In a real implementation this compiles the bundle with esbuild
-    // and evaluates it inside the sandboxed iframe below.
     setPreview(source);
   };
 
@@ -87,4 +85,4 @@ export function CodePlayground({
       </div>
     </div>
   );
-}`;
+}"`;

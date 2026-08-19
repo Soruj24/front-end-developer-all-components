@@ -1,12 +1,12 @@
 "use client";
 
-import { Spinner } from "@/components/ui/Spinner";
 import {
   ComponentDocPage,
   PreviewPanel,
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { Spinner } from "@/components/ui";
 
 const SPINNER_SOURCE = `import { SpinnerProps } from "@/components/ui/Spinner";
 

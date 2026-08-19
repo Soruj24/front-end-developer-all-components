@@ -1,57 +1,62 @@
 "use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Cookie } from "lucide-react";
 
-const installCommand = `npx component-library@latest add cookie-consent`;
-const usageCode = `import { CookieConsent } from "@/components/ui/cookie-consent";
-
-<CookieConsent onAccept={handleAccept} />`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { CONTACT_CARD_SOURCE } from "./contact-card-source";
+import { COOKIE_CONSENT_SOURCE, BANNER_EXAMPLE, CATEGORIES_EXAMPLE, WIDGET_EXAMPLE } from "./cookie-consent-source";
 
 export default function CookieConsentPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Cookie Consent</h1>
-          <Badge variant="primary">Feedback</Badge>
+    <ComponentDocPage
+      name="Cookie Consent"
+      category="Feedback"
+      description="A cookie consent banner component for GDPR compliance with accept/reject options and preference management."
+    >
+      <PreviewPanel filename="cookie-consent.tsx">
+        <div className="w-full p-4">
+          <div className="rounded-xl border border-border bg-card p-5 flex items-start gap-4">
+            <svg className="h-8 w-8 text-amber-600 shrink-0 mt-1" aria-hidden="true" focusable="false">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 1a11 11 0 1 1 0 22A11.011 11.011 0 0 1 12 3z" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-sm font-medium">We use cookies</p>
+              <p className="text-xs text-muted-foreground mt-1">This website uses cookies to enhance your browsing experience and provide personalized content.</p>
+            </div>
+            <div className="flex gap-2">
+              <button className="px-3 py-1.5 rounded-md bg-muted text-foreground text-xs font-medium">Reject</button>
+              <button className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-medium">Accept All</button>
+            </div>
+          </div>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A cookie consent banner component for GDPR compliance with accept/reject options and preference management.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Bottom Banner</h2><p className="mt-1 text-sm text-muted-foreground">A banner that appears at the bottom of the screen.</p></div>
-        <ComponentPreview id="cookie-consent-banner">
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={COOKIE_CONSENT_SOURCE}
+        filename="components/ui/CookieConsent/CookieConsent.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Bottom Banner" description="A banner that appears at the bottom of the screen." code={BANNER_EXAMPLE}>
           <div className="w-full p-4">
             <div className="rounded-xl border border-border bg-card p-5 flex items-start gap-4">
-              <Cookie className="h-8 w-8 text-amber-600 shrink-0 mt-1" />
+              <svg className="h-8 w-8 text-amber-600 shrink-0 mt-1" aria-hidden="true" focusable="false" />
               <div className="flex-1">
                 <p className="text-sm font-medium">We use cookies</p>
                 <p className="text-xs text-muted-foreground mt-1">This website uses cookies to enhance your browsing experience and provide personalized content.</p>
               </div>
-              <div className="flex gap-2 shrink-0">
+              <div className="flex gap-2">
                 <button className="px-3 py-1.5 rounded-md bg-muted text-foreground text-xs font-medium">Reject</button>
                 <button className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-medium">Accept All</button>
               </div>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">With Categories</h2><p className="mt-1 text-sm text-muted-foreground">Consent banner with category toggles.</p></div>
-        <ComponentPreview id="cookie-consent-categories">
+        </ExampleBlock>
+
+        <ExampleBlock title="With Categories" description="Consent banner with category toggles." code={CATEGORIES_EXAMPLE}>
           <div className="w-full p-4">
             <div className="max-w-md mx-auto rounded-xl border border-border bg-card p-5">
               <div className="flex items-center gap-3 mb-4">
-                <Cookie className="h-6 w-6 text-amber-600" />
+                <svg className="h-6 w-6 text-amber-600" aria-hidden="true" focusable="false" />
                 <p className="text-sm font-medium">Cookie Preferences</p>
               </div>
               <div className="space-y-3 mb-4">
@@ -73,24 +78,18 @@ export default function CookieConsentPage() {
               </div>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Floating Widget</h2><p className="mt-1 text-sm text-muted-foreground">A small cookie icon that expands on click.</p></div>
-        <ComponentPreview id="cookie-consent-widget">
+        </ExampleBlock>
+
+        <ExampleBlock title="Floating Widget" description="A small cookie icon that expands on click." code={WIDGET_EXAMPLE}>
           <div className="w-full p-4">
             <div className="flex justify-end">
               <button className="h-12 w-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
-                <Cookie className="h-5 w-5 text-amber-600" />
+                <svg className="h-5 w-5 text-amber-600" aria-hidden="true" focusable="false" />
               </button>
             </div>
           </div>
-        </ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

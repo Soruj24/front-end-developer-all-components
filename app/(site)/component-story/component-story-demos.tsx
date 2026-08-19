@@ -2,26 +2,26 @@
 
 import { useState } from "react";
 import {
+  BookOpen,
   Play,
+  Copy,
+  Share2,
+  Layers,
+  Eye,
+  Code2,
+  Palette,
   Settings,
   Check,
   X,
   ChevronDown,
-  Eye,
-  Code2,
   Sun,
   Moon,
   Monitor,
 } from "lucide-react";
 
-interface StoryVariant {
-  name: string;
-  props: Record<string, string | number | boolean>;
-}
-
 export function VariantSwitchingDemo() {
   const [activeVariant, setActiveVariant] = useState(0);
-  const variants: StoryVariant[] = [
+  const variants = [
     { name: "Default", props: { size: "md", variant: "primary" } },
     { name: "Small", props: { size: "sm", variant: "primary" } },
     { name: "Large", props: { size: "lg", variant: "primary" } },
@@ -318,8 +318,8 @@ export function ThemePreviewDemo() {
 export function PropsTableDemo() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ variant: true });
   const props = [
-    { name: "variant", type: "\"primary\" | \"secondary\" | \"ghost\" | \"outline\"", default: "\"primary\"", required: false, desc: "Button style variant" },
-    { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", required: false, desc: "Button size" },
+    { name: "variant", type: '"primary" | "secondary" | "ghost" | "outline"', default: '"primary"', required: false, desc: "Button style variant" },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', required: false, desc: "Button size" },
     { name: "disabled", type: "boolean", default: "false", required: false, desc: "Disable interactions" },
     { name: "loading", type: "boolean", default: "false", required: false, desc: "Show loading spinner" },
     { name: "onClick", type: "() => void", default: "-", required: false, desc: "Click handler" },
@@ -393,16 +393,12 @@ export function ComponentGridDemo() {
               <div key={s} className="text-center text-[10px] font-medium text-muted-foreground capitalize">{s}</div>
             ))}
           </div>
-          {variants.map((v) => (
+{variants.map((v) => (
             <div key={v.name} className="grid grid-cols-3 gap-2 mb-2 items-center">
               <span className="text-xs font-medium text-muted-foreground">{v.name}</span>
               {sizes.map((s) => (
                 <div key={s} className="flex justify-center">
-                  <button className={`rounded-lg font-medium transition-colors ${
-                    s === "sm" ? "px-3 py-1 text-[10px]" : s === "lg" ? "px-5 py-2 text-sm" : "px-4 py-1.5 text-xs"
-                  } ${v.class}`}>
-                    Button
-                  </button>
+                  <ButtonSize s={s} v={v} />
                 </div>
               ))}
             </div>
@@ -410,6 +406,14 @@ export function ComponentGridDemo() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ButtonSize({ s, v }: { s: string; v: any }) {
+  const cls = "rounded-lg font-medium transition-colors " +
+    (s === "sm" ? "px-3 py-1 text-[10px]" : s === "lg" ? "px-5 py-2 text-sm" : "px-4 py-1.5 text-xs") + " " + v.class;
+  return (
+    <button className={cls}>Button</button>
   );
 }
 
@@ -459,8 +463,7 @@ export function CodePreviewDemo() {
               {'  '}<span className="text-purple-400">return</span> ({'\n'}
               {'    '}{variants[activeVariant].code}{'\n'}
               {'  '});{'\n'}
-              {'}'}
-            </pre>
+              {'{}'}</pre>
           </div>
         ) : (
           <div className="flex items-center justify-center p-8">

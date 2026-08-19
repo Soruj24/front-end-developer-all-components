@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/ToggleGroup";
+import { ToggleGroup } from "@/components/ui/ToggleGroup";
 import {
   ComponentDocPage,
   PreviewPanel,
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { ToggleGroupItem } from "@/components/_toggle-group";
 
 const TOGGLEGROUP_SOURCE = `"use client";
 
@@ -168,7 +169,9 @@ export default function ToggleGroupPage() {
             <ToggleGroupItem value="center">Center</ToggleGroupItem>
             <ToggleGroupItem value="right">Right</ToggleGroupItem>
           </ToggleGroup>
-          <p className="text-sm text-muted-foreground">Selected: {value || "none"}</p>
+          <p className="text-sm text-muted-foreground">
+            Selected: {value || "none"}
+          </p>
         </div>
       </ExampleBlock>
     </ComponentDocPage>
