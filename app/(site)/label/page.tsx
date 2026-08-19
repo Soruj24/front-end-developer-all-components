@@ -3,9 +3,7 @@
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Label } from "@/components/ui/Label";
 
-const LABEL_SOURCE = `"use client";
-
-import { cn } from "@/lib/cn";
+const LABEL_SOURCE = `import { cn } from "@/lib/cn";
 
 export interface LabelProps {
   htmlFor?: string;

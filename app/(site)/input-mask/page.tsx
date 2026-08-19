@@ -9,9 +9,7 @@ import {
 } from "@/components/docs";
 import { InputMask } from "@/components/ui/InputMask";
 
-const INPUMASK_SOURCE = `"use client";
-
-import { useCallback } from "react";
+const INPUTMASK_SOURCE = `import { useCallback } from "react";
 import { cn } from "@/lib/cn";
 
 interface InputMaskProps {
@@ -141,58 +139,60 @@ export default function InputMaskPage() {
       </PreviewPanel>
 
       <SourceCodeViewer
-        source={INPUMASK_SOURCE}
+        source={INPUTMASK_SOURCE}
         filename="components/ui/InputMask/InputMask.tsx"
         defaultExpanded
       />
 
-      <ExampleBlock
-        title="Credit Card"
-        description="16-digit card number with space grouping."
-        code={CREDIT_CARD_CODE}
-        filename="credit-card.tsx"
-      >
-        <div className="w-full max-w-sm">
-          <InputMask
-            mask="9999 9999 9999 9999"
-            value={card}
-            onValueChange={setCard}
-            placeholder="4242 4242 4242 4242"
-          />
-        </div>
-      </ExampleBlock>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Credit Card"
+          description="16-digit card number with space grouping."
+          code={CREDIT_CARD_CODE}
+          filename="credit-card.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <InputMask
+              mask="9999 9999 9999 9999"
+              value={card}
+              onValueChange={setCard}
+              placeholder="4242 4242 4242 4242"
+            />
+          </div>
+        </ExampleBlock>
 
-      <ExampleBlock
-        title="Date"
-        description="Date input with MM/DD/YYYY formatting."
-        code={DATE_CODE}
-        filename="date.tsx"
-      >
-        <div className="w-full max-w-sm">
-          <InputMask
-            mask="99/99/9999"
-            value={date}
-            onValueChange={setDate}
-            placeholder="MM/DD/YYYY"
-          />
-        </div>
-      </ExampleBlock>
+        <ExampleBlock
+          title="Date"
+          description="Date input with MM/DD/YYYY formatting."
+          code={DATE_CODE}
+          filename="date.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <InputMask
+              mask="99/99/9999"
+              value={date}
+              onValueChange={setDate}
+              placeholder="MM/DD/YYYY"
+            />
+          </div>
+        </ExampleBlock>
 
-      <ExampleBlock
-        title="Custom Mask"
-        description="Alphanumeric serial number with custom separators."
-        code={SERIAL_CODE}
-        filename="custom.tsx"
-      >
-        <div className="w-full max-w-sm">
-          <InputMask
-            mask="***-***-***"
-            value={serial}
-            onValueChange={setSerial}
-            placeholder="ABCD-1234-EF56"
-          />
-        </div>
-      </ExampleBlock>
+        <ExampleBlock
+          title="Custom Mask"
+          description="Alphanumeric serial number with custom separators."
+          code={SERIAL_CODE}
+          filename="custom.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <InputMask
+              mask="***-***-***"
+              value={serial}
+              onValueChange={setSerial}
+              placeholder="ABCD-1234-EF56"
+            />
+          </div>
+        </ExampleBlock>
+      </div>
     </ComponentDocPage>
   );
 }

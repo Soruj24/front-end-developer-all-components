@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Coffee, Zap, Heart, Shield, Users, Calendar, Moon, Sun, Palette, Settings, Mail, BookOpen, Folder, CheckCircle, XCircle, AlertCircle, RefreshCcw, Layout, LayoutGrid, LayoutList, LayoutDashboard } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 const CUP_SODA_SOURCE = "use client";
 

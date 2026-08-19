@@ -1,8 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { Zap, Sparkles, Moon, Sun, Palette, Layout, LayoutSplit, LayoutDashboard, LayoutGrid, LayoutList, LayoutText, LayoutWrap, LayoutSidebarClose } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import {
+  Zap,
+  Sparkles,
+  Moon,
+  Sun,
+  Palette,
+  Layout,
+  LayoutDashboard,
+  LayoutGrid,
+  LayoutList,
+} from "lucide-react";
 
 const DAWN_GRADIENT_SOURCE = "use client";
 
@@ -29,11 +44,23 @@ function DawnGradientDemo() {
       <div className="relative z-10 text-center">
         <Zap className="h-12 w-12 text-yellow-400 mb-4" />
         <p className="text-xl font-medium text-foreground">Dawn Gradient</p>
-        <p className="text-sm text-muted-foreground">conic-gradient animation</p>
+        <p className="text-sm text-muted-foreground">
+          conic-gradient animation
+        </p>
         {running ? (
-          <button onClick={() => setRunning(false)} className="mt-3 rounded-border border-border px-3 py-1 text-sm font-medium hover:bg-muted transition-colors">Stop</button>
+          <button
+            onClick={() => setRunning(false)}
+            className="mt-3 rounded-border border-border px-3 py-1 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Stop
+          </button>
         ) : (
-          <button onClick={() => setRunning(true)} className="mt-3 rounded-border border-border px-3 py-1 text-sm font-medium hover:bg-muted transition-colors">Animate</button>
+          <button
+            onClick={() => setRunning(true)}
+            className="mt-3 rounded-border border-border px-3 py-1 text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Animate
+          </button>
         )}
       </div>
     </div>
@@ -58,11 +85,19 @@ export default function DawnGradientPage() {
       />
 
       <div className="flex flex-col gap-4">
-        <ExampleBlock title="Animated" description="Gradient with automatic rotation." code={DAWN_GRADIENT_SOURCE}>
+        <ExampleBlock
+          title="Animated"
+          description="Gradient with automatic rotation."
+          code={DAWN_GRADIENT_SOURCE}
+        >
           <DawnGradientDemo />
         </ExampleBlock>
 
-        <ExampleBlock title="Static" description="Gradient without animation." code={DAWN_GRADIENT_SOURCE}>
+        <ExampleBlock
+          title="Static"
+          description="Gradient without animation."
+          code={DAWN_GRADIENT_SOURCE}
+        >
           <DawnGradientDemo />
         </ExampleBlock>
       </div>

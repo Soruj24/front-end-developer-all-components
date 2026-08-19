@@ -1,12 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import {
   ComponentDocPage,
   PreviewPanel,
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
-import { Marker } from "@/components/ui/Marker";
 
 const MARKER_SOURCE = `"use client";
 
@@ -55,6 +55,14 @@ const INLINE_SOURCE = `import { Marker } from "@/components/ui/Marker";
   This is a paragraph with <Marker active>highlighted text</Marker> mixed
   with <Marker>non-highlighted text</Marker> for emphasis.
 </p>`;
+
+function InlineMarker({ active, className, children }: { active?: boolean; className?: string; children: React.ReactNode }) {
+  return (
+    <Marker active={active} className={className}>
+      {children}
+    </Marker>
+  );
+}
 
 export default function MarkerPage() {
   return (

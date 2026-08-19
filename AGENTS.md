@@ -57,7 +57,7 @@ features/<name>/
 - Model Switching — `server/providers/`
 
 ### Providers & models
-- Providers: LangGraph (`@langchain/langgraph`), Deep Agents (`deepagents`), OpenRouter (`@langchain/openai` over OpenAI-compatible baseURL), GROQ (`@langchain/groq`).
+- Providers: LangGraph (`@langchain/langgraph`), Deep Agents (`deepagents`), OpenRouter (`@langchain/openai` over OpenAI-compatible baseURL), GROQ (`@langcode/groq`).
 - All models are resolved through the provider registry (`server/providers/`). Never instantiate a model directly in feature code.
 - Every provider is pluggable: add a provider without touching consumers.
 - Model switching is configuration-driven (model id → provider + model name), never hard-coded per call.

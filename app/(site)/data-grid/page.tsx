@@ -2,11 +2,13 @@
 
 import { useState, useMemo } from "react";
 import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, Search, Filter } from "lucide-react";
-
-const installCommand = `npx component-library@latest add data-grid`;
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 
 const usageCode = `import { DataGrid } from "@/components/data-grid";
 
@@ -48,14 +50,11 @@ const statusColors: Record<string, string> = {
   Offline: "bg-gray-400/10 text-gray-600 dark:text-gray-400",
 };
 
-type SortDir = "asc" | "desc" | null;
-
 export default function DataGridPage() {
   const [sortKey, setSortKey] = useState<keyof Row | null>(null);
-  const [sortDir, setSortDir] = useState<SortDir>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc" | null>(null);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
-  const pageSize = 5;
 
   const filtered = useMemo(() => {
     if (!search) return sampleData;
@@ -75,8 +74,8 @@ export default function DataGridPage() {
     });
   }, [filtered, sortKey, sortDir]);
 
-  const paged = sorted.slice(page * pageSize, (page + 1) * pageSize);
-  const totalPages = Math.ceil(sorted.length / pageSize);
+  const paged = sorted.slice(page * 5, (page + 1) * 5);
+  const totalPages = Math.ceil(sorted.length / 5);
 
   const toggleSort = (key: keyof Row) => {
     if (sortKey === key) {
@@ -102,28 +101,12 @@ export default function DataGridPage() {
   ];
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Data Grid</h1>
-          <Badge variant="primary">Data Display</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Sortable data grid with search, pagination, and column-based sorting. Handles large datasets with smooth interactions.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <ComponentPreview id="data-grid-sortable">
+    <ComponentDocPage
+      name="Data Grid"
+      category="Data Display"
+      description="Sortable data grid with search, pagination, and column-based sorting. Handles large datasets with smooth interactions."
+    >
+      <PreviewPanel filename="data-grid-preview.tsx">
         <div className="w-full">
           <div className="mb-4 flex items-center gap-2">
             <div className="relative flex-1 max-w-xs">
@@ -175,7 +158,7 @@ export default function DataGridPage() {
           </div>
           <div className="mt-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Showing {page * pageSize + 1}-{Math.min((page + 1) * pageSize, sorted.length)} of {sorted.length}
+              Showing {page * 5 + 1}-{Math.min((page + 1) * 5, sorted.length)} of {sorted.length}
             </p>
             <div className="flex items-center gap-2">
               <button
@@ -206,84 +189,16 @@ export default function DataGridPage() {
             </div>
           </div>
         </div>
-      </ComponentPreview>
+      </PreviewPanel>
 
-      <ComponentPreview id="data-grid-condensed">
-        <div className="w-full overflow-hidden rounded-lg border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-3 py-2 text-left font-medium">Name</th>
-                <th className="px-3 py-2 text-left font-medium">Role</th>
-                <th className="px-3 py-2 text-left font-medium">Status</th>
-                <th className="px-3 py-2 text-right font-medium">Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sampleData.slice(0, 6).map((row) => (
-                <tr key={row.id} className="border-b last:border-0">
-                  <td className="px-3 py-2 font-medium text-foreground">{row.name}</td>
-                  <td className="px-3 py-2 text-muted-foreground">{row.role}</td>
-                  <td className="px-3 py-2">
-                    <span className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium ${statusColors[row.status]}`}>
-                      {row.status}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 text-right font-mono text-muted-foreground">${row.revenue.toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </ComponentPreview>
+      <SourceCodeViewer
+        source={usageCode}
+        filename="data-grid-page.tsx"
+        label="tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">columns</td>
-                <td className="px-4 py-3 text-muted-foreground">ColumnDef[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">data</td>
-                <td className="px-4 py-3 text-muted-foreground">T[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">sortable</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">pagination</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">pageSize</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">10</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <ExampleBlock title="Basic Usage" description="Data grid with sorting, pagination, and search functionality." code={usageCode}><Badge variant="primary">Data Display</Badge></ExampleBlock>
+    </ComponentDocPage>
   );
 }

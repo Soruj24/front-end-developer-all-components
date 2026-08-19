@@ -1,14 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
 import { Move, Grip, GripVertical, ArrowUp, ArrowDown, List, Grid } from "lucide-react";
-
-const installCommand = `npx component-library@latest add drag-sort`;
-const usageCode = `import { DragSort } from "@/components/ui/drag-sort";
-
-<DragSort items={items} onReorder={setItems} />`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 
 function DraggableList() {
   const [items, setItems] = useState([
@@ -21,10 +14,7 @@ function DraggableList() {
     <div className="w-full p-4">
       <div className="max-w-sm space-y-2">
         {items.map((item, i) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 cursor-grab hover:bg-muted/50 transition-colors"
-          >
+          <div key={item.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 cursor-grab hover:bg-muted/50 transition-colors">
             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
             <div className={`h-6 w-6 rounded-full ${item.color}/10 flex items-center justify-center text-xs font-medium`} style={{ color: item.color }}>
               {i + 1}
@@ -39,21 +29,14 @@ function DraggableList() {
 
 function SortableGrid() {
   const [items, setItems] = useState([
-    { id: 1, text: "Widget A" },
-    { id: 2, text: "Widget B" },
-    { id: 3, text: "Widget C" },
-    { id: 4, text: "Widget D" },
-    { id: 5, text: "Widget E" },
-    { id: 6, text: "Widget F" },
+    { id: 1, text: "Widget A" }, { id: 2, text: "Widget B" }, { id: 3, text: "Widget C" },
+    { id: 4, text: "Widget D" }, { id: 5, text: "Widget E" }, { id: 6, text: "Widget F" },
   ]);
   return (
     <div className="w-full p-4">
       <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
         {items.map((item, i) => (
-          <div
-            key={item.id}
-            className="rounded-lg border border-border bg-card p-4 text-center cursor-grab hover:bg-muted/50 transition-colors"
-          >
+          <div key={item.id} className="rounded-lg border border-border bg-card p-4 text-center cursor-grab hover:bg-muted/50 transition-colors">
             <Grip className="h-4 w-4 mx-auto text-muted-foreground mb-2" />
             <span className="text-xs font-medium">{item.text}</span>
           </div>
@@ -102,10 +85,7 @@ function ReorderItems() {
     <div className="w-full p-4">
       <div className="max-w-sm space-y-2">
         {items.map((item, i) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 cursor-grab hover:bg-muted/50 transition-colors"
-          >
+          <div key={item.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 cursor-grab hover:bg-muted/50 transition-colors">
             <ArrowUp className="h-4 w-4 text-muted-foreground shrink-0 opacity-50" />
             <ArrowDown className="h-4 w-4 text-muted-foreground shrink-0 opacity-50" />
             <div className={`h-3 w-3 rounded-full ${item.priority === "high" ? "bg-red-500" : item.priority === "medium" ? "bg-yellow-500" : "bg-green-500"} shrink-0`} />
@@ -181,10 +161,7 @@ function AutoScroll() {
     <div className="w-full p-4">
       <div className="max-w-sm max-h-64 overflow-y-auto border border-border rounded-lg bg-card p-2 space-y-1">
         {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-3 rounded border border-border bg-card p-2 cursor-grab hover:bg-muted/50 transition-colors"
-          >
+          <div key={item.id} className="flex items-center gap-3 rounded border border-border bg-card p-2 cursor-grab hover:bg-muted/50 transition-colors">
             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
             <span className="text-sm flex-1">{item.text}</span>
           </div>
@@ -197,93 +174,14 @@ function AutoScroll() {
 
 export default function DragSortPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Drag Sort</h1>
-          <Badge variant="primary">Input</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A drag-and-drop sortable list component for reordering items with visual feedback and smooth animations.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Draggable List</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Items with drag handles for reordering.</p>
-        </div>
-        <ComponentPreview id="drag-sort-draggable"><DraggableList /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Sortable Grid</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Sortable cards in a grid layout.</p>
-        </div>
-        <ComponentPreview id="drag-sort-grid"><SortableGrid /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Kanban Board</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Multi-column drag and drop board.</p>
-        </div>
-        <ComponentPreview id="drag-sort-kanban"><KanbanBoard /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Reorder Items</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Priority list with up/down controls.</p>
-        </div>
-        <ComponentPreview id="drag-sort-reorder"><ReorderItems /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Nested Sort</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Groups with sortable nested items.</p>
-        </div>
-        <ComponentPreview id="drag-sort-nested"><NestedSort /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Handle Sort</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Drag only by designated handle area.</p>
-        </div>
-        <ComponentPreview id="drag-sort-handle"><HandleSort /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Auto Scroll</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Long list with auto-scroll on drag.</p>
-        </div>
-        <ComponentPreview id="drag-sort-autoscroll"><AutoScroll /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">items</td><td className="px-4 py-3 text-muted-foreground">T[]</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onReorder</td><td className="px-4 py-3 text-muted-foreground">(items: T[]) => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">handle</td><td className="px-4 py-3 text-muted-foreground">ReactNode</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">axis</td><td className="px-4 py-3 text-muted-foreground">"x" | "y" | "xy"</td><td className="px-4 py-3 text-muted-foreground">"y"</td><td className="px-4 py-3">No</td></tr>
-              <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    <ComponentDocPage>
+      <PreviewPanel>
+        <DraggableList /><SortableGrid /><KanbanBoard /><ReorderItems /><NestedSort /><HandleSort /><AutoScroll />
+      </PreviewPanel>
+      <ExampleBlock>
+        <SourceCodeViewer code={DraggableList.toString()} language="tsx" title="DraggableList" />
+        <DraggableList /><SortableGrid /><KanbanBoard /><ReorderItems /><NestedSort /><HandleSort /><AutoScroll />
+      </ExampleBlock>
+    </ComponentDocPage>
   );
 }
