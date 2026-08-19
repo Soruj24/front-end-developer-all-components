@@ -14,7 +14,7 @@ export function PatternSections() {
   );
 }
 
-function GroupedSection() {
+export function GroupedSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Grouped Sections</h2>
@@ -30,7 +30,7 @@ function GroupedSection() {
   );
 }
 
-function UseCasesSection() {
+export function UseCasesSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Use Cases</h2>
@@ -47,7 +47,7 @@ function UseCasesSection() {
   );
 }
 
-function NestedSection() {
+export function NestedSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Nested (Accordion in Accordion)</h2>
@@ -56,7 +56,7 @@ function NestedSection() {
   );
 }
 
-function FaqSection() {
+export function FaqSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Full Page FAQ</h2>

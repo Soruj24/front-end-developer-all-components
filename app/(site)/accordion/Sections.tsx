@@ -21,7 +21,7 @@ function Label({ children }: { children: string }) {
   return <p className="mb-2 text-xs font-medium text-muted-foreground">{children}</p>;
 }
 
-function VariantsSection() {
+export function VariantsSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Variants</h2>
@@ -51,7 +51,7 @@ function VariantsSection() {
   );
 }
 
-function OpenModeSection() {
+export function OpenModeSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Single vs Multi Open</h2>
@@ -69,7 +69,7 @@ function OpenModeSection() {
   );
 }
 
-function ControlsSection() {
+export function ControlsSection() {
   const [expanded, setExpanded] = useState(true);
   return (
     <section>
@@ -87,7 +87,7 @@ function ControlsSection() {
   );
 }
 
-function DisabledSection() {
+export function DisabledSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Disabled Items</h2>
@@ -96,7 +96,7 @@ function DisabledSection() {
   );
 }
 
-function LongContentSection() {
+export function LongContentSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">Long Content</h2>
@@ -105,7 +105,7 @@ function LongContentSection() {
   );
 }
 
-function IconsSection() {
+export function IconsSection() {
   return (
     <section>
       <h2 className="mb-4 text-lg font-semibold">With Icons</h2>

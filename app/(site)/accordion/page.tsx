@@ -1,111 +1,116 @@
 "use client";
 
-import { AccordionSections } from "./Sections";
-import { PatternSections } from "./Patterns";
-import { Badge } from "@/components/design-system/Badge";
-import { CodeBlock } from "@/components/home/CodeBlock";
-
-const installCommand = `npx component-library@latest add accordion`;
-
-const usageCode = `import {
-  Accordion, AccordionItem, AccordionTrigger, AccordionContent
-} from "@/components/_accordion";
-
-<Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-  </AccordionItem>
-</Accordion>`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Accordion } from "./Accordion";
+import { faqItems } from "./data";
+import {
+  ACCORDION_SOURCE,
+  VARIANTS_EXAMPLE,
+  OPEN_MODE_EXAMPLE,
+  CONTROLS_EXAMPLE,
+  DISABLED_EXAMPLE,
+  LONG_EXAMPLE,
+  ICONS_EXAMPLE,
+  GROUPED_EXAMPLE,
+  USECASES_EXAMPLE,
+  NESTED_EXAMPLE,
+  FAQ_EXAMPLE,
+} from "./accordion-source";
+import {
+  VariantsSection,
+  OpenModeSection,
+  ControlsSection,
+  DisabledSection,
+  LongContentSection,
+  IconsSection,
+} from "./Sections";
+import {
+  GroupedSection,
+  UseCasesSection,
+  NestedSection,
+  FaqSection,
+} from "./Patterns";
 
 export default function AccordionPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Accordion</h1>
-          <Badge variant="primary">Layout</Badge>
+    <ComponentDocPage
+      name="Accordion"
+      category="Layout"
+      description="Expandable accordion with single/multi open, variants, and practical patterns."
+    >
+      <PreviewPanel filename="accordion.tsx">
+        <div className="w-full max-w-md">
+          <Accordion items={faqItems} startOpen={-1} />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Expandable accordion with single/multi open, variants, and practical patterns.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={ACCORDION_SOURCE}
+        filename="components/ui/Accordion/Accordion.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Variants" description="Bordered, ghost, boxed, separated, and minimal styles." code={VARIANTS_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <VariantsSection />
+          </div>
+        </ExampleBlock>
 
-      <AccordionSections />
-      <PatternSections />
+        <ExampleBlock title="Single vs Multi Open" description="Open one item at a time or allow multiple expanded sections." code={OPEN_MODE_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <OpenModeSection />
+          </div>
+        </ExampleBlock>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">type</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;single&quot; | &quot;multiple&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;single&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">collapsible</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">defaultValue</td>
-                <td className="px-4 py-3 text-muted-foreground">string[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">value</td>
-                <td className="px-4 py-3 text-muted-foreground">string[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onValueChange</td>
-                <td className="px-4 py-3 text-muted-foreground">(value: string[]) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">disabled</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <ExampleBlock title="Expand / Collapse Controls" description="Toggle all sections open or closed with a button." code={CONTROLS_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <ControlsSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Disabled Items" description="Lock certain items so they cannot be expanded." code={DISABLED_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <DisabledSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Long Content" description="Accordions that handle lengthy bodies comfortably." code={LONG_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <LongContentSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="With Icons" description="Add icons or emoji to accordion titles." code={ICONS_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <IconsSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Grouped Sections" description="Organize accordions under labeled categories." code={GROUPED_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <GroupedSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Use Cases" description="FAQ, settings, docs, and onboarding patterns." code={USECASES_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <UseCasesSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Nested" description="Accordions nested inside other accordions." code={NESTED_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <NestedSection />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Full Page FAQ" description="A standalone FAQ built from accordion items." code={FAQ_EXAMPLE}>
+          <div className="w-full max-w-xl">
+            <FaqSection />
+          </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

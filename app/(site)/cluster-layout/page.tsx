@@ -1,24 +1,18 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
 import { Tag, Layers, LayoutGrid, WrapText } from "lucide-react";
-
-const installCommand = `npx component-library@latest add cluster-layout`;
-
-const usageCode = `import { Cluster } from "@/components/ui/Cluster";
-
-<Cluster gap={2}>
-  <Badge>React</Badge>
-  <Badge>TypeScript</Badge>
-  <Badge>Tailwind</Badge>
-</Cluster>
-
-<Cluster gap={3} justify="center">
-  <Button>Cancel</Button>
-  <Button variant="primary">Submit</Button>
-</Cluster>`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  CLUSTER_SOURCE,
+  TAG_CLOUD_EXAMPLE,
+  ACTIONS_EXAMPLE,
+  JUSTIFY_START_EXAMPLE,
+  JUSTIFY_CENTER_EXAMPLE,
+  JUSTIFY_END_EXAMPLE,
+  GAP_VARIANTS_EXAMPLE,
+  MIXED_CONTENT_EXAMPLE,
+  TOOLBAR_EXAMPLE,
+} from "./cluster-layout-source";
 
 function ClusterTags() {
   const tags = ["React", "TypeScript", "Tailwind CSS", "Next.js", "Node.js", "GraphQL", "PostgreSQL"];
@@ -163,132 +157,43 @@ function ClusterToolbar() {
 
 export default function ClusterLayoutPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Cluster Layout</h1>
-          <Badge variant="primary">Layout</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Wrap items into rows with consistent spacing. Perfect for tag clouds, button groups, navigation items, and filter controls.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Cluster Layout"
+      category="Layout"
+      description="Wrap items into rows with consistent spacing. Perfect for tag clouds, button groups, navigation items, and filter controls."
+    >
+      <PreviewPanel filename="cluster-layout.tsx">
+        <ClusterTags />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={CLUSTER_SOURCE} filename="components/ui/Cluster/Cluster.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Tag Cloud</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Wrapped tags with consistent spacing.</p>
-        </div>
-        <ComponentPreview id="cluster-tags">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Tag Cloud" description="Wrapped tags with consistent spacing." code={TAG_CLOUD_EXAMPLE}>
           <ClusterTags />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Action Buttons</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Clustered action buttons that wrap on smaller screens.</p>
-        </div>
-        <ComponentPreview id="cluster-actions">
+        </ExampleBlock>
+        <ExampleBlock title="Action Buttons" description="Clustered action buttons that wrap on smaller screens." code={ACTIONS_EXAMPLE}>
           <ClusterActions />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Justify Start</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Items aligned to the start of the cluster.</p>
-        </div>
-        <ComponentPreview id="cluster-start">
+        </ExampleBlock>
+        <ExampleBlock title="Justify Start" description="Items aligned to the start of the cluster." code={JUSTIFY_START_EXAMPLE}>
           <ClusterJustifyStart />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Justify Center</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Items centered within the cluster.</p>
-        </div>
-        <ComponentPreview id="cluster-center">
+        </ExampleBlock>
+        <ExampleBlock title="Justify Center" description="Items centered within the cluster." code={JUSTIFY_CENTER_EXAMPLE}>
           <ClusterJustifyCenter />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Justify End</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Items aligned to the end of the cluster.</p>
-        </div>
-        <ComponentPreview id="cluster-end">
+        </ExampleBlock>
+        <ExampleBlock title="Justify End" description="Items aligned to the end of the cluster." code={JUSTIFY_END_EXAMPLE}>
           <ClusterJustifyEnd />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Mixed Content</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Cluster with different sized content items.</p>
-        </div>
-        <ComponentPreview id="cluster-mixed">
+        </ExampleBlock>
+        <ExampleBlock title="Gap Variants" description="Consistent spacing between cluster items." code={GAP_VARIANTS_EXAMPLE}>
+          <ClusterGapVariants />
+        </ExampleBlock>
+        <ExampleBlock title="Mixed Content" description="Cluster with different sized content items." code={MIXED_CONTENT_EXAMPLE}>
           <ClusterMixedContent />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Toolbar Pattern</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Toolbar with grouped controls and dividers.</p>
-        </div>
-        <ComponentPreview id="cluster-toolbar">
+        </ExampleBlock>
+        <ExampleBlock title="Toolbar Pattern" description="Toolbar with grouped controls and dividers." code={TOOLBAR_EXAMPLE}>
           <ClusterToolbar />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">gap</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">2</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">justify</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"start" | "center" | "end"`}'}</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"start"`}'}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

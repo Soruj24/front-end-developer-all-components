@@ -1,28 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   Bold,
   Italic,
   Type,
   Heading1,
-  Heading2,
-  Heading3,
-  AlignLeft,
   Star,
   Check,
   Zap,
 } from "lucide-react";
-
-const installCommand = `npx component-library@latest add bold-text`;
-const usageCode = `import { BoldText } from "@/components/bold-text";
-
-<BoldText size="lg" weight="bold">
-  Important heading
-</BoldText>`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  BOLD_TEXT_SOURCE,
+  WEIGHT_EXAMPLE,
+  SCALE_EXAMPLE,
+  HIERARCHY_EXAMPLE,
+  ARTICLE_EXAMPLE,
+  CARDS_EXAMPLE,
+  INLINE_EXAMPLE,
+  LABEL_EXAMPLE,
+} from "./bold-text-source";
 
 type Weight = "normal" | "medium" | "semibold" | "bold" | "extrabold";
 type Size = "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
@@ -343,151 +341,26 @@ function LabelVariantsDemo() {
 
 export default function BoldTextPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Bold Text
-          </h1>
-          <Badge variant="primary">Typography</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Typography component with configurable font weights, sizes, and heading hierarchy
-          for consistent text styling.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Bold Text"
+      category="Data Display"
+      description="Typography component with configurable font weights, sizes, and heading hierarchy for consistent text styling."
+    >
+      <PreviewPanel filename="bold-text.tsx">
+        <WeightSelectorDemo />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={BOLD_TEXT_SOURCE} filename="components/ui/BoldText/BoldText.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Weight Selector</h3>
-          <p className="text-sm text-muted-foreground">
-            Interactive weight picker with live preview and CSS class reference.
-          </p>
-          <ComponentPreview id="bold-weight">
-            <WeightSelectorDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Type Scale</h3>
-          <p className="text-sm text-muted-foreground">
-            Complete size scale from XS to 4XL with pixel equivalents.
-          </p>
-          <ComponentPreview id="bold-scale">
-            <SizeScaleDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Document Structure</h3>
-          <p className="text-sm text-muted-foreground">
-            Heading hierarchy showing proper nesting from H1 to body text.
-          </p>
-          <ComponentPreview id="bold-hierarchy">
-            <HeadingHierarchyDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Article Typography</h3>
-          <p className="text-sm text-muted-foreground">
-            Real article layout with headings, paragraphs, lists, and callouts.
-          </p>
-          <ComponentPreview id="bold-article">
-            <ArticleTypographyDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Card Typography</h3>
-          <p className="text-sm text-muted-foreground">
-            Pricing cards demonstrating bold numbers, descriptions, and feature lists.
-          </p>
-          <ComponentPreview id="bold-cards">
-            <CardTypographyDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Inline Formatting</h3>
-          <p className="text-sm text-muted-foreground">
-            Bold, italic, and combined formatting with icon labels.
-          </p>
-          <ComponentPreview id="bold-inline">
-            <InlineFormattingDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Label Variants</h3>
-          <p className="text-sm text-muted-foreground">
-            Badges, ratings, stats, and metadata with appropriate font weights.
-          </p>
-          <ComponentPreview id="bold-labels">
-            <LabelVariantsDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">weight</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"normal\" | \"medium\" | \"semibold\" | \"bold\" | \"extrabold\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"bold\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"xs\" | \"sm\" | \"base\" | \"lg\" | \"xl\" | \"2xl\" | \"3xl\" | \"4xl\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"base\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">as</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"p\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"span\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"p\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">tracking</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"tight\" | \"normal\" | \"wide\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"normal\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Weight Selector" description="Interactive weight picker with live preview and CSS class reference." code={WEIGHT_EXAMPLE}><WeightSelectorDemo /></ExampleBlock>
+        <ExampleBlock title="Type Scale" description="Complete size scale from XS to 4XL with pixel equivalents." code={SCALE_EXAMPLE}><SizeScaleDemo /></ExampleBlock>
+        <ExampleBlock title="Document Structure" description="Heading hierarchy showing proper nesting from H1 to body text." code={HIERARCHY_EXAMPLE}><HeadingHierarchyDemo /></ExampleBlock>
+        <ExampleBlock title="Article Typography" description="Real article layout with headings, paragraphs, lists, and callouts." code={ARTICLE_EXAMPLE}><ArticleTypographyDemo /></ExampleBlock>
+        <ExampleBlock title="Card Typography" description="Pricing cards demonstrating bold numbers, descriptions, and feature lists." code={CARDS_EXAMPLE}><CardTypographyDemo /></ExampleBlock>
+        <ExampleBlock title="Inline Formatting" description="Bold, italic, and combined formatting with icon labels." code={INLINE_EXAMPLE}><InlineFormattingDemo /></ExampleBlock>
+        <ExampleBlock title="Label Variants" description="Badges, ratings, stats, and metadata with appropriate font weights." code={LABEL_EXAMPLE}><LabelVariantsDemo /></ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

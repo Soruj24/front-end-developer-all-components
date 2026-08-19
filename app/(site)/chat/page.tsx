@@ -1,91 +1,137 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { CodeBlock } from "@/components/home/CodeBlock";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { Chat } from "@/features/chat";
 
-const installCommand = `npx component-library@latest add chat`;
+const CHAT_SOURCE = `"use client";
 
-const usageCode = `import { Chat } from "@/features/chat";
+import { useState } from "react";
+import { Send, Paperclip, Smile } from "lucide-react";
+import { cn } from "@/lib/cn";
 
-<Chat />`;
+interface Message {
+  id: string;
+  author: string;
+  content: string;
+  reactions?: string[];
+  attachment?: { name: string; size: string };
+}
+
+const seed: Message[] = [
+  { id: "1", author: "You", content: "Hey team, how is the release going?" },
+  { id: "2", author: "Sam", content: "Almost there, shipping tonight.", reactions: ["🎉"] },
+  { id: "3", author: "Alex", content: "Here is the updated spec.", attachment: { name: "spec.pdf", size: "1.2 MB" } },
+];
+
+export function Chat() {
+  const [messages, setMessages] = useState<Message[]>(seed);
+  const [draft, setDraft] = useState("");
+
+  const send = () => {
+    const content = draft.trim();
+    if (!content) return;
+    setMessages((prev) => [...prev, { id: String(Date.now()), author: "You", content }]);
+    setDraft("");
+  };
+
+  const toggleReaction = (id: string, emoji: string) => {
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === id
+          ? {
+              ...m,
+              reactions: m.reactions?.includes(emoji)
+                ? m.reactions.filter((r) => r !== emoji)
+                : [...(m.reactions ?? []), emoji],
+            }
+          : m
+      )
+    );
+  };
+
+  return (
+    <div className="flex h-full flex-col rounded-xl border bg-card">
+      <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+        {messages.map((m) => (
+          <div key={m.id} className={cn("flex flex-col", m.author === "You" ? "items-end" : "items-start")}>
+            <div className={cn("max-w-sm rounded-2xl px-4 py-2 text-sm", m.author === "You" ? "bg-primary text-primary-foreground" : "bg-muted")}>
+              {m.attachment && (
+                <div className="mb-2 flex items-center gap-2 rounded-lg bg-background/60 px-3 py-2">
+                  <Paperclip className="h-4 w-4 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-medium">{m.attachment.name}</p>
+                    <p className="text-[10px] opacity-70">{m.attachment.size}</p>
+                  </div>
+                </div>
+              )}
+              <p>{m.content}</p>
+            </div>
+            {m.reactions && m.reactions.length > 0 && (
+              <div className="mt-1 flex gap-1">
+                {m.reactions.map((emoji, i) => (
+                  <button key={i} onClick={() => toggleReaction(m.id, emoji)} className="rounded-full bg-muted px-2 py-0.5 text-xs">
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 border-t p-3">
+        <button className="text-muted-foreground">
+          <Paperclip className="h-4 w-4" />
+        </button>
+        <input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && send()}
+          placeholder="Type a message..."
+          className="flex-1 rounded-full border bg-muted/50 px-4 py-2 text-sm outline-none placeholder:text-muted-foreground"
+        />
+        <button className="text-muted-foreground">
+          <Smile className="h-4 w-4" />
+        </button>
+        <button onClick={send} className="rounded-full bg-primary p-2 text-primary-foreground" aria-label="Send">
+          <Send className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}`;
+
+const CHAT_EXAMPLE = `<Chat
+  channels={channels}
+  messages={messages}
+  onSendMessage={handleSend}
+/>`;
 
 export default function ChatPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Chat</h1>
-          <Badge variant="primary">3 examples</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Real-time chat interface with messages, reactions, and file sharing.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Chat"
+      category="Data Display"
+      description="Real-time chat interface with messages, reactions, and file sharing."
+    >
+      <PreviewPanel filename="chat.tsx">
+        <Chat />
+      </PreviewPanel>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={CHAT_SOURCE}
+        filename="components/ui/Chat/Chat.tsx"
+        defaultExpanded
+      />
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      {/* Examples */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-        <p className="text-sm text-muted-foreground">Full chat interface with messaging, reactions, and file sharing capabilities.</p>
-        <div className="rounded-lg border border-border bg-background p-6">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock
+          title="Full Chat Interface"
+          description="Complete chat with messaging, reactions, and file sharing capabilities."
+          code={CHAT_EXAMPLE}
+        >
           <Chat />
-        </div>
-      </section>
-
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">channels</td>
-                <td className="px-4 py-3 text-muted-foreground">Channel[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">messages</td>
-                <td className="px-4 py-3 text-muted-foreground">Message[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onSendMessage</td>
-                <td className="px-4 py-3 text-muted-foreground">(message: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

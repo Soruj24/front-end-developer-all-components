@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Box, Package, Truck, Shipping, CheckCircle, Search, Tag } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Box, Package, Truck, CheckCircle, Search, Tag } from "lucide-react";
+import { BOXPACKAGE_SOURCE } from "./box-package-source";
 
-const installCommand = `npx component-library@latest add box-package`;
-const usageCode = `import { BoxPackage } from "@/components/ui/box-package";
+const SHIPPING_CODE = `<BoxPackage title="Package #PKG-2024" variant="shipping" />`;
 
-<BoxPackage title="Package Name" version="1.0.0" />`;
+const DELIVERY_CODE = `<BoxPackage title="Delivered Successfully" variant="delivery" />`;
+
+const INVENTORY_CODE = `<div className="rounded-xl border border-border bg-card p-6 max-w-sm"><div className="flex items-center gap-3 mb-4"><Box className="h-5 w-5 text-blue-600" /><div><h4 className="font-semibold">Warehouse Stock</h4><p className="text-xs text-muted-foreground">Section A-12, Shelf 3</p></div></div><div className="grid grid-cols-2 gap-4 text-center"><div><p className="text-2xl font-bold">248</p><p className="text-xs">Units</p></div><div><p className="text-2xl font-bold">12</p><p className="text-xs">Pallets</p></div></div></div>`;
+
+const GIFT_CODE = `<div className="rounded-xl border border-border bg-card p-6 max-w-sm text-center"><div className="h-20 w-20 rounded-xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center mx-auto mb-4"><Package className="h-10 w-10 text-white" /></div><h3 className="font-semibold">Birthday Gift</h3><button className="mt-4 w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium">Open Gift</button></div>`;
+
+const STORAGE_CODE = `<div className="rounded-xl border border-border bg-card p-6 max-w-sm"><div className="h-16 w-full rounded-lg bg-gradient-to-r from-slate-700 to-slate-900 flex items-center justify-center mb-4"><Box className="h-10 w-10 text-slate-300" /></div><h3 className="font-semibold">Storage Container #SC-042</h3><p className="text-sm text-muted-foreground mt-1">Climate controlled · 10x10x8 ft</p></div>`;
+
+const PRODUCT_CODE = `<div className="rounded-xl border border-border bg-card p-6 max-w-sm group"><div className="aspect-square rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 mb-4 flex items-center justify-center"><Package className="h-16 w-16 text-gray-300" /></div><h3 className="font-semibold">Wireless Headphones</h3><span className="text-lg font-bold">$299.00</span></div>`;
 
 function PackageCard() {
   return (
@@ -151,54 +156,41 @@ function ProductBox() {
 
 export default function BoxPackagePage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Box Package</h1>
-          <Badge variant="primary">Data Display</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A package/box component for displaying product boxes, shipping packages, and item containers with metadata.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Package Card</h2><p className="mt-1 text-sm text-muted-foreground">A styled package display with icon and details.</p></div>
-        <ComponentPreview id="box-package-card"><PackageCard /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Shipping Box</h2><p className="mt-1 text-sm text-muted-foreground">A package with shipping status indicator.</p></div>
-        <ComponentPreview id="box-package-shipping"><ShippingBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Delivery Box</h2><p className="mt-1 text-sm text-muted-foreground">Delivered package with tracking details.</p></div>
-        <ComponentPreview id="box-package-delivery"><DeliveryBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Inventory Box</h2><p className="mt-1 text-sm text-muted-foreground">Warehouse inventory tracking display.</p></div>
-        <ComponentPreview id="box-package-inventory"><InventoryBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Gift Box</h2><p className="mt-1 text-sm text-muted-foreground">Decorative gift package with interactive opening.</p></div>
-        <ComponentPreview id="box-package-gift"><GiftBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Storage Box</h2><p className="mt-1 text-sm text-muted-foreground">Climate-controlled storage container status.</p></div>
-        <ComponentPreview id="box-package-storage"><StorageBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Product Box</h2><p className="mt-1 text-sm text-muted-foreground">E-commerce product display with hover actions.</p></div>
-        <ComponentPreview id="box-package-product"><ProductBox /></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">title</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">version</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">variant</td><td className="px-4 py-3 text-muted-foreground">"card" | "shipping" | "product"</td><td className="px-4 py-3 text-muted-foreground">"card"</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Box Package"
+      category="Data Display"
+      description="A package/box component for displaying product boxes, shipping packages, and item containers with metadata."
+    >
+      <PreviewPanel filename="box-package.tsx">
+        <PackageCard />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={BOXPACKAGE_SOURCE}
+        filename="components/ui/BoxPackage/BoxPackage.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Shipping Box" description="A package with shipping status indicator." code={SHIPPING_CODE}>
+          <ShippingBox />
+        </ExampleBlock>
+        <ExampleBlock title="Delivery Box" description="Delivered package with tracking details." code={DELIVERY_CODE}>
+          <DeliveryBox />
+        </ExampleBlock>
+        <ExampleBlock title="Inventory Box" description="Warehouse inventory tracking display." code={INVENTORY_CODE}>
+          <InventoryBox />
+        </ExampleBlock>
+        <ExampleBlock title="Gift Box" description="Decorative gift package with interactive opening." code={GIFT_CODE}>
+          <GiftBox />
+        </ExampleBlock>
+        <ExampleBlock title="Storage Box" description="Climate-controlled storage container status." code={STORAGE_CODE}>
+          <StorageBox />
+        </ExampleBlock>
+        <ExampleBlock title="Product Box" description="E-commerce product display with hover actions." code={PRODUCT_CODE}>
+          <ProductBox />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }

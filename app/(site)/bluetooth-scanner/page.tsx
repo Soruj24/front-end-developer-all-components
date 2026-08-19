@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
 import {
   Bluetooth,
   BluetoothSearching,
@@ -20,14 +17,15 @@ import {
   Check,
   Clock,
 } from "lucide-react";
-
-const installCommand = `npx component-library@latest add bluetooth-scanner`;
-const usageCode = `import { BluetoothScanner } from "@/components/bluetooth-scanner";
-
-<BluetoothScanner
-  onDeviceFound={(device) => console.log(device)}
-  autoScan={true}
-/>`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  BLUETOOTH_SCANNER_SOURCE,
+  SCANNER_EXAMPLE,
+  SIGNAL_EXAMPLE,
+  CONNECTED_EXAMPLE,
+  DETAIL_EXAMPLE,
+  HISTORY_EXAMPLE,
+} from "./bluetooth-scanner-source";
 
 interface BluetoothDevice {
   id: string;
@@ -405,143 +403,24 @@ function ScanHistoryDemo() {
 
 export default function BluetoothScannerPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Bluetooth Scanner
-          </h1>
-          <Badge variant="primary">Tools</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Bluetooth device discovery interface with signal strength indicators, device type
-          classification, and scan controls.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Bluetooth Scanner"
+      category="Data Display"
+      description="Bluetooth device discovery interface with signal strength indicators, device type classification, and scan controls."
+    >
+      <PreviewPanel filename="bluetooth-scanner.tsx">
+        <ScannerListDemo />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={BLUETOOTH_SCANNER_SOURCE} filename="components/ui/BluetoothScanner/BluetoothScanner.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Device Scanner</h3>
-          <p className="text-sm text-muted-foreground">
-            Full scanner with type filters, animated discovery, and signal strength bars.
-          </p>
-          <ComponentPreview id="bt-scanner">
-            <ScannerListDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Signal Strength Meter</h3>
-          <p className="text-sm text-muted-foreground">
-            Circular gauge with color-coded signal quality and interactive slider.
-          </p>
-          <ComponentPreview id="bt-signal">
-            <SignalMeterDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Connected Devices</h3>
-          <p className="text-sm text-muted-foreground">
-            List of currently active Bluetooth connections with battery and disconnect controls.
-          </p>
-          <ComponentPreview id="bt-connected">
-            <ConnectedDevicesDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Device Detail</h3>
-          <p className="text-sm text-muted-foreground">
-            Expanded device info panel with signal, battery, type, and connect/forget actions.
-          </p>
-          <ComponentPreview id="bt-detail">
-            <DeviceDetailDemo />
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Scan History</h3>
-          <p className="text-sm text-muted-foreground">
-            Previously discovered devices with timestamps and quick reconnect buttons.
-          </p>
-          <ComponentPreview id="bt-history">
-            <ScanHistoryDemo />
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onDeviceFound</td>
-                <td className="px-4 py-3 text-muted-foreground">{"(device: Device) => void"}</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">autoScan</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">filter</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"all\" | \"audio\" | \"keyboard\" | \"mouse\" | \"wearable\""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{"\"all\""}</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">scanInterval</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">5000</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showSignal</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showBattery</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Device Scanner" description="Full scanner with type filters, animated discovery, and signal strength bars." code={SCANNER_EXAMPLE}><ScannerListDemo /></ExampleBlock>
+        <ExampleBlock title="Signal Strength Meter" description="Circular gauge with color-coded signal quality and interactive slider." code={SIGNAL_EXAMPLE}><SignalMeterDemo /></ExampleBlock>
+        <ExampleBlock title="Connected Devices" description="List of currently active Bluetooth connections with battery and disconnect controls." code={CONNECTED_EXAMPLE}><ConnectedDevicesDemo /></ExampleBlock>
+        <ExampleBlock title="Device Detail" description="Expanded device info panel with signal, battery, type, and connect/forget actions." code={DETAIL_EXAMPLE}><DeviceDetailDemo /></ExampleBlock>
+        <ExampleBlock title="Scan History" description="Previously discovered devices with timestamps and quick reconnect buttons." code={HISTORY_EXAMPLE}><ScanHistoryDemo /></ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
