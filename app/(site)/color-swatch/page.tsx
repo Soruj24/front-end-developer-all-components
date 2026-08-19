@@ -1,20 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Check, Palette, Pipette } from "lucide-react";
-
-const installCommand = `npx component-library@latest add color-swatch`;
-
-const usageCode = `import { ColorSwatch } from "@/components/ui";
-
-<ColorSwatch
-  colors={presetColors}
-  value={selected}
-  onChange={setSelected}
-/>`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { Check } from "lucide-react";
+import { COLOR_SWATCH_SOURCE } from "./color-swatch-source";
 
 const basicColors = [
   "#ef4444", "#f97316", "#eab308", "#22c55e",
@@ -28,6 +17,28 @@ const tailwindPalette = {
   green: ["#f0fdf4", "#bbf7d0", "#4ade80", "#16a34a", "#166534"],
   purple: ["#faf5ff", "#e9d5ff", "#c084fc", "#9333ea", "#6b21a8"],
 };
+
+const BASIC_CODE = `<ColorSwatch colors={presetColors} value={selected} onChange={setSelected} />`;
+
+const PALETTES_CODE = `<div className="space-y-1">
+  <p className="text-xs font-medium capitalize text-muted-foreground">{name}</p>
+  <div className="flex gap-1">
+    {shades.map((shade) => (
+      <button key={shade} className="h-8 flex-1 rounded" style={{ backgroundColor: shade }} />
+    ))}
+  </div>
+</div>`;
+
+const CUSTOM_CODE = `<div className="flex items-center gap-3">
+  <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+  <input
+    type="text"
+    value={color}
+    onChange={(e) => setColor(e.target.value)}
+    className="flex-1 rounded-lg border border-border px-3 py-2 font-mono text-sm"
+  />
+  <button onClick={save} className="rounded-lg bg-primary px-3 py-2 text-sm">Save</button>
+</div>`;
 
 function BasicSwatchesDemo() {
   const [selected, setSelected] = useState("#3b82f6");
@@ -122,98 +133,34 @@ function CustomColorsDemo() {
 
 export default function ColorSwatchPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Color Swatch</h1>
-          <Badge variant="primary">Forms</Badge>
-        </div>
-        <p className="max-w-2- text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A color swatch picker grid for selecting colors. Supports basic palettes, preset themes, and custom color input.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Color Swatch"
+      category="Forms"
+      description="A color swatch picker grid for selecting colors. Supports basic palettes, preset themes, and custom color input."
+    >
+      <PreviewPanel filename="color-swatch.tsx">
+        <BasicSwatchesDemo />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={COLOR_SWATCH_SOURCE}
+        filename="components/ui/ColorSwatch/ColorSwatch.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Basic Swatches</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Click a swatch to select it.</p>
-        </div>
-        <ComponentPreview id="color-swatch-basic">
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Basic Swatches" description="Click a swatch to select it." code={BASIC_CODE}>
           <BasicSwatchesDemo />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Preset Palettes</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Predefined color palettes with shade variations.</p>
-        </div>
-        <ComponentPreview id="color-swatch-palettes">
+        <ExampleBlock title="Preset Palettes" description="Predefined color palettes with shade variations." code={PALETTES_CODE}>
           <PresetPalettesDemo />
-        </ComponentPreview>
-      </section>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Custom Colors</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Enter custom hex values and save recent colors.</p>
-        </div>
-        <ComponentPreview id="color-swatch-custom">
+        <ExampleBlock title="Custom Colors" description="Enter custom hex values and save recent colors." code={CUSTOM_CODE}>
           <CustomColorsDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">colors</td>
-                <td className="px-4 py-3 text-muted-foreground">string[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">value</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onChange</td>
-                <td className="px-4 py-3 text-muted-foreground">(color: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">size</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
