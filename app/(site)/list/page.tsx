@@ -1,8 +1,6 @@
 "use client";
 
-import { List, ListItem } from "@/components/ui/List";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { Check, X, ArrowRight, ChevronRight, Circle, Zap, Shield, Globe } from "lucide-react";
 
 const LIST_SOURCE = `import { cn } from "@/lib/cn";
 
