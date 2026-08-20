@@ -10,7 +10,7 @@ export function AspectRatio({
 }: AspectRatioProps) {
   return (
     <div
-      className={cn("relative w-full", className)}
+      className={cn("relative w-full overflow-hidden", className)}
       style={{ aspectRatio: ratio }}
     >
       {children}

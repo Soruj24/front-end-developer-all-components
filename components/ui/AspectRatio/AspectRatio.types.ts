@@ -1,5 +1,7 @@
+import type { ReactNode } from "react";
+
 export interface AspectRatioProps {
   ratio?: number;
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
