@@ -16,6 +16,7 @@ import { HeaderLogo } from "./HeaderLogo";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderActions } from "./HeaderActions";
 import { MobileNavigation } from "./MobileNavigation";
+import { SearchDialog } from "@/components/search/SearchDialog";
 
 interface HeaderProps {
   className?: string;
@@ -68,12 +69,11 @@ export function Header({
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow =
-      searchOpen || mobileMenuOpen ? "hidden" : "";
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [searchOpen, mobileMenuOpen]);
+  }, [mobileMenuOpen]);
 
   return (
     <>
@@ -103,11 +103,7 @@ export function Header({
           </div>
 
           <div className="flex items-center gap-2">
-            <HeaderSearch
-              isOpen={searchOpen}
-              onToggle={handleSearchToggle}
-              onClose={handleSearchClose}
-            />
+            <HeaderSearch onClick={handleSearchToggle} />
 
             <div className="hidden lg:block">
               <HeaderActions
@@ -180,18 +176,7 @@ export function Header({
         </div>
       </header>
 
-      {searchOpen && (
-        <div
-          className={cn(
-            "fixed inset-0",
-            Z.modal,
-            BG.overlay,
-            BACKDROP.light,
-          )}
-          onClick={handleSearchClose}
-          aria-hidden="true"
-        />
-      )}
+      <SearchDialog open={searchOpen} onClose={handleSearchClose} />
 
       <MobileNavigation
         isOpen={mobileMenuOpen}

@@ -48,7 +48,7 @@ export function HeaderLogo({ className, version }: HeaderLogoProps) {
           TEXT.brand,
         )}
       >
-        Registry
+        Sun UI
       </span>
 
       {version && (
