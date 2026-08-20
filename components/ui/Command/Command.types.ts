@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface CommandGroup {
   heading?: string;
   items: CommandOption[];
@@ -14,6 +16,7 @@ export interface CommandProps {
   value?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
+  loading?: boolean;
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode | ((search: string) => ReactNode);
 }
