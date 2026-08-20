@@ -3,5 +3,7 @@ export interface CollapsibleProps {
   onOpenChange?: (open: boolean) => void;
   trigger: React.ReactNode;
   children: React.ReactNode;
+  defaultOpen?: boolean;
+  disabled?: boolean;
   className?: string;
 }
