@@ -1,19 +1,31 @@
 import {
   HomeHero,
-  HomeFeatureGrid,
-  HomePopularComponents,
-  HomeCategories,
-  HomeCodePreview,
-  HomeInstallation,
-  HomeWhyUs,
-  HomeSponsors,
-  HomeTestimonials,
-  HomeLatestComponents,
-  HomeDeveloperExperience,
-  HomeFooter,
+  AIComponentGenerator,
+  FeaturedComponents,
+  CategoriesSection,
+  VisualBuilderSection,
+  PlaygroundSection,
+  AIFeaturesSection,
+  RegistrySection,
+  WorkflowSection,
+  StatsSection,
+  CommunitySection,
+  TemplatesSection,
+  FinalCTA,
 } from "@/components/home";
+import {
+  getFeaturedComponents,
+  getCategories,
+  getTotalDownloads,
+} from "@/features/registry/server";
 
-export default function Home() {
+export default async function Home() {
+  const [featured, categories, totalDownloads] = await Promise.all([
+    getFeaturedComponents(6),
+    getCategories(),
+    getTotalDownloads(),
+  ]);
+
   return (
     <div className="relative overflow-hidden">
       <div
@@ -31,17 +43,22 @@ export default function Home() {
 
       <div className="flex flex-col">
         <HomeHero />
-        <HomeFeatureGrid />
-        <HomePopularComponents />
-        <HomeCategories />
-        <HomeCodePreview />
-        <HomeInstallation />
-        <HomeWhyUs />
-        <HomeSponsors />
-        <HomeTestimonials />
-        <HomeLatestComponents />
-        <HomeDeveloperExperience />
-        <HomeFooter />
+        <AIComponentGenerator />
+        <FeaturedComponents components={featured} />
+        <CategoriesSection categories={categories} />
+        <TemplatesSection />
+        <VisualBuilderSection />
+        <PlaygroundSection />
+        <AIFeaturesSection />
+        <RegistrySection />
+        <WorkflowSection />
+        <StatsSection
+          componentCount={featured.length}
+          categoryCount={categories.length}
+          totalDownloads={totalDownloads}
+        />
+        <CommunitySection />
+        <FinalCTA />
       </div>
     </div>
   );
