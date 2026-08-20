@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import type { AlertDialogProps } from "./AlertDialog.types";
 
@@ -37,7 +38,7 @@ export function AlertDialog({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
         ref={overlayRef}
@@ -80,6 +81,7 @@ export function AlertDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
