@@ -11,7 +11,8 @@ import { AlertDialog } from "@/components/ui/AlertDialog";
 
 const ALERT_DIALOG_SOURCE = `"use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 
 export type AlertDialogVariant = "default" | "destructive";
@@ -28,6 +29,8 @@ export interface AlertDialogProps {
   className?: string;
 }
 
+const ANIM_MS = 200;
+
 export function AlertDialog({
   open,
   onOpenChange,
@@ -40,71 +43,137 @@ export function AlertDialog({
   className,
 }: AlertDialogProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const close = useCallback(() => onOpenChange(false), [onOpenChange]);
 
   useEffect(() => {
-    if (!open) return;
+    if (open) {
+      setMounted(true);
+      const raf = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setEntered(true));
+      });
+      return () => cancelAnimationFrame(raf);
+    }
+    if (mounted) {
+      setEntered(false);
+      timerRef.current = setTimeout(() => setMounted(false), ANIM_MS);
+      return () => clearTimeout(timerRef.current);
+    }
+  }, [open, mounted]);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  useEffect(() => {
+    if (!open || !mounted) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [open, close]);
+  }, [open, mounted, close]);
 
   useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
+    if (!mounted) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [mounted]);
 
-  if (!open) return null;
+  if (!mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+  return createPortal(
+    <div
+      data-state={entered ? "open" : "closed"}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="alert-dialog-title"
+      aria-describedby={description ? "alert-dialog-desc" : undefined}
+    >
       <div
         ref={overlayRef}
-        className="absolute inset-0 bg-black/50"
         onClick={close}
-      />
-      <div
-        role="alertdialog"
         className={cn(
-          "relative z-10 w-full max-w-md rounded-lg border bg-white p-6 shadow-lg dark:bg-zinc-900",
-          className
+          "absolute inset-0 bg-black/60 backdrop-blur-sm",
+          "transition-opacity duration-200",
+          entered ? "opacity-100" : "opacity-0",
+        )}
+        aria-hidden="true"
+      />
+
+      <div
+        ref={panelRef}
+        className={cn(
+          "relative z-10 w-full max-w-lg",
+          "rounded-xl border border-border bg-background p-6 shadow-xl",
+          "transition-all duration-200 ease-out",
+          entered
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-95 opacity-0 translate-y-2",
+          "sm:rounded-2xl",
+          className,
         )}
       >
-        <h2 className="text-lg font-semibold">{title}</h2>
-        {description && (
-          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-            {description}
-          </p>
-        )}
-        <div className="mt-6 flex justify-end gap-3">
+        <div className="flex flex-col gap-2">
+          <h2
+            id="alert-dialog-title"
+            className="text-lg font-semibold leading-none tracking-tight text-foreground"
+          >
+            {title}
+          </h2>
+          {description && (
+            <p
+              id="alert-dialog-desc"
+              className="text-sm text-muted-foreground"
+            >
+              {description}
+            </p>
+          )}
+        </div>
+
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <button
+            type="button"
             onClick={close}
-            className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            className={cn(
+              "inline-flex h-9 items-center justify-center rounded-md px-4",
+              "border border-border bg-background text-sm font-medium text-foreground",
+              "transition-colors hover:bg-muted active:scale-[0.98]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "sm:h-10",
+            )}
           >
             {cancelText}
           </button>
           <button
+            type="button"
             onClick={() => {
               onConfirm();
               close();
             }}
             className={cn(
-              "rounded-md px-4 py-2 text-sm font-medium text-white",
+              "inline-flex h-9 items-center justify-center rounded-md px-4",
+              "text-sm font-medium text-primary-foreground",
+              "transition-colors active:scale-[0.98]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "sm:h-10",
               variant === "destructive"
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-black hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                ? "bg-destructive hover:bg-destructive/90"
+                : "bg-primary hover:bg-primary/90",
             )}
           >
             {confirmText}
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }`;
 
@@ -114,7 +183,7 @@ function BasicDemo() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-black"
+        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         Show Alert
       </button>
@@ -135,7 +204,7 @@ function DestructiveDemo() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+        className="inline-flex h-10 items-center justify-center rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors hover:bg-destructive/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         Delete Account
       </button>
@@ -176,6 +245,7 @@ export default function AlertDialogPage() {
 
         <ExampleBlock
           title="Basic Dialog"
+          description="Standard confirmation dialog with cancel and confirm actions."
           code={ALERT_DIALOG_SOURCE}
         >
           <BasicDemo />
@@ -183,6 +253,7 @@ export default function AlertDialogPage() {
 
         <ExampleBlock
           title="Destructive Action"
+          description="Use the destructive variant for irreversible actions like deletion."
           code={ALERT_DIALOG_SOURCE}
         >
           <DestructiveDemo />
