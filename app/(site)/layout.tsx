@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/navigation";
 import { Footer } from "@/components/design-system/Footer";
 import { getNavigationSections, getNavbarLinks } from "@/features/registry/server";
@@ -20,7 +20,15 @@ export default async function SiteLayout({
 
   return (
     <>
-      <SiteHeader navLinks={navLinks} />
+      <Header
+  navLinks={navLinks}
+  showVersion
+  version="v2.0"
+  onThemeToggle={undefined}
+  userName="Developer"
+  userAvatar={undefined}
+  role="user"
+/>
       <div className="flex flex-1">
         <Sidebar sections={sections} />
         <main className="min-w-0 flex-1">{children}</main>

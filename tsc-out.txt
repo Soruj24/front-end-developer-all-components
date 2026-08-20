@@ -848,6 +848,50 @@ app/(site)/zigzag-path/page.tsx(380,68): error TS1005: '}' expected.
 app/(site)/zigzag-path/page.tsx(380,93): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
 app/(site)/zigzag-path/page.tsx(381,68): error TS1005: '}' expected.
 app/(site)/zigzag-path/page.tsx(381,80): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/Header.tsx(19,63): error TS1002: Unterminated string literal.
+components/layout/header/Header.tsx(20,3): error TS1005: ',' expected.
+components/layout/header/Header.tsx(20,20): error TS1005: ',' expected.
+components/layout/header/Header.tsx(21,22): error TS1005: ',' expected.
+components/layout/header/Header.tsx(22,26): error TS1005: ',' expected.
+components/layout/header/Header.tsx(23,1): error TS1138: Parameter declaration expected.
+components/layout/header/HeaderActions.tsx(9,63): error TS1002: Unterminated string literal.
+components/layout/header/HeaderActions.tsx(10,3): error TS1005: ',' expected.
+components/layout/header/HeaderActions.tsx(10,20): error TS1005: ',' expected.
+components/layout/header/HeaderActions.tsx(11,22): error TS1005: ',' expected.
+components/layout/header/HeaderActions.tsx(12,26): error TS1005: ',' expected.
+components/layout/header/HeaderActions.tsx(13,1): error TS1138: Parameter declaration expected.
+components/layout/header/HeaderSearch.tsx(142,30): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(142,36): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(142,42): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(142,43): error TS1002: Unterminated string literal.
+components/layout/header/HeaderSearch.tsx(162,36): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(162,43): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(162,49): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(163,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(170,19): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/layout/header/HeaderSearch.tsx(173,21): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/layout/header/HeaderSearch.tsx(174,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(176,13): error TS1005: ')' expected.
+components/layout/header/HeaderSearch.tsx(177,12): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(195,34): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(195,40): error TS1005: ',' expected.
+components/layout/header/HeaderSearch.tsx(196,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(203,17): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/layout/header/HeaderSearch.tsx(206,19): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/layout/header/HeaderSearch.tsx(207,16): error TS1005: '}' expected.
+components/layout/header/HeaderSearch.tsx(207,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(209,12): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/HeaderSearch.tsx(227,7): error TS1005: ')' expected.
+components/layout/header/HeaderSearch.tsx(228,5): error TS1109: Expression expected.
+components/layout/header/HeaderSearch.tsx(229,3): error TS1109: Expression expected.
+components/layout/header/MobileNavigation.tsx(51,85): error TS1002: Unterminated string literal.
+components/layout/header/MobileNavigation.tsx(52,13): error TS1005: ',' expected.
+components/layout/header/MobileNavigation.tsx(53,11): error TS1005: ',' expected.
+components/layout/header/MobileNavigation.tsx(53,12): error TS1003: Identifier expected.
+components/layout/header/MobileNavigation.tsx(54,10): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/layout/header/MobileNavigation.tsx(55,7): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/layout/header/MobileNavigation.tsx(102,5): error TS1005: ')' expected.
+components/layout/header/MobileNavigation.tsx(103,3): error TS1109: Expression expected.
 temp_escape_test.ts(1,4): error TS1005: ';' expected.
 temp_escape_test.ts(1,5): error TS1443: Module declaration names may only use ' or " quoted strings.
 temp_escape_test.ts(1,9): error TS1443: Module declaration names may only use ' or " quoted strings.
