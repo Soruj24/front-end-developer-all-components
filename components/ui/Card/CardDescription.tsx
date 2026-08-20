@@ -3,7 +3,7 @@ import type { CardDescriptionProps } from "./Card.types";
 
 export function CardDescription({ children, className }: CardDescriptionProps) {
   return (
-    <p className={cn("text-sm text-zinc-500 dark:text-zinc-400", className)}>
+    <p className={cn("text-sm text-muted-foreground", className)}>
       {children}
     </p>
   );

@@ -3,7 +3,7 @@ import type { CardTitleProps } from "./Card.types";
 
 export function CardTitle({ children, className }: CardTitleProps) {
   return (
-    <h3 className={cn("text-2xl font-semibold leading-none tracking-tight", className)}>
+    <h3 className={cn("text-lg font-semibold leading-none tracking-tight text-foreground sm:text-xl", className)}>
       {children}
     </h3>
   );

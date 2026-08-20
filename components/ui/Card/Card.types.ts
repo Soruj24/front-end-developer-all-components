@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 
 export type CardPadding = "none" | "sm" | "md" | "lg";
+export type CardVariant = "default" | "elevated" | "outline" | "ghost";
 
 export interface CardProps {
   children: ReactNode;
   padding?: CardPadding;
+  variant?: CardVariant;
   className?: string;
 }
 
