@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { SearchTrigger } from "@/components/search/SearchTrigger";
+import { SearchDialog } from "@/components/search/SearchDialog";
 import { Reveal } from "./Reveal";
 
 export function HomeHero() {
+  const [searchOpen, setSearchOpen] = useState(false);
+
   return (
     <section className="relative overflow-hidden border-b border-border/40 bg-background">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -59,7 +63,7 @@ export function HomeHero() {
           <Reveal delay={100}>
             <div className="w-full max-w-2xl">
               <SearchTrigger
-                onClick={() => {}}
+                onClick={() => setSearchOpen(true)}
                 placeholder="Search components, templates and documentation..."
                 className="w-full"
               />
@@ -80,6 +84,7 @@ export function HomeHero() {
           </Reveal>
         </div>
       </div>
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
     </section>
   );
 }

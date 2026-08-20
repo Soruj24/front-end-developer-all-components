@@ -4,6 +4,29 @@ import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { ArrowUpDown, Settings, AlertCircle } from "lucide-react";
 
+interface ActivityItem {
+  id: string;
+  title: string;
+  description: string;
+  time: string;
+}
+
+function ActivityFeed({ items, showTime = true }: { items: ActivityItem[]; showTime?: boolean }) {
+  return (
+    <div className="space-y-4">
+      {items.map((item) => (
+        <div key={item.id} className="flex items-start gap-3">
+          {showTime && <span className="text-sm text-muted-foreground">{item.time}</span>}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-medium text-foreground">{item.title}</h4>
+            <p className="text-sm text-muted-foreground">{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const ACTIVITY_FEED_SOURCE = `"use client";
 
 import { useState, useEffect } from "react";
@@ -20,7 +43,7 @@ export function ActivityFeed({ items, showTime = true }: { items: ActivityItem[]
     <div className="space-y-4">
       {items.map((item) => (
         <div key={item.id} className="flex items-start gap-3">
-          <span className="text-sm text-muted-foreground">{item.time}</span>
+          {showTime && <span className="text-sm text-muted-foreground">{item.time}</span>}
           <div className="flex-1 min-w-0">
             <h4 className="font-medium text-foreground">{item.title}</h4>
             <p className="text-sm text-muted-foreground">{item.description}</p>
