@@ -5,7 +5,6 @@ import type { ButtonGroupProps } from "./ButtonGroup.types";
 
 export function ButtonGroup({
   variant = "default",
-  size: _size,
   orientation = "horizontal",
   rounded = true,
   gap = "sm",

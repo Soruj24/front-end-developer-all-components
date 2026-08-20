@@ -1,46 +1,57 @@
 export const BUTTON_SPOTLIGHT_SOURCE = `"use client";
 
-import { useRef, useState } from "react";
-import type { ReactNode } from "react";
+import { useRef, useState, useCallback } from "react";
+import { cn } from "@/lib/cn";
 
-interface ButtonSpotlightProps {
+type ButtonSpotlightVariant = "default" | "outline" | "ghost";
+
+interface ButtonSpotlightProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: "default" | "outline";
-  className?: string;
+  variant?: ButtonSpotlightVariant;
+  spotlightSize?: number;
+  spotlightBlur?: number;
 }
 
 export function ButtonSpotlight({
   children,
   variant = "default",
-  className = "",
+  spotlightSize = 160,
+  spotlightBlur = 40,
+  className,
+  ...props
 }: ButtonSpotlightProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [show, setShow] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const base =
-    variant === "outline"
-      ? "border border-border bg-background hover:bg-muted"
-      : "bg-primary text-primary-foreground hover:bg-primary/90";
+  }, []);
 
   return (
     <button
       ref={ref}
-      className={"relative overflow-hidden rounded-lg px-6 py-3 font-medium transition-all " + base + " " + className}
-      onMouseMove={handleMouseMove}
+      className={cn(
+        "group relative inline-flex items-center justify-center overflow-hidden rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-200",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "active:scale-[0.97]",
+        variant === "default" && "bg-primary text-primary-foreground shadow-sm shadow-primary/20 hover:bg-primary/90",
+        variant === "outline" && "border border-border bg-background text-foreground shadow-sm hover:bg-muted",
+        variant === "ghost" && "bg-transparent text-foreground hover:bg-muted",
+        className,
+      )}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
+      onMouseMove={handleMouseMove}
+      {...props}
     >
       {show && (
         <span
-          className="pointer-events-none absolute rounded-full bg-white/20 blur-xl"
-          style={{ left: pos.x - 50, top: pos.y - 50, width: 100, height: 100 }}
+          className="pointer-events-none absolute rounded-full bg-white/15 transition-opacity duration-200"
+          style={{ left: pos.x - spotlightSize / 2, top: pos.y - spotlightSize / 2, width: spotlightSize, height: spotlightSize, filter: \`blur(\${spotlightBlur}px)\` }}
+          aria-hidden="true"
         />
       )}
       <span className="relative z-10">{children}</span>
@@ -51,11 +62,12 @@ export function ButtonSpotlight({
 export const DEFAULT_EXAMPLE = `<ButtonSpotlight>Hover me</ButtonSpotlight>`;
 
 export const VARIANTS_EXAMPLE = `<ButtonSpotlight variant="default">Primary</ButtonSpotlight>
-<ButtonSpotlight variant="outline">Outline</ButtonSpotlight>`;
+<ButtonSpotlight variant="outline">Outline</ButtonSpotlight>
+<ButtonSpotlight variant="ghost">Ghost</ButtonSpotlight>`;
 
 export const CARD_EXAMPLE = `<div className="grid grid-cols-2 gap-4">
   <ButtonSpotlight>Get Started</ButtonSpotlight>
   <ButtonSpotlight variant="outline">Learn More</ButtonSpotlight>
-  <ButtonSpotlight>Sign Up</ButtonSpotlight>
   <ButtonSpotlight variant="outline">Documentation</ButtonSpotlight>
+  <ButtonSpotlight>Sign Up</ButtonSpotlight>
 </div>`;
