@@ -1,4 +1,5 @@
-import { HTMLAttributes, forwardRef } from "react";
+import { HTMLAttributes, forwardRef, useState } from "react";
+import { cn } from "@/lib/cn";
 
 type Size = "sm" | "md" | "lg" | "xl";
 type Status = "online" | "offline" | "away" | "busy";
@@ -10,19 +11,36 @@ const sizeClasses: Record<Size, string> = {
   xl: "h-16 w-16 text-lg",
 };
 
-const statusClasses: Record<Status, string> = {
-  online: "bg-success",
-  offline: "bg-muted-foreground",
-  away: "bg-warning",
-  busy: "bg-danger",
+const statusDot: Record<Status, string> = {
+  online: "bg-emerald-500",
+  offline: "bg-muted-foreground/50",
+  away: "bg-amber-500",
+  busy: "bg-rose-500",
 };
 
-const statusSizeClasses: Record<Size, string> = {
-  sm: "h-2 w-2 right-0 bottom-0",
-  md: "h-2.5 w-2.5 right-0 bottom-0",
-  lg: "h-3 w-3 right-0 bottom-0",
-  xl: "h-3.5 w-3.5 right-0.5 bottom-0.5",
+const statusSize: Record<Size, string> = {
+  sm: "h-2 w-2 border",
+  md: "h-2.5 w-2.5 border-[1.5px]",
+  lg: "h-3 w-3 border-2",
+  xl: "h-3.5 w-3.5 border-2",
 };
+
+const fallbackGradient = [
+  "from-blue-500 to-violet-500",
+  "from-emerald-500 to-teal-500",
+  "from-amber-500 to-orange-500",
+  "from-rose-500 to-pink-500",
+  "from-violet-500 to-purple-500",
+  "from-cyan-500 to-blue-500",
+];
+
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+}
 
 export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   size?: Size;
@@ -33,26 +51,67 @@ export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
-  ({ className = "", size = "md", src, alt, fallback, status, ...props }, ref) => {
+  (
+    {
+      className = "",
+      size = "md",
+      src,
+      alt,
+      fallback,
+      status,
+      ...props
+    },
+    ref,
+  ) => {
+    const [imgFailed, setImgFailed] = useState(false);
+    const showImage = src && !imgFailed;
+    const gradient = fallbackGradient[hashString(fallback) % fallbackGradient.length];
+
     return (
       <div
         ref={ref}
-        className={`relative inline-flex items-center justify-center rounded-full bg-muted ${sizeClasses[size]} ${className}`}
+        className={cn(
+          "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full",
+          "ring-2 ring-background transition-shadow duration-150",
+          sizeClasses[size],
+          className,
+        )}
+        aria-label={alt}
+        role="img"
         {...props}
       >
-        {src ? (
-          <img src={src} alt={alt} className="h-full w-full rounded-full object-cover" />
+        {showImage ? (
+          <img
+            src={src}
+            alt={alt}
+            className="h-full w-full rounded-full object-cover"
+            onError={() => setImgFailed(true)}
+          />
         ) : (
-          <span className="font-medium text-muted-foreground">{fallback}</span>
+          <span
+            className={cn(
+              "flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br font-semibold text-white",
+              gradient,
+            )}
+          >
+            {fallback}
+          </span>
         )}
+
         {status && (
           <span
-            className={`absolute rounded-full border-2 border-background ${statusClasses[status]} ${statusSizeClasses[size]}`}
+            className={cn(
+              "absolute bottom-0 right-0 rounded-full border-background",
+              statusDot[status],
+              statusSize[size],
+              status === "online" && "animate-pulse",
+            )}
+            aria-label={`Status: ${status}`}
           />
         )}
       </div>
     );
-  }
+  },
 );
 Avatar.displayName = "Avatar";
 
