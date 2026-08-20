@@ -3,6 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
+import {
+  FOCUS,
+  TRANSITION,
+  Z,
+  RADIUS,
+  BORDER,
+  BG,
+  TEXT,
+} from "@/constants/tokens";
 
 interface UserMenuProps {
   userName?: string;
@@ -54,11 +63,12 @@ export function UserMenu({
         onClick={() => setOpen((p) => !p)}
         className={cn(
           "flex h-8 w-8 items-center justify-center rounded-full",
-          "border border-border/60 bg-muted",
+          BORDER.default,
+          BG.muted,
           "text-xs font-medium text-muted-foreground",
-          "hover:bg-muted/80 transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "hover:bg-muted/80",
+          TRANSITION.colors,
+          FOCUS.ring,
           className,
         )}
         aria-label="User menu"
@@ -80,16 +90,26 @@ export function UserMenu({
       {open && (
         <div
           className={cn(
-            "absolute right-0 top-full z-50 mt-1 w-56 overflow-hidden rounded-lg",
-            "border border-border/60 bg-popover shadow-lg",
+            "absolute right-0 top-full mt-1 w-56 overflow-hidden",
+            Z.chrome,
+            RADIUS.lg,
+            BORDER.default,
+            "bg-popover shadow-lg",
             "animate-in fade-in-0 zoom-in-95",
           )}
           role="menu"
         >
-          <div className="border-b border-border/60 px-3 py-2.5">
-            <p className="text-sm font-medium text-foreground">{userName}</p>
+          <div className={cn("border-b px-3 py-2.5", BORDER.default)}>
+            <p className={cn("font-medium text-foreground", TEXT.body)}>
+              {userName}
+            </p>
             {role === "admin" && (
-              <span className="inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary mt-1">
+              <span
+                className={cn(
+                  "mt-1 inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 font-medium text-primary",
+                  TEXT.tiny,
+                )}
+              >
                 Admin
               </span>
             )}
@@ -102,9 +122,13 @@ export function UserMenu({
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "flex items-center rounded-md px-2.5 py-1.5 text-sm",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  "transition-colors",
+                  "flex items-center px-2.5 py-1.5",
+                  RADIUS.sm,
+                  "text-muted-foreground",
+                  BG.mutedSoft,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  TEXT.body,
                 )}
                 role="menuitem"
               >
@@ -114,16 +138,20 @@ export function UserMenu({
           </div>
 
           {role === "admin" && ADMIN_ITEMS.length > 0 && (
-            <div className="border-t border-border/60 p-1">
+            <div className={cn("border-t p-1", BORDER.default)}>
               {ADMIN_ITEMS.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "flex items-center rounded-md px-2.5 py-1.5 text-sm",
-                    "text-muted-foreground hover:bg-muted hover:text-foreground",
-                    "transition-colors",
+                    "flex items-center px-2.5 py-1.5",
+                    RADIUS.sm,
+                    "text-muted-foreground",
+                    BG.mutedSoft,
+                    "hover:text-foreground",
+                    TRANSITION.colors,
+                    TEXT.body,
                   )}
                   role="menuitem"
                 >
@@ -133,7 +161,7 @@ export function UserMenu({
             </div>
           )}
 
-          <div className="border-t border-border/60 p-1">
+          <div className={cn("border-t p-1", BORDER.default)}>
             <button
               type="button"
               onClick={() => {
@@ -141,9 +169,13 @@ export function UserMenu({
                 onLogout?.();
               }}
               className={cn(
-                "flex w-full items-center rounded-md px-2.5 py-1.5 text-sm",
-                "text-muted-foreground hover:bg-muted hover:text-foreground",
-                "transition-colors",
+                "flex w-full items-center px-2.5 py-1.5",
+                RADIUS.sm,
+                "text-muted-foreground",
+                BG.mutedSoft,
+                "hover:text-foreground",
+                TRANSITION.colors,
+                TEXT.body,
               )}
               role="menuitem"
             >

@@ -2,6 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
+import {
+  BORDER,
+  FOCUS,
+  TEXT,
+  COLOR,
+  TRANSITION,
+  RADIUS,
+} from "@/constants/tokens";
 
 interface SidebarSearchProps {
   value: string;
@@ -50,20 +58,28 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={cn(
-            "h-8 w-full rounded-md border border-border/60 bg-muted/40",
-            "pl-8 pr-8 text-[13px] text-foreground",
-            "placeholder:text-muted-foreground/60",
-            "transition-colors",
-            "focus:border-ring/60 focus:bg-background focus:outline-none",
-            "focus:ring-2 focus:ring-ring/20",
+            "h-8 w-full border bg-muted/40",
+            RADIUS.sm,
+            BORDER.default,
+            "pl-8 pr-8",
+            TEXT.body,
+            "text-foreground placeholder:text-muted-foreground/60",
+            TRANSITION.colors,
+            "focus:border-ring/60 focus:bg-background",
+            FOCUS.ringInput,
           )}
         />
         {!value && (
           <kbd
             className={cn(
               "pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
-              "hidden h-4 items-center rounded border border-border/60",
-              "bg-background px-1 font-mono text-[10px] text-muted-foreground sm:flex",
+              "hidden h-4 items-center border bg-background",
+              BORDER.default,
+              "px-1 font-mono",
+              TEXT.tiny,
+              COLOR.muted,
+              "sm:flex",
+              RADIUS.sm,
             )}
           >
             /

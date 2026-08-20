@@ -2,6 +2,16 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
+import {
+  LAYOUT,
+  BORDER,
+  BG,
+  BACKDROP,
+  TRANSITION,
+  Z,
+  INTERACTIVE,
+  FOCUS,
+} from "@/constants/tokens";
 import { HeaderLogo } from "./HeaderLogo";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderActions } from "./HeaderActions";
@@ -70,15 +80,24 @@ export function Header({
       <header
         role="banner"
         className={cn(
-          "sticky top-0 z-50 w-full",
-          "border-b transition-colors duration-200",
+          "sticky top-0 w-full",
+          Z.chrome,
+          `${LAYOUT.headerHeight} flex items-center`,
+          BORDER.default,
+          `${TRANSITION.colors} duration-200`,
           scrolled
-            ? "border-border/60 bg-background/80 backdrop-blur-xl"
-            : "border-transparent bg-background/50 backdrop-blur-md",
+            ? `${BG.headerScrolled} ${BACKDROP.heavy}`
+            : `${BG.headerIdle} ${BACKDROP.medium} ${BORDER.transparent}`,
           className,
         )}
       >
-        <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div
+          className={cn(
+            "mx-auto flex h-full w-full items-center justify-between gap-4",
+            LAYOUT.maxWidth,
+            LAYOUT.px,
+          )}
+        >
           <div className="flex items-center gap-4">
             <HeaderLogo version={version} />
           </div>
@@ -103,13 +122,7 @@ export function Header({
               <button
                 type="button"
                 onClick={handleSearchToggle}
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-md",
-                  "text-muted-foreground hover:text-foreground hover:bg-muted",
-                  "transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                )}
+                className={cn(INTERACTIVE.iconButton, FOCUS.ring)}
                 aria-label="Search"
               >
                 <svg
@@ -129,13 +142,7 @@ export function Header({
               <button
                 type="button"
                 onClick={handleMobileMenuToggle}
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-md",
-                  "text-muted-foreground hover:text-foreground hover:bg-muted",
-                  "transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                )}
+                className={cn(INTERACTIVE.iconButton, FOCUS.ring)}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileMenuOpen}
               >
@@ -175,7 +182,12 @@ export function Header({
 
       {searchOpen && (
         <div
-          className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm"
+          className={cn(
+            "fixed inset-0",
+            Z.modal,
+            BG.overlay,
+            BACKDROP.light,
+          )}
           onClick={handleSearchClose}
           aria-hidden="true"
         />

@@ -1,4 +1,6 @@
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/cn";
+import { BORDER, BG, LAYOUT } from "@/constants/tokens";
 import { FooterBrand } from "./FooterBrand";
 import { FooterLinks } from "./FooterLinks";
 import { FooterSocials } from "./FooterSocials";
@@ -55,8 +57,8 @@ const footerSections = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-background" role="contentinfo">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className={cn("border-t", BORDER.default, BG.base)} role="contentinfo">
+      <div className={cn("mx-auto", LAYOUT.maxWidth, LAYOUT.px)}>
         <div className="grid gap-10 py-12 sm:gap-8 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] lg:py-16">
           <FooterBrand />
           {footerSections.map((section) => (

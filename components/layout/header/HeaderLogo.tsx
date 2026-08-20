@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { RADIUS, BG, TEXT, BORDER, TRANSITION } from "@/constants/tokens";
 
 interface HeaderLogoProps {
   className?: string;
@@ -12,16 +13,18 @@ export function HeaderLogo({ className, version }: HeaderLogoProps) {
       href="/"
       className={cn(
         "flex items-center gap-2.5 shrink-0",
-        "transition-opacity hover:opacity-80",
+        `${TRANSITION.opacity} hover:opacity-80`,
         className,
       )}
       aria-label="Component Registry - Home"
     >
       <div
         className={cn(
-          "flex h-7 w-7 items-center justify-center rounded-lg",
-          "bg-foreground text-background",
-          "transition-transform hover:scale-105",
+          "flex h-7 w-7 items-center justify-center",
+          RADIUS.lg,
+          BG.primary,
+          "text-background",
+          `${TRANSITION.transform} hover:scale-105`,
         )}
       >
         <svg
@@ -39,16 +42,22 @@ export function HeaderLogo({ className, version }: HeaderLogoProps) {
         </svg>
       </div>
 
-      <span className="hidden text-sm font-semibold tracking-tight text-foreground sm:block">
+      <span
+        className={cn(
+          "hidden font-semibold tracking-tight text-foreground sm:block",
+          TEXT.brand,
+        )}
+      >
         Registry
       </span>
 
       {version && (
         <span
           className={cn(
-            "hidden rounded-md border border-border/60 px-1.5 py-0.5",
-            "text-[10px] font-medium text-muted-foreground",
-            "sm:block",
+            "hidden border px-1.5 py-0.5 font-medium text-muted-foreground sm:block",
+            RADIUS.sm,
+            BORDER.default,
+            TEXT.tiny,
           )}
         >
           {version}

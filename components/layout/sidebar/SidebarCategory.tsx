@@ -4,6 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { NavLink } from "@/types/navigation";
+import {
+  BORDER,
+  BG,
+  RADIUS,
+  TRANSITION,
+  TEXT,
+} from "@/constants/tokens";
 
 interface SidebarCategoryProps {
   label: string;
@@ -22,9 +29,12 @@ export function SidebarCategory({ label, icon, links, defaultOpen = false, onNav
         type="button"
         onClick={() => setOpen((p) => !p)}
         className={cn(
-          "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left",
-          "text-[13px] font-medium text-foreground",
-          "transition-colors hover:bg-muted/70",
+          "flex w-full items-center gap-2 px-2 py-1.5 text-left",
+          RADIUS.sm,
+          TEXT.body,
+          "font-medium text-foreground",
+          TRANSITION.colors,
+          "hover:bg-muted/70",
         )}
         aria-expanded={open}
       >
@@ -32,7 +42,8 @@ export function SidebarCategory({ label, icon, links, defaultOpen = false, onNav
         <span className="flex-1 truncate">{label}</span>
         <svg
           className={cn(
-            "h-3.5 w-3.5 shrink-0 text-muted-foreground/60 transition-transform duration-200",
+            "h-3.5 w-3.5 shrink-0 text-muted-foreground/60",
+            `${TRANSITION.transform} duration-200`,
             open && "rotate-180",
           )}
           viewBox="0 0 24 24"
@@ -47,16 +58,20 @@ export function SidebarCategory({ label, icon, links, defaultOpen = false, onNav
       </button>
 
       {open && (
-        <ul className="ml-3 flex flex-col gap-0.5 border-l border-border/60 pl-2 pt-1 pb-1">
+        <ul className={cn("ml-3 flex flex-col gap-0.5 border-l pl-2 pt-1 pb-1", BORDER.default)}>
           {links.map((link) => (
             <li key={link.label}>
               <Link
                 href={link.href}
                 onClick={onNavigate}
                 className={cn(
-                  "flex items-center rounded-md px-2 py-1 text-[13px]",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  "transition-colors",
+                  "flex items-center px-2 py-1",
+                  RADIUS.sm,
+                  TEXT.body,
+                  "text-muted-foreground",
+                  BG.mutedSoft,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
                 )}
               >
                 {link.label}

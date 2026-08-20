@@ -1,4 +1,6 @@
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/cn";
+import { BORDER, RADIUS, TRANSITION } from "@/constants/tokens";
 
 const socials = [
   {
@@ -50,14 +52,20 @@ const socials = [
 
 export function FooterSocials() {
   return (
-    <div className="flex items-center gap-2 border-t border-border/60 pt-6">
+    <div className={cn("flex items-center gap-2 border-t pt-6", BORDER.default)}>
       {socials.map((social) => (
         <a
           key={social.label}
           href={social.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:border-ring/40 hover:bg-muted hover:text-foreground"
+          className={cn(
+            "flex h-8 w-8 items-center justify-center border text-muted-foreground",
+            RADIUS.sm,
+            BORDER.default,
+            TRANSITION.colors,
+            "hover:border-ring/40 hover:text-foreground",
+          )}
           aria-label={social.label}
         >
           {social.icon}

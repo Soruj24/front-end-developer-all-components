@@ -2,6 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { cn } from "@/lib/cn";
+import {
+  BORDER,
+  BG,
+  RADIUS,
+  FOCUS,
+  TEXT,
+  TRANSITION,
+} from "@/constants/tokens";
 
 export function FooterNewsletter() {
   const [email, setEmail] = useState("");
@@ -22,11 +30,13 @@ export function FooterNewsletter() {
   };
 
   return (
-    <div className="border-t border-border/60 pt-6">
+    <div className={cn("border-t pt-6", BORDER.default)}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm">
-          <h3 className="text-sm font-semibold text-foreground">Stay updated.</h3>
-          <p className="mt-1 text-[13px] text-muted-foreground">
+          <h3 className={cn("font-semibold text-foreground", TEXT.brand)}>
+            Stay updated.
+          </h3>
+          <p className={cn("mt-1 text-muted-foreground", TEXT.body)}>
             Get updates about new components, templates and developer tools.
           </p>
         </div>
@@ -45,29 +55,32 @@ export function FooterNewsletter() {
             placeholder="you@example.com"
             disabled={isPending}
             className={cn(
-              "h-9 w-full rounded-lg border bg-background px-3 text-[13px] text-foreground",
+              "h-9 w-full border bg-background px-3 text-foreground",
+              RADIUS.sm,
               "placeholder:text-muted-foreground/60",
-              "transition-colors",
-              "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-ring/60",
+              TRANSITION.colors,
+              FOCUS.ringInput,
               "disabled:opacity-50",
               status === "error"
                 ? "border-destructive"
-                : "border-border/60",
+                : BORDER.default,
               "sm:w-56",
+              TEXT.body,
             )}
           />
           <button
             type="submit"
             disabled={isPending}
             className={cn(
-              "h-9 shrink-0 rounded-lg px-4 text-[13px] font-medium",
-              "transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "h-9 shrink-0 px-4 font-medium",
+              RADIUS.sm,
+              TEXT.body,
+              TRANSITION.colors,
+              FOCUS.ring,
               "disabled:opacity-50",
               status === "success"
-                ? "bg-success text-success-foreground"
-                : "bg-foreground text-background hover:bg-foreground/90",
+                ? `${BG.accent} text-success-foreground`
+                : `${BG.primary} text-background hover:bg-foreground/90`,
             )}
           >
             {isPending ? "..." : status === "success" ? "Subscribed" : "Subscribe"}
@@ -75,7 +88,7 @@ export function FooterNewsletter() {
         </form>
       </div>
       {status === "error" && (
-        <p className="mt-2 text-[12px] text-destructive">
+        <p className={cn("mt-2 text-destructive", TEXT.fine)}>
           Please enter a valid email address.
         </p>
       )}

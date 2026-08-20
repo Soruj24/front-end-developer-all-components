@@ -3,6 +3,19 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import {
+  LAYOUT,
+  BORDER,
+  BG,
+  Z,
+  RADIUS,
+  TRANSITION,
+  BACKDROP,
+  INTERACTIVE,
+  FOCUS,
+  TEXT,
+  COLOR,
+} from "@/constants/tokens";
 
 interface MobileNavigationProps {
   isOpen: boolean;
@@ -47,7 +60,12 @@ export function MobileNavigation({
     <>
       <div
         className={cn(
-          "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity lg:hidden",
+          "fixed inset-0",
+          Z.modal,
+          BG.overlay,
+          BACKDROP.light,
+          TRANSITION.opacity,
+          "lg:hidden",
           isOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -58,25 +76,30 @@ export function MobileNavigation({
         role="navigation"
         aria-label="Mobile navigation"
         className={cn(
-          "fixed right-0 top-0 z-50 h-full w-72 max-w-[85vw]",
-          "border-l border-border/60 bg-popover shadow-xl",
-          "transition-transform duration-300 ease-out",
+          "fixed right-0 top-0 h-full w-72 max-w-[85vw]",
+          Z.chrome,
+          BORDER.default,
+          BG.base,
+          TRANSITION.slide,
           "lg:hidden",
           isOpen ? "translate-x-0" : "translate-x-full",
           className,
         )}
       >
-        <div className="flex h-14 items-center justify-between border-b border-border/60 px-4">
-          <span className="text-sm font-semibold text-foreground">Menu</span>
+        <div
+          className={cn(
+            "flex items-center justify-between px-4",
+            LAYOUT.headerHeight,
+            BORDER.default,
+          )}
+        >
+          <span className={cn("font-semibold text-foreground", TEXT.brand)}>
+            Menu
+          </span>
           <button
             type="button"
             onClick={onClose}
-            className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-md",
-              "text-muted-foreground hover:text-foreground hover:bg-muted",
-              "transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            )}
+            className={cn(INTERACTIVE.iconButton, FOCUS.ring)}
             aria-label="Close menu"
           >
             <svg
@@ -96,7 +119,7 @@ export function MobileNavigation({
 
         <div className="overflow-y-auto px-3 py-4">
           <div className="mb-4">
-            <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
+            <p className={cn("mb-2 px-2 font-medium", TEXT.small, COLOR.muted)}>
               Navigation
             </p>
             {NAV_ITEMS.map((item) => (
@@ -105,9 +128,13 @@ export function MobileNavigation({
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center rounded-md px-2.5 py-2 text-sm",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  "transition-colors",
+                  "flex items-center px-2.5 py-2",
+                  RADIUS.sm,
+                  "text-muted-foreground",
+                  BG.mutedSoft,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  TEXT.body,
                 )}
               >
                 {item.label}
@@ -115,15 +142,17 @@ export function MobileNavigation({
             ))}
           </div>
 
-          <div className="border-t border-border/60 pt-4">
-            <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
+          <div className={cn("border-t pt-4", BORDER.default)}>
+            <p className={cn("mb-2 px-2 font-medium", TEXT.small, COLOR.muted)}>
               Account
             </p>
-            <div className="mb-2 flex items-center gap-2 rounded-md bg-muted/50 px-2.5 py-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-background text-xs font-medium text-muted-foreground">
+            <div className={cn("mb-2 flex items-center gap-2 px-2.5 py-2", RADIUS.sm, BG.mutedSoft)}>
+              <div className={cn("flex h-6 w-6 items-center justify-center rounded-full bg-background text-xs font-medium text-muted-foreground")}>
                 {userName.charAt(0).toUpperCase()}
               </div>
-              <span className="text-sm font-medium text-foreground">{userName}</span>
+              <span className={cn("font-medium text-foreground", TEXT.body)}>
+                {userName}
+              </span>
             </div>
             {USER_ITEMS.map((item) => (
               <a
@@ -131,9 +160,13 @@ export function MobileNavigation({
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center rounded-md px-2.5 py-2 text-sm",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  "transition-colors",
+                  "flex items-center px-2.5 py-2",
+                  RADIUS.sm,
+                  "text-muted-foreground",
+                  BG.mutedSoft,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  TEXT.body,
                 )}
               >
                 {item.label}
@@ -142,17 +175,21 @@ export function MobileNavigation({
           </div>
 
           {role === "admin" && (
-            <div className="border-t border-border/60 pt-4">
-              <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
+            <div className={cn("border-t pt-4", BORDER.default)}>
+              <p className={cn("mb-2 px-2 font-medium", TEXT.small, COLOR.muted)}>
                 Admin
               </p>
               <Link
                 href="/admin"
                 onClick={onClose}
                 className={cn(
-                  "flex items-center rounded-md px-2.5 py-2 text-sm",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  "transition-colors",
+                  "flex items-center px-2.5 py-2",
+                  RADIUS.sm,
+                  "text-muted-foreground",
+                  BG.mutedSoft,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  TEXT.body,
                 )}
               >
                 Admin Panel
@@ -160,14 +197,18 @@ export function MobileNavigation({
             </div>
           )}
 
-          <div className="border-t border-border/60 pt-4">
+          <div className={cn("border-t pt-4", BORDER.default)}>
             <button
               type="button"
               onClick={onClose}
               className={cn(
-                "flex w-full items-center rounded-md px-2.5 py-2 text-sm",
-                "text-muted-foreground hover:bg-muted hover:text-foreground",
-                "transition-colors",
+                "flex w-full items-center px-2.5 py-2",
+                RADIUS.sm,
+                "text-muted-foreground",
+                BG.mutedSoft,
+                "hover:text-foreground",
+                TRANSITION.colors,
+                TEXT.body,
               )}
             >
               Log out

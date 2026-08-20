@@ -2,6 +2,14 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import {
+  LAYOUT,
+  BORDER,
+  BG,
+  RADIUS,
+  TRANSITION,
+  TEXT,
+} from "@/constants/tokens";
 
 interface MobileHeaderProps {
   className?: string;
@@ -11,8 +19,9 @@ export function MobileHeader({ className }: MobileHeaderProps) {
   return (
     <div
       className={cn(
-        "flex h-14 items-center justify-between px-4",
-        "border-b border-border/60",
+        "flex items-center justify-between px-4",
+        LAYOUT.headerHeight,
+        BORDER.default,
         "lg:hidden",
         className,
       )}
@@ -21,14 +30,16 @@ export function MobileHeader({ className }: MobileHeaderProps) {
         href="/"
         className={cn(
           "flex items-center gap-2.5",
-          "transition-opacity hover:opacity-80",
+          `${TRANSITION.opacity} hover:opacity-80`,
         )}
         aria-label="Component Registry - Home"
       >
         <div
           className={cn(
-            "flex h-7 w-7 items-center justify-center rounded-lg",
-            "bg-foreground text-background",
+            "flex h-7 w-7 items-center justify-center",
+            RADIUS.lg,
+            BG.primary,
+            "text-background",
           )}
         >
           <svg
@@ -45,7 +56,7 @@ export function MobileHeader({ className }: MobileHeaderProps) {
             <polyline points="2 12 12 17 22 12" />
           </svg>
         </div>
-        <span className="text-sm font-semibold tracking-tight text-foreground">
+        <span className={cn("font-semibold tracking-tight text-foreground", TEXT.brand)}>
           Registry
         </span>
       </Link>

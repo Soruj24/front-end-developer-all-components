@@ -7,6 +7,14 @@ import { navigationSections } from "@/constants/navigation";
 import { filterNavigationSections } from "@/utils/navigation";
 import type { NavLink, NavSection } from "@/types/navigation";
 import { cn } from "@/lib/cn";
+import {
+  LAYOUT,
+  BORDER,
+  BG,
+  TRANSITION,
+  TEXT,
+  COLOR,
+} from "@/constants/tokens";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarSearch } from "./SidebarSearch";
 import { SidebarNavigation } from "./SidebarNavigation";
@@ -30,7 +38,7 @@ function isSectionActive(section: NavSection, pathname: string): boolean {
   return section.links.some((link) => isLinkActive(link, pathname));
 }
 
-export function Sidebar({ sections, width = 260 }: SidebarProps) {
+export function Sidebar({ sections, width = LAYOUT.sidebarWidth }: SidebarProps) {
   const { open, close } = useSidebar();
   const pathname = usePathname();
   const [search, setSearch] = useState("");
@@ -101,11 +109,13 @@ export function Sidebar({ sections, width = 260 }: SidebarProps) {
 
       <aside
         className={cn(
-          "hidden flex-col border-r border-border/60 bg-background",
+          "hidden flex-col border-r",
+          BORDER.default,
+          BG.base,
           "sm:flex sm:sticky sm:top-14 sm:h-[calc(100vh-3.5rem)]",
-          "transition-[width] duration-300 ease-out",
+          TRANSITION.width,
         )}
-        style={{ width: collapsed ? 56 : width }}
+        style={{ width: collapsed ? LAYOUT.sidebarCollapsedWidth : width }}
         aria-label="Documentation"
       >
         <SidebarHeader
@@ -131,7 +141,14 @@ export function Sidebar({ sections, width = 260 }: SidebarProps) {
               <button
                 type="button"
                 onClick={expandAll}
-                className="rounded px-1.5 py-0.5 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                className={cn(
+                  "rounded px-1.5 py-0.5",
+                  TEXT.tiny,
+                  COLOR.muted,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  BG.mutedSoft,
+                )}
                 aria-label="Expand all sections"
               >
                 Expand
@@ -139,7 +156,14 @@ export function Sidebar({ sections, width = 260 }: SidebarProps) {
               <button
                 type="button"
                 onClick={collapseAll}
-                className="rounded px-1.5 py-0.5 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                className={cn(
+                  "rounded px-1.5 py-0.5",
+                  TEXT.tiny,
+                  COLOR.muted,
+                  "hover:text-foreground",
+                  TRANSITION.colors,
+                  BG.mutedSoft,
+                )}
                 aria-label="Collapse all sections"
               >
                 Collapse
@@ -156,7 +180,7 @@ export function Sidebar({ sections, width = 260 }: SidebarProps) {
           />
 
           {filteredSections.length === 0 && !collapsed && (
-            <p className="px-3 py-8 text-center text-sm text-muted-foreground">
+            <p className={cn("px-3 py-8 text-center text-muted-foreground", TEXT.body)}>
               No pages match &quot;{search}&quot;
             </p>
           )}

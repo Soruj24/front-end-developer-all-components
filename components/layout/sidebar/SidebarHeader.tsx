@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
+import {
+  BORDER,
+  BG,
+  RADIUS,
+  TRANSITION,
+  INTERACTIVE,
+  FOCUS,
+  TEXT,
+} from "@/constants/tokens";
 
 interface SidebarHeaderProps {
   collapsed: boolean;
@@ -9,20 +18,44 @@ interface SidebarHeaderProps {
 
 export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProps) {
   return (
-    <div className={cn("flex items-center border-b border-border/60", collapsed ? "justify-center px-2 py-3" : "justify-between px-3 py-3")}>
+    <div
+      className={cn(
+        "flex items-center border-b",
+        BORDER.default,
+        collapsed ? "justify-center px-2 py-3" : "justify-between px-3 py-3",
+      )}
+    >
       {!collapsed && (
         <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-[11px] font-bold text-background transition-transform group-hover:scale-105">
+          <span
+            className={cn(
+              "flex h-7 w-7 items-center justify-center font-bold text-background",
+              RADIUS.lg,
+              BG.primary,
+              TEXT.small,
+              `${TRANSITION.transform} group-hover:scale-105`,
+            )}
+          >
             {siteConfig.shortName}
           </span>
-          <span className="text-sm font-semibold tracking-tight text-foreground">
+          <span className={cn("font-semibold tracking-tight text-foreground", TEXT.brand)}>
             {siteConfig.name}
           </span>
         </Link>
       )}
 
       {collapsed && (
-        <Link href="/" className="group flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-[11px] font-bold text-background transition-transform group-hover:scale-105" aria-label="Home">
+        <Link
+          href="/"
+          className={cn(
+            "group flex h-7 w-7 items-center justify-center font-bold text-background",
+            RADIUS.lg,
+            BG.primary,
+            TEXT.small,
+            `${TRANSITION.transform} group-hover:scale-105`,
+          )}
+          aria-label="Home"
+        >
           {siteConfig.shortName}
         </Link>
       )}
@@ -31,11 +64,8 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
         type="button"
         onClick={onToggleCollapse}
         className={cn(
-          "flex items-center justify-center rounded-md",
-          "text-muted-foreground hover:text-foreground hover:bg-muted",
-          "transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          collapsed ? "h-7 w-7" : "h-6 w-6",
+          collapsed ? INTERACTIVE.iconButtonSm : INTERACTIVE.iconButton,
+          FOCUS.ring,
         )}
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
@@ -49,13 +79,9 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
           strokeLinejoin="round"
         >
           {collapsed ? (
-            <>
-              <path d="m9 18 6-6-6-6" />
-            </>
+            <path d="m9 18 6-6-6-6" />
           ) : (
-            <>
-              <path d="m15 18-6-6 6-6" />
-            </>
+            <path d="m15 18-6-6 6-6" />
           )}
         </svg>
       </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
+import { INTERACTIVE, FOCUS } from "@/constants/tokens";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { UserMenu } from "./UserMenu";
 
@@ -25,13 +26,7 @@ export function HeaderActions({
         href="https://github.com"
         target="_blank"
         rel="noopener noreferrer"
-        className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-md",
-          "text-muted-foreground hover:text-foreground hover:bg-muted",
-          "transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        )}
+        className={cn(INTERACTIVE.iconButton, FOCUS.ring)}
         aria-label="GitHub"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">

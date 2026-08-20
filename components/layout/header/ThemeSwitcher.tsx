@@ -1,7 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { cn } from "@/lib/cn";
+import {
+  FOCUS,
+  TRANSITION,
+  Z,
+  RADIUS,
+  BORDER,
+  BG,
+  TEXT,
+} from "@/constants/tokens";
 
 type Theme = "light" | "dark" | "system";
 
@@ -10,26 +19,51 @@ interface ThemeSwitcherProps {
   onThemeToggle?: (theme: Theme) => void;
 }
 
+let themeListeners: Array<() => void> = [];
+
+function subscribeTheme(callback: () => void) {
+  themeListeners.push(callback);
+  return () => {
+    themeListeners = themeListeners.filter((l) => l !== callback);
+  };
+}
+
+function getThemeSnapshot(): Theme {
+  return (localStorage.getItem("theme") as Theme) || "system";
+}
+
+function getThemeServerSnapshot(): Theme {
+  return "system";
+}
+
+function selectTheme(theme: Theme) {
+  localStorage.setItem("theme", theme);
+  for (const listener of themeListeners) listener();
+}
+
 export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) {
-  const [theme, setTheme] = useState<Theme>("system");
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const callbackRef = useRef(onThemeToggle);
+  const prevThemeRef = useRef(theme);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored && stored !== theme) setTheme(stored);
-    setMounted(true);
-  }, []);
+    callbackRef.current = onThemeToggle;
+  });
 
   useEffect(() => {
-    if (!mounted) return;
+    if (prevThemeRef.current === theme) return;
+    prevThemeRef.current = theme;
+    callbackRef.current?.(theme);
+  }, [theme]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     if (theme !== "system") root.classList.add(theme);
-    localStorage.setItem("theme", theme);
-    onThemeToggle?.(theme);
-  }, [theme, mounted, onThemeToggle]);
+  }, [theme]);
 
   useEffect(() => {
     if (!open) return;
@@ -91,21 +125,23 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
           "flex h-8 w-8 items-center justify-center rounded-md",
           "text-muted-foreground hover:text-foreground hover:bg-muted",
           "transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          FOCUS.ring,
           className,
         )}
         aria-label={`Theme: ${current.label}`}
         aria-expanded={open}
       >
-        {mounted ? current.icon : options[2].icon}
+        {current.icon}
       </button>
 
       {open && (
         <div
           className={cn(
-            "absolute right-0 top-full z-50 mt-1 w-36 overflow-hidden rounded-lg",
-            "border border-border/60 bg-popover shadow-lg",
+            "absolute right-0 top-full mt-1 w-36 overflow-hidden",
+            Z.chrome,
+            RADIUS.lg,
+            BORDER.default,
+            "bg-popover shadow-lg",
             "animate-in fade-in-0 zoom-in-95",
           )}
           role="menu"
@@ -115,15 +151,16 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
               key={opt.value}
               type="button"
               onClick={() => {
-                setTheme(opt.value);
+                selectTheme(opt.value);
                 setOpen(false);
               }}
               className={cn(
-                "flex w-full items-center gap-2.5 px-3 py-2 text-sm",
-                "transition-colors",
+                "flex w-full items-center gap-2.5 px-3 py-2",
+                TEXT.body,
+                TRANSITION.colors,
                 theme === opt.value
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  ? `${BG.muted} text-foreground`
+                  : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
               )}
               role="menuitem"
             >

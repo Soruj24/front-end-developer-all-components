@@ -4,6 +4,12 @@ import Link from "next/link";
 import { useActivePath } from "@/hooks";
 import { cn } from "@/lib/cn";
 import type { NavLink } from "@/types/navigation";
+import {
+  BG,
+  RADIUS,
+  TRANSITION,
+  TEXT,
+} from "@/constants/tokens";
 
 interface SidebarItemProps {
   link: NavLink;
@@ -24,11 +30,12 @@ export function SidebarItem({ link, depth = 0, collapsed, onNavigate }: SidebarI
           onClick={onNavigate}
           data-nav-link
           className={cn(
-            "group relative flex h-8 w-8 items-center justify-center rounded-md mx-auto",
-            "transition-colors",
+            "group relative mx-auto flex h-8 w-8 items-center justify-center",
+            RADIUS.sm,
+            TRANSITION.colors,
             active
-              ? "bg-accent-soft text-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground",
+              ? `${BG.accent} text-foreground`
+              : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
           )}
           title={link.label}
           aria-current={active ? "page" : undefined}
@@ -53,12 +60,16 @@ export function SidebarItem({ link, depth = 0, collapsed, onNavigate }: SidebarI
         onClick={onNavigate}
         data-nav-link
         className={cn(
-          "group relative flex items-center gap-2 rounded-md py-1.5 pr-2 text-[13px] font-medium",
-          "transition-colors active:scale-[0.98]",
+          "group relative flex items-center gap-2 py-1.5 pr-2",
+          RADIUS.sm,
+          TEXT.body,
+          "font-medium",
+          TRANSITION.colors,
+          "active:scale-[0.98]",
           depth === 0 ? "pl-2" : "pl-6",
           active
-            ? "bg-accent-soft text-foreground font-semibold"
-            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+            ? `${BG.accent} text-foreground font-semibold`
+            : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
         )}
         aria-current={active ? "page" : undefined}
       >

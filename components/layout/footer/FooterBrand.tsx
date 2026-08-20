@@ -1,18 +1,33 @@
 import Link from "next/link";
+import { cn } from "@/lib/cn";
 import { siteConfig } from "@/config/site";
+import {
+  RADIUS,
+  BG,
+  TRANSITION,
+  TEXT,
+} from "@/constants/tokens";
 
 export function FooterBrand() {
   return (
     <div className="max-w-xs">
       <Link href="/" className="group inline-flex items-center gap-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-[11px] font-bold text-background transition-transform group-hover:scale-105">
+        <span
+          className={cn(
+            "flex h-7 w-7 items-center justify-center font-bold text-background",
+            RADIUS.lg,
+            BG.primary,
+            TEXT.small,
+            `${TRANSITION.transform} group-hover:scale-105`,
+          )}
+        >
           {siteConfig.shortName}
         </span>
-        <span className="text-sm font-semibold tracking-tight text-foreground">
+        <span className={cn("font-semibold tracking-tight text-foreground", TEXT.brand)}>
           {siteConfig.name}
         </span>
       </Link>
-      <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+      <p className={cn("mt-4 leading-relaxed text-muted-foreground", TEXT.body)}>
         Build, customize and share production-ready components.
       </p>
     </div>

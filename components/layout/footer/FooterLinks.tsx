@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cn } from "@/lib/cn";
+import { TEXT, TRANSITION, COLOR } from "@/constants/tokens";
 
 interface FooterLinksProps {
   title: string;
@@ -8,7 +10,7 @@ interface FooterLinksProps {
 export function FooterLinks({ title, links }: FooterLinksProps) {
   return (
     <nav aria-label={title}>
-      <h3 className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+      <h3 className={cn("font-semibold uppercase tracking-widest", TEXT.small, COLOR.muted)}>
         {title}
       </h3>
       <ul className="mt-4 flex flex-col gap-2.5">
@@ -16,7 +18,7 @@ export function FooterLinks({ title, links }: FooterLinksProps) {
           <li key={link.label}>
             <Link
               href={link.href}
-              className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+              className={cn(TEXT.body, COLOR.muted, TRANSITION.colors, "hover:text-foreground")}
             >
               {link.label}
             </Link>

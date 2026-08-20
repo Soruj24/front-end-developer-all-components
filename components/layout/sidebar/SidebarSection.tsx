@@ -3,6 +3,14 @@
 import { useId } from "react";
 import type { NavSection } from "@/types/navigation";
 import { cn } from "@/lib/cn";
+import {
+  BORDER,
+  Z,
+  RADIUS,
+  TRANSITION,
+  TEXT,
+  COLOR,
+} from "@/constants/tokens";
 import { SidebarItem } from "./SidebarItem";
 
 interface SidebarSectionProps {
@@ -21,20 +29,23 @@ export function SidebarSection({ section, open, onToggle, collapsed, onNavigate 
     return (
       <div className="relative group/section">
         <div className="flex justify-center py-1">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground" title={section.title}>
+          <span className={cn("flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground")} title={section.title}>
             {section.icon ?? section.title.charAt(0)}
           </span>
         </div>
 
         <div
           className={cn(
-            "invisible absolute left-full top-0 z-50 ml-1 w-56",
-            "rounded-lg border border-border/60 bg-popover shadow-lg",
+            "invisible absolute left-full top-0 ml-1 w-56",
+            Z.chrome,
+            RADIUS.lg,
+            BORDER.default,
+            "bg-popover shadow-lg",
             "opacity-0 group-hover/section:visible group-hover/section:opacity-100",
-            "transition-opacity duration-150",
+            TRANSITION.opacity,
           )}
         >
-          <div className="px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground border-b border-border/60">
+          <div className={cn("border-b px-2.5 py-1.5 font-medium", BORDER.default, TEXT.small, COLOR.muted)}>
             {section.title}
           </div>
           <div className="p-1">
@@ -64,9 +75,12 @@ export function SidebarSection({ section, open, onToggle, collapsed, onNavigate 
         aria-expanded={open}
         aria-controls={contentId}
         className={cn(
-          "group flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left",
-          "text-[13px] font-medium text-foreground",
-          "transition-colors hover:bg-muted/70 active:bg-muted/80",
+          "group flex w-full items-center gap-2 px-2 py-1.5 text-left",
+          RADIUS.sm,
+          TEXT.body,
+          "font-medium text-foreground",
+          TRANSITION.colors,
+          "hover:bg-muted/70 active:bg-muted/80",
         )}
       >
         <span className="flex h-4 w-4 shrink-0 items-center justify-center text-xs text-muted-foreground transition-colors group-hover:text-foreground">
@@ -75,7 +89,8 @@ export function SidebarSection({ section, open, onToggle, collapsed, onNavigate 
         <span className="flex-1 truncate">{section.title}</span>
         <svg
           className={cn(
-            "h-3.5 w-3.5 shrink-0 text-muted-foreground/60 transition-transform duration-200",
+            "h-3.5 w-3.5 shrink-0 text-muted-foreground/60",
+            `${TRANSITION.transform} duration-200`,
             "group-hover:text-muted-foreground",
             open && "rotate-180 text-muted-foreground/80",
           )}

@@ -2,6 +2,16 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
+import {
+  BORDER,
+  BG,
+  Z,
+  RADIUS,
+  TRANSITION,
+  FOCUS,
+  TEXT,
+  COLOR,
+} from "@/constants/tokens";
 
 interface HeaderSearchProps {
   isOpen: boolean;
@@ -48,11 +58,16 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
         type="button"
         onClick={onToggle}
         className={cn(
-          "hidden items-center gap-2 rounded-lg border border-border/60",
-          "bg-muted/50 px-3 py-1.5 text-sm text-muted-foreground",
-          "transition-colors hover:bg-muted hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "hidden items-center gap-2 border",
+          RADIUS.sm,
+          BORDER.default,
+          BG.mutedSoft,
+          "px-3 py-1.5",
+          TEXT.brand,
+          COLOR.muted,
+          TRANSITION.colors,
+          "hover:text-foreground",
+          FOCUS.ring,
           "lg:flex",
         )}
         aria-label="Search (Ctrl+K)"
@@ -73,8 +88,12 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
         <kbd
           className={cn(
             "pointer-events-none ml-4 hidden h-5 select-none items-center gap-1",
-            "rounded border border-border/60 bg-background px-1.5 font-mono",
-            "text-[10px] font-medium text-muted-foreground sm:flex",
+            "border bg-background px-1.5 font-mono",
+            BORDER.default,
+            TEXT.tiny,
+            COLOR.muted,
+            "sm:flex",
+            RADIUS.sm,
           )}
         >
           <span className="text-xs">Ctrl</span>
@@ -88,14 +107,17 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
           aria-modal="true"
           aria-label="Search"
           className={cn(
-            "fixed left-1/2 top-[15vh] z-[70] w-full max-w-lg",
-            "-translate-x-1/2 rounded-xl border border-border/60",
+            "fixed left-1/2 top-[15vh] w-full max-w-lg",
+            "-translate-x-1/2",
+            Z.toast,
+            RADIUS.lg,
+            BORDER.default,
             "bg-popover shadow-2xl",
             "animate-in fade-in-0 zoom-in-95",
           )}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center gap-3 border-b border-border/60 px-4">
+          <div className={cn("flex items-center gap-3 border-b px-4", BORDER.default)}>
             <svg
               className="h-4 w-4 shrink-0 text-muted-foreground"
               viewBox="0 0 24 24"
@@ -118,16 +140,20 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
               }}
               placeholder="Search components, templates, docs..."
               className={cn(
-                "flex-1 bg-transparent py-3 text-sm text-foreground",
+                "flex-1 bg-transparent py-3 text-foreground",
                 "placeholder:text-muted-foreground",
                 "focus:outline-none",
+                TEXT.body,
               )}
             />
             <kbd
               className={cn(
-                "hidden h-5 items-center rounded border border-border/60",
-                "bg-background px-1.5 font-mono text-[10px] text-muted-foreground",
+                "hidden h-5 items-center border bg-background px-1.5 font-mono",
+                BORDER.default,
+                TEXT.tiny,
+                COLOR.muted,
                 "sm:flex",
+                RADIUS.sm,
               )}
             >
               Esc
@@ -137,7 +163,7 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
           <div className="max-h-[300px] overflow-y-auto p-2">
             {query.length === 0 && RECENT.length > 0 && (
               <div className="mb-1">
-                <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                <p className={cn("px-2 py-1.5 font-medium", TEXT.small, COLOR.muted)}>
                   Recent
                 </p>
                 {RECENT.map((q) => (
@@ -146,9 +172,12 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
                     type="button"
                     onClick={() => handleSelect(q)}
                     className={cn(
-                      "flex w-full items-center gap-2 rounded-lg px-2 py-1.5",
-                      "text-sm text-muted-foreground",
-                      "hover:bg-muted hover:text-foreground transition-colors",
+                      "flex w-full items-center gap-2 px-2 py-1.5",
+                      RADIUS.sm,
+                      TEXT.body,
+                      COLOR.muted,
+                      "hover:text-foreground",
+                      TRANSITION.colors,
                     )}
                   >
                     <svg
@@ -171,7 +200,7 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
 
             {query.length > 0 && filtered.length > 0 && (
               <div>
-                <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                <p className={cn("px-2 py-1.5 font-medium", TEXT.small, COLOR.muted)}>
                   Suggestions
                 </p>
                 {filtered.map((item) => (
@@ -180,9 +209,12 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
                     type="button"
                     onClick={() => handleSelect(item.query)}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-lg px-2 py-1.5",
-                      "text-sm text-muted-foreground",
-                      "hover:bg-muted hover:text-foreground transition-colors",
+                      "flex w-full items-center justify-between px-2 py-1.5",
+                      RADIUS.sm,
+                      TEXT.body,
+                      COLOR.muted,
+                      "hover:text-foreground",
+                      TRANSITION.colors,
                     )}
                   >
                     <span className="flex items-center gap-2">
@@ -200,7 +232,7 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
                       </svg>
                       {item.query}
                     </span>
-                    <span className="text-xs text-muted-foreground/60">
+                    <span className={cn("text-muted-foreground/60", TEXT.small)}>
                       {item.category}
                     </span>
                   </button>
@@ -210,26 +242,26 @@ export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSea
 
             {query.length > 0 && filtered.length === 0 && (
               <div className="flex flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-muted-foreground">
+                <p className={cn("text-muted-foreground", TEXT.body)}>
                   No results for &quot;{query}&quot;
                 </p>
               </div>
             )}
           </div>
 
-          <div className="flex items-center justify-between border-t border-border/60 px-4 py-2">
-            <div className="flex items-center gap-3 text-[11px] text-muted-foreground/60">
+          <div className={cn("flex items-center justify-between border-t px-4 py-2", BORDER.default)}>
+            <div className={cn("flex items-center gap-3 text-muted-foreground/60", TEXT.small)}>
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                <kbd className={cn("border bg-background px-1 font-mono", BORDER.default, TEXT.tiny)}>
                   &uarr;
                 </kbd>
-                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                <kbd className={cn("border bg-background px-1 font-mono", BORDER.default, TEXT.tiny)}>
                   &darr;
                 </kbd>
                 navigate
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                <kbd className={cn("border bg-background px-1 font-mono", BORDER.default, TEXT.tiny)}>
                   Enter
                 </kbd>
                 select
