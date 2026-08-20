@@ -2,83 +2,137 @@
 
 import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { ArrowUpDown, Settings, AlertCircle } from "lucide-react";
+import { ActivityFeed } from "@/components/ui/ActivityFeed";
+import type { ActivityFeedItem } from "@/components/ui/ActivityFeed";
+import {
+  ACTIVITY_FEED_SOURCE,
+  DEFAULT_EXAMPLE,
+  COMPACT_EXAMPLE,
+  MINIMAL_EXAMPLE,
+  FILTERED_EXAMPLE,
+} from "./activity-feed-source";
 
-interface ActivityItem {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-}
-
-function ActivityFeed({ items, showTime = true }: { items: ActivityItem[]; showTime?: boolean }) {
-  return (
-    <div className="space-y-4">
-      {items.map((item) => (
-        <div key={item.id} className="flex items-start gap-3">
-          {showTime && <span className="text-sm text-muted-foreground">{item.time}</span>}
-          <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-foreground">{item.title}</h4>
-            <p className="text-sm text-muted-foreground">{item.description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-const ACTIVITY_FEED_SOURCE = `"use client";
-
-import { useState, useEffect } from "react";
-
-export interface ActivityItem {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-}
-
-export function ActivityFeed({ items, showTime = true }: { items: ActivityItem[]; showTime?: boolean }) {
-  return (
-    <div className="space-y-4">
-      {items.map((item) => (
-        <div key={item.id} className="flex items-start gap-3">
-          {showTime && <span className="text-sm text-muted-foreground">{item.time}</span>}
-          <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-foreground">{item.title}</h4>
-            <p className="text-sm text-muted-foreground">{item.description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}`;
+const feedItems: ActivityFeedItem[] = [
+  {
+    id: "1",
+    user: "Sarah Chen",
+    action: "pushed 3 commits to",
+    target: "main",
+    time: "2 min ago",
+    avatar: "Sarah Chen",
+    color: "bg-blue-500",
+    details: (
+      <div className="flex flex-col gap-1">
+        <code className="text-xs">fix: resolve auth token refresh</code>
+        <code className="text-xs">feat: add dark mode toggle</code>
+        <code className="text-xs">chore: update dependencies</code>
+      </div>
+    ),
+  },
+  {
+    id: "2",
+    user: "Marcus Rivera",
+    action: "opened a pull request in",
+    target: "frontend-app",
+    time: "15 min ago",
+    avatar: "Marcus Rivera",
+    color: "bg-emerald-500",
+    details: "PR #247: Refactor dashboard components to use new design tokens.",
+  },
+  {
+    id: "3",
+    user: "Aisha Patel",
+    action: "deployed",
+    target: "api-gateway v3.2.1",
+    time: "1 hour ago",
+    avatar: "Aisha Patel",
+    color: "bg-violet-500",
+  },
+  {
+    id: "4",
+    user: "System",
+    action: "completed backup of",
+    target: "production database",
+    time: "2 hours ago",
+    color: "bg-amber-500",
+  },
+  {
+    id: "5",
+    user: "James Okonkwo",
+    action: "commented on",
+    target: "Issue #189",
+    time: "3 hours ago",
+    avatar: "James Okonkwo",
+    color: "bg-rose-500",
+    details: "I think we should consider using a connection pool here for better performance under load.",
+  },
+  {
+    id: "6",
+    user: "Elena Volkov",
+    action: "merged",
+    target: "feature/auth-v2",
+    time: "5 hours ago",
+    avatar: "Elena Volkov",
+    color: "bg-cyan-500",
+  },
+];
 
 function DefaultDemo() {
-  const [items, setItems] = useState([
-    { id: "1", title: "New message", description: "You received a new message", time: "2:30 PM" },
-    { id: "2", title: "System update", description: "App updated to v2.1", time: "1:00 PM" },
-  ]);
   return (
-    <ActivityFeed items={items} />
+    <div className="w-full max-w-md rounded-xl border border-border bg-background p-5">
+      <ActivityFeed items={feedItems} />
+    </div>
   );
 }
 
 function CompactDemo() {
-  const [items, setItems] = useState([
-    { id: "1", title: "New message", description: "You received a new message", time: "2:30 PM" },
-  ]);
   return (
-    <ActivityFeed items={items} showTime={false} />
+    <div className="w-full max-w-md rounded-xl border border-border bg-background p-4">
+      <ActivityFeed items={feedItems} variant="compact" />
+    </div>
   );
 }
 
-function InteractiveDemo() {
-  const [items, setItems] = useState([
-    { id: "1", title: "New message", description: "You received a new message", time: "2:30 PM" },
-  ]);
+function MinimalDemo() {
   return (
-    <ActivityFeed items={items} />
+    <div className="w-full max-w-md rounded-xl border border-border bg-background p-5">
+      <ActivityFeed items={feedItems} variant="minimal" />
+    </div>
+  );
+}
+
+function FilteredDemo() {
+  const [showAll, setShowAll] = useState(false);
+  return (
+    <div className="w-full max-w-md">
+      <div className="mb-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className={`inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+            showAll
+              ? "bg-primary text-primary-foreground"
+              : "border border-border bg-background text-foreground hover:bg-muted"
+          }`}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowAll(false)}
+          className={`inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+            !showAll
+              ? "bg-primary text-primary-foreground"
+              : "border border-border bg-background text-foreground hover:bg-muted"
+          }`}
+        >
+          Recent
+        </button>
+      </div>
+      <div className="rounded-xl border border-border bg-background p-5">
+        <ActivityFeed items={feedItems} showAll={showAll} maxItems={3} />
+      </div>
+    </div>
   );
 }
 
@@ -87,9 +141,9 @@ export default function ActivityFeedPage() {
     <ComponentDocPage
       name="Activity Feed"
       category="Data Display"
-      description="A feed displaying time-stamped activities with flexible display options."
+      description="Timeline-style activity feed with avatars, expandable details, and 3 display variants."
     >
-      <PreviewPanel filename="activity-feed.tsx">
+      <PreviewPanel filename="ActivityFeed.tsx">
         <DefaultDemo />
       </PreviewPanel>
 
@@ -99,17 +153,37 @@ export default function ActivityFeedPage() {
         defaultExpanded
       />
 
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Default" description="Standard activity feed with timestamps." code={ACTIVITY_FEED_SOURCE}>
+      <div className="flex flex-col gap-8">
+        <ExampleBlock
+          title="Default"
+          description="Standard timeline with avatars, connecting lines, and expandable details."
+          code={DEFAULT_EXAMPLE}
+        >
           <DefaultDemo />
         </ExampleBlock>
 
-        <ExampleBlock title="Compact" description="Hide timestamps for a compact view." code={ACTIVITY_FEED_SOURCE}>
+        <ExampleBlock
+          title="Compact"
+          description="Smaller avatars and tighter spacing for dense layouts."
+          code={COMPACT_EXAMPLE}
+        >
           <CompactDemo />
         </ExampleBlock>
 
-        <ExampleBlock title="Interactive" description="Add new items interactively." code={ACTIVITY_FEED_SOURCE}>
-          <InteractiveDemo />
+        <ExampleBlock
+          title="Minimal"
+          description="Timeline dots instead of avatars for a clean, minimal look."
+          code={MINIMAL_EXAMPLE}
+        >
+          <MinimalDemo />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Filtered"
+          description="Toggle between showing all items or only recent ones."
+          code={FILTERED_EXAMPLE}
+        >
+          <FilteredDemo />
         </ExampleBlock>
       </div>
     </ComponentDocPage>

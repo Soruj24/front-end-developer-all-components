@@ -1,29 +1,8 @@
-export const ACTIVITY_FEED_SOURCE = `"use client";
+"use client";
 
 import { useState, useId } from "react";
 import { cn } from "@/lib/cn";
-
-interface ActivityFeedItem {
-  id: string;
-  user: string;
-  action: string;
-  target: string;
-  time: string;
-  avatar?: string;
-  color?: string;
-  icon?: React.ReactNode;
-  details?: React.ReactNode;
-}
-
-type ActivityFeedVariant = "default" | "compact" | "minimal";
-
-interface ActivityFeedProps {
-  items: ActivityFeedItem[];
-  variant?: ActivityFeedVariant;
-  showAll?: boolean;
-  maxItems?: number;
-  className?: string;
-}
+import type { ActivityFeedProps } from "./ActivityFeed.types";
 
 const COLOR_MAP: Record<string, string> = {
   "bg-blue-500": "bg-blue-500",
@@ -32,6 +11,8 @@ const COLOR_MAP: Record<string, string> = {
   "bg-amber-500": "bg-amber-500",
   "bg-rose-500": "bg-rose-500",
   "bg-cyan-500": "bg-cyan-500",
+  "bg-pink-500": "bg-pink-500",
+  "bg-indigo-500": "bg-indigo-500",
 };
 
 function getInitials(name: string): string {
@@ -41,6 +22,24 @@ function getInitials(name: string): string {
     .join("")
     .toUpperCase()
     .slice(0, 2);
+}
+
+function TimelineDot({ color }: { color?: string }) {
+  return (
+    <span
+      className={cn(
+        "relative flex h-2.5 w-2.5 shrink-0 rounded-full border-2 border-background",
+        color && COLOR_MAP[color] ? COLOR_MAP[color] : "bg-primary",
+      )}
+    >
+      <span
+        className={cn(
+          "absolute inline-flex h-full w-full animate-ping rounded-full opacity-30",
+          color && COLOR_MAP[color] ? COLOR_MAP[color] : "bg-primary",
+        )}
+      />
+    </span>
+  );
 }
 
 export function ActivityFeed({
@@ -53,15 +52,16 @@ export function ActivityFeed({
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const uid = useId();
 
-  const visibleItems = showAll
-    ? items.slice(0, maxItems)
-    : items.slice(0, 3);
+  const visibleItems = showAll ? items.slice(0, maxItems) : items.slice(0, 3);
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
@@ -74,23 +74,19 @@ export function ActivityFeed({
       {visibleItems.map((item, index) => {
         const isLast = index === visibleItems.length - 1;
         const isExpanded = expanded.has(item.id);
+        const panelId = `${uid}-${item.id}`;
         const hasDetails = !!item.details;
 
         return (
           <div key={item.id} className="relative flex gap-3">
+            {/* Timeline line */}
             {!isMinimal && !isLast && (
               <div className="absolute left-[5px] top-6 h-full w-px bg-border" />
             )}
 
+            {/* Timeline dot or avatar */}
             {isMinimal ? (
-              <span
-                className={cn(
-                  "relative mt-1 flex h-2.5 w-2.5 shrink-0 rounded-full border-2 border-background",
-                  item.color && COLOR_MAP[item.color]
-                    ? COLOR_MAP[item.color]
-                    : "bg-primary",
-                )}
-              />
+              <TimelineDot color={item.color} />
             ) : (
               <div
                 className={cn(
@@ -101,12 +97,19 @@ export function ActivityFeed({
                     : "bg-primary",
                 )}
               >
-                {item.avatar
-                  ? getInitials(item.avatar)
-                  : getInitials(item.user)}
+                {item.avatar ? (
+                  getInitials(item.avatar)
+                ) : item.icon ? (
+                  <span className="flex h-full w-full items-center justify-center">
+                    {item.icon}
+                  </span>
+                ) : (
+                  getInitials(item.user)
+                )}
               </div>
             )}
 
+            {/* Content */}
             <div
               className={cn(
                 "flex min-w-0 flex-1 flex-col",
@@ -115,33 +118,35 @@ export function ActivityFeed({
               )}
             >
               <div className="flex items-start justify-between gap-2">
-                <p className="min-w-0 flex-1 text-sm leading-snug">
-                  <span className="font-semibold text-foreground">
-                    {item.user}
-                  </span>{" "}
-                  <span className="text-muted-foreground">
-                    {item.action}
-                  </span>{" "}
-                  <span className="font-medium text-foreground">
-                    {item.target}
-                  </span>
-                </p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm leading-snug">
+                    <span className="font-semibold text-foreground">
+                      {item.user}
+                    </span>{" "}
+                    <span className="text-muted-foreground">{item.action}</span>{" "}
+                    <span className="font-medium text-foreground">
+                      {item.target}
+                    </span>
+                  </p>
+                </div>
                 <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                   {item.time}
                 </span>
               </div>
 
+              {/* Expandable details */}
               {hasDetails && (
                 <div className="mt-1.5">
                   <button
                     type="button"
                     onClick={() => toggleExpand(item.id)}
                     aria-expanded={isExpanded}
+                    aria-controls={panelId}
                     className={cn(
                       "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium",
                       "text-muted-foreground transition-colors duration-150",
                       "hover:bg-muted hover:text-foreground",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     )}
                   >
                     <svg
@@ -163,6 +168,9 @@ export function ActivityFeed({
                     {isExpanded ? "Less" : "Details"}
                   </button>
                   <div
+                    id={panelId}
+                    role="region"
+                    aria-hidden={!isExpanded}
                     className={cn(
                       "overflow-hidden transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.87,0,0.13,1)]",
                       isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
@@ -188,12 +196,6 @@ export function ActivityFeed({
       )}
     </div>
   );
-}`;
+}
 
-export const DEFAULT_EXAMPLE = `<ActivityFeed items={feedItems} />`;
-
-export const COMPACT_EXAMPLE = `<ActivityFeed items={feedItems} variant="compact" />`;
-
-export const MINIMAL_EXAMPLE = `<ActivityFeed items={feedItems} variant="minimal" />`;
-
-export const FILTERED_EXAMPLE = `<ActivityFeed items={feedItems} showAll={false} maxItems={3} />`;
+export type { ActivityFeedProps, ActivityFeedItem, ActivityFeedVariant };
