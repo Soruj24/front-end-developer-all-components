@@ -48,10 +48,9 @@ export function MobileNavigation({
           }
         }}
         className={cn(
-          "fixed right-0 top-0 bottom-0 z-50 w-80 max-w-full transform translateX(${
-            isOpen ? "0" : "100%"
-          }) transition-transform border-l border-border bg-popover shadow-lg"
+          "fixed right-0 top-0 bottom-0 z-50 w-80 max-w-full transition-transform border-l border-border bg-popover shadow-lg"
         )}
+        style={{ transform: `translateX(${isOpen ? "0" : "100%"})` }}
       >
         <div className="flex h-16 items-center justify-between px-4 border-b border-border">
           <Link

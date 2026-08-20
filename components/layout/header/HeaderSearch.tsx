@@ -158,9 +158,9 @@ export function HeaderSearch({ onToggle, onClose, className, initialQuery = "" }
                     key={query}
                     type="button"
                     className={cn(
-                      "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm text-muted-foreground hover:bg-border hover:text-foreground transition-colors",
-                      "aria-label={`Recent search: ${query}`}
-                  }
+                      "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm text-muted-foreground hover:bg-border hover:text-foreground transition-colors"
+                    )}
+                    aria-label={`Recent search: ${query}`}
                     onClick={() => {
                       setQuery(query);
                       setShowSuggestions(false);
@@ -191,9 +191,9 @@ export function HeaderSearch({ onToggle, onClose, className, initialQuery = "" }
                   key={item.query}
                   type="button"
                   className={cn(
-                    "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm hover:bg-border transition-colors",
-                    "aria-label="Search: " + item.query)
-                }
+                    "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm hover:bg-border transition-colors"
+                  )}
+                  aria-label={`Search: ${item.query}`}
                   onClick={() => {
                     setQuery(item.query);
                     setShowSuggestions(false);

@@ -6,7 +6,7 @@ import { Sun, Moon, Laptop, Shield, Mail, LogOut } from "lucide-react";
 
 interface HeaderActionsProps {
   className?: string;
-  onThemeToggle?: (theme: "light" | "dark" | "system) => void;
+  onThemeToggle?: (theme: "light" | "dark" | "system") => void;
   userName?: string;
   userAvatar?: string;
   role?: "user" | "admin";
