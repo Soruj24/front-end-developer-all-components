@@ -10,6 +10,7 @@ export interface BreadcrumbItem {
 export interface BreadcrumbProps {
   items: BreadcrumbItem[];
   separator?: ReactNode;
+  variant?: "default" | "pill" | "muted";
   className?: string;
   itemClassName?: string;
   activeIndex?: number;
