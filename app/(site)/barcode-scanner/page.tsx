@@ -1,158 +1,261 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, Button, Input } from "@/components/ui";
-import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+} from "@/components/docs";
+import {
+  BasicExample,
+  FormatDetectionExample,
+  ManualEntryExample,
+  ScanHistoryExample,
+  ProductLookupExample,
+  InventoryCheckExample,
+  VariantExample,
+  SizeExample,
+  StatusIndicatorExample,
+} from "@/components/ui/BarcodeScanner/examples";
+import { cn } from "@/lib/cn";
 
 const BARCODE_SCANNER_SOURCE = `"use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/cn";
+import type {
+  BarcodeScannerProps,
+  BarcodeFormat,
+  ScanResult,
+  ScanStatus,
+} from "./BarcodeScanner.types";
+import { MOCK_BARCODES, FORMAT_COLORS } from "./BarcodeScanner.constants";
 
-interface BarcodeScannerProps {
-  onScan?: (code: string) => void;
+function detectFormat(code: string): BarcodeFormat {
+  if (/^\\d{13}$/.test(code)) return "EAN-13";
+  if (/^\\d{8}$/.test(code)) return "EAN-8";
+  if (/^\\d{12}$/.test(code)) return "UPC-A";
+  if (/^97[89]\\d{10}$/.test(code)) return "ISBN-13";
+  if (/^[A-Za-z0-9\\-]+$/.test(code)) return "Code128";
+  return "Unknown";
 }
 
-export function BarcodeScanner({ onScan }: BarcodeScannerProps) {
-  const [scanning, setScanning] = useState(false);
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
-  const handleScan = () => {
-    setScanning(true);
-    setTimeout(() => {
-      setScanning(false);
-      onScan?.("4006381333931");
-    }, 1200);
-  };
+export function BarcodeScanner({
+  onScan, onError, onStatusChange, disabled = false,
+  variant = "default", size = "md", showFormat = true,
+  mockMode = true, mockCode, mockFormat, mockDelay = 1200, className,
+}: BarcodeScannerProps) {
+  const [status, setStatus] = useState<ScanStatus>("idle");
+  const [lastResult, setLastResult] = useState<ScanResult | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  return (
-    <div className="w-full max-w-sm">
-      <div className="relative mb-3 flex h-48 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30">
-        <svg className="h-12 w-12 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z" />
-        </svg>
-        {scanning && <div className="absolute inset-x-4 h-0.5 animate-pulse bg-primary" />}
-      </div>
-      <button
-        onClick={handleScan}
-        disabled={scanning}
-        className={\`w-full rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors \${
-          scanning ? "cursor-wait bg-primary/60" : "bg-primary hover:bg-primary/90"
-        }\`}
-      >
-        {scanning ? "Scanning..." : "Start Scan"}
-      </button>
-    </div>
-  );
+  const updateStatus = useCallback((s: ScanStatus) => {
+    setStatus(s);
+    onStatusChange?.(s);
+  }, [onStatusChange]);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  const triggerScan = useCallback(() => {
+    if (disabled || !mockMode) return;
+    updateStatus("scanning");
+    timerRef.current = setTimeout(() => {
+      const pick = mockCode
+        ? { code: mockCode, format: mockFormat ?? detectFormat(mockCode), label: "Scanned Item" }
+        : pickRandom(MOCK_BARCODES);
+      const result: ScanResult = {
+        code: pick.code, format: pick.format,
+        timestamp: Date.now(), label: pick.label,
+      };
+      setLastResult(result);
+      updateStatus("success");
+      onScan?.(result.code, result.format);
+      timerRef.current = setTimeout(() => updateStatus("idle"), 800);
+    }, mockDelay);
+  }, [disabled, mockMode, mockCode, mockFormat, mockDelay, onScan, updateStatus]);
+
+  // ... renders viewport with animated scan line, status indicators,
+  // format badges, and action button
 }`;
 
-const SCANNER_EXAMPLE = `<BarcodeScanner onScan={(code) => console.log(code)} />`;
+const VARIANT_SOURCE = `<BarcodeScanner variant="default" />  {/* Full viewport + button */}
+<BarcodeScanner variant="compact" />  {/* Inline card layout */}
+<BarcodeScanner variant="minimal" />  {/* Button only */}`;
 
-const MANUAL_EXAMPLE = `const [manualCode, setManualCode] = useState("");
+const SIZE_SOURCE = `<BarcodeScanner size="sm" />  {/* h-32 viewport */}
+<BarcodeScanner size="md" />  {/* h-48 viewport (default) */}
+<BarcodeScanner size="lg" />  {/* h-64 viewport */}`;
 
-<Input
-  placeholder="Enter barcode manually"
+const FORMAT_SOURCE = `// Format detection is automatic
+<BarcodeScanner
+  showFormat
+  onScan={(code, format) => {
+    console.log(code, format); // "4006381333931", "EAN-13"
+  }}
+/>`;
+
+const MANUAL_SOURCE = `const [manualCode, setManualCode] = useState("");
+const [entries, setEntries] = useState<string[]>([]);
+
+const addEntry = () => {
+  if (!manualCode.trim()) return;
+  setEntries((prev) => [manualCode.trim(), ...prev]);
+  setManualCode("");
+};
+
+<input
+  placeholder="Enter barcode manually..."
   value={manualCode}
   onChange={(e) => setManualCode(e.target.value)}
-  onKeyDown={(e) => e.key === "Enter" && addManual()}
+  onKeyDown={(e) => e.key === "Enter" && addEntry()}
 />
-<Button onClick={addManual}>Add</Button>`;
+<button onClick={addEntry}>Add</button>`;
 
-const RESULTS_EXAMPLE = `<div className="flex items-center gap-3 border-b border-border py-2 last:border-0">
-  <span className={\`rounded-full px-2.5 py-0.5 text-xs font-medium \${
-    r.status === "valid" ? "bg-primary/10 text-primary" : "bg-danger/10 text-danger"
-  }\`}>{r.type}</span>
-  <div>
-    <p className="font-mono text-sm">{r.code}</p>
-    <p className="text-xs text-muted-foreground">{r.product}</p>
-  </div>
-</div>`;
+const PRODUCT_SOURCE = `const PRODUCTS: Record<string, Product> = {
+  "4006381333931": { name: "Organic Milk 1L", price: "$3.99", stock: 24 },
+  "9780201379624": { name: "Design Patterns", price: "$49.99", stock: 8 },
+};
 
-const mockScans = [
-  { code: "4006381333931", type: "EAN-13", product: "Organic Milk 1L", status: "valid" },
-  { code: "9780201379624", type: "ISBN-13", product: "Design Patterns", status: "valid" },
-  { code: "ABC-123-XYZ", type: "Code128", product: "Shipment #4521", status: "valid" },
-  { code: "0000000000000", type: "EAN-13", product: "Unknown", status: "invalid" },
+<BarcodeScanner
+  onScan={(code) => {
+    const product = PRODUCTS[code];
+    if (product) showProduct(product);
+    else showError(code);
+  }}
+/>`;
+
+const STATUS_SOURCE = `const [status, setStatus] = useState<ScanStatus>("idle");
+
+<BarcodeScanner onStatusChange={setStatus} />
+{/* status: "idle" | "scanning" | "success" | "error" */}`;
+
+const examples = [
+  { id: "basic", title: "Basic Scanner", description: "Click-to-scan with status feedback", category: "basic" },
+  { id: "variants", title: "Variants", description: "Default, compact, and minimal layouts", category: "variants" },
+  { id: "sizes", title: "Sizes", description: "Small, medium, and large viewports", category: "variants" },
+  { id: "format", title: "Format Detection", description: "Auto-detect barcode format (EAN-13, ISBN, UPC, Code128)", category: "advanced" },
+  { id: "manual", title: "Manual Entry", description: "Keyboard fallback for unreadable codes", category: "advanced" },
+  { id: "history", title: "Scan History", description: "Track and display recent scans", category: "advanced" },
+  { id: "product", title: "Product Lookup", description: "Scan to find product info with price and stock", category: "real-world" },
+  { id: "inventory", title: "Inventory Check", description: "Check items in/out with summary stats", category: "real-world" },
+  { id: "status", title: "Status Indicator", description: "External status monitoring with visual indicator", category: "interactive" },
 ];
 
-function ScannerViewDemo() {
-  const [scanning, setScanning] = useState(false);
-  const simulateScan = () => {
-    setScanning(true);
-    setTimeout(() => setScanning(false), 1200);
-  };
-  return (
-    <Card className="w-full max-w-sm">
-      <CardContent className="p-4">
-        <div className="relative mb-3 flex h-48 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30">
-          <svg className={`h-12 w-12 text-muted-foreground ${scanning ? "animate-pulse" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z" />
-          </svg>
-          {scanning && <div className="absolute inset-x-4 h-0.5 animate-pulse bg-primary" />}
-        </div>
-        <Button className="w-full" onClick={simulateScan} disabled={scanning}>
-          {scanning ? "Scanning..." : "Simulate Scan"}
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-function ManualEntryDemo() {
-  const [manualCode, setManualCode] = useState("");
-  const [entries, setEntries] = useState<string[]>([]);
-  const addManual = () => {
-    if (!manualCode.trim()) return;
-    setEntries((prev) => [manualCode.trim(), ...prev].slice(0, 5));
-    setManualCode("");
-  };
-  return (
-    <div className="flex w-full max-w-sm flex-col gap-2">
-      <div className="flex gap-2">
-        <Input placeholder="Enter barcode manually" value={manualCode} onChange={(e) => setManualCode(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addManual()} />
-        <Button onClick={addManual}>Add</Button>
-      </div>
-      {entries.length > 0 && (
-        <p className="text-xs font-mono text-muted-foreground">Added: {entries.join(" · ")}</p>
-      )}
-    </div>
-  );
-}
-
-function ScanResultsDemo() {
-  const [results, setResults] = useState<typeof mockScans>(mockScans.slice(0, 2));
-  return (
-    <Card className="w-full max-w-sm">
-      <CardContent className="p-3">
-        {results.length === 0 && <p className="py-4 text-center text-sm text-muted-foreground">No scans yet. Click simulate above.</p>}
-        {results.map((r, i) => (
-          <div key={i} className="flex items-center gap-3 border-b border-border py-2 last:border-0">
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${r.status === "valid" ? "bg-primary/10 text-primary" : "bg-danger/10 text-danger"}`}>{r.type}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-mono truncate">{r.code}</p>
-              <p className="text-xs text-muted-foreground">{r.product}</p>
-            </div>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
-}
+const sourceMap: Record<string, string> = {
+  basic: BARCODE_SCANNER_SOURCE,
+  variants: VARIANT_SOURCE,
+  sizes: SIZE_SOURCE,
+  format: FORMAT_SOURCE,
+  manual: MANUAL_SOURCE,
+  history: BARCODE_SCANNER_SOURCE,
+  product: PRODUCT_SOURCE,
+  inventory: BARCODE_SCANNER_SOURCE,
+  status: STATUS_SOURCE,
+};
 
 export default function BarcodeScannerPage() {
+  const [activeExample, setActiveExample] = useState("basic");
+  const currentExample = examples.find((e) => e.id === activeExample);
+
   return (
     <ComponentDocPage
       name="Barcode Scanner"
       category="Forms"
-      description="Barcode and QR code scanner with real-time detection, result formatting, and manual entry fallback."
+      description="Barcode and QR code scanner with real-time detection, format identification, result formatting, and manual entry fallback."
     >
       <PreviewPanel filename="barcode-scanner.tsx">
-        <ScannerViewDemo />
+        <BasicExample />
       </PreviewPanel>
-      <SourceCodeViewer source={BARCODE_SCANNER_SOURCE} filename="components/ui/BarcodeScanner/BarcodeScanner.tsx" defaultExpanded />
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Scanner View" description="Live scanning view with camera frame animation." code={SCANNER_EXAMPLE}><ScannerViewDemo /></ExampleBlock>
-        <ExampleBlock title="Manual Entry" description="Keyboard input as a fallback for unreadable codes." code={MANUAL_EXAMPLE}><ManualEntryDemo /></ExampleBlock>
-        <ExampleBlock title="Scan Results" description="Formatted results with status pills." code={RESULTS_EXAMPLE}><ScanResultsDemo /></ExampleBlock>
-      </div>
+
+      <SourceCodeViewer
+        source={BARCODE_SCANNER_SOURCE}
+        filename="components/ui/BarcodeScanner/BarcodeScanner.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">
+            Examples
+          </h2>
+
+          {/* Desktop navigation */}
+          <div className="hidden gap-1 overflow-x-auto sm:flex">
+            {examples.map((ex) => (
+              <button
+                key={ex.id}
+                type="button"
+                onClick={() => setActiveExample(ex.id)}
+                className={cn(
+                  "inline-flex shrink-0 items-center rounded-md px-3 py-1.5",
+                  "text-xs font-medium transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  activeExample === ex.id
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                {ex.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile dropdown */}
+          <div className="sm:hidden">
+            <select
+              value={activeExample}
+              onChange={(e) => setActiveExample(e.target.value)}
+              className={cn(
+                "w-full rounded-lg border border-border bg-background px-3 py-2",
+                "text-sm text-foreground",
+                "focus:outline-none focus:ring-2 focus:ring-ring",
+              )}
+            >
+              {examples.map((ex) => (
+                <option key={ex.id} value={ex.id}>
+                  {ex.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {currentExample && (
+          <div className="flex flex-col gap-4">
+            <div>
+              <h3 className="text-base font-semibold text-foreground">
+                {currentExample.title}
+              </h3>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                {currentExample.description}
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-border bg-background">
+              <div className="flex min-h-64 items-center justify-center bg-gradient-to-br from-muted/30 via-background to-muted/30 p-8">
+                {activeExample === "basic" && <BasicExample />}
+                {activeExample === "variants" && <VariantExample />}
+                {activeExample === "sizes" && <SizeExample />}
+                {activeExample === "format" && <FormatDetectionExample />}
+                {activeExample === "manual" && <ManualEntryExample />}
+                {activeExample === "history" && <ScanHistoryExample />}
+                {activeExample === "product" && <ProductLookupExample />}
+                {activeExample === "inventory" && <InventoryCheckExample />}
+                {activeExample === "status" && <StatusIndicatorExample />}
+              </div>
+            </div>
+
+            <SourceCodeViewer
+              source={sourceMap[activeExample] ?? BARCODE_SCANNER_SOURCE}
+              filename={`examples/${currentExample.id}.tsx`}
+            />
+          </div>
+        )}
+      </section>
     </ComponentDocPage>
   );
 }
