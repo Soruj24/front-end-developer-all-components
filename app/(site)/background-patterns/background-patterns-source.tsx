@@ -1,17 +1,26 @@
 import { Hexagon, Triangle, Circle, Square, Diamond, Star, Waves, Grid3x3 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { PatternId } from "@/components/ui/BackgroundPatterns";
 
 export const BACKGROUNDPATTERNS_SOURCE = `"use client";
 
+import { cn } from "@/lib/cn";
+
+type PatternId =
+  | "dots" | "grid" | "diagonal" | "waves"
+  | "hexagons" | "triangles" | "circles" | "diamonds"
+  | "stars" | "crosses" | "zigzag" | "checks"
+  | "halftone" | "noise" | "circuit" | "plus";
+
 interface BackgroundPatternsProps {
-  variant?: string;
+  variant?: PatternId;
   color?: string;
   size?: number;
   opacity?: number;
   className?: string;
 }
 
-const PATTERNS: Record<string, (c: string, s: number) => string> = {
+const PATTERNS: Record<PatternId, (c: string, s: number) => string> = {
   dots: (c, s) => \`<circle cx="\${s / 2}" cy="\${s / 2}" r="1.5" fill="\${c}" />\`,
   grid: (c, s) => \`<path d="M \${s} 0 L 0 0 0 \${s}" fill="none" stroke="\${c}" stroke-width="0.5" />\`,
   diagonal: (c) => \`<path d="M 0 10 L 10 0 M -2 2 L 2 -2 M 8 12 L 12 8" stroke="\${c}" stroke-width="0.5" />\`,
@@ -30,23 +39,27 @@ const PATTERNS: Record<string, (c: string, s: number) => string> = {
   plus: (c) => \`<path d="M8 4 L12 4 L12 8 L16 8 L16 12 L12 12 L12 16 L8 16 L8 12 L4 12 L4 8 L8 8 Z" fill="\${c}" opacity="0.15" />\`,
 };
 
-export function BackgroundPatterns({ variant = "dots", color = "#6366f1", size = 20, opacity = 1, className = "" }: BackgroundPatternsProps) {
-  const svg = PATTERNS[variant] ? PATTERNS[variant](color, size) : PATTERNS.dots(color, size);
+export function BackgroundPatterns({
+  variant = "dots",
+  color = "#6366f1",
+  size = 20,
+  opacity = 1,
+  className,
+}: BackgroundPatternsProps) {
+  const render = PATTERNS[variant] ?? PATTERNS.dots;
+  const patternId = \`\${variant}-\${color}-\${size}\`;
   return (
-    <svg className={"h-full w-full " + className} xmlns="http://www.w3.org/2000/svg" style={{ opacity }}>
+    <svg className={cn("h-full w-full", className)} xmlns="http://www.w3.org/2000/svg" style={{ opacity }} aria-hidden="true">
       <defs>
-        <pattern id={variant + "-" + color + "-" + size} width={size} height={size} patternUnits="userSpaceOnUse" dangerouslySetInnerHTML={{ __html: svg }} />
+        <pattern id={patternId} width={size} height={size} patternUnits="userSpaceOnUse"
+          dangerouslySetInnerHTML={{ __html: render(color, size) }} />
       </defs>
-      <rect width="100%" height="100%" fill={"url(#" + variant + "-" + color + "-" + size + ")"} />
+      <rect width="100%" height="100%" fill={\`url(#\${patternId})\`} />
     </svg>
   );
 }`;
 
-export type PatternId =
-  | "dots" | "grid" | "diagonal" | "waves"
-  | "hexagons" | "triangles" | "circles" | "diamonds"
-  | "stars" | "crosses" | "zigzag" | "checks"
-  | "halftone" | "noise" | "circuit" | "plus";
+export type { PatternId };
 
 interface PatternDef {
   id: PatternId;
@@ -95,7 +108,7 @@ export const DENSITIES = [
 export function PatternSVG({ pattern, color, size = 20, opacity = 1 }: { pattern: PatternId; color: string; size?: number; opacity?: number }) {
   const def = PATTERNS.find((p) => p.id === pattern)!;
   return (
-    <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg" style={{ opacity }}>
+    <svg className="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg" style={{ opacity }} aria-hidden="true">
       <defs>
         <pattern id={`${pattern}-${color}-${size}`} x="0" y="0" width={size} height={size} patternUnits="userSpaceOnUse" dangerouslySetInnerHTML={{ __html: def.svg(color, size) }} />
       </defs>
@@ -106,10 +119,10 @@ export function PatternSVG({ pattern, color, size = 20, opacity = 1 }: { pattern
 
 export function PatternCard({ pattern, color, size, label }: { pattern: PatternId; color: string; size?: number; label?: string }) {
   return (
-    <div className="relative h-32 w-full overflow-hidden rounded-lg border border-border bg-background">
+    <div className="group relative h-32 w-full overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:shadow-md hover:shadow-black/5">
       <PatternSVG pattern={pattern} color={color} size={size} />
       {label && (
-        <div className="absolute bottom-2 left-2 rounded-md bg-background/80 px-2 py-0.5 text-xs font-medium backdrop-blur-sm">
+        <div className="absolute bottom-2 left-2 rounded-lg border border-border/50 bg-background/80 px-2.5 py-1 text-[11px] font-medium text-foreground backdrop-blur-sm transition-colors group-hover:bg-background/90">
           {label}
         </div>
       )}
@@ -119,15 +132,15 @@ export function PatternCard({ pattern, color, size, label }: { pattern: PatternI
 
 export function HeroPreview({ pattern, color }: { pattern: PatternId; color: string }) {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-border">
+    <div className="relative overflow-hidden rounded-2xl border border-border">
       <div className="relative bg-gradient-to-br from-background via-background to-muted/50 px-8 py-16 text-center">
         <PatternSVG pattern={pattern} color={color} opacity={0.3} />
         <div className="relative z-10">
           <h2 className="text-2xl font-bold tracking-tight text-foreground">Build Something Amazing</h2>
           <p className="mt-2 text-sm text-muted-foreground">Create beautiful interfaces with pattern backgrounds</p>
-          <div className="mt-4 flex justify-center gap-3">
-            <div className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background">Get Started</div>
-            <div className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground">Learn More</div>
+          <div className="mt-5 flex justify-center gap-3">
+            <div className="rounded-xl bg-foreground px-5 py-2.5 text-sm font-medium text-background shadow-md">Get Started</div>
+            <div className="rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted">Learn More</div>
           </div>
         </div>
       </div>
@@ -139,12 +152,12 @@ export function CardGrid({ pattern, color }: { pattern: PatternId; color: string
   return (
     <div className="grid grid-cols-3 gap-3">
       {["Features", "Pricing", "Docs"].map((title) => (
-        <div key={title} className="relative overflow-hidden rounded-lg border border-border">
+        <div key={title} className="group overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:shadow-md hover:shadow-black/5">
           <div className="relative h-24">
             <PatternSVG pattern={pattern} color={color} opacity={0.2} />
           </div>
           <div className="p-3">
-            <h3 className="text-sm font-medium">{title}</h3>
+            <h3 className="text-sm font-medium text-foreground">{title}</h3>
             <p className="mt-1 text-xs text-muted-foreground">Description text</p>
           </div>
         </div>
@@ -158,10 +171,10 @@ export function DensityCompare({ color }: { color: string }) {
     <div className="grid grid-cols-4 gap-3">
       {DENSITIES.map((d) => (
         <div key={d.value} className="flex flex-col gap-2">
-          <div className="relative h-24 overflow-hidden rounded-lg border border-border">
+          <div className="relative h-24 overflow-hidden rounded-xl border border-border bg-card">
             <PatternSVG pattern="dots" color={color} size={d.value} />
           </div>
-          <span className="text-center text-xs text-muted-foreground">{d.label}</span>
+          <span className="text-center text-xs font-medium text-muted-foreground">{d.label}</span>
         </div>
       ))}
     </div>
@@ -178,7 +191,7 @@ export const DENSITY_EXAMPLE = `<BackgroundPatterns variant="dots" size={12} />
 
 export const INTERACTIVE_EXAMPLE = `<BackgroundPatterns variant="hexagons" color="#8b5cf6" size={24} opacity={0.6} />`;
 
-export const HERO_EXAMPLE = `<div className="relative overflow-hidden rounded-lg border border-border">
+export const HERO_EXAMPLE = `<div className="relative overflow-hidden rounded-2xl border border-border">
   <div className="relative px-8 py-16 text-center">
     <BackgroundPatterns variant="dots" color="#6366f1" opacity={0.3} />
     <div className="relative z-10">
