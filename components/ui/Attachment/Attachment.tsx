@@ -2,6 +2,17 @@
 
 import { cn } from "@/lib/cn";
 import type { AttachmentProps } from "./Attachment.types";
+import {
+  FileText,
+  Image,
+  FileArchive,
+  Film,
+  Music,
+  File,
+  Download,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 
 function formatSize(bytes?: number): string {
   if (bytes === undefined) return "";
@@ -10,14 +21,53 @@ function formatSize(bytes?: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function getFileIcon(type?: string): string {
-  if (!type) return "📄";
-  if (type.startsWith("image/")) return "🖼️";
-  if (type.includes("pdf")) return "📕";
-  if (type.includes("zip") || type.includes("archive")) return "📦";
-  if (type.includes("video")) return "🎬";
-  if (type.includes("audio")) return "🎵";
-  return "📄";
+const ICON_MAP: Record<string, LucideIcon> = {
+  image: Image,
+  pdf: FileText,
+  zip: FileArchive,
+  archive: FileArchive,
+  video: Film,
+  audio: Music,
+  msword: FileText,
+  document: FileText,
+  sheet: File,
+  excel: File,
+};
+
+const COLOR_MAP: Record<string, string> = {
+  image: "text-blue-500",
+  pdf: "text-red-500",
+  zip: "text-amber-500",
+  archive: "text-amber-500",
+  video: "text-purple-500",
+  audio: "text-emerald-500",
+  msword: "text-blue-600",
+  document: "text-blue-600",
+  sheet: "text-emerald-600",
+  excel: "text-emerald-600",
+};
+
+const BG_MAP: Record<string, string> = {
+  image: "bg-blue-500/10",
+  pdf: "bg-red-500/10",
+  zip: "bg-amber-500/10",
+  archive: "bg-amber-500/10",
+  video: "bg-purple-500/10",
+  audio: "bg-emerald-500/10",
+  msword: "bg-blue-500/10",
+  document: "bg-blue-500/10",
+  sheet: "bg-emerald-500/10",
+  excel: "bg-emerald-500/10",
+};
+
+function matchType(type?: string): string {
+  if (!type) return "";
+  const lower = type.toLowerCase();
+  for (const key of Object.keys(ICON_MAP)) {
+    if (lower.includes(key)) return key;
+  }
+  if (lower.startsWith("image/")) return "image";
+  return "";
 }
 
 export function Attachment({
@@ -28,44 +78,61 @@ export function Attachment({
   onRemove,
   className,
 }: AttachmentProps) {
+  const key = matchType(type);
+  const IconComp = key ? ICON_MAP[key] : File;
+  const iconColor = key ? COLOR_MAP[key] : "text-muted-foreground";
+  const iconBg = key ? BG_MAP[key] : "bg-muted";
+
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-md border bg-zinc-50 px-3 py-2 dark:bg-zinc-800",
-        className
+        "group flex items-center gap-3 rounded-xl border border-border bg-card px-3 py-2.5",
+        "transition-colors duration-150 hover:bg-accent/50",
+        className,
       )}
     >
-      <span className="text-xl">{getFileIcon(type)}</span>
+      <div
+        className={cn(
+          "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
+          iconBg,
+        )}
+      >
+        <IconComp className={cn("h-4 w-4", iconColor)} />
+      </div>
+
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{name}</p>
+        <p className="truncate text-sm font-medium text-foreground">{name}</p>
         {size !== undefined && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            {formatSize(size)}
-          </p>
+          <p className="text-xs text-muted-foreground">{formatSize(size)}</p>
         )}
       </div>
-      <div className="flex items-center gap-1">
+
+      <div className="flex shrink-0 items-center gap-0.5">
         {url && (
           <a
             href={url}
             download
-            className="rounded p-1 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-700"
+            className={cn(
+              "inline-flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground",
+              "transition-colors duration-150 hover:bg-accent hover:text-foreground",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            )}
             aria-label={`Download ${name}`}
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+            <Download className="h-3.5 w-3.5" />
           </a>
         )}
         {onRemove && (
           <button
             onClick={onRemove}
-            className="rounded p-1 text-zinc-500 hover:bg-red-100 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-900/30"
+            className={cn(
+              "inline-flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground",
+              "transition-colors duration-150 hover:bg-destructive/10 hover:text-destructive",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            )}
             aria-label={`Remove ${name}`}
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-3.5 w-3.5" />
           </button>
         )}
       </div>
