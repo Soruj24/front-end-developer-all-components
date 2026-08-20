@@ -1,6 +1,7 @@
 export const ACCORDION_SOURCE = `"use client";
 
-import { useState } from "react";
+import { useId, useState, useCallback } from "react";
+import { cn } from "@/lib/cn";
 
 interface AccordionItemData {
   title: string;
@@ -8,11 +9,33 @@ interface AccordionItemData {
   disabled?: boolean;
 }
 
-interface AccordionProps {
-  items: AccordionItemData[];
-  multi?: boolean;
-  variant?: "bordered" | "ghost" | "boxed" | "separated" | "minimal";
-  startOpen?: number;
+type AccordionVariant = "bordered" | "ghost" | "boxed" | "separated" | "minimal";
+
+const containerClasses: Record<AccordionVariant, string> = {
+  bordered: "rounded-xl border border-border overflow-hidden",
+  ghost: "",
+  boxed: "flex flex-col gap-1.5",
+  separated: "flex flex-col gap-2",
+  minimal: "",
+};
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={cn(
+        "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)]",
+        open && "rotate-180",
+      )}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
 }
 
 export function Accordion({
@@ -20,50 +43,75 @@ export function Accordion({
   multi = false,
   variant = "bordered",
   startOpen = 0,
-}: AccordionProps) {
+}: {
+  items: AccordionItemData[];
+  multi?: boolean;
+  variant?: AccordionVariant;
+  startOpen?: number;
+}) {
   const [open, setOpen] = useState<number[]>([startOpen]);
+  const uid = useId();
 
-  const toggle = (i: number) => {
-    if (items[i].disabled) return;
-    setOpen((prev) =>
-      multi
-        ? prev.includes(i)
-          ? prev.filter((idx) => idx !== i)
-          : [...prev, i]
-        : prev.includes(i)
-          ? []
-          : [i],
-    );
-  };
+  const toggle = useCallback(
+    (i: number) => {
+      if (items[i].disabled) return;
+      setOpen((prev) => {
+        if (!multi) return prev.includes(i) ? [] : [i];
+        return prev.includes(i) ? prev.filter((idx) => idx !== i) : [...prev, i];
+      });
+    },
+    [items, multi],
+  );
 
-  const boxed = variant === "boxed" || variant === "separated";
+  const isCard = variant === "boxed" || variant === "separated";
 
   return (
-    <div className={boxed ? "flex flex-col gap-2" : "divide-y divide-border rounded-xl border border-border"}>
+    <div className={containerClasses[variant]}>
       {items.map((item, i) => {
         const isOpen = open.includes(i);
+        const panelId = \`\${uid}-\${i}\`;
+        const buttonId = \`\${panelId}-trigger\`;
         return (
-          <div key={item.title} className={boxed ? "overflow-hidden rounded-xl border border-border" : ""}>
+          <div
+            key={item.title}
+            className={cn(
+              isCard && "rounded-xl border border-border bg-background overflow-hidden",
+              !isCard && variant !== "minimal" && i < items.length - 1 && "border-b border-border",
+            )}
+          >
             <button
-              onClick={() => toggle(i)}
+              type="button"
+              id={buttonId}
+              aria-expanded={isOpen}
+              aria-controls={panelId}
               disabled={item.disabled}
-              className={\`flex w-full items-center justify-between bg-background px-5 py-4 text-left text-sm font-medium transition-colors disabled:opacity-40 \${
-                isOpen ? "bg-muted/50" : "hover:bg-muted/40"
-              }\`}
+              onClick={() => toggle(i)}
+              className={cn(
+                "flex w-full items-center gap-3 px-4 py-3.5 text-left",
+                "text-sm font-medium text-foreground",
+                "transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "disabled:cursor-not-allowed disabled:opacity-40",
+                !isOpen && "hover:bg-muted/60",
+                isOpen && "bg-muted/40",
+              )}
             >
-              <span>{item.title}</span>
-              <svg
-                className={\`h-4 w-4 text-muted-foreground/70 transition-transform duration-200 \${isOpen ? "rotate-180" : ""}\`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <span className="flex-1">{item.title}</span>
+              <ChevronIcon open={isOpen} />
             </button>
-            <div className={\`grid transition-all duration-200 \${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}\`}>
-              <div className="overflow-hidden px-5 pb-4 pt-1 text-sm text-muted-foreground">
-                {item.body}
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              className={cn(
+                "grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.87,0,0.13,1)]",
+                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+              )}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <div className="px-4 pb-4 pt-1 text-sm text-muted-foreground leading-relaxed">
+                  {item.body}
+                </div>
               </div>
             </div>
           </div>
@@ -74,15 +122,15 @@ export function Accordion({
 }`;
 
 export const VARIANTS_EXAMPLE = `<Accordion items={faqItems} variant="bordered" />
-<Accordion items={faqItems.slice(0, 4)} variant="ghost" />
+<Accordion items={faqItems} variant="ghost" />
 <Accordion items={simpleItems} variant="boxed" />
 <Accordion items={simpleItems} variant="separated" />
-<Accordion items={longItems.slice(0, 2)} variant="minimal" />`;
+<Accordion items={faqItems} variant="minimal" />`;
 
-export const OPEN_MODE_EXAMPLE = `<Accordion items={faqItems.slice(0, 3)} />
-<Accordion items={faqItems.slice(0, 3)} multi />`;
+export const OPEN_MODE_EXAMPLE = `<Accordion items={faqItems} />
+<Accordion items={faqItems} multi />`;
 
-export const CONTROLS_EXAMPLE = `<Accordion items={faqItems.slice(0, 3)} multi startOpen={expanded ? 0 : -1} />`;
+export const CONTROLS_EXAMPLE = `<Accordion items={faqItems} multi startOpen={expanded ? 0 : -1} />`;
 
 export const DISABLED_EXAMPLE = `<Accordion items={disabledItems} startOpen={-1} />`;
 
