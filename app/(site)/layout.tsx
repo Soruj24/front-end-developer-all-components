@@ -1,5 +1,5 @@
 import { Header } from "@/components/layout/header";
-import { Sidebar } from "@/components/navigation";
+import { Sidebar } from "@/components/layout/sidebar";
 import { Footer } from "@/components/design-system/Footer";
 import { getNavigationSections } from "@/features/registry/server";
 

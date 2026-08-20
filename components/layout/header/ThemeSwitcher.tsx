@@ -10,23 +10,26 @@ interface ThemeSwitcherProps {
   onThemeToggle?: (theme: Theme) => void;
 }
 
-function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "system";
-  return (localStorage.getItem("theme") as Theme) || "system";
-}
-
 export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setTheme] = useState<Theme>("system");
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const stored = localStorage.getItem("theme") as Theme | null;
+    if (stored && stored !== theme) setTheme(stored);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     if (theme !== "system") root.classList.add(theme);
     localStorage.setItem("theme", theme);
     onThemeToggle?.(theme);
-  }, [theme, onThemeToggle]);
+  }, [theme, mounted, onThemeToggle]);
 
   useEffect(() => {
     if (!open) return;
@@ -95,7 +98,7 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
         aria-label={`Theme: ${current.label}`}
         aria-expanded={open}
       >
-        {current.icon}
+        {mounted ? current.icon : options[2].icon}
       </button>
 
       {open && (
