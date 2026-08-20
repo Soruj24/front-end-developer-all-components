@@ -1,36 +1,107 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui";
 import {
   ComponentDocPage,
   PreviewPanel,
   SourceCodeViewer,
-  ExampleBlock,
 } from "@/components/docs";
+import {
+  AllVariantsExample,
+  AllSizesExample,
+  WithIconsExample,
+  IconOnlyExample,
+  LoadingStateExample,
+  DisabledStateExample,
+  DestructiveConfirmExample,
+  LinkButtonExample,
+  FullWidthExample,
+  FormActionsExample,
+  WithBadgesExample,
+  ToggleButtonExample,
+  ButtonGroupExample,
+  SocialButtonsExample,
+  PremiumButtonsExample,
+  CopyButtonExample,
+  AnimationShowcaseExample,
+  SoftVariantExample,
+} from "@/components/ui/Button/examples";
+import { cn } from "@/lib/cn";
 
 const BUTTON_SOURCE = `import { ButtonHTMLAttributes, forwardRef } from "react";
+import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
-type Size = "sm" | "md" | "lg" | "icon";
+type Variant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "destructive"
+  | "destructive-outline"
+  | "link"
+  | "soft";
+
+type Size = "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-sm" | "icon-lg";
 
 const variantClasses: Record<Variant, string> = {
-  primary:
-    "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md",
-  secondary:
-    "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-  outline:
-    "border border-border bg-background text-foreground hover:bg-muted",
-  ghost:
-    "bg-transparent text-foreground hover:bg-muted",
-  destructive: "bg-danger text-danger-foreground shadow-sm hover:bg-danger/90 hover:shadow-md",
+  primary: [
+    "bg-primary text-primary-foreground",
+    "shadow-sm",
+    "hover:bg-primary/90 hover:shadow-md hover:shadow-primary/10",
+    "focus-visible:ring-primary/50",
+  ].join(" "),
+  secondary: [
+    "bg-secondary text-secondary-foreground",
+    "shadow-xs",
+    "hover:bg-secondary/80 hover:shadow-sm",
+    "focus-visible:ring-secondary/50",
+  ].join(" "),
+  outline: [
+    "border border-border bg-background text-foreground",
+    "shadow-xs",
+    "hover:bg-muted hover:border-border/80 hover:shadow-sm",
+    "focus-visible:ring-ring/50",
+  ].join(" "),
+  ghost: [
+    "bg-transparent text-foreground",
+    "hover:bg-muted",
+    "focus-visible:ring-ring/50",
+  ].join(" "),
+  destructive: [
+    "bg-destructive text-destructive-foreground",
+    "shadow-sm",
+    "hover:bg-destructive/90 hover:shadow-md hover:shadow-destructive/10",
+    "focus-visible:ring-destructive/50",
+  ].join(" "),
+  "destructive-outline": [
+    "border border-destructive/30 bg-transparent text-destructive",
+    "shadow-xs",
+    "hover:bg-destructive/5 hover:border-destructive/50 hover:shadow-sm",
+    "focus-visible:ring-destructive/50",
+  ].join(" "),
+  link: [
+    "bg-transparent text-primary underline-offset-4",
+    "hover:underline",
+    "focus-visible:ring-primary/50",
+    "p-0 h-auto",
+  ].join(" "),
+  soft: [
+    "bg-primary/10 text-primary",
+    "shadow-xs",
+    "hover:bg-primary/15 hover:shadow-sm",
+    "focus-visible:ring-primary/50",
+  ].join(" "),
 };
 
 const sizeClasses: Record<Size, string> = {
-  sm: "h-8 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
-  lg: "h-12 px-6 text-base",
-  icon: "h-10 w-10 p-0",
+  xs: "h-7 px-2 text-xs rounded-md gap-1",
+  sm: "h-8 px-3 text-sm rounded-lg gap-1.5",
+  md: "h-9 px-4 text-sm rounded-lg gap-2",
+  lg: "h-10 px-5 text-sm rounded-lg gap-2",
+  xl: "h-11 px-6 text-base rounded-xl gap-2.5",
+  "icon-sm": "h-8 w-8 p-0 rounded-lg",
+  icon: "h-9 w-9 p-0 rounded-lg",
+  "icon-lg": "h-10 w-10 p-0 rounded-lg",
 };
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -39,250 +110,157 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className = "", variant = "primary", size = "md", ...props }, ref) => {
+  ({ className = "", variant = "primary", size = "md", disabled, ...props }, ref) => {
     return (
       <button
         ref={ref}
-        className={\`inline-flex items-center justify-center gap-2 rounded-full font-medium transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 \${variantClasses[variant]} \${sizeClasses[size]} \${className}\`}
+        disabled={disabled}
+        className={cn(
+          "inline-flex items-center justify-center font-medium whitespace-nowrap",
+          "transition-all duration-150 ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "active:scale-[0.98]",
+          "disabled:pointer-events-none disabled:opacity-50",
+          "select-none",
+          variantClasses[variant],
+          sizeClasses[size],
+          className,
+        )}
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
-export default Button;`;
+export { Button };`;
 
-const VARIANTS_SOURCE = `import { Button } from "@/components/ui";
+const examples = [
+  { id: "variants", title: "Variants", description: "All visual variants — primary, secondary, outline, ghost, soft, destructive, destructive-outline, link", category: "basic" },
+  { id: "sizes", title: "Sizes", description: "Extra small through extra large, plus icon-only sizes", category: "basic" },
+  { id: "icons", title: "With Icons", description: "Leading and trailing icons in buttons", category: "basic" },
+  { id: "icon-only", title: "Icon Only", description: "Icon-only buttons in sm, md, and lg sizes", category: "basic" },
+  { id: "loading", title: "Loading State", description: "Spinner animation with text swap", category: "interactive" },
+  { id: "disabled", title: "Disabled State", description: "All variants in disabled state", category: "interactive" },
+  { id: "destructive-confirm", title: "Destructive Confirm", description: "Two-step delete confirmation pattern", category: "patterns" },
+  { id: "link", title: "Link Buttons", description: "Inline link-style buttons with external link icons", category: "variants" },
+  { id: "soft", title: "Soft Variant", description: "Light background tint with color", category: "variants" },
+  { id: "full-width", title: "Full Width", description: "Full-width buttons for mobile and forms", category: "layout" },
+  { id: "form-actions", title: "Form Actions", description: "Save / Cancel pattern inside a card form", category: "patterns" },
+  { id: "badges", title: "With Badges", description: "Notification count badges on buttons", category: "patterns" },
+  { id: "toggle", title: "Toggle Buttons", description: "State toggle — star, save, follow", category: "interactive" },
+  { id: "button-group", title: "Button Groups", description: "Grouped segmented controls", category: "layout" },
+  { id: "social", title: "Social Login", description: "GitHub, Google, Apple sign-in buttons", category: "patterns" },
+  { id: "premium", title: "Gradient Buttons", description: "Premium gradient buttons with glow shadows", category: "variants" },
+  { id: "copy", title: "Copy Button", description: "Clipboard copy-to-clipboard pattern", category: "patterns" },
+  { id: "animation", title: "Animations", description: "Hover and active transition showcase", category: "interactive" },
+];
 
-export default function ButtonVariants() {
-  return (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="destructive">Destructive</Button>
-    </div>
-  );
-}`;
-
-const SIZES_SOURCE = `import { Button } from "@/components/ui";
-
-export default function ButtonSizes() {
-  return (
-    <div className="flex flex-wrap items-end gap-3">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-      <Button size="icon" aria-label="Settings">
-        <SettingsIcon />
-      </Button>
-    </div>
-  );
-}`;
-
-const LOADING_SOURCE = `import { useState } from "react";
-import { Button } from "@/components/ui";
-
-function Spinner() {
-  return (
-    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-    </svg>
-  );
-}
-
-export default function LoadingButton() {
-  const [loading, setLoading] = useState(false);
-
-  return (
-    <Button onClick={() => setLoading(true)} disabled={loading}>
-      {loading && <Spinner />}
-      {loading ? "Saving..." : "Save"}
-    </Button>
-  );
-}`;
-
-const WITH_ICONS_SOURCE = `import { Button } from "@/components/ui";
-
-function MailIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  );
-}
-
-export default function ButtonsWithIcons() {
-  return (
-    <div className="flex flex-wrap gap-3">
-      <Button>
-        <MailIcon />
-        Email
-      </Button>
-      <Button variant="destructive">
-        <TrashIcon />
-        Delete
-      </Button>
-      <Button variant="outline">
-        <CheckIcon />
-        Confirm
-      </Button>
-    </div>
-  );
-}`;
-
-function Spinner() {
-  return (
-    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-      />
-    </svg>
-  );
-}
-
-function MailIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
-function SettingsIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  );
-}
+const componentMap: Record<string, React.FC> = {
+  variants: AllVariantsExample,
+  sizes: AllSizesExample,
+  icons: WithIconsExample,
+  "icon-only": IconOnlyExample,
+  loading: LoadingStateExample,
+  disabled: DisabledStateExample,
+  "destructive-confirm": DestructiveConfirmExample,
+  link: LinkButtonExample,
+  soft: SoftVariantExample,
+  "full-width": FullWidthExample,
+  "form-actions": FormActionsExample,
+  badges: WithBadgesExample,
+  toggle: ToggleButtonExample,
+  "button-group": ButtonGroupExample,
+  social: SocialButtonsExample,
+  premium: PremiumButtonsExample,
+  copy: CopyButtonExample,
+  animation: AnimationShowcaseExample,
+};
 
 export default function ButtonsPage() {
-  const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
+  const [activeExample, setActiveExample] = useState("variants");
+  const currentExample = examples.find((e) => e.id === activeExample);
+  const ActiveComponent = componentMap[activeExample];
 
   return (
     <ComponentDocPage
       name="Buttons"
       category="Elements"
-      description="A collection of button variants, sizes, and interactive states with Tailwind CSS styling."
+      description="Versatile button component with 8 variants, 8 sizes, loading states, icon support, and premium focus-visible ring system."
     >
       <PreviewPanel filename="ButtonVariants.tsx">
-        <div className="flex flex-wrap items-center gap-3">
-          <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-        </div>
+        <AllVariantsExample />
       </PreviewPanel>
 
       <SourceCodeViewer
         source={BUTTON_SOURCE}
-        filename="Button.tsx"
+        filename="components/ui/Button.tsx"
         defaultExpanded
       />
 
       <section className="flex flex-col gap-6">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          Examples
-        </h2>
+        <div className="flex flex-col gap-4">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">
+            Examples
+          </h2>
 
-        <ExampleBlock title="Variants" code={VARIANTS_SOURCE}>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="destructive">Destructive</Button>
+          <div className="hidden gap-1 overflow-x-auto sm:flex">
+            {examples.map((ex) => (
+              <button
+                key={ex.id}
+                type="button"
+                onClick={() => setActiveExample(ex.id)}
+                className={cn(
+                  "inline-flex shrink-0 items-center rounded-md px-3 py-1.5",
+                  "text-xs font-medium transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  activeExample === ex.id
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                {ex.title}
+              </button>
+            ))}
           </div>
-        </ExampleBlock>
 
-        <ExampleBlock title="Sizes" code={SIZES_SOURCE}>
-          <div className="flex flex-wrap items-end gap-3">
-            <Button size="sm">Small</Button>
-            <Button size="md">Medium</Button>
-            <Button size="lg">Large</Button>
-            <Button size="icon" aria-label="Settings">
-              <SettingsIcon />
-            </Button>
-          </div>
-        </ExampleBlock>
-
-        <ExampleBlock title="Loading State" code={LOADING_SOURCE}>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button
-              onClick={() => setLoading(true)}
-              disabled={loading}
+          <div className="sm:hidden">
+            <select
+              value={activeExample}
+              onChange={(e) => setActiveExample(e.target.value)}
+              className={cn(
+                "w-full rounded-lg border border-border bg-background px-3 py-2",
+                "text-sm text-foreground",
+                "focus:outline-none focus:ring-2 focus:ring-ring",
+              )}
             >
-              {loading && <Spinner />}
-              {loading ? "Saving..." : "Save"}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setLoading2(true)}
-              disabled={loading2}
-            >
-              {loading2 && <Spinner />}
-              {loading2 ? "Uploading..." : "Upload"}
-            </Button>
-            <Button variant="destructive" disabled>
-              <Spinner />
-              Deleting...
-            </Button>
+              {examples.map((ex) => (
+                <option key={ex.id} value={ex.id}>
+                  {ex.title}
+                </option>
+              ))}
+            </select>
           </div>
-        </ExampleBlock>
+        </div>
 
-        <ExampleBlock title="With Icons" code={WITH_ICONS_SOURCE}>
-          <div className="flex flex-wrap gap-3">
-            <Button>
-              <MailIcon />
-              Email
-            </Button>
-            <Button variant="secondary">
-              <SettingsIcon />
-              Settings
-            </Button>
-            <Button variant="outline">
-              <CheckIcon />
-              Confirm
-            </Button>
-            <Button variant="destructive">
-              <TrashIcon />
-              Delete
-            </Button>
+        {currentExample && ActiveComponent && (
+          <div className="flex flex-col gap-4">
+            <div>
+              <h3 className="text-base font-semibold text-foreground">
+                {currentExample.title}
+              </h3>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                {currentExample.description}
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-border bg-background">
+              <div className="flex min-h-48 items-center justify-center bg-gradient-to-br from-muted/30 via-background to-muted/30 p-8">
+                <ActiveComponent />
+              </div>
+            </div>
           </div>
-        </ExampleBlock>
+        )}
       </section>
     </ComponentDocPage>
   );
