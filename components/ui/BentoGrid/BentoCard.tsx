@@ -49,7 +49,12 @@ export const BentoCard = memo(function BentoCard({
   onResizePointerCancel,
 }: BentoCardProps) {
   const box = boxOf(layoutItem, cellWidth, rowHeight, gap);
-  const style: React.CSSProperties = { left: box.left, top: box.top, width: box.width, height: box.height };
+  const style: React.CSSProperties = {
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+  };
 
   return (
     <div
@@ -62,20 +67,23 @@ export const BentoCard = memo(function BentoCard({
       onPointerCancel={onPointerCancel}
       onKeyDown={(e) => onKeyDown(e, card.id)}
       className={cn(
-        "group absolute flex touch-none flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-sm outline-none",
-        "transition-[left,top,width,height,transform,box-shadow] duration-300 ease-out",
-        "dark:border-white/[0.08] dark:bg-zinc-900/70",
-        !isDragging && !isResizing && "hover:-translate-y-1 hover:shadow-lg hover:shadow-black/[0.06] dark:hover:shadow-black/40",
-        "focus-visible:ring-2 focus-visible:ring-ring/70",
+        "group absolute flex touch-none flex-col overflow-hidden rounded-2xl border border-border bg-card",
+        "transition-[left,top,width,height,transform,box-shadow,border-color] duration-300 ease-out",
+        !isDragging && !isResizing &&
+          "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         draggable && !isDragging && "cursor-grab",
-        isDragging && "z-50 cursor-grabbing shadow-xl transition-none will-change-[left,top]",
+        isDragging &&
+          "z-50 cursor-grabbing shadow-2xl shadow-black/10 transition-none will-change-[left,top]",
         isResizing && "z-40",
         card.className,
       )}
       style={style}
     >
       {draggable && <DragHandle />}
-      <div className="relative flex min-h-0 flex-1 flex-col">{card.content ?? null}</div>
+      <div className="relative flex min-h-0 flex-1 flex-col">
+        {card.content ?? null}
+      </div>
       {resizable && (
         <span
           data-bento-resize
@@ -84,7 +92,7 @@ export const BentoCard = memo(function BentoCard({
           onPointerMove={onResizePointerMove}
           onPointerUp={onResizePointerUp}
           onPointerCancel={onResizePointerCancel}
-          className="absolute bottom-1 right-1 z-20 flex size-4 touch-none cursor-nwse-resize items-center justify-center rounded opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
+          className="absolute bottom-1.5 right-1.5 z-20 flex size-5 touch-none cursor-nwse-resize items-center justify-center rounded-md border border-border/50 bg-background/80 opacity-0 backdrop-blur-sm transition-all duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 hover:bg-muted"
         >
           <ResizeHandleIcon />
         </span>
@@ -97,11 +105,12 @@ function DragHandle() {
   return (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center pt-1.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+      className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center pt-2 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
     >
-      <span className="flex gap-1 rounded-full bg-black/10 px-1.5 py-1 dark:bg-white/15">
-        <span className="h-0.5 w-0.5 rounded-full bg-current opacity-60" />
-        <span className="h-0.5 w-0.5 rounded-full bg-current opacity-60" />
+      <span className="flex gap-[3px] rounded-full bg-foreground/10 px-2 py-1 backdrop-blur-sm">
+        <span className="h-[3px] w-[3px] rounded-full bg-foreground/50" />
+        <span className="h-[3px] w-[3px] rounded-full bg-foreground/50" />
+        <span className="h-[3px] w-[3px] rounded-full bg-foreground/50" />
       </span>
     </span>
   );
@@ -110,11 +119,11 @@ function DragHandle() {
 function ResizeHandleIcon() {
   return (
     <svg
-      className="h-3 w-3 text-zinc-400 dark:text-zinc-500"
+      className="h-3 w-3 text-muted-foreground"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      strokeWidth={2}
       strokeLinecap="round"
       aria-hidden="true"
     >
