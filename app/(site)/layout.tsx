@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/navigation";
 import { Footer } from "@/components/design-system/Footer";
-import { getNavigationSections, getNavbarLinks } from "@/features/registry/server";
+import { getNavigationSections } from "@/features/registry/server";
 
 /**
  * Public-facing site chrome: global header, documentation sidebar, and footer.
@@ -13,22 +13,15 @@ export default async function SiteLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [sections, navLinks] = await Promise.all([
-    getNavigationSections(),
-    getNavbarLinks(),
-  ]);
+  const sections = await getNavigationSections();
 
   return (
     <>
       <Header
-  navLinks={navLinks}
-  showVersion
-  version="v2.0"
-  onThemeToggle={undefined}
-  userName="Developer"
-  userAvatar={undefined}
-  role="user"
-/>
+        version="v2.0"
+        userName="Developer"
+        role="user"
+      />
       <div className="flex flex-1">
         <Sidebar sections={sections} />
         <main className="min-w-0 flex-1">{children}</main>

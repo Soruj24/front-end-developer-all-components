@@ -1,121 +1,191 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
-import { Menu, X } from "lucide-react";
-
 import { HeaderLogo } from "./HeaderLogo";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderActions } from "./HeaderActions";
-import { MobileHeader } from "./MobileHeader";
 import { MobileNavigation } from "./MobileNavigation";
-import { UserMenu } from "./UserMenu";
 
 interface HeaderProps {
   className?: string;
-  navLinks?: Array<{ label: string; href: string }>;
-  showVersion?: boolean;
   version?: string;
-  onThemeToggle?: (theme: "light" | "dark" | "system") => void;
   userName?: string;
   userAvatar?: string;
   role?: "user" | "admin";
+  onThemeToggle?: (theme: "light" | "dark" | "system") => void;
 }
 
-export function Header({ className, navLinks, showVersion = true, version = "v2.0", onThemeToggle, userName, userAvatar, role = "user" }: HeaderProps) {
+export function Header({
+  className,
+  version = "v2.0",
+  userName = "User",
+  userAvatar,
+  role = "user",
+  onThemeToggle,
+}: HeaderProps) {
+  const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  const handleSearchToggle = useCallback(() => {
-    setSearchOpen((prev) => !prev);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleMenuToggle = useCallback(() => {
-    setMobileMenuOpen((prev) => !prev);
+  const handleSearchToggle = useCallback(() => setSearchOpen((p) => !p), []);
+  const handleSearchClose = useCallback(() => setSearchOpen(false), []);
+  const handleMobileMenuToggle = useCallback(
+    () => setMobileMenuOpen((p) => !p),
+    [],
+  );
+  const handleMobileMenuClose = useCallback(() => setMobileMenuOpen(false), []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((p) => !p);
+      }
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const handleScrolled = useCallback(() => {
-    setScrolled(true);
-  }, []);
+  useEffect(() => {
+    document.body.style.overflow =
+      searchOpen || mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [searchOpen, mobileMenuOpen]);
 
   return (
     <>
-      {/* Desktop Header */}
       <header
+        role="banner"
         className={cn(
-          "sticky top-0 z-50 w-full h-16",
-          "backdrop-blur-xl",
-          "transition-all duration-200",
+          "sticky top-0 z-50 w-full",
+          "border-b transition-colors duration-200",
           scrolled
-            ? "bg-white/90 dark:bg-black/80 border-b border-border"
-            : "bg-white/80 dark:bg-black/80 border-b border-zinc-800",
-          "animate-fade-in-down",
-          className
+            ? "border-border/60 bg-background/80 backdrop-blur-xl"
+            : "border-transparent bg-background/50 backdrop-blur-md",
+          className,
         )}
       >
-        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-4">
-            <HeaderLogo showVersion={showVersion} version={version} />
-
-            <nav className="hidden sm:block">
-              <ul className="flex flex-col sm:flex-row gap-2">
-                {navLinks?.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className={cn("text-sm text-muted-foreground hover:text-foreground transition-colors")}
-                      aria-label={link.label}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+        <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4">
+            <HeaderLogo version={version} />
           </div>
 
           <div className="flex items-center gap-2">
-            <HeaderSearch onToggle={handleSearchToggle} />
+            <HeaderSearch
+              isOpen={searchOpen}
+              onToggle={handleSearchToggle}
+              onClose={handleSearchClose}
+            />
 
-            <div className="flex items-center gap-2">
-              <div onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="relative">
-                <MobileHeader
-                  onSearchToggle={handleSearchToggle}
-                  onMenuToggle={handleMenuToggle}
-                  isMenuOpen={mobileMenuOpen}
-                  theme="system"
-                  onThemeToggle={onThemeToggle}
-                />
-              </div>
+            <div className="hidden lg:block">
+              <HeaderActions
+                userName={userName}
+                userAvatar={userAvatar}
+                role={role}
+                onThemeToggle={onThemeToggle}
+              />
+            </div>
 
-              {mobileMenuOpen && (
-                <MobileNavigation
-                  isOpen={mobileMenuOpen}
-                  onClose={() => setMobileMenuOpen(false)}
-                  role={role}
-                />
-              )}
+            <div className="flex items-center gap-1 lg:hidden">
+              <button
+                type="button"
+                onClick={handleSearchToggle}
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-md",
+                  "text-muted-foreground hover:text-foreground hover:bg-muted",
+                  "transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                )}
+                aria-label="Search"
+              >
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleMobileMenuToggle}
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-md",
+                  "text-muted-foreground hover:text-foreground hover:bg-muted",
+                  "transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                )}
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? (
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Navigation Panel */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm"
+          onClick={handleSearchClose}
+          aria-hidden="true"
+        />
+      )}
+
       <MobileNavigation
         isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        onClose={handleMobileMenuClose}
         role={role}
-      />
-
-      {/* Search Overlay */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/30 hidden",
-          isOpen ? "block" : "none",
-          "backdrop-blur-sm"
-        )}
-        onClick={() => setSearchOpen(false)}
+        userName={userName}
       />
     </>
   );

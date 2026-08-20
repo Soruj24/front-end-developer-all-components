@@ -2,229 +2,242 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
-import { Search, X, ChevronDown, Moon, Sun } from "lucide-react";
 
 interface HeaderSearchProps {
+  isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
   className?: string;
-  initialQuery?: string;
 }
 
-const RECENT_SEARCHES = [
-  "button",
-  "dialog",
-  "form",
-  "navbar",
-  "cart",
-];
+const RECENT = ["button", "dialog", "form", "navbar"];
 
-const SEARCH_SUGGESTIONS = [
+const SUGGESTIONS = [
   { query: "button", category: "Components" },
   { query: "dialog", category: "Components" },
-  { query: "template", category: "Templates" },
-  { query: "docs", category: "Documentation" },
   { query: "navigation", category: "Components" },
+  { query: "landing-page", category: "Templates" },
+  { query: "getting-started", category: "Docs" },
 ];
 
-interface SearchItem {
-  query: string;
-  category: string;
-  href?: string;
-}
-
-export function HeaderSearch({ onToggle, onClose, className, initialQuery = "" }: HeaderSearchProps) {
-  const [query, setQuery] = useState(initialQuery);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [searchHistory, setSearchHistory] = useState<SearchItem[]>([]);
+export function HeaderSearch({ isOpen, onToggle, onClose, className }: HeaderSearchProps) {
+  const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Add to history
-  const addToHistory = useCallback((query: string) => {
-    setSearchHistory((prev) => {
-      const normalized = prev.filter((item) => item.query.toLowerCase() !== query.toLowerCase());
-      const updated = [{ query, category: "Recent" }, ...normalized].slice(0, 10);
-      return updated;
-    });
-  }, []);
-
-  // Handle input change
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    setShowSuggestions(value.length > 0);
-
-    if (value.length > 0) {
-      addToHistory(value);
-    } else {
-      setShowSuggestions(false);
-    }
-  }, [addToHistory]);
-
-  // Handle escape key
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        if (inputRef.current) {
-          inputRef.current.blur();
-        }
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+    if (isOpen) {
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  }, [isOpen]);
+
+  const filtered = SUGGESTIONS.filter((s) =>
+    s.query.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  const handleSelect = useCallback(
+    (q: string) => {
+      setQuery(q);
+      onClose();
+    },
+    [onClose],
+  );
 
   return (
-    <div className={cn("relative w-full", className)}>
+    <div className={cn("relative", className)}>
       <button
         type="button"
         onClick={onToggle}
         className={cn(
-          "hidden sm:block",
-          "flex items-center gap-2",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          "hidden items-center gap-2 rounded-lg border border-border/60",
+          "bg-muted/50 px-3 py-1.5 text-sm text-muted-foreground",
+          "transition-colors hover:bg-muted hover:text-foreground",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "lg:flex",
         )}
-        aria-label="Search"
+        aria-label="Search (Ctrl+K)"
       >
-        <Search className="h-4 w-4 text-muted-foreground" />
+        <svg
+          className="h-3.5 w-3.5 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <span className="min-w-0 truncate">Search components, templates, docs...</span>
+        <kbd
+          className={cn(
+            "pointer-events-none ml-4 hidden h-5 select-none items-center gap-1",
+            "rounded border border-border/60 bg-background px-1.5 font-mono",
+            "text-[10px] font-medium text-muted-foreground sm:flex",
+          )}
+        >
+          <span className="text-xs">Ctrl</span>
+          <span className="text-xs">K</span>
+        </kbd>
       </button>
 
-      {/* Search Modal */}
-      <div
-        ref={dropdownRef}
-        className={cn(
-          "absolute right-0 left-full z-50 mt-2 w-80 rounded-2xl border border-border bg-popover shadow-lg py-4 transition-all duration-200 ease-out transform -translate-x-full sm:translate-x-0",
-          showSuggestions ? "translate-x-0" : "-translate-x-full",
-          "opacity-0 sm:opacity-100",
-          "data-[state=open]:translate-x-0 data-[state=open]:opacity-100",
-          className
-        )}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Search"
-      >
-        <div className="bg-popover p-4 pt-1">
-          <div className="flex items-center gap-2 mb-3">
-            <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+      {isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search"
+          className={cn(
+            "fixed left-1/2 top-[15vh] z-[70] w-full max-w-lg",
+            "-translate-x-1/2 rounded-xl border border-border/60",
+            "bg-popover shadow-2xl",
+            "animate-in fade-in-0 zoom-in-95",
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center gap-3 border-b border-border/60 px-4">
+            <svg
+              className="h-4 w-4 shrink-0 text-muted-foreground"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
             <input
               ref={inputRef}
               type="text"
-              placeholder="Search components, templates, docs..."
               value={query}
-              onChange={handleChange}
-              onFocus={() => setShowSuggestions(true)}
+              onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  onClose();
-                }
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  // TODO: focus next suggestion
-                }
-                if (e.key === "ArrowUp") {
-                  e.preventDefault();
-                  // TODO: focus previous suggestion
-                }
+                if (e.key === "Escape") onClose();
               }}
-              autoFocus
+              placeholder="Search components, templates, docs..."
               className={cn(
-                "flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-                "placeholder:text-muted-foreground"
+                "flex-1 bg-transparent py-3 text-sm text-foreground",
+                "placeholder:text-muted-foreground",
+                "focus:outline-none",
               )}
             />
-            <button
-              type="button"
-              onClick={onClose}
+            <kbd
               className={cn(
-                "ml-2 flex h-6 w-6 items-center justify-center rounded-full hover:bg-border transition-colors"
+                "hidden h-5 items-center rounded border border-border/60",
+                "bg-background px-1.5 font-mono text-[10px] text-muted-foreground",
+                "sm:flex",
               )}
-              aria-label={`Close search`}
             >
-              <X className="h-3 w-3 stroke-current" />
-            </button>
+              Esc
+            </kbd>
           </div>
 
-          {/* Recent Searches */}
-          {showSuggestions && RECENT_SEARCHES.length > 0 && (
-            <div className="mb-3 pt-3 border-t border-border">
-              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                Recent
-              </h3>
-              <div className="space-y-1">
-                {RECENT_SEARCHES.map((query) => (
+          <div className="max-h-[300px] overflow-y-auto p-2">
+            {query.length === 0 && RECENT.length > 0 && (
+              <div className="mb-1">
+                <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                  Recent
+                </p>
+                {RECENT.map((q) => (
                   <button
-                    key={query}
+                    key={q}
                     type="button"
+                    onClick={() => handleSelect(q)}
                     className={cn(
-                      "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm text-muted-foreground hover:bg-border hover:text-foreground transition-colors"
+                      "flex w-full items-center gap-2 rounded-lg px-2 py-1.5",
+                      "text-sm text-muted-foreground",
+                      "hover:bg-muted hover:text-foreground transition-colors",
                     )}
-                    aria-label={`Recent search: ${query}`}
-                    onClick={() => {
-                      setQuery(query);
-                      setShowSuggestions(false);
-                      onClose();
-                      // TODO: perform search
-                    }}
                   >
-                    <Search className="h-3 w-3 shrink-0 mr-1 stroke-current" />
-                    {query}
+                    <svg
+                      className="h-3 w-3 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {q}
                   </button>
                 ))}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* No results */}
-          {!showSuggestions && query.length === 0 && (
-            <p className="text-xs text-muted-foreground">
-              Start typing to search components, templates, or documentation
-            </p>
-          )}
+            {query.length > 0 && filtered.length > 0 && (
+              <div>
+                <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                  Suggestions
+                </p>
+                {filtered.map((item) => (
+                  <button
+                    key={item.query}
+                    type="button"
+                    onClick={() => handleSelect(item.query)}
+                    className={cn(
+                      "flex w-full items-center justify-between rounded-lg px-2 py-1.5",
+                      "text-sm text-muted-foreground",
+                      "hover:bg-muted hover:text-foreground transition-colors",
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <svg
+                        className="h-3 w-3 shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                      </svg>
+                      {item.query}
+                    </span>
+                    <span className="text-xs text-muted-foreground/60">
+                      {item.category}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
 
-          {/* Suggestions */}
-          {showSuggestions && (
-            <div className="mt-2 max-h-40 overflow-y-auto space-y-1">
-              {SEARCH_SUGGESTIONS.map((item) => (
-                <button
-                  key={item.query}
-                  type="button"
-                  className={cn(
-                    "flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm hover:bg-border transition-colors"
-                  )}
-                  aria-label={`Search: ${item.query}`}
-                  onClick={() => {
-                    setQuery(item.query);
-                    setShowSuggestions(false);
-                    onClose();
-                    // TODO: perform search
-                  }}
-                >
-                  <Search className="h-3 w-3 shrink-0 mr-1 stroke-current" />
-                  {item.query}
-                </button>
-              ))}
-            </div>
-          )}
+            {query.length > 0 && filtered.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <p className="text-sm text-muted-foreground">
+                  No results for &quot;{query}&quot;
+                </p>
+              </div>
+            )}
+          </div>
 
-          {/* Actions */}
-          {showSuggestions && (
-            <div className="mt-2 pt-3 border-t border-border">
-              <button
-                type="button"
-                className={cn(
-                  "w-full justify-between text-xs text-muted-foreground",
-                  "py-1.5"
-                )}
-              >
-                <span>Ctrl + K ⌘ + K to search</span>
-                <span>Esc to close</span>
-              </button>
+          <div className="flex items-center justify-between border-t border-border/60 px-4 py-2">
+            <div className="flex items-center gap-3 text-[11px] text-muted-foreground/60">
+              <span className="flex items-center gap-1">
+                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                  &uarr;
+                </kbd>
+                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                  &darr;
+                </kbd>
+                navigate
+              </span>
+              <span className="flex items-center gap-1">
+                <kbd className="rounded border border-border/60 bg-background px-1 font-mono text-[10px]">
+                  Enter
+                </kbd>
+                select
+              </span>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

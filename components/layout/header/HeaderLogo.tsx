@@ -1,43 +1,54 @@
-"use client";
-
 import Link from "next/link";
 import { cn } from "@/lib/cn";
-import { Search, Settings, LogOut, Sun, Moon, Star } from "lucide-react";
 
 interface HeaderLogoProps {
   className?: string;
-  showVersion?: boolean;
   version?: string;
 }
 
-export function HeaderLogo({ className, showVersion = true, version = "v2.0" }: HeaderLogoProps) {
+export function HeaderLogo({ className, version }: HeaderLogoProps) {
   return (
     <Link
       href="/"
       className={cn(
-        "flex items-center gap-2",
-        "hover:opacity-80 transition-opacity",
-        className
+        "flex items-center gap-2.5 shrink-0",
+        "transition-opacity hover:opacity-80",
+        className,
       )}
-      aria-label="Home"
+      aria-label="Component Registry - Home"
     >
-      <span
+      <div
         className={cn(
-          "relative h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center",
-          "text-primary",
-          "shadow-sm transition-transform hover:scale-105"
+          "flex h-7 w-7 items-center justify-center rounded-lg",
+          "bg-foreground text-background",
+          "transition-transform hover:scale-105",
         )}
       >
-        <Star className="h-4 w-4" />
+        <svg
+          className="h-3.5 w-3.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+          <polyline points="2 17 12 22 22 17" />
+          <polyline points="2 12 12 17 22 12" />
+        </svg>
+      </div>
+
+      <span className="hidden text-sm font-semibold tracking-tight text-foreground sm:block">
+        Registry
       </span>
-      <span className="text-sm font-medium tracking-tight text-foreground">
-        Component Registry
-      </span>
-      {showVersion && (
+
+      {version && (
         <span
           className={cn(
-            "ml-1 text-[10px] text-muted-foreground",
-            "opacity-80"
+            "hidden rounded-md border border-border/60 px-1.5 py-0.5",
+            "text-[10px] font-medium text-muted-foreground",
+            "sm:block",
           )}
         >
           {version}
