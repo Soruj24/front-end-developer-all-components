@@ -266,6 +266,8 @@ export { MessageScroller } from "./MessageScroller";
 export type { MessageScrollerProps, MessageItem } from "./MessageScroller";
 export { NativeSelect } from "./NativeSelect";
 export type { NativeSelectProps, SelectOption } from "./NativeSelect";
+export { NumberInput } from "./NumberInput";
+export type { NumberInputProps } from "./NumberInput";
 export {
   NavigationMenu,
   NavigationMenuList,
