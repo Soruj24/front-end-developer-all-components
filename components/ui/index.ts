@@ -148,7 +148,6 @@ export { Input } from "./Input";
 export { InputMask } from "./InputMask";
 export type { InputMaskProps } from "./InputMask";
 export { default as Modal } from "./Modal";
-export { default as Pagination } from "./Pagination";
 export { default as Popover } from "./Popover";
 export { default as ProgressBar } from "./ProgressBar";
 export { PromptBuilder } from "./PromptBuilder";
