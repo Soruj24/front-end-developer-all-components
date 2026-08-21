@@ -301,6 +301,8 @@ export { HeatMap, HeatMapLegend, HeatMapCellComponent } from "./HeatMap";
 export type { HeatMapProps, HeatMapCellProps, HeatMapLegendProps } from "./HeatMap";
 export { Icon } from "./Icon";
 export type { IconProps, IconSize } from "./Icon";
+export { IconPicker, DEFAULT_ICONS } from "./IconPicker";
+export type { IconPickerProps, IconPickerIcon } from "./IconPicker";
 export { Image, ImagePreview } from "./Image";
 export type { ImageProps } from "./Image";
 export { List, ListItem } from "./List";

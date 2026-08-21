@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback, isValidElement } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  isValidElement,
+} from "react";
 import { cn } from "@/lib/cn";
 import type { HoverCardProps } from "./HoverCard.types";
 
@@ -34,7 +40,10 @@ export function HoverCard({
 
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         scheduleClose();
       }
     }
@@ -42,9 +51,39 @@ export function HoverCard({
     return () => document.removeEventListener("mousedown", handler);
   }, [scheduleClose]);
 
-  const triggerEl = isValidElement(trigger)
-    ? <span onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>{trigger}</span>
-    : <span onMouseEnter={scheduleOpen} onMouseLeave={scheduleClose}>{trigger}</span>;
+  useEffect(() => {
+    function handler(e: KeyboardEvent) {
+      if (e.key === "Escape") scheduleClose();
+    }
+    if (open) {
+      document.addEventListener("keydown", handler);
+      return () => document.removeEventListener("keydown", handler);
+    }
+  }, [open, scheduleClose]);
+
+  const triggerEl = isValidElement(trigger) ? (
+    <span
+      onMouseEnter={scheduleOpen}
+      onMouseLeave={scheduleClose}
+      onFocus={scheduleOpen}
+      onBlur={scheduleClose}
+      tabIndex={0}
+      className="inline-flex cursor-pointer rounded-md outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+    >
+      {trigger}
+    </span>
+  ) : (
+    <span
+      onMouseEnter={scheduleOpen}
+      onMouseLeave={scheduleClose}
+      onFocus={scheduleOpen}
+      onBlur={scheduleClose}
+      tabIndex={0}
+      className="inline-flex cursor-pointer rounded-md outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+    >
+      {trigger}
+    </span>
+  );
 
   return (
     <div ref={containerRef} className={cn("relative inline-block", className)}>
@@ -53,7 +92,14 @@ export function HoverCard({
         <div
           onMouseEnter={scheduleOpen}
           onMouseLeave={scheduleClose}
-          className="absolute z-50 mt-2 w-80 rounded-md border bg-white p-4 shadow-md dark:bg-zinc-900 dark:border-zinc-700"
+          role="tooltip"
+          className={cn(
+            "absolute z-50 mt-2 w-80",
+            "rounded-xl border border-border bg-popover p-4",
+            "shadow-xl",
+            "animate-in fade-in-0 zoom-in-95",
+            "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          )}
         >
           {children}
         </div>
