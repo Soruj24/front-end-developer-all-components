@@ -1,251 +1,206 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Plus, MoreHorizontal, GripVertical, Circle, Clock, User, Tag, ArrowRight } from "lucide-react";
+import { useState, useCallback } from "react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { KanbanBoard, KanbanCard } from "@/components/ui/KanbanBoard";
+import type { KanbanColumnData, KanbanCardData } from "@/components/ui/KanbanBoard";
+import { KANBAN_BOARD_SOURCE } from "./kanban-board-source";
 
-const installCommand = `npx component-library@latest add kanban-board`;
+const BASIC_CODE = `import { KanbanBoard } from "@/components/ui/KanbanBoard";
 
-const usageCode = `import { KanbanBoard } from "@/components/ui";
+<KanbanBoard columns={columns} />`;
+
+const WITH_DRAG_CODE = `import { KanbanBoard } from "@/components/ui/KanbanBoard";
 
 <KanbanBoard
   columns={columns}
-  onCardMove={handleCardMove}
+  draggable
+  onCardMove={(cardId, from, to) => console.log(cardId, from, to)}
 />`;
 
-type Card = { id: string; title: string; desc?: string; tag?: string; tagColor?: string; avatar?: string; time?: string };
-type Column = { id: string; title: string; color: string; cards: Card[] };
-
-const defaultColumns: Column[] = [
+const SAMPLE_COLUMNS: KanbanColumnData[] = [
   {
-    id: "todo", title: "To Do", color: "bg-slate-500",
+    id: "todo",
+    title: "To Do",
+    dotColor: "bg-slate-500",
     cards: [
-      { id: "c1", title: "Design new landing page", desc: "Create mockups for the hero section", tag: "Design", tagColor: "bg-purple-100 text-purple-700", time: "2h" },
-      { id: "c2", title: "Write API documentation", desc: "Document all REST endpoints", tag: "Docs", tagColor: "bg-blue-100 text-blue-700", time: "4h" },
+      { id: "c1", title: "Design new landing page", description: "Create mockups for the hero section", tag: "Design", tagColor: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300", time: "2h", priority: "medium" },
+      { id: "c2", title: "Write API documentation", description: "Document all REST endpoints", tag: "Docs", tagColor: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300", time: "4h", priority: "low" },
     ],
   },
   {
-    id: "progress", title: "In Progress", color: "bg-blue-500",
+    id: "progress",
+    title: "In Progress",
+    dotColor: "bg-blue-500",
     cards: [
-      { id: "c3", title: "Implement auth flow", desc: "OAuth2 + JWT tokens", tag: "Backend", tagColor: "bg-green-100 text-green-700", time: "3h" },
+      { id: "c3", title: "Implement auth flow", description: "OAuth2 + JWT tokens", tag: "Backend", tagColor: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300", time: "3h", priority: "high" },
     ],
   },
   {
-    id: "review", title: "Review", color: "bg-yellow-500",
+    id: "review",
+    title: "Review",
+    dotColor: "bg-amber-500",
     cards: [
-      { id: "c4", title: "Update user settings", desc: "Add notification preferences", tag: "Frontend", tagColor: "bg-orange-100 text-orange-700", time: "1h" },
+      { id: "c4", title: "Update user settings", description: "Add notification preferences", tag: "Frontend", tagColor: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300", time: "1h", priority: "low" },
     ],
   },
   {
-    id: "done", title: "Done", color: "bg-green-500",
+    id: "done",
+    title: "Done",
+    dotColor: "bg-emerald-500",
     cards: [
-      { id: "c5", title: "Fix login bug", desc: "Resolved session timeout issue", tag: "Bug", tagColor: "bg-red-100 text-red-700", time: "30m" },
+      { id: "c5", title: "Fix login bug", description: "Resolved session timeout issue", tag: "Bug", tagColor: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300", time: "30m", priority: "high" },
     ],
   },
 ];
 
-function KanbanCard({ card }: { card: Card }) {
+function BoardWithState() {
+  const [columns, setColumns] = useState<KanbanColumnData[]>(SAMPLE_COLUMNS);
+
+  const handleCardMove = useCallback(
+    (cardId: string, fromId: string, toId: string) => {
+      setColumns((prev) => {
+        const from = prev.find((c) => c.id === fromId);
+        const card = from?.cards.find((c) => c.id === cardId);
+        if (!card) return prev;
+        return prev.map((col) => {
+          if (col.id === fromId) return { ...col, cards: col.cards.filter((c) => c.id !== cardId) };
+          if (col.id === toId) return { ...col, cards: [...col.cards, card] };
+          return col;
+        });
+      });
+    },
+    [],
+  );
+
   return (
-    <div className="rounded-lg border border-border bg-background p-3 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between">
-        <p className="text-sm font-medium leading-snug">{card.title}</p>
-        <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground/50" />
-      </div>
-      {card.desc && <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{card.desc}</p>}
-      <div className="mt-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {card.tag && (
-            <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${card.tagColor}`}>
-              {card.tag}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          {card.time && (
-            <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{card.time}</span>
-          )}
-        </div>
-      </div>
+    <div className="w-full">
+      <KanbanBoard
+        columns={columns}
+        draggable
+        onCardMove={handleCardMove}
+        onCardAdd={(colId) => alert(`Add card to: ${colId}`)}
+        onCardClick={(card) => alert(`Clicked: ${card.title}`)}
+      />
     </div>
   );
 }
 
-function KanbanColumn({ column }: { column: Column }) {
-  return (
-    <div className="flex w-72 shrink-0 flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className={`h-2.5 w-2.5 rounded-full ${column.color}`} />
-          <h3 className="text-sm font-semibold">{column.title}</h3>
-          <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{column.cards.length}</span>
-        </div>
-        <button className="rounded p-1 hover:bg-muted"><MoreHorizontal className="h-4 w-4 text-muted-foreground" /></button>
-      </div>
-      <div className="flex flex-col gap-2">
-        {column.cards.map((card) => <KanbanCard key={card.id} card={card} />)}
-      </div>
-      <button className="flex items-center gap-2 rounded-lg border border-dashed border-border p-2 text-xs text-muted-foreground hover:bg-muted">
-        <Plus className="h-3 w-3" />Add card
-      </button>
-    </div>
-  );
-}
-
-function BasicKanbanDemo() {
-  return (
-    <div className="w-full overflow-x-auto">
-      <div className="flex gap-4 p-2">
-        {defaultColumns.slice(0, 2).map((col) => (
-          <KanbanColumn key={col.id} column={col} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function WithColumnsDemo() {
-  return (
-    <div className="w-full overflow-x-auto">
-      <div className="flex gap-4 p-2">
-        {defaultColumns.map((col) => (
-          <KanbanColumn key={col.id} column={col} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function TaskCardsDemo() {
-  const columns: Column[] = [
+function MinimalDemo() {
+  const cols: KanbanColumnData[] = [
     {
-      id: "backlog", title: "Backlog", color: "bg-gray-400",
+      id: "backlog",
+      title: "Backlog",
+      dotColor: "bg-gray-400",
       cards: [
-        { id: "t1", title: "Research competitor pricing", tag: "Research", tagColor: "bg-indigo-100 text-indigo-700" },
-        { id: "t2", title: "Set up CI/CD pipeline", tag: "DevOps", tagColor: "bg-cyan-100 text-cyan-700" },
+        { id: "t1", title: "Research competitor pricing" },
+        { id: "t2", title: "Set up CI/CD pipeline" },
       ],
     },
     {
-      id: "sprint", title: "Sprint", color: "bg-violet-500",
+      id: "active",
+      title: "Active",
+      dotColor: "bg-violet-500",
       cards: [
-        { id: "t3", title: "Build dashboard widgets", desc: "Chart, table, and stat components", tag: "Frontend", tagColor: "bg-orange-100 text-orange-700", time: "5h" },
-        { id: "t4", title: "Database migration", desc: "Add user preferences table", tag: "Backend", tagColor: "bg-green-100 text-green-700", time: "2h" },
+        { id: "t3", title: "Build dashboard widgets", description: "Chart, table, and stat components", time: "5h" },
       ],
     },
     {
-      id: "blocked", title: "Blocked", color: "bg-red-500",
-      cards: [
-        { id: "t5", title: "Third-party API integration", desc: "Waiting for API credentials", tag: "External", tagColor: "bg-yellow-100 text-yellow-700", time: "1d" },
-      ],
+      id: "blocked",
+      title: "Blocked",
+      dotColor: "bg-red-500",
+      cards: [],
     },
   ];
 
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="flex gap-4 p-2">
-        {columns.map((col) => (
-          <KanbanColumn key={col.id} column={col} />
-        ))}
-      </div>
+    <div className="w-full">
+      <KanbanBoard columns={cols} emptySlot={<span className="text-xs text-muted-foreground">No cards yet</span>} />
     </div>
   );
 }
 
 export default function KanbanBoardPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Kanban Board</h1>
-          <Badge variant="primary">Layout</Badge>
+    <ComponentDocPage
+      name="Kanban Board"
+      category="Layout"
+      description="A drag-and-drop kanban board for task management. Organize work into columns with cards, labels, and due times."
+    >
+      <PreviewPanel filename="kanban-board.tsx">
+        <div className="w-full">
+          <KanbanBoard columns={SAMPLE_COLUMNS.slice(0, 2)} emptySlot={<span className="text-xs text-muted-foreground">No cards yet</span>} />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A drag-and-drop kanban board for task management. Organize work into columns with cards, labels, and due times.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={KANBAN_BOARD_SOURCE}
+        filename="components/ui/KanbanBoard/KanbanBoard.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Basic Kanban</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Two-column kanban with sample cards.</p>
-        </div>
-        <ComponentPreview id="kanban-basic">
-          <BasicKanbanDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Interactive Board"
+          description="Drag and drop cards between columns. Click cards for actions."
+          code={WITH_DRAG_CODE}
+          filename="interactive.tsx"
+        >
+          <BoardWithState />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Columns</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Full four-column workflow: To Do, In Progress, Review, Done.</p>
-        </div>
-        <ComponentPreview id="kanban-columns">
-          <WithColumnsDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Full Workflow"
+          description="Four-column workflow: To Do, In Progress, Review, Done."
+          code={BASIC_CODE}
+          filename="workflow.tsx"
+        >
+          <div className="w-full">
+            <KanbanBoard columns={SAMPLE_COLUMNS} />
+          </div>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Task Cards</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Cards with tags, descriptions, and time estimates.</p>
-        </div>
-        <ComponentPreview id="kanban-tasks">
-          <TaskCardsDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Minimal"
+          description="Simple board with no drag, just display."
+          code={`<KanbanBoard columns={columns} draggable={false} />`}
+          filename="minimal.tsx"
+        >
+          <MinimalDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">columns</td>
-                <td className="px-4 py-3 text-muted-foreground">Column[]</td>
-                <td className="px-4 py-3 text-muted-foreground">[]</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onCardMove</td>
-                <td className="px-4 py-3 text-muted-foreground">(cardId: string, from: string, to: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onCardAdd</td>
-                <td className="px-4 py-3 text-muted-foreground">(columnId: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">draggable</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ExampleBlock
+          title="Card Composition"
+          description="Cards support tags, descriptions, time estimates, priority dots, and avatars."
+          code={`<KanbanCard card={{ id: "1", title: "Task", priority: "high", tag: "Bug", time: "2h" }} />`}
+          filename="card-composition.tsx"
+        >
+          <div className="w-full max-w-xs space-y-2">
+            <KanbanCard card={{ id: "p1", title: "High priority task", priority: "high", tag: "Urgent", tagColor: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300", time: "1h" }} />
+            <KanbanCard card={{ id: "p2", title: "Medium priority task", priority: "medium", tag: "Feature", tagColor: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300", time: "3h" }} />
+            <KanbanCard card={{ id: "p3", title: "Low priority task", priority: "low", tag: "Enhancement", tagColor: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" }} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Empty Column"
+          description="Columns show an empty slot when there are no cards."
+          code={`<KanbanBoard columns={columns} emptySlot={<p>No cards</p>} />`}
+          filename="empty-column.tsx"
+        >
+          <div className="w-full">
+            <KanbanBoard
+              columns={[
+                { id: "a", title: "Has Cards", dotColor: "bg-blue-500", cards: [{ id: "1", title: "A card" }] },
+                { id: "b", title: "Empty", dotColor: "bg-gray-400", cards: [] },
+              ]}
+              emptySlot={<span className="text-xs text-muted-foreground">Drag cards here</span>}
+            />
+          </div>
+        </ExampleBlock>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

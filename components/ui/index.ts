@@ -74,6 +74,8 @@ export { CurrencyInput } from "./CurrencyInput";
 export type { CurrencyInputProps } from "./CurrencyInput";
 export { JsonTreeViewer } from "./JsonTreeViewer";
 export type { JsonNode, JsonTreeViewerProps, JsonType } from "./JsonTreeViewer";
+export { KanbanBoard, KanbanCard, KanbanColumn } from "./KanbanBoard";
+export type { KanbanBoardProps, KanbanCardData, KanbanColumnData } from "./KanbanBoard";
 export { ApiExplorer } from "./ApiExplorer";
 export type {
   ApiEndpoint,
