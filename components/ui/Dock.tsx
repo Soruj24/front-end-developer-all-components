@@ -4,15 +4,10 @@ import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
-/* ------------------------------------------------------------------ */
-/* Types                                                               */
-/* ------------------------------------------------------------------ */
-
 export interface DockItem {
   id: string;
   label: string;
   icon: React.ReactNode;
-  /** Pinned indicator, independent of the click-to-toggle active state. */
   active?: boolean;
   onClick?: () => void;
 }
@@ -20,27 +15,17 @@ export interface DockItem {
 export interface DockProps {
   className?: string;
   items: DockItem[];
-  /** Pointer-driven magnification (auto-disabled on touch). Default true. */
   magnification?: boolean;
-  /** Max scale of the hovered icon. */
   magnificationMax?: number;
-  /** Distance in px over which magnification falls off. */
   magnificationRadius?: number;
-  /** Label tooltip on hover / focus. Default true. */
   showTooltips?: boolean;
-  /** Allow drag-to-reorder. Default true. */
   draggable?: boolean;
-  /** Controlled active id. When omitted the dock toggles it internally. */
   activeId?: string;
   onActiveChange?: (id: string | undefined) => void;
   onOrderChange?: (items: DockItem[]) => void;
   onItemClick?: (item: DockItem) => void;
   ariaLabel?: string;
 }
-
-/* ------------------------------------------------------------------ */
-/* Dock                                                                */
-/* ------------------------------------------------------------------ */
 
 export function Dock({
   className,
@@ -81,9 +66,7 @@ export function Dock({
   } | null>(null);
   const suppressClickRef = useRef(false);
 
-  useEffect(() => {
-    orderRef.current = order;
-  }, [order]);
+  useEffect(() => { orderRef.current = order; }, [order]);
 
   useEffect(() => {
     const mq = window.matchMedia("(pointer: fine)");
@@ -137,9 +120,9 @@ export function Dock({
       if (!magnification || !finePointer || dragId) return;
       const radius = magnificationRadius;
       const x = event.clientX;
-      const order = orderRef.current;
+      const ord = orderRef.current;
       setScales(
-        order.map((_, index) => {
+        ord.map((_, index) => {
           const el = itemRefs.current[index];
           if (!el) return 1;
           const rect = el.getBoundingClientRect();
@@ -178,18 +161,8 @@ export function Dock({
       if (event.button !== 0) return;
       const item = orderRef.current[index];
       if (!item) return;
-      dragStateRef.current = {
-        id: item.id,
-        from: index,
-        moved: false,
-        startX: event.clientX,
-        startY: event.clientY,
-      };
-      try {
-        event.currentTarget.setPointerCapture(event.pointerId);
-      } catch {
-        /* capture unsupported */
-      }
+      dragStateRef.current = { id: item.id, from: index, moved: false, startX: event.clientX, startY: event.clientY };
+      try { event.currentTarget.setPointerCapture(event.pointerId); } catch { /* ignore */ }
     },
     [draggable]
   );
@@ -227,36 +200,19 @@ export function Dock({
     }
   }, []);
 
-  const handlePointerUp = useCallback(
-    (event: React.PointerEvent<HTMLButtonElement>) => {
-      try {
-        event.currentTarget.releasePointerCapture(event.pointerId);
-      } catch {
-        /* capture already released */
-      }
-      endDrag(true);
-    },
-    [endDrag]
-  );
+  const handlePointerUp = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* ignore */ }
+    endDrag(true);
+  }, [endDrag]);
 
-  const handlePointerCancel = useCallback(
-    (event: React.PointerEvent<HTMLButtonElement>) => {
-      try {
-        event.currentTarget.releasePointerCapture(event.pointerId);
-      } catch {
-        /* capture already released */
-      }
-      endDrag(false);
-    },
-    [endDrag]
-  );
+  const handlePointerCancel = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
+    try { event.currentTarget.releasePointerCapture(event.pointerId); } catch { /* ignore */ }
+    endDrag(false);
+  }, [endDrag]);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
-      if (suppressClickRef.current) {
-        suppressClickRef.current = false;
-        return;
-      }
+      if (suppressClickRef.current) { suppressClickRef.current = false; return; }
       activate(index);
     },
     [activate]
@@ -265,7 +221,9 @@ export function Dock({
   return (
     <div
       className={cn(
-        "relative flex select-none items-end gap-1 rounded-3xl border border-black/[0.05] bg-white/70 p-2 shadow-card backdrop-blur-2xl sm:gap-1.5 sm:p-2.5 dark:border-white/[0.08] dark:bg-zinc-900/60",
+        "relative flex select-none items-end gap-1 rounded-2xl border border-border bg-card/80 p-2 shadow-lg backdrop-blur-xl",
+        "sm:gap-1.5 sm:p-2.5",
+        "dark:border-border dark:bg-card/60",
         className
       )}
       role="toolbar"
@@ -280,21 +238,17 @@ export function Dock({
         return (
           <div
             key={item.id}
-            ref={(el) => {
-              itemRefs.current[index] = el;
-            }}
+            ref={(el) => { itemRefs.current[index] = el; }}
             className={cn("group relative flex items-center justify-center", isDraggingItem && "z-30")}
           >
             {showTooltips && !dragId && (
-              <span className="pointer-events-none absolute bottom-full left-1/2 z-40 mb-2.5 -translate-x-1/2 scale-95 whitespace-nowrap rounded-lg bg-zinc-900/95 px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition-all duration-150 ease-out group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 dark:bg-zinc-100/95 dark:text-zinc-900">
+              <span className="pointer-events-none absolute bottom-full left-1/2 z-40 mb-3 -translate-x-1/2 scale-95 whitespace-nowrap rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground opacity-0 shadow-md transition-all duration-150 ease-out group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100">
                 {item.label}
               </span>
             )}
             <button
               type="button"
-              ref={(el) => {
-                buttonRefs.current[index] = el;
-              }}
+              ref={(el) => { buttonRefs.current[index] = el; }}
               aria-label={item.label}
               aria-current={active ? "true" : undefined}
               tabIndex={focusedIndex === index ? 0 : -1}
@@ -306,9 +260,10 @@ export function Dock({
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerCancel}
               className={cn(
-                "relative flex size-11 items-center justify-center rounded-[26%] outline-none transition-transform duration-150 ease-spring sm:size-12 md:size-14",
-                "focus-visible:ring-2 focus-visible:ring-ring/70",
-                isDraggingItem ? "cursor-grabbing" : "cursor-default"
+                "relative flex size-11 items-center justify-center rounded-2xl outline-none transition-all duration-200",
+                "sm:size-12 md:size-14",
+                "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+                isDraggingItem ? "cursor-grabbing" : "cursor-default",
               )}
               style={{
                 transform: `scale(${scale})`,
@@ -323,8 +278,8 @@ export function Dock({
               className={cn(
                 "pointer-events-none absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full transition-all duration-200 ease-out",
                 active
-                  ? "scale-100 bg-zinc-800 dark:bg-zinc-100"
-                  : "scale-0 bg-zinc-800/40 dark:bg-zinc-100/40"
+                  ? "scale-100 bg-foreground"
+                  : "scale-0 bg-foreground/40"
               )}
             />
           </div>

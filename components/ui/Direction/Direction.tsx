@@ -13,7 +13,7 @@ export function useDirection() {
 export function DirectionProvider({ dir = "ltr", children, className }: DirectionProviderProps) {
   return (
     <DirectionContext.Provider value={dir}>
-      <div dir={dir} className={cn(dir === "rtl" && "text-right", className)}>
+      <div dir={dir} data-direction={dir} className={cn(className)}>
         {children}
       </div>
     </DirectionContext.Provider>
