@@ -155,6 +155,7 @@ export { PromptBuilder } from "./PromptBuilder";
 export { Rating } from "./Rating";
 export type { RatingProps } from "./Rating";
 export { ScrollArea } from "./ScrollArea";
+export type { ScrollAreaProps } from "./ScrollArea";
 export { default as SearchInput } from "./SearchInput";
 export { Select } from "./Select";
 export {
@@ -299,6 +300,8 @@ export { RangeCalendar } from "./RangeCalendar";
 export type { RangeCalendarProps, DateRange } from "./RangeCalendar";
 export { Resizable, ResizablePanel, ResizableHandle } from "./Resizable";
 export type { ResizableProps, ResizablePanelProps, ResizableHandleProps } from "./Resizable";
+export { RichTextEditor } from "./RichTextEditor";
+export type { RichTextEditorProps } from "./RichTextEditor";
 export { Separator } from "./Separator";
 export type { SeparatorProps } from "./Separator";
 

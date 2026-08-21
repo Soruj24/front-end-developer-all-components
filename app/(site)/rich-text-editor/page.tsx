@@ -1,132 +1,178 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Textarea, Card, CardContent } from "@/components/ui";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { RichTextEditor } from "@/components/ui/RichTextEditor";
 
-const installCommand = "npx component-library@latest add rich-text-editor";
+const RICH_TEXT_EDITOR_SOURCE = `"use client";
 
-const usageCode = `import { RichTextEditor } from "@/components/ui";
+import { useState, useCallback } from "react";
+import { cn } from "@/lib/cn";
 
-export default function Example() {
-  return <RichTextEditor onChange={(html) => console.log(html)} />;
-}`;
+type RichTextEditorView = "edit" | "preview" | "split";
 
-const toolbarButtons = [
-  { label: "B", title: "Bold", tag: "strong" },
-  { label: "I", title: "Italic", tag: "em" },
-  { label: "U", title: "Underline", tag: "u" },
-  { label: "H1", title: "Heading", tag: "h1" },
-  { label: "H2", title: "Heading 2", tag: "h2" },
-  { label: "•", title: "List", tag: "ul" },
-  { label: "1.", title: "Ordered List", tag: "ol" },
-  { label: "\"", title: "Quote", tag: "blockquote" },
-];
-
-function renderPreview(text: string) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*\*/g, '<em>$1</em>')
-    .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold">$1</h1>')
-    .replace(/^## (.+)$/gm, '<h2 class="text-lg font-semibold">$1</h2>')
-    .replace(/^> (.+)$/gm, '<blockquote class="border-l-2 border-primary pl-3 text-muted-foreground my-2">$1</blockquote>')
-    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
-    .replace(/\n/g, '<br/>');
+interface RichTextEditorProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  view?: RichTextEditorView;
+  onViewChange?: (view: RichTextEditorView) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
-export default function RichTextEditorPage() {
-  const [content, setContent] = useState("**Bold text** and *italic text*.\n\n# Heading\n\n> A blockquote\n\n- List item 1\n- List item 2");
-  const [view, setView] = useState<"edit" | "preview" | "split">("split");
+const TOOLBAR_BUTTONS = [
+  { label: "B", title: "Bold" }, { label: "I", title: "Italic" }, { label: "U", title: "Underline" },
+  { label: "H1", title: "Heading 1" }, { label: "H2", title: "Heading 2" },
+  { label: "\\u2022", title: "Bullet List" }, { label: "1.", title: "Numbered List" }, { label: "\\u201C", title: "Quote" },
+];
+
+function renderMarkdown(text) {
+  return text.replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>").replace(/\\*(.+?)\\*/g, "<em>$1</em>")
+    .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold mb-2">$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-lg font-semibold mb-1.5">$1</h2>')
+    .replace(/^> (.+)$/gm, '<blockquote class="border-l-2 border-primary/40 pl-3 text-muted-foreground italic my-2">$1</blockquote>')
+    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm">$1</li>')
+    .replace(/^\\d+\\. (.+)$/gm, '<li class="ml-4 list-decimal text-sm">$1</li>')
+    .replace(/\\n/g, "<br/>");
+}
+
+export function RichTextEditor({ value, onChange, view: controlledView, onViewChange, placeholder = "Start writing...", disabled = false, className }: RichTextEditorProps) {
+  const [internalValue, setInternalValue] = useState("");
+  const [internalView, setInternalView] = useState("split");
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+  const currentView = controlledView !== undefined ? controlledView : internalView;
+  const handleChange = useCallback((next) => { if (!isControlled) setInternalValue(next); onChange?.(next); }, [isControlled, onChange]);
+  const handleViewChange = useCallback((next) => { if (controlledView === undefined) setInternalView(next); onViewChange?.(next); }, [controlledView, onViewChange]);
+  const wordCount = currentValue.trim().split(/\\s+/).filter(Boolean).length;
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Rich Text Editor</h1>
-          <Badge variant="primary">Editor</Badge>
+    <div className={cn("flex flex-col gap-3", className)}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/50 p-1">
+          {TOOLBAR_BUTTONS.map((btn) => (
+            <button key={btn.label} type="button" disabled={disabled} title={btn.title} aria-label={btn.title}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-xs font-bold text-muted-foreground transition-colors hover:bg-background hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50">{btn.label}</button>
+          ))}
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          WYSIWYG rich text editor with formatting toolbar, embed support, and markdown shortcuts.
-        </p>
-      </header>
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/50 p-1">
+          {["edit", "preview", "split"].map((v) => (
+            <button key={v} type="button" disabled={disabled} onClick={() => handleViewChange(v)}
+              className={cn("inline-flex h-7 items-center rounded-md px-2.5 text-xs font-medium capitalize transition-all focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+                currentView === v ? "bg-foreground text-background shadow-sm" : "text-muted-foreground hover:bg-background hover:text-foreground")}>{v}</button>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-3">
+        {(currentView === "edit" || currentView === "split") && (
+          <textarea value={currentValue} onChange={(e) => handleChange(e.target.value)} placeholder={placeholder} disabled={disabled}
+            className="flex min-h-[200px] flex-1 resize-none rounded-xl border border-border bg-card px-4 py-3 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/50 transition-colors hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50" />
+        )}
+        {(currentView === "preview" || currentView === "split") && (
+          <div className={cn("flex-1 overflow-auto rounded-xl border border-border bg-card px-4 py-3 prose prose-sm max-h-[200px] text-sm leading-relaxed text-foreground [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+            "dangerouslySetInnerHTML={{ __html: renderMarkdown(currentValue) || '<span class=\\"text-muted-foreground/50\\">Nothing to preview</span>' }}" />
+        )}
+      </div>
+      <div className="flex items-center justify-end text-xs text-muted-foreground/60">{wordCount} {wordCount === 1 ? "word" : "words"}</div>
+    </div>
+  );
+}`;
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+const DEFAULT_CONTENT = "**Bold text** and *italic text*.\n\n## Heading\n\n> A blockquote\n\n- List item 1\n- List item 2";
+
+export default function RichTextEditorPage() {
+  const [content, setContent] = useState(DEFAULT_CONTENT);
+
+  return (
+    <ComponentDocPage
+      name="Rich Text Editor"
+      category="Editor"
+      description="Markdown-based rich text editor with formatting toolbar, live preview, split view, and word count."
+    >
+      <PreviewPanel filename="rich-text-editor-preview.tsx">
+        <div className="w-full">
+          <RichTextEditor value={content} onChange={setContent} />
+        </div>
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={RICH_TEXT_EDITOR_SOURCE}
+        filename="components/ui/RichTextEditor/RichTextEditor.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Default"
+          description="Split view with toolbar, editor, and live preview."
+          code={`import { RichTextEditor } from "@/components/ui/RichTextEditor";\n\n<RichTextEditor value={content} onChange={setContent} />`}
+          filename="default.tsx"
+        >
+          <div className="w-full">
+            <RichTextEditor value={content} onChange={setContent} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Edit Only"
+          description="Single-pane editing without preview."
+          code={`<RichTextEditor value={content} onChange={setContent} view="edit" />`}
+          filename="edit-only.tsx"
+        >
+          <div className="w-full">
+            <RichTextEditor value={content} onChange={setContent} view="edit" />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Preview Only"
+          description="Read-only rendered markdown preview."
+          code={`<RichTextEditor value={content} view="preview" />`}
+          filename="preview-only.tsx"
+        >
+          <div className="w-full">
+            <RichTextEditor value={content} view="preview" />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Placeholder"
+          description="Placeholder text for empty editor."
+          code={`<RichTextEditor placeholder="Write something amazing..." />`}
+          filename="placeholder.tsx"
+        >
+          <div className="w-full">
+            <RichTextEditor placeholder="Write something amazing..." />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Disabled"
+          description="Non-interactive editor state."
+          code={`<RichTextEditor value={content} disabled />`}
+          filename="disabled.tsx"
+        >
+          <div className="w-full">
+            <RichTextEditor value={content} disabled />
+          </div>
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Toolbar + Preview</h3>
-          <ComponentPreview id="rich-text-editor-default">
-            <div className="w-full">
-              <div className="mb-2 flex gap-0.5 rounded-md border border-border p-1">
-                {toolbarButtons.map((btn) => (
-                  <button key={btn.label} className="h-7 w-7 rounded text-xs font-bold hover:bg-muted" title={btn.title}>{btn.label}</button>
-                ))}
-              </div>
-              <div className="flex gap-3">
-                <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[200px] font-mono text-sm flex-1" />
-                <Card className="flex-1">
-                  <CardContent className="p-3 prose prose-sm max-h-[200px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: renderPreview(content) }} />
-                </Card>
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">View Toggle</h3>
-          <ComponentPreview id="rich-text-editor-toggle">
-            <div className="w-full">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="flex gap-0.5 rounded border border-border p-0.5">
-                  {(["edit", "preview", "split"] as const).map((v) => (
-                    <button key={v} onClick={() => setView(v)} className={`rounded px-2 py-1 text-xs capitalize transition-colors ${view === v ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-3">
-                {(view === "edit" || view === "split") && <Textarea value={content} onChange={(e) => setContent(e.target.value)} className={`${view === "split" ? "flex-1" : "w-full"} min-h-[180px] font-mono text-sm`} />}
-                {(view === "preview" || view === "split") && <Card className={`${view === "split" ? "flex-1" : "w-full"}`}><CardContent className="p-3 prose prose-sm max-h-[180px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: renderPreview(content) }} /></Card>}
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="rich-text-editor-interactive">
-            <Card className="w-full">
-              <CardContent className="p-4">
-                <div className="mb-2 flex items-center justify-between">
-                  <div className="flex gap-0.5 rounded border border-border p-0.5">
-                    {toolbarButtons.slice(0, 4).map((btn) => (
-                      <button key={btn.label} className="h-6 w-6 rounded text-xs font-bold hover:bg-muted" title={btn.title}>{btn.label}</button>
-                    ))}
-                  </div>
-                  <span className="text-xs text-muted-foreground">{content.split(/\s+/).length} words</span>
-                </div>
-                <Textarea value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[120px] font-mono text-sm mb-2" />
-                <div className="rounded-lg bg-muted p-3 prose prose-sm" dangerouslySetInnerHTML={{ __html: renderPreview(content) }} />
-              </CardContent>
-            </Card>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -138,21 +184,51 @@ export default function RichTextEditorPage() {
             </thead>
             <tbody>
               <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">onChange</td>
-                <td className="px-4 py-3 text-muted-foreground">(html: string) =&gt; void</td>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">view</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;edit&quot; | &quot;preview&quot; | &quot;split&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;split&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onViewChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(view: RichTextEditorView) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Start writing...&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }
