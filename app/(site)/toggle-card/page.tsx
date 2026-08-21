@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Check, Zap, Bell, Shield, Mail, Globe, Lock, Eye } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { ToggleCard } from "@/components/ui/ToggleCard";
+import { TOGGLE_CARD_SOURCE } from "./toggle-card-source";
+import { Bell, Shield, Globe, Lock, Eye, Mail, Zap } from "lucide-react";
 
-const installCommand = `npx component-library@latest add toggle-card`;
-
-const usageCode = `import { ToggleCard } from "@/components/ui";
+const BASIC_CODE = `import { ToggleCard } from "@/components/ui/ToggleCard";
 
 <ToggleCard
   title="Notifications"
@@ -18,72 +16,17 @@ const usageCode = `import { ToggleCard } from "@/components/ui";
   onChange={setEnabled}
 />`;
 
-function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
-  return (
-    <button onClick={onToggle}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${enabled ? "bg-primary" : "bg-muted"}`}>
-      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${enabled ? "translate-x-6" : "translate-x-1"}`} />
-    </button>
-  );
-}
+const DISABLED_CODE = `import { ToggleCard } from "@/components/ui/ToggleCard";
 
-function BasicToggleCardsDemo() {
-  const [cards, setCards] = useState([
+<ToggleCard title="Locked" description="Cannot be changed" disabled />`;
+
+export default function ToggleCardPage() {
+  const [notifications, setNotifications] = useState([
     { id: 1, title: "Email Notifications", desc: "Receive email for new messages", icon: <Mail className="h-5 w-5" />, enabled: true },
     { id: 2, title: "Push Notifications", desc: "Get push alerts on your device", icon: <Bell className="h-5 w-5" />, enabled: false },
     { id: 3, title: "SMS Alerts", desc: "Text message notifications", icon: <Zap className="h-5 w-5" />, enabled: false },
   ]);
 
-  const toggle = (id: number) => setCards(cards.map((c) => c.id === id ? { ...c, enabled: !c.enabled } : c));
-
-  return (
-    <div className="w-full max-w-md space-y-3">
-      {cards.map((card) => (
-        <div key={card.id} className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${card.enabled ? "border-primary bg-primary/5" : "border-border"}`}>
-          <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${card.enabled ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-              {card.icon}
-            </div>
-            <div>
-              <p className="text-sm font-medium">{card.title}</p>
-              <p className="text-xs text-muted-foreground">{card.desc}</p>
-            </div>
-          </div>
-          <Toggle enabled={card.enabled} onToggle={() => toggle(card.id)} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function MultipleSelectionDemo() {
-  const [selected, setSelected] = useState<string[]>(["pro"]);
-  const plans = [
-    { id: "free", title: "Free", desc: "Basic features", price: "$0/mo" },
-    { id: "pro", title: "Pro", desc: "Advanced features", price: "$19/mo" },
-    { id: "enterprise", title: "Enterprise", desc: "Full access", price: "$99/mo" },
-  ];
-
-  const select = (id: string) => setSelected([id]);
-
-  return (
-    <div className="w-full max-w-md grid grid-cols-3 gap-3">
-      {plans.map((plan) => (
-        <button key={plan.id} onClick={() => select(plan.id)}
-          className={`rounded-xl border p-4 text-left transition-all ${selected.includes(plan.id) ? "border-primary bg-primary/5 ring-2 ring-primary" : "border-border hover:border-primary/50"}`}>
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold">{plan.title}</p>
-            {selected.includes(plan.id) && <Check className="h-4 w-4 text-primary" />}
-          </div>
-          <p className="text-xs text-muted-foreground mb-1">{plan.desc}</p>
-          <p className="text-lg font-bold">{plan.price}</p>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function WithIconsDemo() {
   const [settings, setSettings] = useState([
     { id: "security", title: "Two-Factor Auth", desc: "Extra layer of security", icon: <Shield className="h-5 w-5" />, enabled: true },
     { id: "privacy", title: "Profile Visible", desc: "Show profile to others", icon: <Eye className="h-5 w-5" />, enabled: false },
@@ -91,127 +34,121 @@ function WithIconsDemo() {
     { id: "encrypt", title: "End-to-End Encryption", desc: "Encrypt all messages", icon: <Lock className="h-5 w-5" />, enabled: false },
   ]);
 
-  const toggle = (id: string) => setSettings(settings.map((s) => s.id === id ? { ...s, enabled: !s.enabled } : s));
+  const [selected, setSelected] = useState("pro");
+
+  const toggleNotif = (id: number) =>
+    setNotifications((prev) => prev.map((c) => (c.id === id ? { ...c, enabled: !c.enabled } : c)));
+
+  const toggleSetting = (id: string) =>
+    setSettings((prev) => prev.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s)));
 
   return (
-    <div className="w-full max-w-md space-y-2">
-      {settings.map((s) => (
-        <div key={s.id} onClick={() => toggle(s.id)}
-          className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all ${s.enabled ? "border-green-500 bg-green-50 dark:bg-green-950" : "border-border"}`}>
-          <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${s.enabled ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300" : "bg-muted text-muted-foreground"}`}>
-            {s.icon}
+    <ComponentDocPage
+      name="Toggle Card"
+      category="Forms"
+      description="Card-based toggle selection for settings, preferences, and feature toggles. Supports single and multiple selection with icons, keyboard navigation, and accessible markup."
+    >
+      <PreviewPanel filename="toggle-card.tsx">
+        <div className="w-full max-w-md space-y-3">
+          {notifications.map((card) => (
+            <ToggleCard
+              key={card.id}
+              title={card.title}
+              description={card.desc}
+              icon={card.icon}
+              enabled={card.enabled}
+              onChange={() => toggleNotif(card.id)}
+            />
+          ))}
+        </div>
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={TOGGLE_CARD_SOURCE}
+        filename="components/ui/ToggleCard/ToggleCard.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <ExampleBlock
+          title="With Icons"
+          description="Toggle cards with descriptive icons and different color states."
+          code={`<ToggleCard title="Security" icon={<Shield />} enabled={v} onChange={setV} />`}
+          filename="icons.tsx"
+        >
+          <div className="w-full max-w-md space-y-2">
+            {settings.map((s) => (
+              <ToggleCard
+                key={s.id}
+                title={s.title}
+                description={s.desc}
+                icon={s.icon}
+                enabled={s.enabled}
+                onChange={() => toggleSetting(s.id)}
+              />
+            ))}
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium">{s.title}</p>
-            <p className="text-xs text-muted-foreground">{s.desc}</p>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Single Selection"
+          description="Radio-style card selection for plans."
+          code={`<ToggleCard title="Free" enabled={selected === "free"} onChange={() => setSelected("free")} />`}
+          filename="single-selection.tsx"
+        >
+          <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {(["free", "pro", "enterprise"] as const).map((plan) => (
+              <ToggleCard
+                key={plan}
+                title={plan.charAt(0).toUpperCase() + plan.slice(1)}
+                description={plan === "free" ? "$0/mo" : plan === "pro" ? "$19/mo" : "$99/mo"}
+                enabled={selected === plan}
+                onChange={() => setSelected(plan)}
+              />
+            ))}
           </div>
-          <Toggle enabled={s.enabled} onToggle={() => toggle(s.id)} />
-        </div>
-      ))}
-    </div>
-  );
-}
+        </ExampleBlock>
 
-export default function ToggleCardPage() {
-  return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Toggle Card</h1>
-          <Badge variant="primary">Forms</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Card-based toggle selection for settings, preferences, and feature toggles. Supports single and multiple selection.
-        </p>
-      </header>
+        <ExampleBlock
+          title="No Icon"
+          description="Toggle cards without icons work well for simple settings."
+          code={`<ToggleCard title="Dark Mode" description="Use dark theme" enabled={v} onChange={setV} />`}
+          filename="no-icon.tsx"
+        >
+          <div className="w-full max-w-md space-y-3">
+            <ToggleCard title="Dark Mode" description="Use dark theme" enabled onChange={() => {}} />
+            <ToggleCard title="Auto-save" description="Save changes automatically" enabled={false} onChange={() => {}} />
+            <ToggleCard title="Beta Features" description="Try experimental features" enabled={false} onChange={() => {}} />
+          </div>
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+        <ExampleBlock
+          title="Disabled"
+          description="Disabled cards cannot be interacted with."
+          code={`<ToggleCard title="Locked" disabled />`}
+          filename="disabled.tsx"
+        >
+          <div className="w-full max-w-md space-y-3">
+            <ToggleCard title="Organization Settings" description="Managed by admin" disabled enabled={false} onChange={() => {}} />
+            <ToggleCard title="Two-Factor Auth" description="Required for compliance" disabled enabled onChange={() => {}} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Keyboard Navigation"
+          description="Navigate with Tab and toggle with Enter or Space."
+          code={`{/* Tab between cards, press Enter or Space to toggle */}`}
+          filename="keyboard.tsx"
+        >
+          <div className="w-full max-w-md space-y-3">
+            <ToggleCard title="Item One" description="Tab here, press Enter" enabled onChange={() => {}} />
+            <ToggleCard title="Item Two" description="Then press Space" enabled={false} onChange={() => {}} />
+            <ToggleCard title="Item Three" description="Then Tab away" enabled onChange={() => {}} />
+          </div>
+        </ExampleBlock>
       </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Basic Toggle Cards</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Simple toggle cards for notification settings.</p>
-        </div>
-        <ComponentPreview id="toggle-card-basic">
-          <BasicToggleCardsDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Multiple Selection</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Radio-style card selection for plans.</p>
-        </div>
-        <ComponentPreview id="toggle-card-multiple">
-          <MultipleSelectionDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Icons</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Toggle cards with descriptive icons.</p>
-        </div>
-        <ComponentPreview id="toggle-card-icons">
-          <WithIconsDemo />
-        </ComponentPreview>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">title</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">description</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">icon</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">enabled</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">onChange</td>
-                <td className="px-4 py-3 text-muted-foreground">(enabled: boolean) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+    </ComponentDocPage>
   );
 }

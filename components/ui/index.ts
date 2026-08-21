@@ -196,6 +196,8 @@ export { Toggle } from "./Toggle";
 export type { ToggleProps } from "./Toggle";
 export { ToggleGroup, ToggleGroupItem } from "./ToggleGroup";
 export type { ToggleGroupProps, ToggleGroupItemProps } from "./ToggleGroup";
+export { ToggleCard } from "./ToggleCard";
+export type { ToggleCardProps } from "./ToggleCard";
 export { Tooltip } from "./Tooltip";
 export type { TooltipProps } from "./Tooltip";
 export { Typography } from "./Typography";
