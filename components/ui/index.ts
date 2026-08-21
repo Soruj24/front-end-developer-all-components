@@ -159,6 +159,7 @@ export type { ScrollAreaProps } from "./ScrollArea";
 export { SearchInput } from "./SearchInput";
 export type { SearchInputProps } from "./SearchInput";
 export { Select } from "./Select";
+export type { SelectProps } from "./Select";
 export {
   default as Skeleton,
   SkeletonCard,
