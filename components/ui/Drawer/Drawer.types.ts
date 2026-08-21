@@ -8,6 +8,7 @@ export interface DrawerProps {
 
 export interface DrawerTriggerProps {
   children: ReactNode;
+  className?: string;
 }
 
 export interface DrawerContentProps {
@@ -33,5 +34,10 @@ export interface DrawerDescriptionProps {
 
 export interface DrawerFooterProps {
   children: ReactNode;
+  className?: string;
+}
+
+export interface DrawerCloseProps {
+  children?: ReactNode;
   className?: string;
 }

@@ -6,6 +6,7 @@ export {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
+  DrawerClose,
 } from "./Drawer";
 export type {
   DrawerProps,
@@ -15,4 +16,5 @@ export type {
   DrawerTitleProps,
   DrawerDescriptionProps,
   DrawerFooterProps,
+  DrawerCloseProps,
 } from "./Drawer.types";
