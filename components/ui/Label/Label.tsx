@@ -8,13 +8,16 @@ export function Label({ htmlFor, children, required, disabled, className }: Labe
     <label
       htmlFor={htmlFor}
       className={cn(
-        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-        disabled && "opacity-50 cursor-not-allowed",
+        "text-sm font-medium leading-none text-foreground",
+        "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        disabled && "cursor-not-allowed opacity-50",
         className,
       )}
     >
       {children}
-      {required && <span className="text-red-500 ml-1">*</span>}
+      {required && (
+        <span className="ml-1 text-destructive" aria-hidden="true">*</span>
+      )}
     </label>
   );
 }
