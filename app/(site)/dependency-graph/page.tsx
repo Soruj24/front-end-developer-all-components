@@ -1,84 +1,104 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { Users, Shield, Link, Settings, Mail, Calendar, Clock, Folder, Globe, UsersRound, ShieldCheck, ShieldError, Trash2, FolderOpen, ShieldAlert, ShieldCheck2, UsersOff } from "lucide-react";
+import { DependencyGraph } from "@/components/ui/DependencyGraph";
+import type { GraphNode, GraphEdge } from "@/components/ui/DependencyGraph";
 
-const DEPENDENCY_GRAPH_SOURCE = "use client";
+const DEPENDENCY_GRAPH_SOURCE = `// See components/ui/DependencyGraph/DependencyGraph.tsx (277 lines)
+// Includes: pan, zoom, pinch, drag-nodes, search, minimap, focus, keyboard shortcuts`;
 
-function DependencyGraphDemo() {
-  const [nodes, setNodes] = useState(() => {
-    return [
-      { id: "1", label: "Auth Service", type: "service", color: "blue" },
-      { id: "2", label: "Database", type: "database", color: "green" },
-      { id: "3", label: "Cache", type: "cache", color: "orange" },
-      { id: "4", label: "API Gateway", type: "service", color: "blue" },
-      { id: "5", label: "Queue", type: "queue", color: "purple" },
-    ];
-  });
-  const [edges, setEdges] = useState(() => {
-    return [
-      { source: "1", target: "2", label: "writes to" },
-      { source: "1", target: "3", label: "reads from" },
-      { source: "2", target: "4", label: "served by" },
-      { source: "3", target: "1", label: "cached by" },
-      { source: "4", target: "5", label: "queues for" },
-    ];
-  });
+const SAMPLE_NODES: GraphNode[] = [
+  { id: "app", label: "App Shell", kind: "app", status: "ok" },
+  { id: "auth", label: "Auth Service", kind: "service", status: "ok" },
+  { id: "api", label: "API Gateway", kind: "service", status: "ok" },
+  { id: "db", label: "PostgreSQL", kind: "db", status: "ok" },
+  { id: "cache", label: "Redis Cache", kind: "db", status: "warn" },
+  { id: "queue", label: "Message Queue", kind: "queue", status: "ok" },
+  { id: "ui", label: "UI Components", kind: "ui", status: "ok" },
+  { id: "hooks", label: "React Hooks", kind: "hooks", status: "ok" },
+  { id: "utils", label: "Utilities", kind: "util", status: "ok" },
+  { id: "mail", label: "Email Service", kind: "service", status: "error" },
+];
 
+const SAMPLE_EDGES: GraphEdge[] = [
+  { from: "app", to: "auth" },
+  { from: "app", to: "api" },
+  { from: "app", to: "ui" },
+  { from: "auth", to: "db" },
+  { from: "auth", to: "cache" },
+  { from: "api", to: "auth" },
+  { from: "api", to: "db" },
+  { from: "api", to: "cache" },
+  { from: "api", to: "queue" },
+  { from: "queue", to: "mail" },
+  { from: "ui", to: "hooks" },
+  { from: "hooks", to: "utils" },
+];
+
+const SMALL_NODES: GraphNode[] = [
+  { id: "a", label: "Component A", kind: "component" },
+  { id: "b", label: "Component B", kind: "component" },
+  { id: "c", label: "Service C", kind: "service" },
+  { id: "d", label: "Utils D", kind: "util" },
+];
+
+const SMALL_EDGES: GraphEdge[] = [
+  { from: "a", to: "b" },
+  { from: "a", to: "c" },
+  { from: "b", to: "d" },
+  { from: "c", to: "d" },
+];
+
+const BASIC_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={nodes} edges={edges} />`;
+
+const MINIMAP_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={nodes} edges={edges} minimap />`;
+
+const NO_SEARCH_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={nodes} edges={edges} searchable={false} />`;
+
+const NO_MINIMAP_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={nodes} edges={edges} minimap={false} />`;
+
+const EMPTY_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={[]} edges={[]} />`;
+
+const SELECT_CODE = `"use client";
+import { DependencyGraph } from "@/components/ui/DependencyGraph";
+import type { GraphNode } from "@/components/ui/DependencyGraph";
+
+function SelectExample() {
+  const [selected, setSelected] = useState<GraphNode | null>(null);
   return (
-    <div className="h-96 w-full rounded-lg border border-border bg-surface dark:border-white/[.145] overflow-hidden">
-      <svg className="w-full h-full" aria-labelledby="graph-title">
-        <g fill="none" stroke-width="2">
-          {edges.map((edge) => {
-            const sourceNode = nodes.find((n) => n.id === edge.source);
-            const targetNode = nodes.find((n) => n.id === edge.target);
-            const color = sourceNode?.color === "blue" ? "currentColor" : sourceNode?.color === "green" ? "#22c55e" : "#f97316";
-            return (
-              <path
-                key={edge.source + edge.target}
-                d={`M${sourceNode?.x || 0},${sourceNode?.y || 0} C${(sourceNode?.x || 0) + 100},${(sourceNode?.y || 0) - 50} ${(targetNode?.x || 0) - 100},${(targetNode?.y || 0) + 50} ${targetNode?.x || 0},${targetNode?.y || 0}`}
-                stroke={color}
-                fill="none"
-              />
-            );
-          })}
-          {nodes.map((node) => {
-            const color = node.color === "blue" ? "currentColor" : node.color === "green" ? "#22c55e" : "#f97316";
-            return (
-              <g key={node.id}>
-                <circle
-                  cx={node.x || 50}
-                  cy={node.y || 50}
-                  r={16}
-                  fill={color}
-                  stroke="white"
-                  strokeWidth="2"
-                />
-                <text x={node.x || 50} y={node.y || 50} textAnchor="middle" dominantBaseline="middle" fontSize="11" fill="white">
-                  {node.label}
-                </text>
-              </g>
-            );
-          })}
-        </g>
-        <text id="graph-title" x="20" y="20" fontSize="14" fill="white" opacity="0.8">
-          Dependency Graph
-        </text>
-      </svg>
+    <div>
+      <DependencyGraph nodes={nodes} edges={edges} onNodeSelect={setSelected} />
+      {selected && <p>Selected: {selected.label}</p>}
     </div>
   );
-}
+}`;
+
+const HEIGHT_CODE = `import { DependencyGraph } from "@/components/ui/DependencyGraph";
+
+<DependencyGraph nodes={nodes} edges={edges} height={300} minHeight={300} />`;
 
 export default function DependencyGraphPage() {
+  const [selected, setSelected] = useState<GraphNode | null>(null);
+
   return (
     <ComponentDocPage
       name="Dependency Graph"
       category="Data Display"
-      description="A visual dependency graph showing relationships between services, databases, and components with interactive node highlighting."
+      description="An interactive dependency graph with pan, zoom, pinch, node drag, search, minimap, focus mode, and keyboard shortcuts."
     >
-      <PreviewPanel filename="dependency-graph.tsx">
-        <DependencyGraphDemo />
+      <PreviewPanel filename="dependency-graph-preview.tsx">
+        <DependencyGraph nodes={SAMPLE_NODES} edges={SAMPLE_EDGES} minHeight={400} />
       </PreviewPanel>
 
       <SourceCodeViewer
@@ -87,15 +107,48 @@ export default function DependencyGraphPage() {
         defaultExpanded
       />
 
-      <div className="flex flex-col gap-4">
-        <ExampleBlock title="Default Graph" description="Visualize service dependencies." code={DEPENDENCY_GRAPH_SOURCE}>
-          <DependencyGraphDemo />
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock title="Basic Graph" description="Auto-layout with pan, zoom, and pinch support." code={BASIC_CODE} filename="basic.tsx">
+          <DependencyGraph nodes={SMALL_NODES} edges={SMALL_EDGES} minHeight={320} />
         </ExampleBlock>
 
-        <ExampleBlock title="Custom Data" description="Import custom nodes and edges data." code={DEPENDENCY_GRAPH_SOURCE}>
-          <DependencyGraphDemo />
+        <ExampleBlock title="Full Feature Set" description="Search, minimap, and node focus with a status indicator." code={MINIMAP_CODE} filename="full.tsx">
+          <DependencyGraph nodes={SAMPLE_NODES} edges={SAMPLE_EDGES} minHeight={440} />
         </ExampleBlock>
-      </div>
+
+        <ExampleBlock title="Node Selection" description="Click a node to select it and fire onNodeSelect." code={SELECT_CODE} filename="select.tsx">
+          <div className="flex flex-col gap-3">
+            <DependencyGraph nodes={SMALL_NODES} edges={SMALL_EDGES} onNodeSelect={setSelected} minHeight={320} />
+            {selected && (
+              <div className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm">
+                <span className="text-muted-foreground">Selected: </span>
+                <span className="font-medium text-foreground">{selected.label}</span>
+                {selected.kind && <span className="ml-1.5 text-muted-foreground">({selected.kind})</span>}
+              </div>
+            )}
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock title="Without Search" description="Hide the search bar." code={NO_SEARCH_CODE} filename="no-search.tsx">
+          <DependencyGraph nodes={SMALL_NODES} edges={SMALL_EDGES} searchable={false} minHeight={320} />
+        </ExampleBlock>
+
+        <ExampleBlock title="Without Minimap" description="Hide the minimap for a cleaner view." code={NO_MINIMAP_CODE} filename="no-minimap.tsx">
+          <DependencyGraph nodes={SMALL_NODES} edges={SMALL_EDGES} minimap={false} minHeight={320} />
+        </ExampleBlock>
+
+        <ExampleBlock title="Custom Height" description="Control the graph container height." code={HEIGHT_CODE} filename="height.tsx">
+          <DependencyGraph nodes={SMALL_NODES} edges={SMALL_EDGES} height={300} minHeight={300} />
+        </ExampleBlock>
+
+        <ExampleBlock title="Empty State" description="Display a message when no nodes are provided." code={EMPTY_CODE} filename="empty.tsx">
+          <DependencyGraph nodes={[]} edges={[]} height={200} minHeight={200} emptyMessage="No dependencies to display." />
+        </ExampleBlock>
+      </section>
     </ComponentDocPage>
   );
 }

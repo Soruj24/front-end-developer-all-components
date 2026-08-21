@@ -243,14 +243,14 @@ export function DependencyGraph({ nodes, edges, width = "100%", height, minHeigh
 
   if (nodes.length === 0) {
     return (
-      <div ref={containerRef} className={cn("relative flex items-center justify-center overflow-hidden rounded-2xl border border-border bg-background bg-dots", className)} style={{ width, height, minHeight }}>
+      <div ref={containerRef} className={cn("relative flex items-center justify-center overflow-hidden rounded-2xl border border-border bg-card bg-dots", className)} style={{ width, height, minHeight }}>
         <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className={cn("relative overflow-hidden rounded-2xl border border-border bg-background bg-dots", className)} style={{ width, height, minHeight }}>
+    <div ref={containerRef} className={cn("relative overflow-hidden rounded-2xl border border-border bg-card bg-dots", className)} style={{ width, height, minHeight }}>
       <svg ref={svgRef} role="img" aria-label="Dependency graph" data-lod="high" className="absolute inset-0 h-full w-full touch-none select-none"
         onPointerDown={handleSvgPointerDown} onPointerMove={handleSvgPointerMove} onPointerUp={handleSvgPointerUp} onPointerCancel={handleSvgPointerUp}>
         <defs>
