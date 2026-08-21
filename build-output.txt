@@ -1,0 +1,2163 @@
+﻿Ôû▓ Next.js 16.2.12 (Turbopack)
+
+  Creating an optimized production build ...
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+> Build error occurred
+Error: Turbopack build failed with 82 errors:
+./app/(site)/landing-hero/page.tsx:287:147
+Expected '</', got ':'
+  [90m285 |[0m ...[35mx-4 py-3 text-muted-foreground">string</td[0m><td className=[32m"px-4 py-3 
+text-muted-foregro...[0m
+  [90m286 |[0m ...[35mame="px-4 py-3 text-muted-foreground">string</td[0m><td className=[32m"px-4 py-3 
+text-muted-f...[0m
+[31m[1m>[0m [90m287 |[0m ...[35mme="px-4 py-3 text-muted-foreground">{label: string; href: string}</td[0m><td 
+className=[32m"...[0m
+  [90m    |[0m                                               [31m[1m^[0m
+  [90m288 |[0m ...[35mName="px-4 py-3 text-muted-foreground">{label: string; href: string}</td[0m><td 
+className.[32m..[0m
+  [90m289 |[0m ...[35massName="px-4 py-3 text-muted-foreground">boolean</td[0m><td className=[32m"px-4 py-3 
+text-mu...[0m
+  [90m290 |[0m ...[35me="px-4 py-3 text-muted-foreground">string</td[0m><td className=[32m"px-4 py-3 
+text-muted-for...[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/lightbox-view/page.tsx:290:141
+Expected '</', got ':'
+  [90m288 |[0m ...
+  [90m289 |[0m ...
+[31m[1m>[0m [90m290 |[0m ...[35mName="px-4 py-3 text-muted-foreground">{src: string; alt: string; caption?: 
+string}[]<...[0m
+  [90m    |[0m                                               [31m[1m^[0m
+  [90m291 |[0m ...[35m className="px-4 py-3 text-muted-foreground">number</td[0m><td className=[32m"px-4 py-3 
+text-...[0m
+  [90m292 |[0m ...[35mtd className="px-4 py-3 text-muted-foreground">boolean</td[0m><td className=[32m"px-4 py-3 
+te...[0m
+  [90m293 |[0m ...[35m className="px-4 py-3 text-muted-foreground">boolean</td[0m><td className=[32m"px-4 py-3 
+text...[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/logo-cloud/page.tsx:291:141
+Expected '</', got ':'
+  [90m289 |[0m ...
+  [90m290 |[0m ...
+[31m[1m>[0m [90m291 |[0m ...[35mame="px-4 py-3 text-muted-foreground">{name: string; src: string; href?: 
+string}[]</td[0m...
+  [90m    |[0m                                               [31m[1m^[0m
+  [90m292 |[0m ...[35msName="px-4 py-3 text-muted-foreground">"grid" | "marquee"</td[0m><td className=[32m"px-4 
+py-...[0m
+  [90m293 |[0m ...[35msName="px-4 py-3 text-muted-foreground">number</td[0m><td className=[32m"px-4 py-3 
+text-muted...[0m
+  [90m294 |[0m ...[35massName="px-4 py-3 text-muted-foreground">boolean</td[0m><td className=[32m"px-4 py-3 
+text-mu...[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/counter-badge/page.tsx:31:263
+Expected '</', got '['
+  [90m29 |[0m ...
+  [90m30 |[0m ...
+[31m[1m>[0m [90m31 |[0m ...[32mte"[0m : [32m"bg-red-500 text-white"[0m[32m}`[0m} h-[35m6[0m 
+min-w-[[35m24[0mpx] rounded-full px-[35m1.5[0m flex items-center...
+  [90m   |[0m                                               [31m[1m^[0m
+  [90m32 |[0m ...
+  [90m33 |[0m ...
+  [90m34 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/hamburger-menu/page.tsx:311:68
+Expected '</', got 'default'
+  [90m309 |[0m ...=[32m"border-b"[0m>
+  [90m310 |[0m ...me=[32m"px-4 py-3 font-mono text-xs"[0m>variant</td>
+[31m[1m>[0m [90m311 |[0m ...me=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0m[36mdefault[0m[32m" | 
+"[0mslide[32m" | "[0moverlay[32m" | "[0mfullscreen[32m""[0m...
+  [90m    |[0m                                            [31m[1m^^^^^^^[0m
+  [90m312 |[0m ...me=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0m[36mdefault[0m[32m""[0m}</td>
+  [90m313 |[0m ...me=[32m"px-4 py-3"[0m>[33mNo[0m</td>
+  [90m314 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/dashboard-grid/page.tsx:27:14
+Expected '</', got 'ident'
+  [90m25 |[0m     <div className=[32m"flex flex-col gap-3"[0m><p className=[32m"text-sm 
+text-muted-foreground"[0m>[33mDash...[0m
+  [90m26 |[0m [32m        <div className="[0mrounded-lg border bg-background p-[35m3[0m[32m"><div 
+className="[0mflex items-ce...
+[31m[1m>[0m [90m27 |[0m [32m        <div className="[0mrounded-lg border bg-background p-[35m3[0m[32m"><div 
+className="[0mflex items-ce...
+  [90m   |[0m              [31m[1m^^^^^^^^^[0m
+  [90m28 |[0m [32m        <div className="[0mrounded-lg border bg-background p-[35m3[0m[32m"><div 
+className="[0mflex items-ce...
+  [90m29 |[0m [32m        <div className="[0mrounded-lg border bg-background p-[35m3[0m[32m"><div 
+className="[0mflex items-ce...
+  [90m30 |[0m [32m      </div></div>[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/highlight-text/page.tsx:323:68
+Expected '</', got 'ident'
+  [90m321 |[0m ...e=[32m"border-b"[0m>
+  [90m322 |[0m ...ame=[32m"px-4 py-3 font-mono text-xs"[0m>variant</td>
+[31m[1m>[0m [90m323 |[0m ...ame=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0msolid[32m" | 
+"[0munderline[32m" | "[0mgradient[32m" | "[0mneon[32m""[0m}<...
+  [90m    |[0m                                             [31m[1m^^^^^[0m
+  [90m324 |[0m ...ame=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0msolid[32m""[0m}</td>
+  [90m325 |[0m ...ame=[32m"px-4 py-3"[0m>[33mNo[0m</td>
+  [90m326 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/list-accordion/page.tsx:13:15
+Expected '</', got 'ident'
+  [90m11 |[0m     <div className=[32m"rounded-xl border bg-background p-6 flex flex-col gap-4"[0m>
+  [90m12 |[0m       <div className=[32m"flex items-center gap-3"[0m>
+[31m[1m>[0m [90m13 |[0m         {icon className=[32m"w-5 h-5 text-primary"[0m} 
+  [90m   |[0m               [31m[1m^^^^^^^^^[0m
+  [90m14 |[0m         <h3 className=[32m"font-semibold text-foreground"[0m>{title}</h3>
+  [90m15 |[0m         <[33mBadge[0m variant=[32m"outline"[0m className=[32m"ml-auto"[0m>[33mDemo[0m 
+{badgeNum}</[33mBadge[0m>
+  [90m16 |[0m       </div>
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/wave-background/page.tsx:280:68
+Expected '</', got 'ident'
+  [90m278 |[0m ...e=[32m"border-b"[0m>
+  [90m279 |[0m ...ame=[32m"px-4 py-3 font-mono text-xs"[0m>variant</td>
+[31m[1m>[0m [90m280 |[0m ...ame=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0mhero[32m" | 
+"[0mdivider[32m" | "[0mfooter[32m""[0m}</td>
+  [90m    |[0m                                             [31m[1m^^^^[0m
+  [90m281 |[0m ...ame=[32m"px-4 py-3 text-muted-foreground"[0m>[32m"divider"[0m</td>
+  [90m282 |[0m ...ame=[32m"px-4 py-3"[0m>[33mNo[0m</td>
+  [90m283 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/zigzag-divider-v2/page.tsx:274:68
+Expected '</', got 'ident'
+  [90m272 |[0m ...me=[32m"border-b"[0m>
+  [90m273 |[0m ...Name=[32m"px-4 py-3 font-mono text-xs"[0m>variant</td>
+[31m[1m>[0m [90m274 |[0m ...Name=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0mtop[32m" | 
+"[0mbottom[32m" | "[0mdouble[32m""[0m}</td>
+  [90m    |[0m                                              [31m[1m^^^[0m
+  [90m275 |[0m ...Name=[32m"px-4 py-3 text-muted-foreground"[0m>[32m"top"[0m</td>
+  [90m276 |[0m ...Name=[32m"px-4 py-3"[0m>[33mNo[0m</td>
+  [90m277 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/zigzag-path/page.tsx:380:68
+Expected '</', got 'ident'
+  [90m378 |[0m ...[32mborder-b"[0m>
+  [90m379 |[0m ...=[32m"px-4 py-3 font-mono text-xs"[0m>direction</td>
+[31m[1m>[0m [90m380 |[0m ...=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0mhorizontal[32m" | 
+"[0mvertical[32m""[0m}</td>
+  [90m    |[0m                                          [31m[1m^^^^^^^^^^[0m
+  [90m381 |[0m ...=[32m"px-4 py-3 text-muted-foreground"[0m>{[32m""[0mhorizontal[32m""[0m}</td>
+  [90m382 |[0m ...=[32m"px-4 py-3"[0m>[33mNo[0m</td>
+  [90m383 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/modal-center/page.tsx:30:1322
+Expected '</', got 'jsx text'
+  [90m28 |[0m ...
+  [90m29 |[0m ...
+[31m[1m>[0m [90m30 |[0m ...[35ms"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" 
+stroke="currentColor"><path...[0m
+  [90m   |[0m                                                                                                        
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+      [31m[1m[0m
+[31m[1m>[0m [90m31 |[0m ...
+  [90m   |[0m    [31m[1m^^^^^^[0m
+  [90m32 |[0m ...
+  [90m33 |[0m ...
+  [90m34 |[0m ...
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/emoji-picker/emoji-picker-source.ts:16:10
+Expected '>', got 'ident'
+  [90m14 |[0m   [36mconst[0m category = categories[activeCategory];
+  [90m15 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m16 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m17 |[0m       <div className=[32m"max-w-md mx-auto rounded-xl border border-border bg-card overflow-hi...[0m
+  [90m18 |[0m         <div className=[32m"p-2 border-b border-border"[0m>
+  [90m19 |[0m           <input
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/emoji-picker/emoji-picker-source.ts [Client Component Browser]
+    ./app/(site)/emoji-picker/page.tsx [Client Component Browser]
+    ./app/(site)/emoji-picker/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/emoji-picker/emoji-picker-source.ts [Client Component SSR]
+    ./app/(site)/emoji-picker/page.tsx [Client Component SSR]
+    ./app/(site)/emoji-picker/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/AudioBars-source.ts:22:10
+Expected '>', got 'ident'
+  [90m20 |[0m   }, [running]);
+  [90m21 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m22 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m23 |[0m       <div className=[32m"max-w-2xl mx-auto"[0m>
+  [90m24 |[0m         <div className=[32m"flex items-center justify-between mb-4"[0m>
+  [90m25 |[0m           <h4 className=[32m"font-medium"[0m>[33mStereo[0m [33mAudio[0m [33mBars[0m</h4>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/AudioBars-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/AudioBars-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/BarEqualizer-source.ts:17:10
+Expected '>', got 'ident'
+  [90m15 |[0m   }, [animating]);
+  [90m16 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m17 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m18 |[0m       <div className=[32m"max-w-xl mx-auto"[0m>
+  [90m19 |[0m         <div className=[32m"flex items-center justify-between mb-4"[0m>
+  [90m20 |[0m           <h4 className=[32m"font-medium"[0m>[33mVertical[0m [33mBand[0m [33mEqualizer[0m</h4>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/BarEqualizer-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/BarEqualizer-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/CircleEqualizer-source.ts:8:10
+Expected '>', got 'ident'
+  [90m 6 |[0m   [36mconst[0m [levels] = useState([[35m50[0m, [35m70[0m, [35m30[0m, [35m85[0m, [35m40[0m, 
+[35m60[0m, [35m25[0m, [35m75[0m]);
+  [90m 7 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m 8 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m 9 |[0m       <div className=[32m"max-w-xl mx-auto"[0m>
+  [90m10 |[0m         <h4 className=[32m"font-medium mb-4"[0m>[33mCircular[0m [33mEqualizer[0m</h4>
+  [90m11 |[0m         <div className=[32m"flex justify-center gap-4 flex-wrap"[0m>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/CircleEqualizer-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/CircleEqualizer-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/CustomEQ-source.ts:13:10
+Expected '>', got 'ident'
+  [90m11 |[0m   [36mconst[0m [qFactor, setQFactor] = useState([35m1[0m);
+  [90m12 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m13 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m14 |[0m       <div className=[32m"max-w-2xl mx-auto"[0m>
+  [90m15 |[0m         <h4 className=[32m"font-medium mb-4"[0m>[33mParametric[0m [33mEQ[0m</h4>
+  [90m16 |[0m         <div className=[32m"space-y-3 mb-6"[0m>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/CustomEQ-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/CustomEQ-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/FrequencyBands-source.ts:12:10
+Expected '>', got 'ident'
+  [90m10 |[0m   ]);
+  [90m11 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m12 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m13 |[0m       <div className=[32m"max-w-2xl mx-auto"[0m>
+  [90m14 |[0m         <h4 className=[32m"font-medium mb-4"[0m>[35m10[0m-[33mBand[0m [33mGraphic[0m 
+[33mEQ[0m</h4>
+  [90m15 |[0m         <div className=[32m"flex items-end gap-2 justify-center h-48 px-4"[0m>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/FrequencyBands-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/FrequencyBands-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/PresetEQ-source.ts:18:10
+Expected '>', got 'ident'
+  [90m16 |[0m   [36mconst[0m levels = presets[preset [36mas[0m keyof [36mtypeof[0m presets];
+  [90m17 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m18 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m19 |[0m       <div className=[32m"max-w-xl mx-auto"[0m>
+  [90m20 |[0m         <h4 className=[32m"font-medium mb-4"[0m>[33mEQ[0m [33mPresets[0m</h4>
+  [90m21 |[0m         <div className=[32m"flex gap-2 flex-wrap mb-4"[0m>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/PresetEQ-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/PresetEQ-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/equalizer/Visualizer-source.ts:16:10
+Expected '>', got 'ident'
+  [90m14 |[0m   }, [running]);
+  [90m15 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m16 |[0m     <div className=[32m"w-full p-4"[0m>
+  [90m   |[0m          [31m[1m^^^^^^^^^[0m
+  [90m17 |[0m       <div className=[32m"max-w-2xl mx-auto"[0m>
+  [90m18 |[0m         <div className=[32m"flex items-center justify-between mb-4"[0m>
+  [90m19 |[0m           <h4 className=[32m"font-medium"[0m>[33mSpectrum[0m [33mVisualizer[0m</h4>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/equalizer/Visualizer-source.ts [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Client Component Browser]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/equalizer/Visualizer-source.ts [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Client Component SSR]
+    ./app/(site)/equalizer/page.tsx [Server Component]
+
+
+./app/(site)/contact-card/contact-card-source.ts:16:22
+Expected a semicolon
+  [90m14 |[0m
+  [90m15 |[0m   [36mreturn[0m (
+[31m[1m>[0m [90m16 |[0m     <div className={[32m`rounded-xl border border-border bg-card p-6 
+[0m${className[32m} transition-c...[0m
+  [90m   |[0m                      [31m[1m^^^^^^^[0m
+  [90m17 |[0m       <div className=[32m"flex flex-col items-center text-center"[0m>
+  [90m18 |[0m         <div className=[32m"h-16 w-16 rounded-full bg-primary/10 flex items-center justify-cen...[0m
+  [90m19 |[0m           {name.split([32m" "[0m)[[35m0[0m].charAt([35m0[0m)}
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/contact-card/contact-card-source.ts [Client Component Browser]
+    ./app/(site)/contact-card/page.tsx [Client Component Browser]
+    ./app/(site)/contact-card/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/contact-card/contact-card-source.ts [Client Component SSR]
+    ./app/(site)/contact-card/page.tsx [Client Component SSR]
+    ./app/(site)/contact-card/page.tsx [Server Component]
+
+
+./app/(site)/dropdown/page.tsx:103:26
+Expected a semicolon
+  [90m101 |[0m };
+  [90m102 |[0m
+[31m[1m>[0m [90m103 |[0m [36mexport[0m [36mdefault[0m [33mDropdown[0m;[32m`";[0m
+  [90m    |[0m                          [31m[1m^^[0m
+  [90m104 |[0m
+  [90m105 |[0m [32mconst BASIC_CODE = `[0m[36mimport[0m { [33mDropdown[0m } [36mfrom[0m 
+[32m"@/components/ui/Dropdown"[0m;
+  [90m106 |[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/pagination-bar/page.tsx:17:29
+Expected a semicolon
+  [90m15 |[0m [36mconst[0m isPill = (v) => v === [32m"pill"[0m;
+  [90m16 |[0m [36mconst[0m isOutline = (v) => v === [32m"outline"[0m;
+[31m[1m>[0m [90m17 |[0m [36mconst[0m btnClass = (v, s) => [32m`[0m${isPill(v) ? [32m"rounded-full"[0m : 
+[32m"rounded-md"[0m[32m} [0m${s === [32m"sm"[0m ? [32m"h...[0m
+  [90m   |[0m                             [31m[1m^[0m
+  [90m18 |[0m [36mconst[0m navClass = (s) => s === [32m"sm"[0m ? [32m"h-8 text-xs"[0m : s === [32m"lg"[0m ? 
+[32m"h-11 text-base"[0m : [32m"h-9 ...[0m
+  [90m19 |[0m [36mconst[0m activeClass = (v) => isOutline(v) ? [32m"border-primary text-primary 
+bg-primary/10"[0m : [32m"b...[0m
+  [90m20 |[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/brackets-code/page.tsx:112:11
+Expression expected
+  [90m110 |[0m [32m  spellCheck={false} />[0m
+  [90m111 |[0m [32m`[0m}
+[31m[1m>[0m [90m112 |[0m           <[33mEditorCode[0m />
+  [90m    |[0m           [31m[1m^[0m
+  [90m113 |[0m         </[33mExampleBlock[0m>
+  [90m114 |[0m       </div>
+  [90m115 |[0m     </[33mComponentDocPage[0m>
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/brackets-code/page.tsx:112:24
+Expression expected
+  [90m110 |[0m [32m  spellCheck={false} />[0m
+  [90m111 |[0m [32m`[0m}
+[31m[1m>[0m [90m112 |[0m           <[33mEditorCode[0m />
+  [90m    |[0m                        [31m[1m^[0m
+  [90m113 |[0m         </[33mExampleBlock[0m>
+  [90m114 |[0m       </div>
+  [90m115 |[0m     </[33mComponentDocPage[0m>
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/date-range/page.tsx:25:9
+JSX Namespace is disabled by default because react does not support it yet. You can specify 
+jsc.transform.react.throwIfNamespace to false to override default behavior
+  [90m23 |[0m       <div>
+  [90m24 |[0m         <label className=[32m"block text-sm font-medium text-foreground 
+mb-1"[0m>[33mFrom[0m</label>
+[31m[1m>[0m [90m25 |[0m         <input
+  [90m   |[0m         [31m[1m^^^^^[0m
+[31m[1m>[0m [90m26 |[0m           [36mtype[0m=[32m"date"[0m
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m27 |[0m           value:[36mfrom[0m={dateRange.[36mfrom[0m}
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m28 |[0m           onChange={(e) =>
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m29 |[0m             setDateRange({
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m30 |[0m               [36mfrom[0m: e.target.valueAsDate ?? [36mnull[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m31 |[0m               to: dateRange.to,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m32 |[0m             })
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m33 |[0m           }
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m34 |[0m           className=[32m"rounded-border border-border w-full px-3 py-2 text-sm 
+focus:ring-1"[0m
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m35 |[0m         />
+  [90m   |[0m [31m[1m^^^^^^^^^^[0m
+  [90m36 |[0m         {showTime && (
+  [90m37 |[0m           <p className=[32m"mt-2 text-xs text-muted-foreground"[0m>
+  [90m38 |[0m             [33mFrom[0m {fromString} {dateRange.[36mfrom[0m?.toLocaleTimeString([], { hour: 
+[32m"2-digit"[0m, m...
+
+Ecmascript file had an error
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/date-range/page.tsx [Client Component Browser]
+    ./app/(site)/date-range/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/date-range/page.tsx [Client Component SSR]
+    ./app/(site)/date-range/page.tsx [Server Component]
+
+
+./app/(site)/date-range/page.tsx:45:9
+JSX Namespace is disabled by default because react does not support it yet. You can specify 
+jsc.transform.react.throwIfNamespace to false to override default behavior
+  [90m43 |[0m       <div>
+  [90m44 |[0m         <label className=[32m"block text-sm font-medium text-foreground mb-1"[0m>[33mTo[0m</label>
+[31m[1m>[0m [90m45 |[0m         <input
+  [90m   |[0m         [31m[1m^^^^^[0m
+[31m[1m>[0m [90m46 |[0m           [36mtype[0m=[32m"date"[0m
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m47 |[0m           value:to={dateRange.to}
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m48 |[0m           onChange={(e) =>
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m49 |[0m             setDateRange({
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m50 |[0m               [36mfrom[0m: dateRange.[36mfrom[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m51 |[0m               to: e.target.valueAsDate ?? [36mnull[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m52 |[0m             })
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m53 |[0m           }
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m54 |[0m           className=[32m"rounded-border border-border w-full px-3 py-2 text-sm 
+focus:ring-1"[0m
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m55 |[0m         />
+  [90m   |[0m [31m[1m^^^^^^^^^^[0m
+  [90m56 |[0m         {showTime && (
+  [90m57 |[0m           <p className=[32m"mt-2 text-xs text-muted-foreground"[0m>
+  [90m58 |[0m             [33mTo[0m {toString} {dateRange.to?.toLocaleTimeString([], { hour: [32m"2-digit"[0m, 
+minute:.[32m..[0m
+
+Ecmascript file had an error
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/date-range/page.tsx [Client Component Browser]
+    ./app/(site)/date-range/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/date-range/page.tsx [Client Component SSR]
+    ./app/(site)/date-range/page.tsx [Server Component]
+
+
+./app/(site)/typewriter-text/page.tsx:424:41
+Unexpected token. Did you mean `{'>'}` or `&gt;`?
+  [90m422 |[0m               <tr>
+  [90m423 |[0m                 <td className=[32m"p-3 font-mono text-xs"[0m>onComplete</td>
+[31m[1m>[0m [90m424 |[0m                 <td className=[32m"p-3"[0m>() => [36mvoid[0m</td>
+  [90m    |[0m                                         [31m[1m^[0m
+  [90m425 |[0m                 <td className=[32m"p-3"[0m>[36mundefined[0m</td>
+  [90m426 |[0m                 <td className=[32m"p-3"[0m>[33mCallback[0m when animation completes</td>
+  [90m427 |[0m               </tr>
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/pricing/page.tsx:168:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m166 |[0m     </div>
+  [90m167 |[0m   );
+[31m[1m>[0m [90m168 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m169 |[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/dropdown/page.tsx:103:26
+Unterminated string constant
+  [90m101 |[0m };
+  [90m102 |[0m
+[31m[1m>[0m [90m103 |[0m [36mexport[0m [36mdefault[0m [33mDropdown[0m;[32m`";[0m
+  [90m    |[0m                          [31m[1m^^[0m
+  [90m104 |[0m
+  [90m105 |[0m [32mconst BASIC_CODE = `[0m[36mimport[0m { [33mDropdown[0m } [36mfrom[0m 
+[32m"@/components/ui/Dropdown"[0m;
+  [90m106 |[0m
+
+Parsing ecmascript source code failed
+
+
+./app/(site)/ai/page.tsx:5:1
+Export AiDemos doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { [33mComponentDocPage[0m, [33mPreviewPanel[0m, [33mSourceCodeViewer[0m, 
+[33mExampleBlock[0m } [36mfrom[0m [32m"@/component...[0m
+  [90m4 |[0m [36mimport[0m { [33mAI_SOURCE[0m } [36mfrom[0m [32m"./ai-source"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m { [33mAiDemos[0m } [36mfrom[0m [32m"./ai-demos"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m
+  [90m7 |[0m [36mconst[0m [33mDEFAULT_EXAMPLE[0m = [32m`const { messages, input, setInput, isTyping, 
+handleSend, handleKey...[0m
+  [90m8 |[0m
+
+The export AiDemos was not found in module [project]/app/(site)/ai/ai-demos.tsx [app-client] (ecmascript).
+Did you mean to import useAiChat?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/page.tsx:5:1
+Export AiDemos doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { [33mComponentDocPage[0m, [33mPreviewPanel[0m, [33mSourceCodeViewer[0m, 
+[33mExampleBlock[0m } [36mfrom[0m [32m"@/component...[0m
+  [90m4 |[0m [36mimport[0m { [33mAI_SOURCE[0m } [36mfrom[0m [32m"./ai-source"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m { [33mAiDemos[0m } [36mfrom[0m [32m"./ai-demos"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m
+  [90m7 |[0m [36mconst[0m [33mDEFAULT_EXAMPLE[0m = [32m`const { messages, input, setInput, isTyping, 
+handleSend, handleKey...[0m
+  [90m8 |[0m
+
+The export AiDemos was not found in module [project]/app/(site)/ai/ai-demos.tsx [app-ssr] (ecmascript).
+Did you mean to import useAiChat?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/sun-bright/page.tsx:7:1
+Export Brightness doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m { [33mSun[0m, [33mSunrise[0m, [33mSunset[0m, [33mCloud[0m, 
+[33mThermometer[0m, [33mEye[0m, [33mBrightness[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m
+  [90m 9 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add sun-bright`[0m;
+  [90m10 |[0m [36mconst[0m usageCode = [32m`<SunBright size="lg" animated />`[0m;
+
+The export Brightness was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs 
+[app-client] (ecmascript).
+Did you mean to import Brain?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/sun-bright/page.tsx [Client Component Browser]
+    ./app/(site)/sun-bright/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/sun-bright/page.tsx [Client Component SSR]
+    ./app/(site)/sun-bright/page.tsx [Server Component]
+
+
+./app/(site)/sun-bright/page.tsx:7:1
+Export Brightness doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m { [33mSun[0m, [33mSunrise[0m, [33mSunset[0m, [33mCloud[0m, 
+[33mThermometer[0m, [33mEye[0m, [33mBrightness[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m
+  [90m 9 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add sun-bright`[0m;
+  [90m10 |[0m [36mconst[0m usageCode = [32m`<SunBright size="lg" animated />`[0m;
+
+The export Brightness was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] 
+(ecmascript).
+Did you mean to import Brain?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/sun-bright/page.tsx [Client Component Browser]
+    ./app/(site)/sun-bright/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/sun-bright/page.tsx [Client Component SSR]
+    ./app/(site)/sun-bright/page.tsx [Server Component]
+
+
+./app/(site)/target-goal/page.tsx:7:1
+Export Bullseye doesn't exist in target module
+  [90m 5 |[0m ...[36mt[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m ...[36mt[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m ...[36mt[0m { [33mTarget[0m, [33mCrosshair[0m, [33mBullseye[0m, 
+[33mTrendingUp[0m, [33mAward[0m, [33mStar[0m, [33mCheckCircle[0m } [36mfrom[0m [32m"lucide-re...[0m
+  [90m   |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m ...
+  [90m 9 |[0m ... installCommand = [32m`npx component-library@latest add target-goal`[0m;
+  [90m10 |[0m ... usageCode = [32m`<TargetGoal progress={75} label="Sales Target" />`[0m;
+
+The export Bullseye was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] 
+(ecmascript).
+Did you mean to import Bus?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/target-goal/page.tsx [Client Component Browser]
+    ./app/(site)/target-goal/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/target-goal/page.tsx [Client Component SSR]
+    ./app/(site)/target-goal/page.tsx [Server Component]
+
+
+./app/(site)/target-goal/page.tsx:7:1
+Export Bullseye doesn't exist in target module
+  [90m 5 |[0m ...[36mt[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m ...[36mt[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m ...[36mt[0m { [33mTarget[0m, [33mCrosshair[0m, [33mBullseye[0m, 
+[33mTrendingUp[0m, [33mAward[0m, [33mStar[0m, [33mCheckCircle[0m } [36mfrom[0m [32m"lucide-re...[0m
+  [90m   |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m ...
+  [90m 9 |[0m ... installCommand = [32m`npx component-library@latest add target-goal`[0m;
+  [90m10 |[0m ... usageCode = [32m`<TargetGoal progress={75} label="Sales Target" />`[0m;
+
+The export Bullseye was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] 
+(ecmascript).
+Did you mean to import Bus?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/target-goal/page.tsx [Client Component Browser]
+    ./app/(site)/target-goal/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/target-goal/page.tsx [Client Component SSR]
+    ./app/(site)/target-goal/page.tsx [Server Component]
+
+
+./app/(site)/tent-camp/page.tsx:7:1
+Export Campfire doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m {
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 8 |[0m   [33mTent[0m,
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 9 |[0m   [33mTreePine[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m10 |[0m   [33mCompass[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^[0m
+[31m[1m>[0m [90m11 |[0m   [33mMap[0m,
+  [90m   |[0m [31m[1m^^^^^^[0m
+[31m[1m>[0m [90m12 |[0m   [33mSun[0m,
+  [90m   |[0m [31m[1m^^^^^^[0m
+[31m[1m>[0m [90m13 |[0m   [33mMoon[0m,
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m14 |[0m   [33mCampfire[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m15 |[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m16 |[0m
+  [90m17 |[0m [36mconst[0m installCommand = [32m`npx shadcn@latest add tent-camp`[0m;
+  [90m18 |[0m
+
+The export Campfire was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] 
+(ecmascript).
+Did you mean to import GitCompareIcon?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/tent-camp/page.tsx [Client Component Browser]
+    ./app/(site)/tent-camp/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/tent-camp/page.tsx [Client Component SSR]
+    ./app/(site)/tent-camp/page.tsx [Server Component]
+
+
+./app/(site)/tent-camp/page.tsx:7:1
+Export Campfire doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m {
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 8 |[0m   [33mTent[0m,
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 9 |[0m   [33mTreePine[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m10 |[0m   [33mCompass[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^[0m
+[31m[1m>[0m [90m11 |[0m   [33mMap[0m,
+  [90m   |[0m [31m[1m^^^^^^[0m
+[31m[1m>[0m [90m12 |[0m   [33mSun[0m,
+  [90m   |[0m [31m[1m^^^^^^[0m
+[31m[1m>[0m [90m13 |[0m   [33mMoon[0m,
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m14 |[0m   [33mCampfire[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m15 |[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m16 |[0m
+  [90m17 |[0m [36mconst[0m installCommand = [32m`npx shadcn@latest add tent-camp`[0m;
+  [90m18 |[0m
+
+The export Campfire was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] 
+(ecmascript).
+Did you mean to import GitCompareIcon?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/tent-camp/page.tsx [Client Component Browser]
+    ./app/(site)/tent-camp/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/tent-camp/page.tsx [Client Component SSR]
+    ./app/(site)/tent-camp/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export CopyIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export CopyIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import Copy?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export CopyIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export CopyIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import Copy?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/mouse-pointer/page.tsx:7:1
+Export Cursor doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m { [33mMousePointer[0m, [33mHand[0m, [33mCrosshair[0m, 
+[33mMove[0m, [33mTarget[0m, [33mZap[0m, [33mCursor[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m
+  [90m 9 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add mouse-pointer`[0m;
+  [90m10 |[0m
+
+The export Cursor was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] 
+(ecmascript).
+Did you mean to import TextCursor?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/mouse-pointer/page.tsx [Client Component Browser]
+    ./app/(site)/mouse-pointer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/mouse-pointer/page.tsx [Client Component SSR]
+    ./app/(site)/mouse-pointer/page.tsx [Server Component]
+
+
+./app/(site)/mouse-pointer/page.tsx:7:1
+Export Cursor doesn't exist in target module
+  [90m 5 |[0m [36mimport[0m { [33mComponentPreview[0m } [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m 6 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m 7 |[0m [36mimport[0m { [33mMousePointer[0m, [33mHand[0m, [33mCrosshair[0m, 
+[33mMove[0m, [33mTarget[0m, [33mZap[0m, [33mCursor[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 8 |[0m
+  [90m 9 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add mouse-pointer`[0m;
+  [90m10 |[0m
+
+The export Cursor was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] 
+(ecmascript).
+Did you mean to import TextCursor?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/mouse-pointer/page.tsx [Client Component Browser]
+    ./app/(site)/mouse-pointer/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/mouse-pointer/page.tsx [Client Component SSR]
+    ./app/(site)/mouse-pointer/page.tsx [Server Component]
+
+
+./app/(site)/venetian-mask/page.tsx:5:1
+Export Mask doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m4 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m { [33mEye[0m, [33mEyeOff[0m, [33mMask[0m } [36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m
+  [90m7 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add venetian-mask`[0m;
+  [90m8 |[0m [36mconst[0m usageCode = [32m`import { VenetianMask } from "@/components/_venetian-mask";[0m
+
+The export Mask was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] 
+(ecmascript).
+Did you mean to import Mars?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/venetian-mask/page.tsx [Client Component Browser]
+    ./app/(site)/venetian-mask/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/venetian-mask/page.tsx [Client Component SSR]
+    ./app/(site)/venetian-mask/page.tsx [Server Component]
+
+
+./app/(site)/venetian-mask/page.tsx:5:1
+Export Mask doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m4 |[0m [36mimport[0m { [33mCodeBlock[0m } [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m { [33mEye[0m, [33mEyeOff[0m, [33mMask[0m } [36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m
+  [90m7 |[0m [36mconst[0m installCommand = [32m`npx component-library@latest add venetian-mask`[0m;
+  [90m8 |[0m [36mconst[0m usageCode = [32m`import { VenetianMask } from "@/components/_venetian-mask";[0m
+
+The export Mask was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] 
+(ecmascript).
+Did you mean to import Mars?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/venetian-mask/page.tsx [Client Component Browser]
+    ./app/(site)/venetian-mask/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/venetian-mask/page.tsx [Client Component SSR]
+    ./app/(site)/venetian-mask/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export MenuIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export MenuIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import Menu?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export MenuIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export MenuIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import Menu?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export MoonIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export MoonIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import Moon?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export MoonIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export MoonIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import Moon?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export SearchIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export SearchIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import Search?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export SearchIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export SearchIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import Search?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/skeleton/page.tsx:3:1
+Export Skeleton doesn't exist in target module
+  [90m 1 |[0m [32m"use client"[0m;
+  [90m 2 |[0m
+[31m[1m>[0m [90m 3 |[0m [36mimport[0m {
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 4 |[0m   [33mSkeleton[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 5 |[0m   [33mSkeletonCard[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 6 |[0m   [33mSkeletonListItem[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 7 |[0m   [33mSkeletonTable[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 8 |[0m   [33mSkeletonAvatar[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 9 |[0m } [36mfrom[0m [32m"@/components/ui/Skeleton"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m10 |[0m [36mimport[0m {
+  [90m11 |[0m   [33mComponentDocPage[0m,
+  [90m12 |[0m   [33mPreviewPanel[0m,
+
+The export Skeleton was not found in module [project]/components/ui/Skeleton.tsx [app-client] (ecmascript).
+Did you mean to import SkeletonCard?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton/page.tsx [Server Component]
+
+
+./app/(site)/skeleton/page.tsx:3:1
+Export Skeleton doesn't exist in target module
+  [90m 1 |[0m [32m"use client"[0m;
+  [90m 2 |[0m
+[31m[1m>[0m [90m 3 |[0m [36mimport[0m {
+  [90m   |[0m [31m[1m^^^^^^^[0m
+[31m[1m>[0m [90m 4 |[0m   [33mSkeleton[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 5 |[0m   [33mSkeletonCard[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 6 |[0m   [33mSkeletonListItem[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 7 |[0m   [33mSkeletonTable[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 8 |[0m   [33mSkeletonAvatar[0m,
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 9 |[0m } [36mfrom[0m [32m"@/components/ui/Skeleton"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m10 |[0m [36mimport[0m {
+  [90m11 |[0m   [33mComponentDocPage[0m,
+  [90m12 |[0m   [33mPreviewPanel[0m,
+
+The export Skeleton was not found in module [project]/components/ui/Skeleton.tsx [app-ssr] (ecmascript).
+Did you mean to import SkeletonCard?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export SunIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export SunIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import Sun?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/TopBar.tsx:4:1
+Export SunIcon doesn't exist in target module
+  [90m2 |[0m
+  [90m3 |[0m [36mimport[0m { models } [36mfrom[0m [32m"./data"[0m;
+[31m[1m>[0m [90m4 |[0m [36mimport[0m { [33mMenuIcon[0m, [33mSearchIcon[0m, [33mSunIcon[0m, 
+[33mMoonIcon[0m } [36mfrom[0m [32m"./icons"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m [36mimport[0m [36mtype[0m { [33mModel[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m
+  [90m7 |[0m [36mexport[0m [36mfunction[0m [33mTopBar[0m({
+
+The export SunIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import Sun?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/TopBar.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/TopBar.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export ThumbsDownIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export ThumbsDownIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import ThumbsDown?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export ThumbsDownIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export ThumbsDownIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import ThumbsDown?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export ThumbsUpIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export ThumbsUpIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-client] (ecmascript).
+Did you mean to import ThumbsUp?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/ai/Chat.tsx:4:1
+Export ThumbsUpIcon doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ...{ [33mMarkdownRenderer[0m } [36mfrom[0m [32m"@/components/markdown"[0m;
+[31m[1m>[0m [90m4 |[0m ...{ [33mCopyIcon[0m, [33mRegenerateIcon[0m, [33mEditIcon[0m, [33mTrashIcon[0m, 
+[33mThumbsUpIcon[0m, [33mThumbsDownIcon[0m } [36mfrom[0m [32m"./...[0m
+  [90m  |[0m    
+[31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ...[36mtype[0m { [33mMessage[0m } [36mfrom[0m [32m"./data"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ...[36mfunction[0m [33mTypingIndicator[0m() {
+
+The export ThumbsUpIcon was not found in module [project]/app/(site)/ai/icons.tsx [app-ssr] (ecmascript).
+Did you mean to import ThumbsUp?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/ai/Chat.tsx [Client Component Browser]
+    ./app/(site)/ai/ai-demos.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Client Component Browser]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/ai/Chat.tsx [Client Component SSR]
+    ./app/(site)/ai/ai-demos.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Client Component SSR]
+    ./app/(site)/ai/page.tsx [Server Component]
+
+
+./app/(site)/recording-dot/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mMic[0m, [33mVideo[0m, [33mRadio[0m, [33mEye[0m, 
+[33mBell[0m, [33mAlertCircle[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add recording-dot"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/recording-dot/page.tsx [Client Component Browser]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/recording-dot/page.tsx [Client Component SSR]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+
+./app/(site)/recording-dot/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mMic[0m, [33mVideo[0m, [33mRadio[0m, [33mEye[0m, 
+[33mBell[0m, [33mAlertCircle[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add recording-dot"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/recording-dot/page.tsx [Client Component Browser]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/recording-dot/page.tsx [Client Component SSR]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+
+./app/(site)/recording-dot/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mMic[0m, [33mVideo[0m, [33mRadio[0m, [33mEye[0m, 
+[33mBell[0m, [33mAlertCircle[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/recording-dot/page.tsx [Client Component Browser]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/recording-dot/page.tsx [Client Component SSR]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+
+./app/(site)/recording-dot/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mMic[0m, [33mVideo[0m, [33mRadio[0m, [33mEye[0m, 
+[33mBell[0m, [33mAlertCircle[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/recording-dot/page.tsx [Client Component Browser]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/recording-dot/page.tsx [Client Component SSR]
+    ./app/(site)/recording-dot/page.tsx [Server Component]
+
+
+./app/(site)/shape-builder/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mSquare[0m, [33mCircle[0m, [33mTriangle[0m, [33mHexagon[0m, [33mStar[0m, 
+[33mPentagon[0m, [33mDiamond[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add shape-builder"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/shape-builder/page.tsx [Client Component Browser]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/shape-builder/page.tsx [Client Component SSR]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+
+./app/(site)/shape-builder/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mSquare[0m, [33mCircle[0m, [33mTriangle[0m, [33mHexagon[0m, [33mStar[0m, 
+[33mPentagon[0m, [33mDiamond[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add shape-builder"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/shape-builder/page.tsx [Client Component Browser]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/shape-builder/page.tsx [Client Component SSR]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+
+./app/(site)/shape-builder/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mSquare[0m, [33mCircle[0m, [33mTriangle[0m, [33mHexagon[0m, [33mStar[0m, 
+[33mPentagon[0m, [33mDiamond[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/shape-builder/page.tsx [Client Component Browser]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/shape-builder/page.tsx [Client Component SSR]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+
+./app/(site)/shape-builder/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mSquare[0m, [33mCircle[0m, [33mTriangle[0m, [33mHexagon[0m, [33mStar[0m, 
+[33mPentagon[0m, [33mDiamond[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/shape-builder/page.tsx [Client Component Browser]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/shape-builder/page.tsx [Client Component SSR]
+    ./app/(site)/shape-builder/page.tsx [Server Component]
+
+
+./app/(site)/skeleton-avatar/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mUser[0m, [33mUsers[0m, [33mImage[0m, [33mCreditCard[0m, [33mList[0m, 
+[33mTable[0m, [33mFileText[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add skeleton-avatar"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+
+./app/(site)/skeleton-avatar/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mUser[0m, [33mUsers[0m, [33mImage[0m, [33mCreditCard[0m, [33mList[0m, 
+[33mTable[0m, [33mFileText[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add skeleton-avatar"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+
+./app/(site)/skeleton-avatar/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mUser[0m, [33mUsers[0m, [33mImage[0m, [33mCreditCard[0m, [33mList[0m, 
+[33mTable[0m, [33mFileText[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+
+./app/(site)/skeleton-avatar/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mUser[0m, [33mUsers[0m, [33mImage[0m, [33mCreditCard[0m, [33mList[0m, 
+[33mTable[0m, [33mFileText[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component Browser]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/skeleton-avatar/page.tsx [Client Component SSR]
+    ./app/(site)/skeleton-avatar/page.tsx [Server Component]
+
+
+./app/(site)/status-dot/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mCheckCircle[0m, [33mXCircle[0m, [33mAlertCircle[0m, 
+[33mClock[0m, [33mWifi[0m, [33mSignal[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add status-dot"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/status-dot/page.tsx [Client Component Browser]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/status-dot/page.tsx [Client Component SSR]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+
+./app/(site)/status-dot/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mCheckCircle[0m, [33mXCircle[0m, [33mAlertCircle[0m, 
+[33mClock[0m, [33mWifi[0m, [33mSignal[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add status-dot"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/status-dot/page.tsx [Client Component Browser]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/status-dot/page.tsx [Client Component SSR]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+
+./app/(site)/status-dot/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mCheckCircle[0m, [33mXCircle[0m, [33mAlertCircle[0m, 
+[33mClock[0m, [33mWifi[0m, [33mSignal[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/status-dot/page.tsx [Client Component Browser]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/status-dot/page.tsx [Client Component SSR]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+
+./app/(site)/status-dot/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCircle[0m, [33mCheckCircle[0m, [33mXCircle[0m, [33mAlertCircle[0m, 
+[33mClock[0m, [33mWifi[0m, [33mSignal[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/status-dot/page.tsx [Client Component Browser]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/status-dot/page.tsx [Client Component SSR]
+    ./app/(site)/status-dot/page.tsx [Server Component]
+
+
+./app/(site)/task-list/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCheckSquare[0m, [33mSquare[0m, [33mCheck[0m, [33mTrash2[0m, 
+[33mPlus[0m, [33mClock[0m, [33mStar[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add task-list"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/task-list/page.tsx [Client Component Browser]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/task-list/page.tsx [Client Component SSR]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+
+./app/(site)/task-list/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mCheckSquare[0m, [33mSquare[0m, [33mCheck[0m, [33mTrash2[0m, 
+[33mPlus[0m, [33mClock[0m, [33mStar[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add task-list"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/task-list/page.tsx [Client Component Browser]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/task-list/page.tsx [Client Component SSR]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+
+./app/(site)/task-list/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCheckSquare[0m, [33mSquare[0m, [33mCheck[0m, [33mTrash2[0m, 
+[33mPlus[0m, [33mClock[0m, [33mStar[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/task-list/page.tsx [Client Component Browser]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/task-list/page.tsx [Client Component SSR]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+
+./app/(site)/task-list/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mCheckSquare[0m, [33mSquare[0m, [33mCheck[0m, [33mTrash2[0m, 
+[33mPlus[0m, [33mClock[0m, [33mStar[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/task-list/page.tsx [Client Component Browser]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/task-list/page.tsx [Client Component SSR]
+    ./app/(site)/task-list/page.tsx [Server Component]
+
+
+./app/(site)/text-marquee/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mArrowLeft[0m, [33mArrowRight[0m, [33mZap[0m, [33mStar[0m, [33mBell[0m, 
+[33mMegaphone[0m, [33mSparkles[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add text-marquee"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-client] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/text-marquee/page.tsx [Client Component Browser]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/text-marquee/page.tsx [Client Component SSR]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+
+./app/(site)/text-marquee/page.tsx:6:1
+Export default doesn't exist in target module
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+  [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+[31m[1m>[0m [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m7 |[0m [36mimport[0m { [33mArrowLeft[0m, [33mArrowRight[0m, [33mZap[0m, [33mStar[0m, [33mBell[0m, 
+[33mMegaphone[0m, [33mSparkles[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+  [90m9 |[0m [36mconst[0m installCommand = [32m"npx ui-add text-marquee"[0m;
+
+The export default was not found in module [project]/components/home/CodeBlock.tsx [app-ssr] (ecmascript).
+Did you mean to import CodeBlock?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/text-marquee/page.tsx [Client Component Browser]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/text-marquee/page.tsx [Client Component SSR]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+
+./app/(site)/text-marquee/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mArrowLeft[0m, [33mArrowRight[0m, [33mZap[0m, [33mStar[0m, [33mBell[0m, 
+[33mMegaphone[0m, [33mSparkles[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-client] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/text-marquee/page.tsx [Client Component Browser]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/text-marquee/page.tsx [Client Component SSR]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+
+./app/(site)/text-marquee/page.tsx:5:1
+Export default doesn't exist in target module
+  [90m3 |[0m [36mimport[0m { useState } [36mfrom[0m [32m"react"[0m;
+  [90m4 |[0m [36mimport[0m { [33mBadge[0m } [36mfrom[0m [32m"@/components/design-system/Badge"[0m;
+[31m[1m>[0m [90m5 |[0m [36mimport[0m [33mComponentPreview[0m [36mfrom[0m [32m"@/components/preview"[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m [36mimport[0m [33mCodeBlock[0m [36mfrom[0m [32m"@/components/home/CodeBlock"[0m;
+  [90m7 |[0m [36mimport[0m { [33mArrowLeft[0m, [33mArrowRight[0m, [33mZap[0m, [33mStar[0m, [33mBell[0m, 
+[33mMegaphone[0m, [33mSparkles[0m } [36mfrom[0m [32m"lucide-react"[0m;
+  [90m8 |[0m
+
+The export default was not found in module [project]/components/preview/index.ts [app-ssr] (ecmascript).
+Did you mean to import PreviewCanvas?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the 
+requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/(site)/text-marquee/page.tsx [Client Component Browser]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/(site)/text-marquee/page.tsx [Client Component SSR]
+    ./app/(site)/text-marquee/page.tsx [Server Component]
+
+
+    at <unknown> (./app/(site)/landing-hero/page.tsx:287:147)
+    at <unknown> (./app/(site)/lightbox-view/page.tsx:290:141)
+    at <unknown> (./app/(site)/logo-cloud/page.tsx:291:141)
+    at <unknown> (./app/(site)/counter-badge/page.tsx:31:263)
+    at <unknown> (./app/(site)/hamburger-menu/page.tsx:311:68)
+    at <unknown> (./app/(site)/dashboard-grid/page.tsx:27:14)
+    at <unknown> (./app/(site)/highlight-text/page.tsx:323:68)
+    at <unknown> (./app/(site)/list-accordion/page.tsx:13:15)
+    at <unknown> (./app/(site)/wave-background/page.tsx:280:68)
+    at <unknown> (./app/(site)/zigzag-divider-v2/page.tsx:274:68)
+    at <unknown> (./app/(site)/zigzag-path/page.tsx:380:68)
+    at <unknown> (./app/(site)/modal-center/page.tsx:30:1322)
+    at <unknown> (./app/(site)/emoji-picker/emoji-picker-source.ts:16:10)
+    at <unknown> (./app/(site)/equalizer/AudioBars-source.ts:22:10)
+    at <unknown> (./app/(site)/equalizer/BarEqualizer-source.ts:17:10)
+    at <unknown> (./app/(site)/equalizer/CircleEqualizer-source.ts:8:10)
+    at <unknown> (./app/(site)/equalizer/CustomEQ-source.ts:13:10)
+    at <unknown> (./app/(site)/equalizer/FrequencyBands-source.ts:12:10)
+    at <unknown> (./app/(site)/equalizer/PresetEQ-source.ts:18:10)
+    at <unknown> (./app/(site)/equalizer/Visualizer-source.ts:16:10)
+    at <unknown> (./app/(site)/contact-card/contact-card-source.ts:16:22)
+    at <unknown> (./app/(site)/dropdown/page.tsx:103:26)
+    at <unknown> (./app/(site)/pagination-bar/page.tsx:17:29)
+    at <unknown> (./app/(site)/brackets-code/page.tsx:112:11)
+    at <unknown> (./app/(site)/brackets-code/page.tsx:112:24)
+    at <unknown> (./app/(site)/date-range/page.tsx:25:9)
+    at <unknown> (./app/(site)/date-range/page.tsx:45:9)
+    at <unknown> (./app/(site)/typewriter-text/page.tsx:424:41)
+    at <unknown> (./app/(site)/pricing/page.tsx:168:1)
+    at <unknown> (./app/(site)/dropdown/page.tsx:103:26)
+    at <unknown> (./app/(site)/ai/page.tsx:5:1)
+    at <unknown> (./app/(site)/ai/page.tsx:5:1)
+    at <unknown> (./app/(site)/sun-bright/page.tsx:7:1)
+    at <unknown> (./app/(site)/sun-bright/page.tsx:7:1)
+    at <unknown> (./app/(site)/target-goal/page.tsx:7:1)
+    at <unknown> (./app/(site)/target-goal/page.tsx:7:1)
+    at <unknown> (./app/(site)/tent-camp/page.tsx:7:1)
+    at <unknown> (./app/(site)/tent-camp/page.tsx:7:1)
+    at <unknown> (./app/(site)/ai/Chat.tsx:4:1)
+    at <unknown> (./app/(site)/ai/Chat.tsx:4:1)
+    at <unknown> (./app/(site)/mouse-pointer/page.tsx:7:1)
+    at <unknown> (./app/(site)/mouse-pointer/page.tsx:7:1)
+    at <unknown> (./app/(site)/venetian-mask/page.tsx:5:1)
+    at <unknown> (./app/(site)/venetian-mask/page.tsx:5:1)
+    at <unknown> (./app/(site)/ai/TopBar.tsx:4:1)
+    ... collapsed 5 duplicate lines matching above 1 lines 5 times...
+    at <unknown> (./app/(site)/skeleton/page.tsx:3:1)
+    at <unknown> (./app/(site)/skeleton/page.tsx:3:1)
+    at <unknown> (./app/(site)/ai/TopBar.tsx:4:1)
+    at <unknown> (./app/(site)/ai/TopBar.tsx:4:1)
+    at <unknown> (./app/(site)/ai/Chat.tsx:4:1)
+    ... collapsed 3 duplicate lines matching above 1 lines 3 times...
+    at <unknown> (./app/(site)/recording-dot/page.tsx:6:1)
+    at <unknown> (./app/(site)/recording-dot/page.tsx:6:1)
+    at <unknown> (./app/(site)/recording-dot/page.tsx:5:1)
+    at <unknown> (./app/(site)/recording-dot/page.tsx:5:1)
+    at <unknown> (./app/(site)/shape-builder/page.tsx:6:1)
+    at <unknown> (./app/(site)/shape-builder/page.tsx:6:1)
+    at <unknown> (./app/(site)/shape-builder/page.tsx:5:1)
+    at <unknown> (./app/(site)/shape-builder/page.tsx:5:1)
+    at <unknown> (./app/(site)/skeleton-avatar/page.tsx:6:1)
+    at <unknown> (./app/(site)/skeleton-avatar/page.tsx:6:1)
+    at <unknown> (./app/(site)/skeleton-avatar/page.tsx:5:1)
+    at <unknown> (./app/(site)/skeleton-avatar/page.tsx:5:1)
+    at <unknown> (./app/(site)/status-dot/page.tsx:6:1)
+    at <unknown> (./app/(site)/status-dot/page.tsx:6:1)
+    at <unknown> (./app/(site)/status-dot/page.tsx:5:1)
+    at <unknown> (./app/(site)/status-dot/page.tsx:5:1)
+    at <unknown> (./app/(site)/task-list/page.tsx:6:1)
+    at <unknown> (./app/(site)/task-list/page.tsx:6:1)
+    at <unknown> (./app/(site)/task-list/page.tsx:5:1)
+    at <unknown> (./app/(site)/task-list/page.tsx:5:1)
+    at <unknown> (./app/(site)/text-marquee/page.tsx:6:1)
+    at <unknown> (./app/(site)/text-marquee/page.tsx:6:1)
+    at <unknown> (./app/(site)/text-marquee/page.tsx:5:1)
+    at <unknown> (./app/(site)/text-marquee/page.tsx:5:1)

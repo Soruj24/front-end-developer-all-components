@@ -300,6 +300,8 @@ export { PinInput } from "./PinInput";
 export type { PinInputProps } from "./PinInput";
 export { PieChart } from "./PieChart";
 export type { PieChartProps, PieChartData } from "./PieChart";
+export { Particles } from "./Particles";
+export type { ParticlesProps } from "./Particles";
 export { PhoneInput } from "./PhoneInput";
 export type { PhoneInputProps, Country } from "./PhoneInput";
 export {
