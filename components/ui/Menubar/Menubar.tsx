@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useRef, useEffect } from "react";
 import { cn } from "@/lib/cn";
 import type {
   MenubarProps,
@@ -14,22 +14,38 @@ import type {
 interface MenubarContextType {
   openMenu: string | null;
   setOpenMenu: (id: string | null) => void;
+  triggerRefs: React.MutableRefObject<Map<string, HTMLButtonElement>>;
 }
 
 const MenubarContext = createContext<MenubarContextType>({
   openMenu: null,
   setOpenMenu: () => {},
+  triggerRefs: { current: new Map() },
 });
+
+let menuCounter = 0;
 
 export function Menubar({ className, children }: MenubarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenMenu(null);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [openMenu]);
 
   return (
-    <MenubarContext.Provider value={{ openMenu, setOpenMenu }}>
+    <MenubarContext.Provider value={{ openMenu, setOpenMenu, triggerRefs }}>
       <div
+        role="menubar"
         className={cn(
-          "flex h-10 items-center space-x-1 rounded-md border bg-white p-1 dark:bg-zinc-900",
-          className
+          "flex h-10 items-center gap-0.5 rounded-xl border border-border bg-card p-1 shadow-sm",
+          "dark:bg-card dark:shadow-none",
+          className,
         )}
       >
         {children}
@@ -44,15 +60,24 @@ export function MenubarMenu({ children }: MenubarMenuProps) {
 
 export function MenubarTrigger({ children, className }: MenubarTriggerProps) {
   const { openMenu, setOpenMenu } = useContext(MenubarContext);
+  const isOpen = openMenu !== null;
+  const menuIdRef = useRef(`menu-${++menuCounter}`);
+  const menuId = menuIdRef.current;
 
   return (
     <button
       type="button"
-      onClick={() => setOpenMenu(openMenu ? null : "menu")}
+      role="menuitem"
+      aria-haspopup="menu"
+      aria-expanded={isOpen}
+      onClick={() => setOpenMenu(isOpen ? null : menuId)}
       className={cn(
-        "flex cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none hover:bg-zinc-100 dark:hover:bg-zinc-800",
-        openMenu && "bg-zinc-100 dark:bg-zinc-800",
-        className
+        "inline-flex h-8 cursor-pointer select-none items-center rounded-lg px-3 py-1.5 text-sm font-medium",
+        "transition-colors duration-150",
+        "hover:bg-muted hover:text-foreground",
+        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+        isOpen && "bg-muted text-foreground",
+        className,
       )}
     >
       {children}
@@ -67,14 +92,14 @@ export function MenubarContent({ children, className }: MenubarContentProps) {
 
   return (
     <>
+      <div className="fixed inset-0 z-40" onClick={() => setOpenMenu(null)} />
       <div
-        className="fixed inset-0 z-40"
-        onClick={() => setOpenMenu(null)}
-      />
-      <div
+        role="menu"
         className={cn(
-          "absolute left-0 z-50 mt-1 min-w-[12rem] overflow-hidden rounded-md border bg-white p-1 shadow-md dark:bg-zinc-900",
-          className
+          "absolute left-0 z-50 mt-1 min-w-[14rem] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
+          "animate-in fade-in-0 zoom-in-95",
+          "dark:shadow-black/40",
+          className,
         )}
       >
         {children}
@@ -92,16 +117,21 @@ export function MenubarItem({
   return (
     <button
       type="button"
+      role="menuitem"
       disabled={disabled}
       className={cn(
-        "flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-zinc-100 dark:hover:bg-zinc-800",
-        disabled && "opacity-50",
-        className
+        "flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 text-sm",
+        "transition-colors duration-150",
+        "hover:bg-muted hover:text-foreground",
+        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+        "active:bg-muted/80",
+        disabled && "pointer-events-none opacity-40",
+        className,
       )}
     >
       <span className="flex-1 text-left">{children}</span>
       {shortcut && (
-        <span className="ml-4 text-xs tracking-widest text-zinc-400">
+        <span className="ml-auto font-mono text-xs text-muted-foreground/70">
           {shortcut}
         </span>
       )}
@@ -110,5 +140,5 @@ export function MenubarItem({
 }
 
 export function MenubarSeparator({ className }: MenubarSeparatorProps) {
-  return <div className={cn("-mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-700", className)} />;
+  return <div className={cn("my-1 h-px bg-border", className)} />;
 }
