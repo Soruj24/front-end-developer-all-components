@@ -1,17 +1,65 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { List, ListItem, Spinner } from "@/components/ui";
+import { useState, useCallback, useRef, useEffect } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { InfiniteScroll } from "@/components/ui/InfiniteScroll";
 
-const installCommand = "npx component-library@latest add infinite-scroll";
+const INFINITESCROLL_SOURCE = `"use client";
 
-const usageCode = `import { InfiniteScroll } from "@/components/ui";
+import { useRef, useEffect, useCallback } from "react";
+import { cn } from "@/lib/cn";
+import type { InfiniteScrollProps } from "./InfiniteScroll.types";
 
-export default function Example() {
-  return <InfiniteScroll loadMore={() => fetchNextPage()} />;
+function DefaultLoader() {
+  return (
+    <div className="flex items-center justify-center gap-2 py-4">
+      <div className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-primary" />
+      <span className="text-xs text-muted-foreground">Loading more...</span>
+    </div>
+  );
+}
+
+function DefaultEndMessage() {
+  return (
+    <div className="flex items-center justify-center py-4">
+      <div className="flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-1.5">
+        <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+        <span className="text-xs text-muted-foreground">No more items</span>
+        <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+      </div>
+    </div>
+  );
+}
+
+export function InfiniteScroll({ children, loadMore, loading = false, hasMore = true, endMessage, loader, threshold = 50, className }: InfiniteScrollProps) {
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
+    const entry = entries[0];
+    if (entry.isIntersecting && hasMore && !loading) loadMore();
+  }, [hasMore, loading, loadMore]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(handleIntersect, { root: null, rootMargin: \`0px 0px \${threshold}px 0px\`, threshold: 0 });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [handleIntersect, threshold]);
+
+  return (
+    <div className={cn("flex flex-col", className)}>
+      {children}
+      <div ref={sentinelRef} aria-hidden="true" />
+      {loading && (loader ?? <DefaultLoader />)}
+      {!hasMore && !loading && (endMessage ?? <DefaultEndMessage />)}
+    </div>
+  );
 }`;
 
 const allItems = Array.from({ length: 60 }, (_, i) => ({
@@ -20,24 +68,35 @@ const allItems = Array.from({ length: 60 }, (_, i) => ({
   description: `Description for item ${i + 1}`,
 }));
 
-export default function InfiniteScrollPage() {
-  const [items, setItems] = useState(allItems.slice(0, 10));
+function useInfiniteData(pageSize = 10) {
+  const [items, setItems] = useState(allItems.slice(0, pageSize));
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const loadMore = useCallback(() => {
     if (loading || !hasMore) return;
     setLoading(true);
     setTimeout(() => {
       setItems((prev) => {
-        const next = allItems.slice(prev.length, prev.length + 10);
+        const next = allItems.slice(prev.length, prev.length + pageSize);
         if (prev.length + next.length >= allItems.length) setHasMore(false);
         return [...prev, ...next];
       });
       setLoading(false);
     }, 800);
-  }, [loading, hasMore]);
+  }, [loading, hasMore, pageSize]);
+
+  const reset = useCallback(() => {
+    setItems(allItems.slice(0, pageSize));
+    setHasMore(true);
+  }, [pageSize]);
+
+  return { items, loading, hasMore, loadMore, reset, total: allItems.length };
+}
+
+function ScrollableListDemo() {
+  const { items, loading, hasMore, loadMore } = useInfiniteData();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -49,124 +108,342 @@ export default function InfiniteScrollPage() {
     return () => el.removeEventListener("scroll", handleScroll);
   }, [loadMore]);
 
-  const reset = () => { setItems(allItems.slice(0, 10)); setHasMore(true); };
+  return (
+    <div ref={containerRef} className="h-72 w-full overflow-y-auto rounded-2xl border border-border bg-card">
+      <InfiniteScroll loadMore={loadMore} loading={loading} hasMore={hasMore}>
+        {items.map((item) => (
+          <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-3 transition-colors hover:bg-muted/50">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-xs font-medium text-primary">
+              {item.id}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">{item.title}</p>
+              <p className="text-xs text-muted-foreground truncate">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
+}
+
+function LoadMoreButtonDemo() {
+  const { items, loading, hasMore, loadMore, total } = useInfiniteData();
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Infinite Scroll</h1>
-          <Badge variant="primary">Navigation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Infinite scrolling list with loading states, end-of-list detection, and smooth content insertion.
+    <div className="w-full">
+      <div className="space-y-0 rounded-2xl border border-border bg-card overflow-hidden">
+        {items.map((item) => (
+          <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-0 transition-colors hover:bg-muted/50">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-xs font-medium text-primary">
+              {item.id}
+            </div>
+            <p className="text-sm font-medium text-foreground">{item.title}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 text-center">
+        <button
+          onClick={loadMore}
+          disabled={loading || !hasMore}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+        >
+          {loading ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground" />
+              Loading...
+            </>
+          ) : hasMore ? (
+            "Load More"
+          ) : (
+            "All loaded"
+          )}
+        </button>
+        <p className="mt-2 text-xs text-muted-foreground">
+          {items.length} of {total} items
         </p>
-      </header>
+      </div>
+    </div>
+  );
+}
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+function InteractiveDemo() {
+  const { items, loading, hasMore, loadMore, reset, total } = useInfiniteData();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) loadMore();
+    };
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [loadMore]);
+
+  return (
+    <div className="w-full">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="text-sm text-muted-foreground">
+          {items.length} of {total} items
+        </span>
+        <button
+          onClick={reset}
+          className="rounded-lg bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+        >
+          Reset
+        </button>
+      </div>
+      <div ref={containerRef} className="h-52 overflow-y-auto rounded-2xl border border-border bg-card">
+        <InfiniteScroll loadMore={loadMore} loading={loading} hasMore={hasMore}>
+          {items.map((item) => (
+            <div key={item.id} className="flex items-center gap-3 border-b border-border px-4 py-2.5 transition-colors hover:bg-muted/50">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 text-[10px] font-medium text-primary">
+                {item.id}
+              </div>
+              <span className="text-sm text-foreground">{item.title}</span>
+            </div>
+          ))}
+        </InfiniteScroll>
+      </div>
+    </div>
+  );
+}
+
+function CustomLoaderDemo() {
+  const { items, loading, hasMore, loadMore } = useInfiniteData();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) loadMore();
+    };
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [loadMore]);
+
+  return (
+    <div ref={containerRef} className="h-64 w-full overflow-y-auto rounded-2xl border border-border bg-card">
+      <InfiniteScroll
+        loadMore={loadMore}
+        loading={loading}
+        hasMore={hasMore}
+        loader={
+          <div className="flex justify-center py-4">
+            <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
+              <div className="h-3 w-3 animate-spin rounded-full border-2 border-primary/30 border-t-primary" />
+              <span className="text-xs font-medium text-primary">Fetching...</span>
+            </div>
+          </div>
+        }
+        endMessage={
+          <div className="flex justify-center py-4">
+            <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+              All done!
+            </span>
+          </div>
+        }
+      >
+        {items.map((item) => (
+          <div key={item.id} className="border-b border-border px-4 py-3 transition-colors hover:bg-muted/50">
+            <p className="text-sm text-foreground">{item.title}</p>
+          </div>
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
+}
+
+export default function InfiniteScrollPage() {
+  return (
+    <ComponentDocPage
+      name="Infinite Scroll"
+      category="Navigation"
+      description="Infinite scrolling list with IntersectionObserver-based auto-loading, loading states, end-of-list detection, and smooth content insertion."
+    >
+      <PreviewPanel filename="infinite-scroll-preview.tsx">
+        <ScrollableListDemo />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={INFINITESCROLL_SOURCE}
+        filename="components/ui/InfiniteScroll/InfiniteScroll.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Auto Load"
+          description="Automatically loads more items when scrolling to the bottom."
+          code={`import { InfiniteScroll } from "@/components/ui/InfiniteScroll";
+
+<InfiniteScroll loadMore={loadMore} loading={loading} hasMore={hasMore}>
+  {items.map((item) => <div key={item.id}>{item.title}</div>)}
+</InfiniteScroll>`}
+          filename="auto-load.tsx"
+        >
+          <ScrollableListDemo />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Load More Button"
+          description="Manual load more button with item counter."
+          code={`import { InfiniteScroll } from "@/components/ui/InfiniteScroll";
+
+<div>
+  {items.map((item) => <div key={item.id}>{item.title}</div>)}
+  <button onClick={loadMore} disabled={loading}>
+    {loading ? "Loading..." : "Load More"}
+  </button>
+  <p>{items.length} of {total} items</p>
+</div>`}
+          filename="load-more-button.tsx"
+        >
+          <LoadMoreButtonDemo />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Interactive"
+          description="Scrollable list with reset button and item counter."
+          code={`const { items, loading, hasMore, loadMore, reset, total } = useInfiniteData();
+
+<div>
+  <div className="flex justify-between">
+    <span>{items.length} items loaded</span>
+    <button onClick={reset}>Reset</button>
+  </div>
+  <div className="h-48 overflow-y-auto">
+    <InfiniteScroll loadMore={loadMore} loading={loading} hasMore={hasMore}>
+      {items.map((item) => <div key={item.id}>{item.title}</div>)}
+    </InfiniteScroll>
+  </div>
+</div>`}
+          filename="interactive.tsx"
+        >
+          <InteractiveDemo />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Loader"
+          description="Custom loading and end-of-list messages."
+          code={`<InfiniteScroll
+  loadMore={loadMore}
+  loading={loading}
+  hasMore={hasMore}
+  loader={<div>Custom loader</div>}
+  endMessage={<div>All done!</div>}
+>
+  {items.map((item) => <div key={item.id}>{item.title}</div>)}
+</InfiniteScroll>`}
+          filename="custom-loader.tsx"
+        >
+          <CustomLoaderDemo />
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Scrollable List</h3>
-          <ComponentPreview id="infinite-scroll-default">
-            <div ref={containerRef} className="h-64 w-full overflow-y-auto rounded-lg border border-border">
-              <List>
-                {items.map((item) => (
-                  <ListItem key={item.id} className="border-b border-border">
-                    <span className="font-medium">{item.title}</span>
-                    <span className="text-xs text-muted-foreground">{item.description}</span>
-                  </ListItem>
-                ))}
-              </List>
-              {loading && <div className="flex justify-center py-4"><Spinner /></div>}
-              {!hasMore && <p className="py-4 text-center text-sm text-muted-foreground">No more items</p>}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Load More Button</h3>
-          <ComponentPreview id="infinite-scroll-button">
-            <div className="w-full">
-              <List>
-                {items.slice(0, 10).map((item) => (
-                  <ListItem key={item.id} className="border-b border-border">
-                    <span className="font-medium">{item.title}</span>
-                  </ListItem>
-                ))}
-              </List>
-              <div className="mt-3 text-center">
-                <button onClick={loadMore} disabled={loading} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
-                  {loading ? "Loading..." : "Load More"}
-                </button>
-                <p className="mt-1 text-xs text-muted-foreground">{items.length} of {allItems.length} items</p>
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="infinite-scroll-interactive">
-            <div className="w-full">
-              <div className="mb-2 flex justify-between">
-                <span className="text-sm text-muted-foreground">{items.length} items loaded</span>
-                <button onClick={reset} className="text-xs text-primary hover:underline">Reset</button>
-              </div>
-              <div ref={containerRef} className="h-48 overflow-y-auto rounded-lg border border-border">
-                <List>
-                  {items.map((item) => (
-                    <ListItem key={item.id} className="border-b border-border py-2">
-                      <span className="text-sm">{item.title}</span>
-                    </ListItem>
-                  ))}
-                </List>
-                {loading && <div className="flex justify-center py-3"><Spinner /></div>}
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">
+                  Prop
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">
+                  Type
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">
+                  Default
+                </th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">
+                  Required
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">loadMore</td>
-                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  children
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">Yes</td>
               </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  loadMore
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  () =&gt; void
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  loading
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  hasMore
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  loader
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  Spinner + text
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  endMessage
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  &quot;No more items&quot;
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  threshold
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">50</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
               <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">
+                  className
+                </td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

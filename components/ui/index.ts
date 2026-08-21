@@ -307,6 +307,8 @@ export { Image, ImagePreview } from "./Image";
 export type { ImageProps } from "./Image";
 export { ImageComparison } from "./ImageComparison";
 export type { ImageComparisonProps } from "./ImageComparison";
+export { InfiniteScroll } from "./InfiniteScroll";
+export type { InfiniteScrollProps } from "./InfiniteScroll";
 export { List, ListItem } from "./List";
 export type { ListProps, ListItemProps } from "./List";
 export { Masonry, MasonryItem } from "./Masonry";
