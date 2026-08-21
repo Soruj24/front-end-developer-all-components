@@ -1,7 +1,7 @@
 "use client";
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { COMPARISON_TABLE_SOURCE, PRICING_EXAMPLE, FEATURES_EXAMPLE, CARDS_EXAMPLE } from "./comparison-table-source";
+import { COMPARISON_TABLE_SOURCE, CARDS_SOURCE, PRICING_EXAMPLE, FEATURES_EXAMPLE, CARDS_EXAMPLE } from "./comparison-table-source";
 import { PricingTableDemo, FeatureTableDemo, PricingCardsDemo } from "./comparison-table-demos";
 
 export default function ComparisonTablePage() {
@@ -21,14 +21,39 @@ export default function ComparisonTablePage() {
         defaultExpanded
       />
 
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Pricing Plans" description="Selectable column highlighting for comparing plan pricing." code={PRICING_EXAMPLE}>
+      <SourceCodeViewer
+        source={CARDS_SOURCE}
+        filename="components/ui/ComparisonTable/ComparisonCards.tsx"
+        defaultExpanded={false}
+      />
+
+      <div className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <ExampleBlock
+          title="Pricing Plans"
+          description="Selectable column highlighting for comparing plan pricing. Click a column header to highlight it."
+          code={PRICING_EXAMPLE}
+          filename="pricing-table.tsx"
+        >
           <PricingTableDemo />
         </ExampleBlock>
-        <ExampleBlock title="Feature Comparison" description="Plain table comparing framework features side by side." code={FEATURES_EXAMPLE}>
+
+        <ExampleBlock
+          title="Feature Comparison"
+          description="Plain table comparing framework features side by side with striped rows."
+          code={FEATURES_EXAMPLE}
+          filename="feature-table.tsx"
+        >
           <FeatureTableDemo />
         </ExampleBlock>
-        <ExampleBlock title="Pricing Cards" description="Card-based comparison with a highlighted popular plan." code={CARDS_EXAMPLE}>
+
+        <ExampleBlock
+          title="Pricing Cards"
+          description="Card-based comparison with a highlighted popular plan and feature checklist."
+          code={CARDS_EXAMPLE}
+          filename="pricing-cards.tsx"
+        >
           <PricingCardsDemo />
         </ExampleBlock>
       </div>

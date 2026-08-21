@@ -70,6 +70,8 @@ export type { CommandItem, CommandPaletteProps } from "./CommandPalette";
 export { default as CommandMenu } from "./CommandMenu";
 export { default as ContextMenu } from "./ContextMenu";
 export { Countdown } from "./Countdown";
+export { ComparisonTable, ComparisonCards } from "./ComparisonTable";
+export type { ComparisonTableProps, ComparisonCardsProps, ComparisonColumn, ComparisonRow } from "./ComparisonTable";
 export { CurrencyInput } from "./CurrencyInput";
 export type { CurrencyInputProps } from "./CurrencyInput";
 export { JsonTreeViewer } from "./JsonTreeViewer";
