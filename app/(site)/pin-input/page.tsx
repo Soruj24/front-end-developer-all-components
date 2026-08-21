@@ -1,141 +1,140 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { InputOTP, Card, CardContent } from "@/components/ui";
+import { useState } from "react";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { PinInput } from "@/components/ui/PinInput";
 
-const installCommand = "npx component-library@latest add pin-input";
+const PIN_INPUT_SOURCE = `"use client";
 
-const usageCode = `import { InputOTP } from "@/components/ui";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { cn } from "@/lib/cn";
 
-export default function Example() {
-  return <InputOTP length={6} onComplete={(v) => console.log(v)} />;
+interface PinInputProps {
+  length?: number;
+  value?: string[];
+  onChange?: (value: string[]) => void;
+  onComplete?: (value: string) => void;
+  mask?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+  autoFocus?: boolean;
+  className?: string;
+}
+
+export function PinInput({ length = 6, value, onChange, onComplete, mask = false, placeholder = "", disabled = false, autoFocus = false, className }: PinInputProps) {
+  const [internalValue, setInternalValue] = useState(Array(length).fill(""));
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+  const inputRefs = useRef([]);
+
+  useEffect(() => { if (autoFocus) inputRefs.current[0]?.focus(); }, [autoFocus]);
+
+  const handleChange = useCallback((index, digit) => {
+    if (!/^\\d*$/.test(digit)) return;
+    const next = [...currentValue];
+    next[index] = digit.slice(-1);
+    if (!isControlled) setInternalValue(next);
+    onChange?.(next);
+    if (digit && index < length - 1) inputRefs.current[index + 1]?.focus();
+    if (next.filter(Boolean).length === length) onComplete?.(next.join(""));
+  }, [currentValue, isControlled, length, onChange, onComplete]);
+
+  const handleKeyDown = useCallback((index, e) => {
+    if (e.key === "Backspace" && !currentValue[index] && index > 0) inputRefs.current[index - 1]?.focus();
+  }, [currentValue]);
+
+  const handlePaste = useCallback((e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\\D/g, "").slice(0, length).split("");
+    const next = [...pasted, ...Array(length - pasted.length).fill("")];
+    if (!isControlled) setInternalValue(next);
+    onChange?.(next);
+    inputRefs.current[Math.min(pasted.length, length - 1)]?.focus();
+    if (pasted.length === length) onComplete?.(next.join(""));
+  }, [length, isControlled, onChange, onComplete]);
+
+  return (
+    <div role="group" aria-label="PIN input" className={cn("flex items-center justify-center gap-2.5", className)}>
+      {currentValue.map((digit, i) => (
+        <input key={i} ref={(el) => { inputRefs.current[i] = el; }} type={mask ? "password" : "text"} inputMode="numeric"
+          maxLength={1} value={digit} onChange={(e) => handleChange(i, e.target.value)} onKeyDown={(e) => handleKeyDown(i, e)}
+          onPaste={handlePaste} placeholder={placeholder} disabled={disabled} aria-label={\`Digit \${i + 1} of \${length}\`}
+          className={cn("h-12 w-12 rounded-xl border bg-card text-center font-mono text-lg font-semibold tabular-nums text-foreground placeholder:text-muted-foreground/30 transition-all duration-200 hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+            digit ? "border-primary/40 bg-primary/5 shadow-sm shadow-primary/10" : "border-border")} />
+      ))}
+    </div>
+  );
 }`;
 
 export default function PinInputPage() {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
-  const inputs = useRef<(HTMLInputElement | null)[]>([]);
-
-  const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) return;
-    const newPin = [...pin];
-    newPin[index] = value.slice(-1);
-    setPin(newPin);
-    if (value && index < 5) inputs.current[index + 1]?.focus();
-  };
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !pin[index] && index > 0) {
-      inputs.current[index - 1]?.focus();
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent) => {
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6).split("");
-    setPin([...pasted, ...Array(6 - pasted.length).fill("")]);
-    inputs.current[Math.min(pasted.length, 5)]?.focus();
-  };
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Pin Input</h1>
-          <Badge variant="primary">Input</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          PIN/OTP digit input with auto-focus, paste support, and backspace handling for verification codes.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Pin Input"
+      category="Input"
+      description="PIN/OTP digit input with auto-focus, paste support, backspace navigation, and masked input."
+    >
+      <PreviewPanel filename="pin-input-preview.tsx">
+        <PinInput value={pin} onChange={setPin} autoFocus />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      <SourceCodeViewer source={PIN_INPUT_SOURCE} filename="components/ui/PinInput/PinInput.tsx" defaultExpanded />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Default"
+          description="6-digit PIN with auto-focus and paste support."
+          code={`import { PinInput } from "@/components/ui/PinInput";
+
+<PinInput value={pin} onChange={setPin} autoFocus />`}
+          filename="default.tsx"
+        >
+          <PinInput value={pin} onChange={setPin} autoFocus />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="4-Digit OTP"
+          description="Shorter OTP input."
+          code={`<PinInput length={4} onComplete={(v) => console.log(v)} />`}
+          filename="4-digit.tsx"
+        >
+          <PinInput length={4} onComplete={(v) => { /* noop */ }} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Masked"
+          description="Mask input characters for sensitive PINs."
+          code={`<PinInput mask length={6} onComplete={(v) => console.log(v)} />`}
+          filename="masked.tsx"
+        >
+          <PinInput mask length={6} onComplete={(v) => { /* noop */ }} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Disabled"
+          description="Non-interactive pin input."
+          code={`<PinInput disabled value={["1","2","3","4","5","6"]} />`}
+          filename="disabled.tsx"
+        >
+          <PinInput disabled value={["1", "2", "3", "4", "5", "6"]} />
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">6-Digit PIN</h3>
-          <ComponentPreview id="pin-input-default">
-            <div className="flex w-full justify-center gap-2">
-              {pin.map((digit, i) => (
-                <input
-                  key={i}
-                  ref={(el) => { inputs.current[i] = el; }}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleChange(i, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(i, e)}
-                  onPaste={handlePaste}
-                  className="h-12 w-12 rounded-lg border border-border bg-background text-center text-lg font-mono font-bold focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              ))}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">4-Digit OTP</h3>
-          <ComponentPreview id="pin-input-short">
-            <div className="flex w-full justify-center gap-3">
-              {[0, 1, 2, 3].map((i) => (
-                <input
-                  key={i}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  className="h-14 w-14 rounded-xl border-2 border-border bg-background text-center text-xl font-mono font-bold focus:border-primary focus:outline-none"
-                />
-              ))}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="pin-input-interactive">
-            <Card className="w-full max-w-sm">
-              <CardContent className="p-6">
-                <p className="mb-4 text-center text-sm text-muted-foreground">Enter the 6-digit code sent to your phone</p>
-                <div className="mb-4 flex justify-center gap-2">
-                  {pin.map((digit, i) => (
-                    <input
-                      key={i}
-                      ref={(el) => { inputs.current[i] = el; }}
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleChange(i, e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(i, e)}
-                      onPaste={handlePaste}
-                      className={`h-12 w-12 rounded-lg border text-center text-lg font-mono font-bold focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${digit ? "border-primary bg-primary/5" : "border-border"}`}
-                    />
-                  ))}
-                </div>
-                <p className="text-center text-xs text-muted-foreground">
-                  {pin.filter(Boolean).length}/6 digits entered
-                </p>
-              </CardContent>
-            </Card>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -153,21 +152,57 @@ export default function PinInputPage() {
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string[]</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(value: string[]) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">onComplete</td>
                 <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">mask</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">autoFocus</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }
