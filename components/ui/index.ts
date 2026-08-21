@@ -237,6 +237,8 @@ export { Item } from "./Item";
 export type { ItemProps } from "./Item";
 export { Kbd } from "./Kbd";
 export type { KbdProps } from "./Kbd";
+export { KeyboardShortcuts } from "./KeyboardShortcuts";
+export type { KeyboardShortcutsProps } from "./KeyboardShortcuts";
 export { Label } from "./Label";
 export type { LabelProps } from "./Label";
 

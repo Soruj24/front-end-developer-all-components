@@ -1,20 +1,117 @@
 "use client";
 
-import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Kbd, Table, Input } from "@/components/ui";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+import type { ShortcutGroup } from "@/components/ui/KeyboardShortcuts";
 
-const installCommand = "npx component-library@latest add keyboard-shortcuts";
+const KEYBOARDSHORTCUTS_SOURCE = `"use client";
 
-const usageCode = `import { KeyboardShortcuts } from "@/components/ui";
+import { useState, useMemo } from "react";
+import { cn } from "@/lib/cn";
+import { Kbd } from "@/components/ui/Kbd";
 
-export default function Example() {
-  return <KeyboardShortcuts />;
+interface ShortcutItem {
+  keys: string[];
+  description: string;
+}
+
+interface ShortcutGroup {
+  category: string;
+  items: ShortcutItem[];
+}
+
+interface KeyboardShortcutsProps {
+  shortcuts: ShortcutGroup[];
+  searchable?: boolean;
+  className?: string;
+}
+
+export function KeyboardShortcuts({ shortcuts, searchable = true, className }: KeyboardShortcutsProps) {
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    if (!query.trim()) return shortcuts;
+    const q = query.trim().toLowerCase();
+    return shortcuts
+      .map((cat) => ({
+        ...cat,
+        items: cat.items.filter((item) =>
+          item.description.toLowerCase().includes(q) ||
+          item.keys.some((k) => k.toLowerCase().includes(q))
+        ),
+      }))
+      .filter((cat) => cat.items.length > 0);
+  }, [shortcuts, query]);
+
+  return (
+    <div className={cn("flex flex-col", className)}>
+      {searchable && (
+        <div className="mb-4">
+          <div className="relative">
+            <svg className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search shortcuts..."
+              className="h-10 w-full rounded-xl border border-border bg-card pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground transition-colors duration-200 hover:border-muted-foreground/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+            {query && (
+              <button type="button" onClick={() => setQuery("")} aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors duration-150 hover:text-foreground">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      <div className="space-y-5">
+        {filtered.map((cat) => (
+          <div key={cat.category}>
+            <h4 className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{cat.category}</h4>
+            <div className="space-y-0.5">
+              {cat.items.map((item) => (
+                <div key={item.description} className="flex items-center justify-between rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-muted/60">
+                  <span className="text-sm text-foreground">{item.description}</span>
+                  <div className="flex items-center gap-1.5">
+                    {item.keys.map((key, i) => (
+                      <span key={key} className="flex items-center gap-1.5">
+                        {i > 0 && <span className="text-[10px] text-muted-foreground/50">+</span>}
+                        <Kbd>{key}</Kbd>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
+            <svg className="mb-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <p className="text-sm">No shortcuts match &ldquo;{query.trim()}&rdquo;</p>
+            <button type="button" onClick={() => setQuery("")} className="mt-1 text-xs text-primary transition-colors duration-150 hover:underline">
+              Clear search
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }`;
 
-const shortcuts = [
+const shortcuts: ShortcutGroup[] = [
   { category: "General", items: [
     { keys: ["Ctrl", "S"], description: "Save document" },
     { keys: ["Ctrl", "Z"], description: "Undo" },
@@ -34,109 +131,105 @@ const shortcuts = [
   ]},
 ];
 
+const compactShortcuts: ShortcutGroup[] = [
+  { category: "File", items: [
+    { keys: ["Ctrl", "N"], description: "New file" },
+    { keys: ["Ctrl", "O"], description: "Open file" },
+    { keys: ["Ctrl", "S"], description: "Save" },
+    { keys: ["Ctrl", "Shift", "S"], description: "Save as" },
+  ]},
+];
+
 export default function KeyboardShortcutsPage() {
-  const [search, setSearch] = useState("");
-  const filtered = shortcuts.map((cat) => ({
-    ...cat,
-    items: cat.items.filter((i) => i.description.toLowerCase().includes(search.toLowerCase())),
-  })).filter((cat) => cat.items.length > 0);
-
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Keyboard Shortcuts</h1>
-          <Badge variant="primary">Utility</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Keyboard shortcut reference with search, category grouping, and key combination display.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Keyboard Shortcuts"
+      category="Utility"
+      description="Keyboard shortcut reference with search, category grouping, and key combination display."
+    >
+      <PreviewPanel filename="keyboard-shortcuts-preview.tsx">
+        <KeyboardShortcuts shortcuts={shortcuts} />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      <SourceCodeViewer
+        source={KEYBOARDSHORTCUTS_SOURCE}
+        filename="components/ui/KeyboardShortcuts/KeyboardShortcuts.tsx"
+        defaultExpanded
+      />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Default"
+          description="Grouped shortcuts with search."
+          code={`import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+
+const shortcuts = [
+  { category: "General", items: [
+    { keys: ["Ctrl", "S"], description: "Save document" },
+    { keys: ["Ctrl", "Z"], description: "Undo" },
+  ]},
+];
+
+<KeyboardShortcuts shortcuts={shortcuts} />`}
+          filename="default.tsx"
+        >
+          <KeyboardShortcuts shortcuts={shortcuts} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Without Search"
+          description="Disable the search input."
+          code={`import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+
+<KeyboardShortcuts shortcuts={shortcuts} searchable={false} />`}
+          filename="no-search.tsx"
+        >
+          <KeyboardShortcuts shortcuts={shortcuts} searchable={false} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Single Category"
+          description="Display a single category of shortcuts."
+          code={`import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+
+const fileShortcuts = [
+  { category: "File", items: [
+    { keys: ["Ctrl", "N"], description: "New file" },
+    { keys: ["Ctrl", "O"], description: "Open file" },
+    { keys: ["Ctrl", "S"], description: "Save" },
+  ]},
+];
+
+<KeyboardShortcuts shortcuts={fileShortcuts} searchable={false} />`}
+          filename="single-category.tsx"
+        >
+          <KeyboardShortcuts shortcuts={compactShortcuts} searchable={false} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Searchable"
+          description="Filter shortcuts by description or key name."
+          code={`import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+
+<KeyboardShortcuts shortcuts={shortcuts} searchable={true} />`}
+          filename="searchable.tsx"
+        >
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-xs text-muted-foreground">Try searching for &quot;save&quot; or &quot;Ctrl&quot;</p>
+            <KeyboardShortcuts shortcuts={shortcuts} searchable={true} />
+          </div>
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Default</h3>
-          <ComponentPreview id="keyboard-shortcuts-default">
-            <div className="w-full space-y-4">
-              {shortcuts.map((cat) => (
-                <div key={cat.category}>
-                  <h4 className="mb-2 text-sm font-medium text-muted-foreground">{cat.category}</h4>
-                  <div className="space-y-1">
-                    {cat.items.map((item) => (
-                      <div key={item.description} className="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-muted">
-                        <span className="text-sm">{item.description}</span>
-                        <div className="flex gap-1">
-                          {item.keys.map((key) => <Kbd key={key}>{key}</Kbd>)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Searchable</h3>
-          <ComponentPreview id="keyboard-shortcuts-search">
-            <div className="w-full">
-              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search shortcuts..." className="mb-3" />
-              {filtered.map((cat) => (
-                <div key={cat.category} className="mb-3">
-                  <h4 className="mb-1 text-xs font-medium text-muted-foreground">{cat.category}</h4>
-                  {cat.items.map((item) => (
-                    <div key={item.description} className="flex items-center justify-between rounded px-2 py-1 text-sm">
-                      <span>{item.description}</span>
-                      <div className="flex gap-1">
-                        {item.keys.map((key) => <Kbd key={key} className="text-xs">{key}</Kbd>)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Table View</h3>
-          <ComponentPreview id="keyboard-shortcuts-table">
-            <Table className="w-full">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="px-3 py-2 text-left text-sm font-medium">Action</th>
-                  <th className="px-3 py-2 text-right text-sm font-medium">Shortcut</th>
-                </tr>
-              </thead>
-              <tbody>
-                {shortcuts[0].items.map((item) => (
-                  <tr key={item.description} className="border-b border-border">
-                    <td className="px-3 py-2 text-sm">{item.description}</td>
-                    <td className="px-3 py-2 text-right"><div className="flex justify-end gap-1">{item.keys.map((k) => <Kbd key={k}>{k}</Kbd>)}</div></td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -153,16 +246,22 @@ export default function KeyboardShortcutsPage() {
                 <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">Yes</td>
               </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">searchable</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }
