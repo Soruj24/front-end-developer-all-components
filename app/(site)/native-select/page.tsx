@@ -9,93 +9,46 @@ import {
   ExampleBlock,
 } from "@/components/docs";
 
-const NATIVESLECT_SOURCE = `"use client";
+const NATIVE_SELECT_SOURCE = `"use client";
 
 import { cn } from "@/lib/cn";
-import type { NativeSelectProps } from "./NativeSelect.types";
 
-export function NativeSelect({
-  value,
-  onValueChange,
-  options,
-  placeholder,
-  disabled = false,
-  className,
-}: NativeSelectProps) {
+interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+interface NativeSelectProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
+  options: SelectOption[];
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+}
+
+const CHEVRON_SVG = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2371717a%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E";
+
+export function NativeSelect({ value, onValueChange, options, placeholder, disabled = false, className }: NativeSelectProps) {
   return (
-    <select
-      value={value}
-      onChange={(e) => onValueChange?.(e.target.value)}
-      disabled={disabled}
-      className={cn(
-        "flex h-10 w-full items-center justify-between rounded-md border bg-white px-3 py-2 text-sm dark:bg-zinc-900",
-        "appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2371717a%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1rem] bg-[right_0.5rem_center] bg-no-repeat pr-8",
-        "focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:focus:ring-zinc-500",
-        disabled && "cursor-not-allowed opacity-50",
-        className
-      )}
-    >
-      {placeholder && (
-        <option value="" disabled>
-          {placeholder}
-        </option>
-      )}
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value} disabled={opt.disabled}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <select value={value} onChange={(e) => onValueChange?.(e.target.value)} disabled={disabled}
+        className={cn(
+          "flex h-11 w-full appearance-none items-center rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground",
+          "bg-[url('" + CHEVRON_SVG + "')] bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat",
+          "transition-colors duration-150 hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+          disabled && "pointer-events-none cursor-not-allowed opacity-50",
+          className,
+        )}>
+        {placeholder && <option value="" disabled>{placeholder}</option>}
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} disabled={opt.disabled}>{opt.label}</option>
+        ))}
+      </select>
+    </div>
   );
 }`;
-
-const BASIC_CODE = `import { NativeSelect } from "@/components/ui/NativeSelect";
-
-<NativeSelect
-  placeholder="Select a framework"
-  options={[
-    { value: "react", label: "React" },
-    { value: "vue", label: "Vue" },
-    { value: "angular", label: "Angular" },
-  ]}
-/>`;
-
-const WITH_VALUE_CODE = `import { useState } from "react";
-import { NativeSelect } from "@/components/ui/NativeSelect";
-
-function ControlledExample() {
-  const [value, setValue] = useState("react");
-
-  return (
-    <NativeSelect
-      value={value}
-      onValueChange={setValue}
-      options={[
-        { value: "react", label: "React" },
-        { value: "vue", label: "Vue" },
-      ]}
-    />
-  );
-}`;
-
-const DISABLED_CODE = `import { NativeSelect } from "@/components/ui/NativeSelect";
-
-<NativeSelect
-  disabled
-  placeholder="Cannot select"
-  options={[{ value: "a", label: "Option A" }]}
-/>`;
-
-const OPTIONS_WITH_DISABLED_CODE = `import { NativeSelect } from "@/components/ui/NativeSelect";
-
-<NativeSelect
-  placeholder="Choose one"
-  options={[
-    { value: "a", label: "Available" },
-    { value: "b", label: "Unavailable", disabled: true },
-    { value: "c", label: "Available" },
-  ]}
-/>`;
 
 export default function NativeSelectPage() {
   const [value, setValue] = useState("react");
@@ -104,9 +57,9 @@ export default function NativeSelectPage() {
     <ComponentDocPage
       name="Native Select"
       category="Forms"
-      description="A native HTML select element with options array, placeholder, controlled value, and disabled states."
+      description="Native HTML select with options array, placeholder, controlled value, and disabled states."
     >
-      <PreviewPanel filename="native-select-demo.tsx">
+      <PreviewPanel filename="native-select-preview.tsx">
         <div className="w-full max-w-xs">
           <NativeSelect
             placeholder="Select a framework"
@@ -122,63 +75,167 @@ export default function NativeSelectPage() {
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer
-        source={NATIVESLECT_SOURCE}
-        filename="NativeSelect.tsx"
-        defaultExpanded
-      />
+      <SourceCodeViewer source={NATIVE_SELECT_SOURCE} filename="components/ui/NativeSelect/NativeSelect.tsx" defaultExpanded />
 
-      <ExampleBlock title="Basic" code={BASIC_CODE}>
-        <div className="w-full max-w-xs">
-          <NativeSelect
-            placeholder="Select a framework"
-            options={[
-              { value: "react", label: "React" },
-              { value: "vue", label: "Vue" },
-              { value: "angular", label: "Angular" },
-            ]}
-          />
-        </div>
-      </ExampleBlock>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
-      <ExampleBlock title="Controlled" code={WITH_VALUE_CODE}>
-        <div className="w-full max-w-xs">
-          <NativeSelect
-            value={value}
-            onValueChange={setValue}
-            options={[
-              { value: "react", label: "React" },
-              { value: "vue", label: "Vue" },
-            ]}
-          />
-        </div>
-      </ExampleBlock>
+        <ExampleBlock
+          title="Basic"
+          description="Default select with placeholder."
+          code={`import { NativeSelect } from "@/components/ui/NativeSelect";
 
-      <ExampleBlock title="Disabled" code={DISABLED_CODE}>
-        <div className="w-full max-w-xs">
-          <NativeSelect
-            disabled
-            placeholder="Cannot select"
-            options={[{ value: "a", label: "Option A" }]}
-          />
-        </div>
-      </ExampleBlock>
+<NativeSelect
+  placeholder="Select a framework"
+  options={[
+    { value: "react", label: "React" },
+    { value: "vue", label: "Vue" },
+    { value: "angular", label: "Angular" },
+  ]}
+/>`}
+          filename="basic.tsx"
+        >
+          <div className="w-full max-w-xs">
+            <NativeSelect
+              placeholder="Select a framework"
+              options={[
+                { value: "react", label: "React" },
+                { value: "vue", label: "Vue" },
+                { value: "angular", label: "Angular" },
+              ]}
+            />
+          </div>
+        </ExampleBlock>
 
-      <ExampleBlock
-        title="Disabled Options"
-        code={OPTIONS_WITH_DISABLED_CODE}
-      >
-        <div className="w-full max-w-xs">
-          <NativeSelect
-            placeholder="Choose one"
-            options={[
-              { value: "a", label: "Available" },
-              { value: "b", label: "Unavailable", disabled: true },
-              { value: "c", label: "Available" },
-            ]}
-          />
+        <ExampleBlock
+          title="Controlled"
+          description="Control the selected value with state."
+          code={`const [value, setValue] = useState("react");
+
+<NativeSelect
+  value={value}
+  onValueChange={setValue}
+  options={[
+    { value: "react", label: "React" },
+    { value: "vue", label: "Vue" },
+  ]}
+/>`}
+          filename="controlled.tsx"
+        >
+          <div className="w-full max-w-xs">
+            <NativeSelect
+              value={value}
+              onValueChange={setValue}
+              options={[
+                { value: "react", label: "React" },
+                { value: "vue", label: "Vue" },
+              ]}
+            />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Disabled"
+          description="Disable the entire select."
+          code={`<NativeSelect
+  disabled
+  placeholder="Cannot select"
+  options={[{ value: "a", label: "Option A" }]}
+/>`}
+          filename="disabled.tsx"
+        >
+          <div className="w-full max-w-xs">
+            <NativeSelect
+              disabled
+              placeholder="Cannot select"
+              options={[{ value: "a", label: "Option A" }]}
+            />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Disabled Options"
+          description="Disable individual options."
+          code={`<NativeSelect
+  placeholder="Choose one"
+  options={[
+    { value: "a", label: "Available" },
+    { value: "b", label: "Unavailable", disabled: true },
+    { value: "c", label: "Available" },
+  ]}
+/>`}
+          filename="disabled-options.tsx"
+        >
+          <div className="w-full max-w-xs">
+            <NativeSelect
+              placeholder="Choose one"
+              options={[
+                { value: "a", label: "Available" },
+                { value: "b", label: "Unavailable", disabled: true },
+                { value: "c", label: "Available" },
+              ]}
+            />
+          </div>
+        </ExampleBlock>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onValueChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">options</td>
+                <td className="px-4 py-3 text-muted-foreground">SelectOption[]</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </ExampleBlock>
+      </section>
     </ComponentDocPage>
   );
 }

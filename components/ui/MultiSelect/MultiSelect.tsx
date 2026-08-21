@@ -48,14 +48,14 @@ export function MultiSelect({
 
   return (
     <div ref={containerRef} className={cn("relative", className)}>
-      <button
-        type="button"
-        onClick={() => { if (!disabled) { setOpen(!open); setTimeout(() => inputRef.current?.focus(), 0); } }}
-        disabled={disabled}
+      <div
+        role="combobox"
         aria-expanded={open}
+        aria-controls="multiselect-listbox"
         aria-haspopup="listbox"
+        onClick={() => { if (!disabled) { setOpen(!open); setTimeout(() => inputRef.current?.focus(), 0); } }}
         className={cn(
-          "flex min-h-[42px] w-full flex-wrap items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-left text-sm",
+          "flex min-h-[42px] w-full cursor-pointer flex-wrap items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-left text-sm",
           "transition-colors duration-150",
           "hover:border-muted-foreground/30",
           "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
@@ -98,9 +98,10 @@ export function MultiSelect({
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
-      </button>
+      </div>
       {open && (
         <div
+          id="multiselect-listbox"
           role="listbox"
           aria-multiselectable="true"
           className={cn(
