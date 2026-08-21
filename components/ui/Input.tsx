@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, ReactNode, forwardRef, useId, useState } from "react";
+import { cn } from "@/lib/cn";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -38,9 +39,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       }
     };
 
-    const leftPad = icon && iconPosition === "left" ? "pl-10" : "";
-    const rightPad = (icon && iconPosition === "right") || clearable ? "pr-10" : "";
-
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
@@ -57,11 +55,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground placeholder:text-subtle transition-colors focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={cn(
+              "flex h-10 w-full rounded-xl border border-border bg-card px-3 text-sm text-foreground",
+              "placeholder:text-muted-foreground",
+              "transition-colors duration-200",
+              "hover:border-muted-foreground/30",
+              "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+              "disabled:cursor-not-allowed disabled:opacity-50",
               error
-                ? "border-danger focus:border-danger focus:ring-danger"
-                : "border-input focus:border-ring focus:ring-ring"
-            } ${leftPad} ${rightPad} ${className}`}
+                ? "border-destructive focus:border-destructive focus:ring-destructive/20"
+                : "",
+              icon && iconPosition === "left" ? "pl-10" : "",
+              (icon && iconPosition === "right") || clearable ? "pr-10" : "",
+              className,
+            )}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : helperText ? helperId : undefined}
             onChange={handleChange}
@@ -75,25 +82,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {clearable && hasValue && (
             <button
               type="button"
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground"
               onClick={handleClear}
+              aria-label="Clear input"
               tabIndex={-1}
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           )}
         </div>
         {error && (
-          <p id={errorId} className="text-sm text-danger">
-            {error}
-          </p>
+          <p id={errorId} className="text-sm text-destructive">{error}</p>
         )}
         {helperText && !error && (
-          <p id={helperId} className="text-sm text-muted-foreground">
-            {helperText}
-          </p>
+          <p id={helperId} className="text-sm text-muted-foreground">{helperText}</p>
         )}
       </div>
     );
