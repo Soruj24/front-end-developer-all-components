@@ -153,6 +153,7 @@ export { ProgressBar } from "./ProgressBar";
 export type { ProgressBarProps } from "./ProgressBar";
 export { PromptBuilder } from "./PromptBuilder";
 export { Rating } from "./Rating";
+export type { RatingProps } from "./Rating";
 export { ScrollArea } from "./ScrollArea";
 export { default as SearchInput } from "./SearchInput";
 export { Select } from "./Select";
