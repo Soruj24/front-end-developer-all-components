@@ -74,6 +74,8 @@ export { ComparisonTable, ComparisonCards } from "./ComparisonTable";
 export type { ComparisonTableProps, ComparisonCardsProps, ComparisonColumn, ComparisonRow } from "./ComparisonTable";
 export { CurrencyInput } from "./CurrencyInput";
 export type { CurrencyInputProps } from "./CurrencyInput";
+export { DataGrid, PaginationControls } from "./DataGrid";
+export type { DataGridProps, DataGridColumn, DataGridSortState } from "./DataGrid";
 export { JsonTreeViewer } from "./JsonTreeViewer";
 export type { JsonNode, JsonTreeViewerProps, JsonType } from "./JsonTreeViewer";
 export { KanbanBoard, KanbanCard, KanbanColumn } from "./KanbanBoard";
