@@ -305,6 +305,8 @@ export { IconPicker, DEFAULT_ICONS } from "./IconPicker";
 export type { IconPickerProps, IconPickerIcon } from "./IconPicker";
 export { Image, ImagePreview } from "./Image";
 export type { ImageProps } from "./Image";
+export { ImageComparison } from "./ImageComparison";
+export type { ImageComparisonProps } from "./ImageComparison";
 export { List, ListItem } from "./List";
 export type { ListProps, ListItemProps } from "./List";
 export { Masonry, MasonryItem } from "./Masonry";
