@@ -286,6 +286,8 @@ export { PasswordGenerator } from "./PasswordGenerator";
 export type { PasswordGeneratorProps } from "./PasswordGenerator";
 export { PinInput } from "./PinInput";
 export type { PinInputProps } from "./PinInput";
+export { PhoneInput } from "./PhoneInput";
+export type { PhoneInputProps, Country } from "./PhoneInput";
 export {
   NavigationMenu,
   NavigationMenuList,
