@@ -179,6 +179,8 @@ export {
   SkeletonTable,
   SkeletonAvatar,
 } from "./Skeleton";
+export { SkeletonList } from "./SkeletonList";
+export type { SkeletonListProps, SkeletonListVariant } from "./SkeletonList";
 export { Slider } from "./Slider";
 export { default as Spinner } from "./Spinner";
 export { Stepper } from "./Stepper";
