@@ -1,6 +1,6 @@
 export const PASSWORD_GENERATOR_SOURCE = `"use client";
 
-import { useState, useCallback, useId } from "react";
+import { useState, useCallback, useEffect, useId } from "react";
 import { cn } from "@/lib/cn";
 import { Copy, Check, RefreshCw, Shield } from "lucide-react";
 
@@ -69,8 +69,14 @@ export default function PasswordGenerator({
     numbers: includeNumbers,
     symbols: includeSymbols,
   });
-  const [pw, setPw] = useState(() => generate(initLength, { uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols }));
+  const [pw, setPw] = useState("");
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const next = generate(initLength, { uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols });
+    setPw(next);
+    onGenerate?.(next);
+  }, []);
 
   const strength = getStrength(pw);
 
