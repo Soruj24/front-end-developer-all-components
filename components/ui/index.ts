@@ -280,6 +280,8 @@ export { Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
 export { PasswordStrength } from "./PasswordStrength";
 export type { PasswordStrengthProps } from "./PasswordStrength";
+export { PasswordGenerator } from "./PasswordGenerator";
+export type { PasswordGeneratorProps } from "./PasswordGenerator";
 export { PinInput } from "./PinInput";
 export type { PinInputProps } from "./PinInput";
 export {
