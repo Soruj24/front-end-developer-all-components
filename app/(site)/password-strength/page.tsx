@@ -1,138 +1,161 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Input, Card, CardContent, Progress, Button } from "@/components/ui";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
+import { PasswordStrength } from "@/components/ui/PasswordStrength";
 
-const installCommand = "npx component-library@latest add password-strength";
+const PASSWORD_STRENGTH_SOURCE = `"use client";
 
-const usageCode = `import { PasswordStrength } from "@/components/ui";
+import { useState, useMemo } from "react";
+import { cn } from "@/lib/cn";
 
-export default function Example() {
-  return <PasswordStrength />;
-}`;
+interface Requirement { label: string; test: (pw: string) => boolean }
 
-function getStrength(pw: string) {
+const REQUIREMENTS: Requirement[] = [
+  { label: "8+ characters", test: (pw) => pw.length >= 8 },
+  { label: "Uppercase letter", test: (pw) => /[A-Z]/.test(pw) },
+  { label: "Number", test: (pw) => /[0-9]/.test(pw) },
+  { label: "Special character", test: (pw) => /[^A-Za-z0-9]/.test(pw) },
+];
+
+const STRENGTH_COLORS = { 1: "bg-red-500", 2: "bg-orange-500", 3: "bg-yellow-500", 4: "bg-emerald-500" };
+
+function getStrength(pw) {
   let score = 0;
   if (pw.length >= 8) score++;
   if (/[A-Z]/.test(pw)) score++;
   if (/[0-9]/.test(pw)) score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
-  return { score, label: ["Weak", "Fair", "Good", "Strong"][score - 1] || "Too short", color: ["bg-red-500", "bg-orange-500", "bg-yellow-500", "bg-green-500"][score - 1] || "bg-gray-300" };
+  return { score, label: ["Weak", "Fair", "Good", "Strong"][score - 1] || "Too short", color: STRENGTH_COLORS[score] || "bg-muted-foreground/30" };
 }
 
-const requirements = [
-  { label: "8+ characters", test: (pw: string) => pw.length >= 8 },
-  { label: "Uppercase letter", test: (pw: string) => /[A-Z]/.test(pw) },
-  { label: "Number", test: (pw: string) => /[0-9]/.test(pw) },
-  { label: "Special character", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
-];
+export function PasswordStrength({ value, onChange, showToggle = true, showChecklist = true, placeholder = "Enter password...", className }) {
+  const [internalValue, setInternalValue] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const currentValue = value !== undefined ? value : internalValue;
+  const handleChange = (next) => { if (value === undefined) setInternalValue(next); onChange?.(next); };
+  const { score, label, color } = useMemo(() => getStrength(currentValue), [currentValue]);
+  const met = useMemo(() => REQUIREMENTS.map((r) => r.test(currentValue)), [currentValue]);
+
+  return (
+    <div className={cn("flex flex-col gap-3", className)}>
+      <div className="relative">
+        <input type={showPassword ? "text" : "password"} value={currentValue} onChange={(e) => handleChange(e.target.value)} placeholder={placeholder}
+          className="flex h-11 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 pr-12 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors hover:border-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none" />
+        {showToggle && currentValue.length > 0 && (
+          <button type="button" onClick={() => setShowPassword((s) => !s)} aria-label={showPassword ? "Hide password" : "Show password"}
+            className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-7 items-center justify-center rounded-lg px-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-primary/50">
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        )}
+      </div>
+      {currentValue.length > 0 && (
+        <>
+          <div className="flex gap-1.5">
+            {[1, 2, 3, 4].map((i) => <div key={i} className={cn("h-1.5 flex-1 rounded-full transition-all duration-300", i <= score ? color : "bg-muted")} />)}
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">{label}</span>
+            <span className="inline-flex h-5 items-center rounded-md bg-muted px-1.5 text-xs font-medium text-muted-foreground">{score}/4</span>
+          </div>
+        </>
+      )}
+      {showChecklist && currentValue.length > 0 && (
+        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+          {REQUIREMENTS.map((req, i) => (
+            <div key={req.label} className={cn("flex items-center gap-2 text-xs transition-colors", met[i] ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground")}>
+              <span className={cn("inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-medium transition-colors",
+                met[i] ? "bg-emerald-500 text-white" : "bg-muted text-muted-foreground")}>
+                {met[i] ? "✓" : "○"}
+              </span>
+              {req.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}`;
 
 export default function PasswordStrengthPage() {
   const [pw, setPw] = useState("");
-  const [show, setShow] = useState(false);
-  const { score, label, color } = getStrength(pw);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Password Strength</h1>
-          <Badge variant="primary">Security</Badge>
+    <ComponentDocPage
+      name="Password Strength"
+      category="Security"
+      description="Password strength meter with visual indicator, requirement checklist, and real-time feedback."
+    >
+      <PreviewPanel filename="password-strength-preview.tsx">
+        <div className="w-full max-w-sm">
+          <PasswordStrength value={pw} onChange={setPw} />
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Password strength meter with visual indicator, requirement checklist, and real-time feedback.
-        </p>
-      </header>
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+      <SourceCodeViewer source={PASSWORD_STRENGTH_SOURCE} filename="components/ui/PasswordStrength/PasswordStrength.tsx" defaultExpanded />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Default"
+          description="Password input with strength meter and requirement checklist."
+          code={`import { PasswordStrength } from "@/components/ui/PasswordStrength";
+
+<PasswordStrength value={pw} onChange={setPw} />`}
+          filename="default.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <PasswordStrength value={pw} onChange={setPw} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Meter Only"
+          description="Show only the strength meter without checklist."
+          code={`<PasswordStrength value={pw} onChange={setPw} showChecklist={false} />`}
+          filename="meter-only.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <PasswordStrength value={pw} onChange={setPw} showChecklist={false} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="No Toggle"
+          description="Hide the show/hide password toggle."
+          code={`<PasswordStrength value={pw} onChange={setPw} showToggle={false} />`}
+          filename="no-toggle.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <PasswordStrength value={pw} onChange={setPw} showToggle={false} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Placeholder"
+          description="Custom placeholder text."
+          code={`<PasswordStrength value={pw} onChange={setPw} placeholder="Create a strong password..." />`}
+          filename="custom-placeholder.tsx"
+        >
+          <div className="w-full max-w-sm">
+            <PasswordStrength value={pw} onChange={setPw} placeholder="Create a strong password..." />
+          </div>
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Strength Meter</h3>
-          <ComponentPreview id="password-strength-default">
-            <div className="w-full max-w-sm">
-              <Input type={show ? "text" : "password"} value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Enter password" className="mb-2" />
-              <div className="flex gap-1 mb-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= score ? color : "bg-muted"}`} />
-                ))}
-              </div>
-              {pw.length > 0 && <p className="text-xs font-medium">{label}</p>}
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Requirement Checklist</h3>
-          <ComponentPreview id="password-strength-checklist">
-            <Card className="w-full max-w-sm">
-              <CardContent className="p-4">
-                <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Create a password" className="mb-3" />
-                <div className="space-y-1.5">
-                  {requirements.map((req) => (
-                    <div key={req.label} className="flex items-center gap-2 text-sm">
-                      <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${pw && req.test(pw) ? "bg-green-500 text-white" : "bg-muted text-muted-foreground"}`}>
-                        {pw && req.test(pw) ? "✓" : "○"}
-                      </span>
-                      <span className={pw && req.test(pw) ? "text-foreground" : "text-muted-foreground"}>{req.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="password-strength-interactive">
-            <Card className="w-full max-w-sm">
-              <CardContent className="p-4">
-                <div className="relative mb-3">
-                  <Input type={show ? "text" : "password"} value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Enter password" className="pr-16" />
-                  <button onClick={() => setShow(!show)} className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground">{show ? "Hide" : "Show"}</button>
-                </div>
-                <div className="mb-3 flex gap-1">
-                  {[1, 2, 3, 4].map((i) => (
-                    <Progress key={i} value={i <= score ? 100 : 0} className={`h-2 flex-1 ${i <= score ? "" : "bg-muted"}`} />
-                  ))}
-                </div>
-                {pw.length > 0 && (
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="text-sm font-medium">{label}</span>
-                    <Badge variant={score >= 3 ? "primary" : score >= 2 ? "secondary" : "destructive"}>{score}/4</Badge>
-                  </div>
-                )}
-                <div className="grid grid-cols-2 gap-1">
-                  {requirements.map((req) => (
-                    <div key={req.label} className={`flex items-center gap-1.5 text-xs ${pw && req.test(pw) ? "text-green-600" : "text-muted-foreground"}`}>
-                      <span>{pw && req.test(pw) ? "✓" : "○"}</span>
-                      {req.label}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -147,24 +170,42 @@ export default function PasswordStrengthPage() {
                 <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">onChange</td>
                 <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">showToggle</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">showChecklist</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Enter password...&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

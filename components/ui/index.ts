@@ -269,6 +269,8 @@ export { NumberInput } from "./NumberInput";
 export type { NumberInputProps } from "./NumberInput";
 export { Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
+export { PasswordStrength } from "./PasswordStrength";
+export type { PasswordStrengthProps } from "./PasswordStrength";
 export {
   NavigationMenu,
   NavigationMenuList,
