@@ -12,94 +12,36 @@ import {
 const RADIOGROUP_SOURCE = `"use client";
 
 import { cn } from "@/lib/cn";
-import type { RadioGroupProps } from "./RadioGroup.types";
 
-export function RadioGroup({
-  value,
-  onValueChange,
-  options,
-  orientation = "vertical",
-  className,
-}: RadioGroupProps) {
+interface RadioOption { value: string; label: string; description?: string; disabled?: boolean }
+
+interface RadioGroupProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
+  options: RadioOption[];
+  orientation?: "horizontal" | "vertical";
+  className?: string;
+}
+
+export function RadioGroup({ value, onValueChange, options, orientation = "vertical", className }: RadioGroupProps) {
   return (
-    <div
-      role="radiogroup"
-      className={cn(
-        orientation === "horizontal" ? "flex flex-wrap gap-4" : "flex flex-col gap-2",
-        className
-      )}
-    >
-      {options.map((opt) => (
-        <label
-          key={opt.value}
-          className={cn(
-            "flex items-center space-x-2",
-            opt.disabled && "cursor-not-allowed opacity-50"
-          )}
-        >
-          <input
-            type="radio"
-            value={opt.value}
-            checked={value === opt.value}
-            onChange={() => onValueChange?.(opt.value)}
-            disabled={opt.disabled}
-            className="h-4 w-4 border-zinc-300 text-zinc-900 focus:ring-zinc-400 dark:border-zinc-600 dark:focus:ring-zinc-500"
-          />
-          <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            {opt.label}
-          </span>
-        </label>
-      ))}
+    <div role="radiogroup" className={cn(orientation === "horizontal" ? "flex flex-wrap gap-3" : "flex flex-col gap-1", className)}>
+      {options.map((opt) => {
+        const checked = value === opt.value;
+        return (
+          <label key={opt.value} className={cn("group flex cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 transition-colors duration-150 hover:bg-muted/50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary/50 has-[:focus-visible]:outline-none", opt.disabled && "pointer-events-none opacity-50")}>
+            <span className={cn("mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-150", checked ? "border-primary bg-primary" : "border-muted-foreground/40 bg-background group-hover:border-muted-foreground/60")}>
+              {checked && <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />}
+            </span>
+            <span className="flex flex-col gap-0.5">
+              <span className={cn("text-sm font-medium leading-none", checked ? "text-foreground" : "text-muted-foreground")}>{opt.label}</span>
+              {opt.description && <span className="text-xs leading-snug text-muted-foreground/70">{opt.description}</span>}
+            </span>
+            <input type="radio" value={opt.value} checked={checked} onChange={() => onValueChange?.(opt.value)} disabled={opt.disabled} tabIndex={0} className="sr-only" />
+          </label>
+        );
+      })}
     </div>
-  );
-}`;
-
-const BASIC_CODE = `import { RadioGroup } from "@/components/ui/RadioGroup";
-
-const options = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "cherry", label: "Cherry" },
-];
-
-<RadioGroup options={options} defaultValue="apple" />`;
-
-const HORIZONTAL_CODE = `import { RadioGroup } from "@/components/ui/RadioGroup";
-
-const options = [
-  { value: "sm", label: "Small" },
-  { value: "md", label: "Medium" },
-  { value: "lg", label: "Large" },
-];
-
-<RadioGroup options={options} defaultValue="md" orientation="horizontal" />`;
-
-const DISABLED_CODE = `import { RadioGroup } from "@/components/ui/RadioGroup";
-
-const options = [
-  { value: "active", label: "Active" },
-  { value: "disabled", label: "Disabled", disabled: true },
-];
-
-<RadioGroup options={options} defaultValue="active" />`;
-
-const CONTROLLED_CODE = `import { useState } from "react";
-import { RadioGroup } from "@/components/ui/RadioGroup";
-
-const options = [
-  { value: "monthly", label: "Monthly" },
-  { value: "yearly", label: "Yearly" },
-];
-
-function PlanSelector() {
-  const [value, setValue] = useState("monthly");
-
-  return (
-    <RadioGroup
-      options={options}
-      value={value}
-      onValueChange={setValue}
-    />
   );
 }`;
 
@@ -121,8 +63,14 @@ const disabledOptions = [
 ];
 
 const planOptions = [
-  { value: "monthly", label: "Monthly" },
-  { value: "yearly", label: "Yearly" },
+  { value: "monthly", label: "Monthly", description: "Billed monthly" },
+  { value: "yearly", label: "Yearly", description: "Billed annually, save 20%" },
+];
+
+const tierOptions = [
+  { value: "free", label: "Free", description: "1 GB storage" },
+  { value: "pro", label: "Pro", description: "100 GB storage" },
+  { value: "enterprise", label: "Enterprise", description: "Unlimited storage", disabled: true },
 ];
 
 export default function RadioGroupPage() {
@@ -132,33 +80,160 @@ export default function RadioGroupPage() {
     <ComponentDocPage
       name="Radio Group"
       category="Forms"
-      description="A set of checkable buttons where only one can be checked at a time."
+      description="A set of checkable buttons where only one can be checked at a time. Supports descriptions, disabled options, and horizontal layout."
     >
-      <PreviewPanel filename="radio-group-demo.tsx">
-        <RadioGroup options={fruitOptions} defaultValue="apple" />
+      <PreviewPanel filename="radio-group-preview.tsx">
+        <RadioGroup options={fruitOptions} value="apple" />
       </PreviewPanel>
 
       <SourceCodeViewer
         source={RADIOGROUP_SOURCE}
-        filename="RadioGroup.tsx"
+        filename="components/ui/RadioGroup/RadioGroup.tsx"
         defaultExpanded
       />
 
-      <ExampleBlock title="Basic" code={BASIC_CODE}>
-        <RadioGroup options={fruitOptions} defaultValue="apple" />
-      </ExampleBlock>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
-      <ExampleBlock title="Horizontal" code={HORIZONTAL_CODE}>
-        <RadioGroup options={sizeOptions} defaultValue="md" orientation="horizontal" />
-      </ExampleBlock>
+        <ExampleBlock
+          title="Basic"
+          description="Default vertical radio group."
+          code={`import { RadioGroup } from "@/components/ui/RadioGroup";\n\nconst options = [\n  { value: "apple", label: "Apple" },\n  { value: "banana", label: "Banana" },\n  { value: "cherry", label: "Cherry" },\n];\n\n<RadioGroup options={options} value="apple" />`}
+          filename="basic.tsx"
+        >
+          <RadioGroup options={fruitOptions} value="apple" />
+        </ExampleBlock>
 
-      <ExampleBlock title="Disabled Option" code={DISABLED_CODE}>
-        <RadioGroup options={disabledOptions} defaultValue="active" />
-      </ExampleBlock>
+        <ExampleBlock
+          title="Horizontal"
+          description="Arrange options in a row."
+          code={`<RadioGroup options={sizeOptions} value="md" orientation="horizontal" />`}
+          filename="horizontal.tsx"
+        >
+          <RadioGroup options={sizeOptions} value="md" orientation="horizontal" />
+        </ExampleBlock>
 
-      <ExampleBlock title="Controlled" code={CONTROLLED_CODE}>
-        <RadioGroup options={planOptions} value={plan} onValueChange={setPlan} />
-      </ExampleBlock>
+        <ExampleBlock
+          title="With Descriptions"
+          description="Add a description below each option label."
+          code={`const planOptions = [\n  { value: "monthly", label: "Monthly", description: "Billed monthly" },\n  { value: "yearly", label: "Yearly", description: "Billed annually, save 20%" },\n];\n\n<RadioGroup options={planOptions} value="monthly" />`}
+          filename="descriptions.tsx"
+        >
+          <RadioGroup options={planOptions} value="monthly" />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Disabled Option"
+          description="Individual options can be disabled."
+          code={`<RadioGroup options={disabledOptions} value="active" />`}
+          filename="disabled.tsx"
+        >
+          <RadioGroup options={disabledOptions} value="active" />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Mixed"
+          description="Combination of descriptions and disabled options."
+          code={`<RadioGroup options={tierOptions} value="pro" />`}
+          filename="mixed.tsx"
+        >
+          <RadioGroup options={tierOptions} value="pro" />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Controlled"
+          description="Control the selected value externally."
+          code={`const [plan, setPlan] = useState("monthly");\n\n<RadioGroup options={planOptions} value={plan} onValueChange={setPlan} />`}
+          filename="controlled.tsx"
+        >
+          <RadioGroup options={planOptions} value={plan} onValueChange={setPlan} />
+        </ExampleBlock>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onValueChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">options</td>
+                <td className="px-4 py-3 text-muted-foreground">RadioOption[]</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">orientation</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;vertical&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">RadioOption</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">label</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">description</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">disabled</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </ComponentDocPage>
   );
 }
