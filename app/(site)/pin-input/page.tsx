@@ -108,7 +108,7 @@ export default function PinInputPage() {
           code={`<PinInput length={4} onComplete={(v) => console.log(v)} />`}
           filename="4-digit.tsx"
         >
-          <PinInput length={4} onComplete={(v) => { /* noop */ }} />
+          <PinInput length={4} onComplete={() => {}} />
         </ExampleBlock>
 
         <ExampleBlock
@@ -117,7 +117,7 @@ export default function PinInputPage() {
           code={`<PinInput mask length={6} onComplete={(v) => console.log(v)} />`}
           filename="masked.tsx"
         >
-          <PinInput mask length={6} onComplete={(v) => { /* noop */ }} />
+          <PinInput mask length={6} onComplete={() => {}} />
         </ExampleBlock>
 
         <ExampleBlock
