@@ -138,12 +138,64 @@ export function TerminalEmulator({ className, height = 480, theme: initialTheme 
   const handleResizePointerMove = (event: PointerEvent<HTMLDivElement>) => { const drag = dragRef.current; if (!drag) return; setTermHeight(Math.max(180, Math.min(960, drag.height + (drag.y - event.clientY)))); };
   const handleResizePointerUp = () => { dragRef.current = null; };
   return (
-    <div className={cn("relative flex flex-col overflow-hidden rounded-xl border font-mono shadow-2xl", className)} style={{ height: termHeight, borderColor: theme.border, boxShadow: `0 0 0 1px ${theme.border}, 0 24px 64px -24px ${theme.border}66` }}>
-      <TerminalEmulatorHeader theme={theme} username={username} hostname={hostname} copied={copied} onCopy={copyTranscript} onCycleTheme={cycleTheme} onClear={clearScreen} />
-      <TerminalEmulatorBody lines={lines} typingLine={typingLine} promptSpans={buildPromptSpans()} buffer={buffer} busy={busy} focused={focused} theme={theme} onBufferChange={setBuffer} onKeyDown={handleKeyDown} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} bodyRef={bodyRef} inputRef={inputRef} />
-      <TerminalEmulatorMobile theme={theme} busy={busy} onHistoryPrev={historyPrev} onHistoryNext={historyNext} onSubmit={submit} />
-      <div role="separator" aria-orientation="horizontal" onPointerDown={handleResizePointerDown} onPointerMove={handleResizePointerMove} onPointerUp={handleResizePointerUp} onPointerCancel={handleResizePointerUp} className="group flex h-2 shrink-0 cursor-row-resize touch-none items-center justify-center border-t" style={{ background: theme.header, borderColor: theme.border }}>
-        <div className="h-[3px] w-10 rounded-full transition-all group-hover:h-[5px] group-hover:w-14" style={{ background: theme.dim, opacity: 0.5 }} />
+    <div
+      className={cn(
+        "relative flex flex-col overflow-hidden rounded-2xl border font-mono",
+        "shadow-2xl shadow-black/20",
+        className,
+      )}
+      style={{
+        height: termHeight,
+        borderColor: theme.border,
+        boxShadow: `0 0 0 1px ${theme.border}, 0 32px 64px -16px ${theme.border}88`,
+      }}
+    >
+      <TerminalEmulatorHeader
+        theme={theme}
+        username={username}
+        hostname={hostname}
+        copied={copied}
+        onCopy={copyTranscript}
+        onCycleTheme={cycleTheme}
+        onClear={clearScreen}
+      />
+      <TerminalEmulatorBody
+        lines={lines}
+        typingLine={typingLine}
+        promptSpans={buildPromptSpans()}
+        buffer={buffer}
+        busy={busy}
+        focused={focused}
+        theme={theme}
+        onBufferChange={setBuffer}
+        onKeyDown={handleKeyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        bodyRef={bodyRef}
+        inputRef={inputRef}
+      />
+      <TerminalEmulatorMobile
+        theme={theme}
+        busy={busy}
+        onHistoryPrev={historyPrev}
+        onHistoryNext={historyNext}
+        onSubmit={submit}
+      />
+      <div
+        role="separator"
+        aria-orientation="horizontal"
+        aria-label="Resize terminal"
+        onPointerDown={handleResizePointerDown}
+        onPointerMove={handleResizePointerMove}
+        onPointerUp={handleResizePointerUp}
+        onPointerCancel={handleResizePointerUp}
+        className="group flex h-2.5 shrink-0 cursor-row-resize touch-none items-center justify-center border-t transition-colors"
+        style={{ background: theme.header, borderColor: theme.border }}
+      >
+        <div
+          className="h-[3px] w-10 rounded-full transition-all duration-200 group-hover:h-[4px] group-hover:w-14"
+          style={{ background: theme.dim, opacity: 0.4 }}
+        />
       </div>
     </div>
   );
