@@ -7,6 +7,7 @@ import {
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { Marker } from "@/components/ui/Marker";
 
 const MARKER_SOURCE = `"use client";
 

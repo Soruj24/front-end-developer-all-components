@@ -1,110 +1,165 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Card, CardContent, Button, Textarea } from "@/components/ui";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { MarkdownEditor } from "@/components/ui/MarkdownEditor";
 
-const installCommand = "npx component-library@latest add markdown-editor";
+const MARKDOWN_EDITOR_SOURCE = `"use client";
 
-const usageCode = `import { MarkdownEditor } from "@/components/ui";
+import { useState, useCallback, useMemo } from "react";
+import { cn } from "@/lib/cn";
 
-export default function Example() {
-  return <MarkdownEditor onChange={(md) => console.log(md)} />;
-}`;
+interface MarkdownEditorProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  preview?: boolean;
+  height?: number | string;
+  className?: string;
+}
 
-export default function MarkdownEditorPage() {
-  const [md, setMd] = useState("# Hello World\n\nThis is **bold** and *italic* text.\n\n- Item 1\n- Item 2\n\n> A blockquote");
-  const [preview, setPreview] = useState(true);
+const TOOLBAR_ITEMS = [
+  { id: "bold", label: "B", insert: "**", wrap: true },
+  { id: "italic", label: "I", insert: "*", wrap: true },
+  { id: "heading", label: "H", insert: "# ", wrap: false },
+  { id: "quote", label: "\\"", insert: "> ", wrap: false },
+  { id: "code", label: "<>", insert: "\`", wrap: true },
+  { id: "link", label: "🔗", insert: "[text](url)", wrap: false },
+  { id: "list", label: "•", insert: "- ", wrap: false },
+] as const;
 
-  const renderMd = (text: string) => {
-    return text
-      .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold mb-2">$1</h1>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/^> (.+)$/gm, '<blockquote class="border-l-2 border-primary pl-3 text-muted-foreground my-2">$1</blockquote>')
-      .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
-      .replace(/\n/g, '<br/>');
-  };
+export function MarkdownEditor({ value, onChange, placeholder = "Write markdown...", preview = true, height = 240, className }: MarkdownEditorProps) {
+  const [internalValue, setInternalValue] = useState(value ?? "");
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
+  const [localPreview, setLocalPreview] = useState(preview);
+
+  const handleChange = useCallback((next: string) => {
+    if (!isControlled) setInternalValue(next);
+    onChange?.(next);
+  }, [isControlled, onChange]);
+
+  const handleToolbarClick = useCallback((item: typeof TOOLBAR_ITEMS[number]) => {
+    const textarea = document.querySelector(\`[data-md-editor]\`) as HTMLTextAreaElement | null;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = currentValue.slice(start, end);
+    const next = item.wrap
+      ? currentValue.slice(0, start) + item.insert + selected + item.insert + currentValue.slice(end)
+      : currentValue.slice(0, start) + item.insert + selected + currentValue.slice(end);
+    handleChange(next);
+  }, [currentValue, handleChange]);
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
+    <div className={cn("flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm", className)}>
+      <div className="flex items-center gap-1 border-b border-border bg-muted/30 px-2 py-1.5">
+        <div className="flex items-center gap-0.5">
+          {TOOLBAR_ITEMS.map((item) => (
+            <button key={item.id} type="button" onClick={() => handleToolbarClick(item)}
+              className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <div className="ml-auto flex items-center gap-1 rounded-lg border border-border bg-background p-0.5">
+          <button onClick={() => setLocalPreview(true)} className={cn("inline-flex h-7 items-center justify-center rounded-md px-3 text-xs font-medium", localPreview ? "bg-foreground text-background shadow-sm" : "text-muted-foreground")}>
+            Split
+          </button>
+          <button onClick={() => setLocalPreview(false)} className={cn("inline-flex h-7 items-center justify-center rounded-md px-3 text-xs font-medium", !localPreview ? "bg-foreground text-background shadow-sm" : "text-muted-foreground")}>
+            Edit
+          </button>
+        </div>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col sm:flex-row">
+        <textarea data-md-editor value={currentValue} onChange={(e) => handleChange(e.target.value)} placeholder={placeholder}
+          className="flex-1 resize-none bg-transparent p-4 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/50 focus:outline-none min-h-[200px]"
+          style={{ height: localPreview ? height : "100%" }} />
+        {localPreview && (
+          <div className="flex-1 overflow-y-auto p-4 text-sm leading-relaxed" style={{ height: localPreview ? height : "auto" }}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(currentValue) }} />
+        )}
+      </div>
+      <div className="flex items-center justify-between border-t border-border bg-muted/20 px-4 py-2">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Markdown Editor</h1>
-          <Badge variant="primary">Editor</Badge>
+          <span className="text-xs text-muted-foreground">{wordCount} words</span>
+          <span className="text-xs text-muted-foreground">{charCount} chars</span>
         </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Rich markdown editor with live preview, syntax highlighting, and toolbar shortcuts.
-        </p>
-      </header>
+        <div className="flex items-center gap-1.5">
+          <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <span className="text-xs text-muted-foreground">Markdown</span>
+        </div>
+      </div>
+    </div>
+  );
+}`;
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+const DEFAULT_VALUE = "# Hello World\n\nThis is **bold** and *italic* text.\n\n- Item 1\n- Item 2\n\n> A blockquote\n\n`inline code` and a [link](https://example.com)";
+
+export default function MarkdownEditorPage() {
+  const [value, setValue] = useState(DEFAULT_VALUE);
+
+  return (
+    <ComponentDocPage
+      name="Markdown Editor"
+      category="Editor"
+      description="Rich markdown editor with live preview, toolbar shortcuts, and split view."
+    >
+      <PreviewPanel filename="markdown-editor-preview.tsx">
+        <MarkdownEditor value={value} onChange={setValue} height={280} />
+      </PreviewPanel>
+
+      <SourceCodeViewer source={MARKDOWN_EDITOR_SOURCE} filename="components/ui/MarkdownEditor/MarkdownEditor.tsx" defaultExpanded />
+
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Split View"
+          description="Side-by-side editor and live preview."
+          code={`import { MarkdownEditor } from "@/components/ui/MarkdownEditor";
+
+<MarkdownEditor value={text} onChange={setText} preview={true} />`}
+          filename="split.tsx"
+        >
+          <MarkdownEditor value={value} onChange={setValue} height={240} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Edit Only"
+          description="Toolbar and raw markdown without preview."
+          code={`<MarkdownEditor value={text} onChange={setText} preview={false} />`}
+          filename="edit-only.tsx"
+        >
+          <MarkdownEditor value={value} onChange={setValue} preview={false} height={220} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Placeholder"
+          description="Custom placeholder text for empty state."
+          code={`<MarkdownEditor placeholder="Start writing..." onChange={setText} />`}
+          filename="placeholder.tsx"
+        >
+          <MarkdownEditor placeholder="Start writing your markdown here..." height={200} />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Height"
+          description="Adjust the editor height."
+          code={`<MarkdownEditor value={text} onChange={setText} height={400} />`}
+          filename="height.tsx"
+        >
+          <MarkdownEditor value={value} onChange={setValue} height={360} />
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Split View</h3>
-          <ComponentPreview id="markdown-editor-default">
-            <div className="flex w-full gap-3">
-              <Textarea value={md} onChange={(e) => setMd(e.target.value)} className="min-h-[200px] font-mono text-sm" />
-              <div className="flex-1 rounded-lg border border-border p-3 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: renderMd(md) }} />
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Toolbar</h3>
-          <ComponentPreview id="markdown-editor-toolbar">
-            <div className="w-full">
-              <div className="mb-2 flex gap-1 border border-border rounded-md p-1">
-                {["B", "I", "U", "H1", "H2", "Link", "Image", "List"].map((btn) => (
-                  <Button key={btn} variant="ghost" size="sm" className="h-7 text-xs font-bold">{btn}</Button>
-                ))}
-              </div>
-              <div className="flex gap-3">
-                <Textarea value={md} onChange={(e) => setMd(e.target.value)} className="min-h-[150px] font-mono text-xs flex-1" />
-                <Card className="flex-1">
-                  <CardContent className="p-3 prose prose-xs max-h-[150px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: renderMd(md) }} />
-                </Card>
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Interactive</h3>
-          <ComponentPreview id="markdown-editor-interactive">
-            <div className="w-full">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="flex gap-1">
-                  <Button variant={preview ? "default" : "outline"} size="sm" onClick={() => setPreview(true)}>Split</Button>
-                  <Button variant={!preview ? "default" : "outline"} size="sm" onClick={() => setPreview(false)}>Edit</Button>
-                </div>
-                <span className="text-xs text-muted-foreground">{md.split(/\s+/).length} words</span>
-              </div>
-              <div className={`flex gap-3 ${!preview ? "" : ""}`}>
-                <Textarea value={md} onChange={(e) => setMd(e.target.value)} className={`font-mono text-sm ${preview ? "flex-1 min-h-[200px]" : "w-full min-h-[300px]"}`} />
-                {preview && <Card className="flex-1"><CardContent className="p-3 prose prose-sm max-h-[300px] overflow-y-auto" dangerouslySetInnerHTML={{ __html: renderMd(md) }} /></Card>}
-              </div>
-            </div>
-          </ComponentPreview>
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -116,21 +171,45 @@ export default function MarkdownEditorPage() {
             </thead>
             <tbody>
               <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">value</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">onChange</td>
                 <td className="px-4 py-3 text-muted-foreground">(value: string) =&gt; void</td>
                 <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">placeholder</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;Write markdown...&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">preview</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">height</td>
+                <td className="px-4 py-3 text-muted-foreground">number | string</td>
+                <td className="px-4 py-3 text-muted-foreground">240</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

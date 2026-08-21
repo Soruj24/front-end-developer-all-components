@@ -317,6 +317,8 @@ export { Masonry, MasonryItem } from "./Masonry";
 export type { MasonryProps, MasonryItemProps } from "./Masonry";
 export { LottiePlayer } from "./LottiePlayer";
 export type { LottiePlayerProps } from "./LottiePlayer";
+export { MarkdownEditor } from "./MarkdownEditor";
+export type { MarkdownEditorProps } from "./MarkdownEditor";
 
 export { Notification, NotificationTitle, NotificationDescription } from "./Notification";
 export type { NotificationProps, NotificationVariant } from "./Notification";
