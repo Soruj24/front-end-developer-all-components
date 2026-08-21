@@ -1,6 +1,7 @@
 "use client";
 
-import { ReactNode, useRef } from "react";
+import { type ReactNode, useRef } from "react";
+import { cn } from "@/lib/cn";
 
 export interface Tab {
   id: string;
@@ -19,6 +20,67 @@ export interface TabsProps {
   orientation?: "horizontal" | "vertical";
 }
 
+const listClasses = {
+  underline: "border-b border-border/60",
+  pills: "gap-1.5",
+  capsule: "gap-1 rounded-xl bg-muted/50 p-1 backdrop-blur-sm",
+};
+
+const tabClasses = {
+  underline: cn(
+    "relative flex items-center gap-2 px-4 py-2.5",
+    "text-[13px] font-medium text-muted-foreground",
+    "transition-colors duration-150",
+    "hover:text-foreground",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "disabled:cursor-not-allowed disabled:opacity-40",
+  ),
+  pills: cn(
+    "flex items-center gap-2 rounded-lg px-3.5 py-2",
+    "text-[13px] font-medium text-muted-foreground",
+    "transition-all duration-150",
+    "hover:bg-muted/60 hover:text-foreground",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "active:scale-[0.98]",
+    "disabled:cursor-not-allowed disabled:opacity-40",
+    "data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:shadow-sm",
+  ),
+  capsule: cn(
+    "flex items-center gap-2 rounded-lg px-3.5 py-2",
+    "text-[13px] font-medium text-muted-foreground",
+    "transition-all duration-150",
+    "hover:text-foreground",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "active:scale-[0.98]",
+    "disabled:cursor-not-allowed disabled:opacity-40",
+    "data-[active=true]:bg-background data-[active=true]:text-foreground data-[active=true]:shadow-sm data-[active=true]:ring-1 data-[active=true]:ring-border/60",
+  ),
+};
+
+const badgeBase =
+  "ml-auto rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums";
+
+function Badge({
+  count,
+  active,
+}: {
+  count: string | number;
+  active: boolean;
+}) {
+  return (
+    <span
+      className={cn(
+        badgeBase,
+        active
+          ? "bg-primary/15 text-primary"
+          : "bg-muted text-muted-foreground",
+      )}
+    >
+      {count}
+    </span>
+  );
+}
+
 const Tabs = ({
   tabs,
   activeTab,
@@ -30,57 +92,78 @@ const Tabs = ({
 
   const activeContent = tabs.find((t) => t.id === activeTab)?.content;
 
-  const variantClasses = {
-    underline:
-      "border-b border-border gap-0",
-    pills: "gap-2",
-    capsule:
-      "gap-1 rounded-full bg-muted p-1",
-  };
-
-  const tabBaseClasses = {
-    underline:
-      "relative flex items-center gap-2 px-4 py-3 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground disabled:opacity-50 disabled:pointer-events-none",
-    pills:
-      "flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-[background-color,color,transform] duration-200 ease-out hover:bg-muted hover:text-foreground active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none data-[active=true]:bg-muted data-[active=true]:text-foreground",
-    capsule:
-      "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-[background-color,color,box-shadow,transform] duration-200 ease-out hover:text-foreground active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none data-[active=true]:bg-surface data-[active=true]:text-foreground data-[active=true]:shadow-sm",
-  };
-
-  const badgeClasses =
-    "ml-auto rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground";
-
   return (
     <div
-      className={`flex ${orientation === "vertical" ? "flex-row gap-4" : "flex-col gap-4"}`}
+      className={cn(
+        "flex",
+        orientation === "vertical" ? "flex-row gap-4" : "flex-col gap-3",
+      )}
     >
       <div
         ref={listRef}
         role="tablist"
-        className={`flex ${orientation === "vertical" ? "flex-col" : "flex-row"} ${variantClasses[variant]}`}
+        aria-orientation={orientation}
+        className={cn(
+          "flex",
+          orientation === "vertical" ? "flex-col" : "flex-row flex-wrap",
+          listClasses[variant],
+        )}
       >
-        {tabs.map((tab) => (
+        {tabs.map((tab) => {
+          const isActive = tab.id === activeTab;
+          return (
             <button
-            key={tab.id}
-            role="tab"
-            id={`tab-${tab.id}`}
-            aria-selected={tab.id === activeTab}
-            aria-controls={`panel-${tab.id}`}
-            disabled={tab.disabled}
-            data-active={tab.id === activeTab}
-            onClick={() => !tab.disabled && onChange(tab.id)}
-            className={tabBaseClasses[variant]}
-          >
-            {tab.icon && <span className="shrink-0">{tab.icon}</span>}
-            <span>{tab.label}</span>
-            {tab.badge !== undefined && (
-              <span className={badgeClasses}>{tab.badge}</span>
-            )}
-            {variant === "underline" && tab.id === activeTab && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 origin-center rounded-full bg-foreground animate-scale-in-fast" />
-            )}
-          </button>
-        ))}
+              key={tab.id}
+              role="tab"
+              id={`tab-${tab.id}`}
+              aria-selected={isActive}
+              aria-controls={`panel-${tab.id}`}
+              tabIndex={isActive ? 0 : -1}
+              disabled={tab.disabled}
+              data-active={isActive}
+              onClick={() => !tab.disabled && onChange(tab.id)}
+              onKeyDown={(e) => {
+                const enabled = tabs.filter((t) => !t.disabled);
+                const idx = enabled.findIndex((t) => t.id === tab.id);
+                let next: string | undefined;
+                if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                  e.preventDefault();
+                  next = enabled[(idx + 1) % enabled.length]?.id;
+                } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                  e.preventDefault();
+                  next = enabled[(idx - 1 + enabled.length) % enabled.length]?.id;
+                } else if (e.key === "Home") {
+                  e.preventDefault();
+                  next = enabled[0]?.id;
+                } else if (e.key === "End") {
+                  e.preventDefault();
+                  next = enabled[enabled.length - 1]?.id;
+                }
+                if (next) {
+                  onChange(next);
+                  listRef.current
+                    ?.querySelector<HTMLElement>(`[data-tab="${next}"]`)
+                    ?.focus();
+                }
+              }}
+              data-tab={tab.id}
+              className={cn(tabClasses[variant], isActive && variant === "underline" && "text-foreground")}
+            >
+              {tab.icon && (
+                <span className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">
+                  {tab.icon}
+                </span>
+              )}
+              <span>{tab.label}</span>
+              {tab.badge !== undefined && (
+                <Badge count={tab.badge} active={isActive} />
+              )}
+              {variant === "underline" && isActive && (
+                <span className="absolute inset-x-0 -bottom-px h-[2px] origin-center rounded-full bg-primary transition-all duration-200 ease-out" />
+              )}
+            </button>
+          );
+        })}
       </div>
       <div
         key={activeTab}
@@ -88,7 +171,10 @@ const Tabs = ({
         role="tabpanel"
         aria-labelledby={`tab-${activeTab}`}
         tabIndex={0}
-        className="min-h-0 animate-fade-slide focus-visible:ring-ring outline-none focus-visible:ring-2"
+        className={cn(
+          "min-h-0 animate-fade-slide",
+          "rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        )}
       >
         {activeContent}
       </div>
