@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -11,27 +11,25 @@ import { MessageScroller } from "@/components/ui/MessageScroller";
 
 const MESSAGE_SCROLLER_SOURCE = `"use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
-export interface MessageItem {
+interface MessageItem {
   id: string;
   content: string;
   timestamp?: string;
 }
 
-export interface MessageScrollerProps {
+interface MessageScrollerProps {
   messages: MessageItem[];
   autoScroll?: boolean;
   className?: string;
 }
 
-export function MessageScroller({
-  messages,
-  autoScroll = true,
-  className,
-}: MessageScrollerProps) {
-  const endRef = useRef<HTMLDivElement>(null);
+export function MessageScroller({ messages, autoScroll = true, className }: MessageScrollerProps) {
+  const containerRef = useRef(null);
+  const endRef = useRef(null);
+  const [showScrollDown, setShowScrollDown] = useState(false);
 
   useEffect(() => {
     if (autoScroll && endRef.current) {
@@ -39,22 +37,30 @@ export function MessageScroller({
     }
   }, [messages, autoScroll]);
 
+  const handleScroll = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    setShowScrollDown(el.scrollHeight - el.scrollTop - el.clientHeight >= 40);
+  };
+
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 overflow-y-auto rounded-md border bg-white p-3 dark:bg-zinc-900",
-        className
+    <div className={cn("relative flex flex-col", className)}>
+      <div ref={containerRef} onScroll={handleScroll} role="log" aria-label="Messages" aria-live="polite"
+        className="flex flex-1 flex-col gap-1 overflow-y-auto rounded-2xl border border-border bg-card p-3 scroll-smooth">
+        {messages.map((msg) => (
+          <div key={msg.id} className="group flex flex-col gap-0.5 rounded-xl bg-muted/50 px-3.5 py-2.5 transition-colors hover:bg-muted/80">
+            <p className="text-sm leading-relaxed text-foreground">{msg.content}</p>
+            {msg.timestamp && <span className="text-xs text-muted-foreground/60">{msg.timestamp}</span>}
+          </div>
+        ))}
+        <div ref={endRef} />
+      </div>
+      {showScrollDown && (
+        <button onClick={() => endRef.current?.scrollIntoView({ behavior: "smooth" })}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card shadow-md">
+          ↓
+        </button>
       )}
-    >
-      {messages.map((msg) => (
-        <div key={msg.id} className="flex flex-col gap-0.2">
-          <p className="text-sm text-zinc-900 dark:text-zinc-100">{msg.content}</p>
-          {msg.timestamp && (
-            <span className="text-xs text-zinc-400">{msg.timestamp}</span>
-          )}
-        </div>
-      ))}
-      <div ref={endRef} />
     </div>
   );
 }`;
@@ -81,7 +87,7 @@ function ChatDemo() {
 
   return (
     <div className="flex w-full max-w-md flex-col gap-3">
-      <div className="border border-border rounded-lg bg-background p-3 h-64">
+      <div className="h-64">
         <MessageScroller messages={messages} />
       </div>
       <div className="flex gap-2">
@@ -91,12 +97,12 @@ function ChatDemo() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a message..."
-          className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-1"
+          className="flex-1 rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/50 focus:outline-none"
         />
         <button
           onClick={sendMessage}
           disabled={!input.trim()}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
         >
           Send
         </button>
@@ -110,10 +116,10 @@ export default function MessageScrollerPage() {
     <ComponentDocPage
       name="Message Scroller"
       category="Data Display"
-      description="An auto-scrolling message container that smoothly scrolls to the latest message."
+      description="Auto-scrolling message container with smooth scroll-to-bottom button and aria-live announcements."
     >
-      <PreviewPanel filename="MessageScroller.tsx">
-        <div className="border border-border rounded-lg bg-background p-3 w-full max-w-md h-64">
+      <PreviewPanel filename="message-scroller-preview.tsx">
+        <div className="w-full max-w-md h-64">
           <MessageScroller
             messages={[
               { id: "1", content: "Welcome to the support chat!", timestamp: "10:00 AM" },
@@ -124,26 +130,29 @@ export default function MessageScrollerPage() {
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer
-        source={MESSAGE_SCROLLER_SOURCE}
-        filename="MessageScroller.tsx"
-        defaultExpanded
-      />
+      <SourceCodeViewer source={MESSAGE_SCROLLER_SOURCE} filename="components/ui/MessageScroller/MessageScroller.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-6">
+      <section className="flex flex-col gap-8">
         <h2 className="text-lg font-semibold tracking-tight text-foreground">
           Examples
         </h2>
 
-        <ExampleBlock title="Chat Interface" code={MESSAGE_SCROLLER_SOURCE}>
+        <ExampleBlock
+          title="Chat Interface"
+          description="Interactive chat demo with message input and auto-scroll."
+          code={`<MessageScroller messages={messages} autoScroll />`}
+          filename="chat.tsx"
+        >
           <ChatDemo />
         </ExampleBlock>
 
         <ExampleBlock
           title="Log Viewer"
-          code={`<MessageScroller messages={logs} autoScroll />`}
+          description="Log output with auto-scroll disabled for manual browsing."
+          code={`<MessageScroller messages={logs} autoScroll={false} />`}
+          filename="log.tsx"
         >
-          <div className="w-full max-w-md border border-border rounded-lg bg-background p-3 h-64">
+          <div className="w-full max-w-md h-64">
             <MessageScroller
               autoScroll={false}
               messages={[
@@ -155,6 +164,44 @@ export default function MessageScrollerPage() {
             />
           </div>
         </ExampleBlock>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">messages</td>
+                <td className="px-4 py-3 text-muted-foreground">MessageItem[]</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">autoScroll</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </ComponentDocPage>
   );

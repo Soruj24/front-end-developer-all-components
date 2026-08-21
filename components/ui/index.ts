@@ -315,6 +315,8 @@ export { List, ListItem } from "./List";
 export type { ListProps, ListItemProps } from "./List";
 export { Masonry, MasonryItem } from "./Masonry";
 export type { MasonryProps, MasonryItemProps } from "./Masonry";
+export { MultiSelect } from "./MultiSelect";
+export type { MultiSelectProps, MultiSelectOption } from "./MultiSelect";
 export { LottiePlayer } from "./LottiePlayer";
 export type { LottiePlayerProps } from "./LottiePlayer";
 export { MarkdownEditor } from "./MarkdownEditor";
