@@ -1,27 +1,9 @@
-export const SIGNATURE_PAD_SOURCE = `"use client";
+"use client";
 
 import { forwardRef, useRef, useState, useEffect, useImperativeHandle } from "react";
 import { cn } from "@/lib/cn";
-import { Eraser, Download } from "lucide-react";
-
-interface SignaturePadProps {
-  width?: number;
-  height?: number;
-  penColor?: string;
-  penWidth?: number;
-  className?: string;
-  onClear?: () => void;
-  onSave?: (dataUrl: string) => void;
-  readOnly?: boolean;
-  label?: string;
-  placeholder?: string;
-}
-
-interface SignaturePadRef {
-  clear: () => void;
-  save: () => void;
-  canvas: () => HTMLCanvasElement;
-}
+import { Eraser, Download, Pen } from "lucide-react";
+import type { SignaturePadProps, SignaturePadRef } from "./SignaturePad.types";
 
 function SignaturePad(
   {
@@ -193,4 +175,4 @@ const ForwardedSignaturePad = Object.assign(
   forwardRef(SignaturePad),
   { displayName: "SignaturePad" },
 );
-export default ForwardedSignaturePad;`;
+export default ForwardedSignaturePad;

@@ -138,6 +138,8 @@ export { Dock } from "./Dock";
 export type { DockItem, DockProps } from "./Dock";
 export { DragDropZone } from "./DragDropZone";
 export type { DragDropZoneProps } from "./DragDropZone";
+export { DualRangeSlider } from "./DualRangeSlider";
+export type { DualRangeSliderProps } from "./DualRangeSlider";
 export { FloatingToolbar } from "./FloatingToolbar";
 export type { FloatingToolbarAction, FloatingToolbarProps } from "./FloatingToolbar";
 export { default as Dropdown } from "./Dropdown";
@@ -160,6 +162,8 @@ export { SearchInput } from "./SearchInput";
 export type { SearchInputProps } from "./SearchInput";
 export { Select } from "./Select";
 export type { SelectProps } from "./Select";
+export { SignaturePad } from "./SignaturePad";
+export type { SignaturePadProps, SignaturePadRef } from "./SignaturePad";
 export {
   default as Skeleton,
   SkeletonCard,
