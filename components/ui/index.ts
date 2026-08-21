@@ -294,6 +294,8 @@ export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
+export { RangeCalendar } from "./RangeCalendar";
+export type { RangeCalendarProps, DateRange } from "./RangeCalendar";
 export { Resizable, ResizablePanel, ResizableHandle } from "./Resizable";
 export type { ResizableProps, ResizablePanelProps, ResizableHandleProps } from "./Resizable";
 export { Separator } from "./Separator";
