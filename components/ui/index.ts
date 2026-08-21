@@ -297,6 +297,8 @@ export { GestureArea } from "./GestureArea";
 export type { GestureAreaProps } from "./GestureArea";
 export { Grid, GridItem } from "./Grid";
 export type { GridProps, GridItemProps } from "./Grid";
+export { HeatMap, HeatMapLegend, HeatMapCellComponent } from "./HeatMap";
+export type { HeatMapProps, HeatMapCellProps, HeatMapLegendProps } from "./HeatMap";
 export { Icon } from "./Icon";
 export type { IconProps, IconSize } from "./Icon";
 export { Image, ImagePreview } from "./Image";
