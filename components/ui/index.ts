@@ -349,6 +349,8 @@ export { InfiniteScroll } from "./InfiniteScroll";
 export type { InfiniteScrollProps } from "./InfiniteScroll";
 export { List, ListItem } from "./List";
 export type { ListProps, ListItemProps } from "./List";
+export { ListGroup } from "./ListGroup";
+export type { ListGroupProps, ListGroupItem } from "./ListGroup";
 export { Masonry, MasonryItem } from "./Masonry";
 export type { MasonryProps, MasonryItemProps } from "./Masonry";
 export { MultiSelect } from "./MultiSelect";
