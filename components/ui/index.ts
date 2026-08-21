@@ -268,6 +268,8 @@ export { NativeSelect } from "./NativeSelect";
 export type { NativeSelectProps, SelectOption } from "./NativeSelect";
 export { NumberInput } from "./NumberInput";
 export type { NumberInputProps } from "./NumberInput";
+export { Pagination } from "./Pagination";
+export type { PaginationProps } from "./Pagination";
 export {
   NavigationMenu,
   NavigationMenuList,
