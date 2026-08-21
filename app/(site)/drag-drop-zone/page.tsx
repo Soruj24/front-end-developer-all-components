@@ -136,7 +136,6 @@ const COMPACT_CODE = `import { DragDropZone, DragDropZoneIcon, DragDropZoneText 
 </DragDropZone>`;
 
 export default function DragDropZonePage() {
-  const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState(MOCK_FILES);
 
   const handleDrop = useCallback((dropped: File[]) => {
@@ -161,9 +160,8 @@ export default function DragDropZonePage() {
       <PreviewPanel filename="drag-drop-preview.tsx">
         <div className="flex w-full flex-col gap-4">
           <DragDropZone onDrop={handleDrop}>
-            <DragDropZoneIcon isDragOver={dragOver} />
+            <DragDropZoneIcon />
             <DragDropZoneText
-              isDragOver={dragOver}
               description="Supports images, PDFs, and CSV files"
             />
           </DragDropZone>
