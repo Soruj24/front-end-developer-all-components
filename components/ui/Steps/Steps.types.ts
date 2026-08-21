@@ -5,6 +5,7 @@ export type StepStatus = "completed" | "current" | "upcoming";
 export interface StepsProps {
   children: ReactNode;
   currentStep?: number;
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }
 

@@ -7,10 +7,10 @@ import { RefreshIcon, WarningIcon } from "./icons";
 
 const STATUS_STYLES: Record<StreamStatus, string> = {
   idle: "bg-muted text-muted-foreground",
-  thinking: "bg-warning-soft text-warning",
-  streaming: "bg-primary-soft text-primary",
-  done: "bg-success-soft text-success",
-  error: "bg-danger-soft text-danger",
+  thinking: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  streaming: "bg-primary/10 text-primary",
+  done: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  error: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
   stopped: "bg-muted text-muted-foreground",
 };
 
@@ -25,10 +25,10 @@ const STATUS_LABELS: Record<StreamStatus, string> = {
 
 const STATUS_DOTS: Record<StreamStatus, string> = {
   idle: "bg-muted-foreground/60",
-  thinking: "animate-pulse bg-warning",
+  thinking: "animate-pulse bg-amber-500",
   streaming: "animate-pulse bg-primary",
-  done: "bg-success",
-  error: "bg-danger",
+  done: "bg-emerald-500",
+  error: "bg-rose-500",
   stopped: "bg-muted-foreground",
 };
 
@@ -37,19 +37,27 @@ export function StatusBadge({ status }: { status: StreamStatus }) {
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium",
-        STATUS_STYLES[status]
+        STATUS_STYLES[status],
       )}
     >
-      <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOTS[status])} />
+      <span
+        className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOTS[status])}
+      />
       {STATUS_LABELS[status]}
     </span>
   );
 }
 
-export function ThinkingIndicator({ label, content }: { label: string; content: string }) {
+export function ThinkingIndicator({
+  label,
+  content,
+}: {
+  label: string;
+  content: string;
+}) {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4">
-      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-soft">
+    <div className="flex items-start gap-3 rounded-xl border border-border/60 bg-muted/30 p-4">
+      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary/10">
         <span className="h-2 w-2 animate-ping rounded-full bg-primary" />
       </span>
       <div className="min-w-0 flex-1">
@@ -65,7 +73,9 @@ export function ThinkingIndicator({ label, content }: { label: string; content: 
             ))}
           </span>
         </div>
-        {content && <p className="mt-1 text-sm text-muted-foreground">{content}</p>}
+        {content && (
+          <p className="mt-1 text-sm text-muted-foreground">{content}</p>
+        )}
       </div>
     </div>
   );
@@ -74,12 +84,12 @@ export function ThinkingIndicator({ label, content }: { label: string; content: 
 export function StreamingSkeleton() {
   return (
     <div className="flex items-start gap-3" role="status" aria-label="Loading response">
-      <span className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-muted" />
-      <div className="min-w-0 flex-1 space-y-2 pt-1">
-        <div className="h-3 w-1/2 animate-pulse rounded bg-muted" />
-        <div className="h-3 w-full animate-pulse rounded bg-muted" />
-        <div className="h-3 w-2/3 animate-pulse rounded bg-muted" />
-        <div className="h-3 w-4/5 animate-pulse rounded bg-muted" />
+      <span className="h-8 w-8 shrink-0 animate-pulse rounded-xl bg-muted" />
+      <div className="min-w-0 flex-1 space-y-2.5 pt-1">
+        <div className="h-3 w-1/2 animate-pulse rounded-lg bg-muted" />
+        <div className="h-3 w-full animate-pulse rounded-lg bg-muted" />
+        <div className="h-3 w-2/3 animate-pulse rounded-lg bg-muted" />
+        <div className="h-3 w-4/5 animate-pulse rounded-lg bg-muted" />
       </div>
     </div>
   );
@@ -88,23 +98,32 @@ export function StreamingSkeleton() {
 export function CitationList({ citations }: { citations: Citation[] }) {
   const title = `${citations.length} ${citations.length === 1 ? "citation" : "citations"}`;
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</p>
-      <ul className="space-y-1.5">
+    <div className="rounded-xl border border-border/60 bg-muted/20 p-4">
+      <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+        {title}
+      </p>
+      <ul className="space-y-2">
         {citations.map((citation) => (
-          <li key={citation.id} className="flex items-start gap-2 text-sm">
-            <span className="mt-0.5 shrink-0 font-mono text-xs text-muted-foreground">[{citation.id}]</span>
+          <li
+            key={citation.id}
+            className="flex items-start gap-2 text-sm"
+          >
+            <span className="mt-0.5 shrink-0 rounded-md bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground">
+              [{citation.id}]
+            </span>
             {citation.url ? (
               <a
                 href={citation.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-w-0 text-primary transition-colors hover:underline"
+                className="min-w-0 text-primary underline decoration-primary/30 underline-offset-2 transition-colors hover:decoration-primary"
               >
                 {citation.title ?? citation.text ?? citation.url}
               </a>
             ) : (
-              <span className="min-w-0 text-foreground/85">{citation.title ?? citation.text}</span>
+              <span className="min-w-0 text-foreground/85">
+                {citation.title ?? citation.text}
+              </span>
             )}
           </li>
         ))}
@@ -113,12 +132,20 @@ export function CitationList({ citations }: { citations: Citation[] }) {
   );
 }
 
-export function ErrorBanner({ message, onRetry }: { message: string; onRetry?: () => void }) {
+export function ErrorBanner({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry?: () => void;
+}) {
   return (
-    <div className="flex items-start gap-3 rounded-xl border border-danger/25 bg-danger-soft p-4">
-      <WarningIcon className="mt-0.5 h-5 w-5 shrink-0 text-danger" />
+    <div className="flex items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 dark:border-rose-800/30 dark:bg-rose-950/30">
+      <WarningIcon className="mt-0.5 h-5 w-5 shrink-0 text-rose-500" />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-foreground">Something went wrong</p>
+        <p className="text-sm font-semibold text-foreground">
+          Something went wrong
+        </p>
         <p className="mt-0.5 text-sm text-foreground/80">{message}</p>
       </div>
       {onRetry && (
@@ -149,8 +176,9 @@ export function ActionButton({
       title={label}
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/70 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-        danger && "border-danger/30 text-danger hover:bg-danger-soft hover:text-danger"
+        "inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/70 px-2.5 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground",
+        danger &&
+          "border-rose-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600 dark:border-rose-800/30 dark:hover:bg-rose-950/30",
       )}
     >
       {children}
