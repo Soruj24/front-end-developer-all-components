@@ -1,2 +1,2 @@
 export { default as Sheet } from "./Sheet";
-export type { SheetProps } from "./Sheet.types";
+export type { SheetProps, SheetSide, SheetSize } from "./Sheet.types";

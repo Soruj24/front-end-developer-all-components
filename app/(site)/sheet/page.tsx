@@ -1,149 +1,451 @@
 "use client";
 
+import { useState } from "react";
 import {
   ComponentDocPage,
   PreviewPanel,
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
-import { Sheet } from "@/components/_sheet";
+import { Sheet } from "@/components/ui/Sheet";
 
 const SHEET_SOURCE = `"use client";
 
-import * as React from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
-import type { SheetProps } from "./Sheet.types";
-import { SHEET_STYLES } from "./Sheet.constants";
 
-export function Sheet({ open, defaultOpen, onOpenChange, side = "right", size = "md", trigger, children, title, description, closable = true, overlayClassName }: SheetProps) {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false);
-  const isControlled = open !== undefined;
-  const isOpen = isControlled ? open! : internalOpen;
+type SheetSide = "top" | "right" | "bottom" | "left";
+type SheetSize = "sm" | "md" | "lg" | "xl" | "full";
 
-  React.useEffect(() => { onOpenChange?.(isOpen); }, [isOpen, onOpenChange]);
+interface SheetProps {
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  side?: SheetSide;
+  size?: SheetSize;
+  trigger?: ReactNode;
+  children: ReactNode;
+  title?: ReactNode;
+  description?: ReactNode;
+  closable?: boolean;
+  className?: string;
+  overlayClassName?: string;
+}
 
-  const setOpen = (next: boolean) => {
+const SIDE_CLASSES = {
+  left: "inset-y-0 left-0 h-full w-80 max-w-[85vw] border-r rounded-r-2xl",
+  right: "inset-y-0 right-0 h-full w-80 max-w-[85vw] border-l rounded-l-2xl",
+  top: "inset-x-0 top-0 w-full max-h-[85vh] border-b rounded-b-2xl",
+  bottom: "inset-x-0 bottom-0 w-full max-h-[85vh] border-t rounded-t-2xl",
+};
+
+const SIZE_CLASSES = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  full: "inset-0 h-full w-full max-w-none rounded-none",
+};
+
+const SLIDE_CLASSES = {
+  left: "-translate-x-full data-[state=open]:translate-x-0",
+  right: "translate-x-full data-[state=open]:translate-x-0",
+  top: "-translate-y-full data-[state=open]:translate-y-0",
+  bottom: "translate-y-full data-[state=open]:translate-y-0",
+};
+
+export function Sheet({ open: controlledOpen, defaultOpen = false, onOpenChange, side = "right", size = "md", trigger, children, title, description, closable = true, className, overlayClassName }: SheetProps) {
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const setOpen = useCallback((next: boolean) => {
     if (!isControlled) setInternalOpen(next);
     onOpenChange?.(next);
-  };
+  }, [isControlled, onOpenChange]);
 
-  React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") { setOpen(false); e.stopPropagation(); }
     };
-    if (isOpen) document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, isControlled]);
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [isOpen, setOpen]);
 
-  const content = (
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [isOpen]);
+
+  const triggerNode = trigger ? (
+    <div onClick={() => setOpen(true)} role="button" tabIndex={0} className="inline-block cursor-pointer">
+      {trigger}
+    </div>
+  ) : null;
+
+  if (!isOpen || !mounted) return triggerNode;
+
+  return (
     <>
-      <div className={cn(SHEET_STYLES.overlay, overlayClassName)} onClick={() => setOpen(false)} />
-      <div className={cn(SHEET_STYLES.content, SHEET_STYLES[side], SHEET_STYLES[size] !== SHEET_STYLES.full ? SHEET_STYLES[size] : "")} role="dialog" aria-modal="true">
-        {closable && <button onClick={() => setOpen(false)} className={SHEET_STYLES.close} aria-label="Close">×</button>}
-        {title && <h2 className={SHEET_STYLES.title}>{title}</h2>}
-        {description && <p className={SHEET_STYLES.description}>{description}</p>}
-        {children}
-      </div>
+      {triggerNode}
+      {createPortal(
+        <div className="fixed inset-0 z-50">
+          <div className={cn("fixed inset-0 bg-black/50 backdrop-blur-sm", overlayClassName)} onClick={() => setOpen(false)} />
+          <div ref={panelRef} data-state={isOpen ? "open" : "closed"} role="dialog" aria-modal="true"
+            className={cn("fixed z-50 flex flex-col bg-background shadow-2xl shadow-black/10 border-border/50 duration-300 ease-out", SIDE_CLASSES[side], size !== "full" ? SIZE_CLASSES[size] : "", SLIDE_CLASSES[side], size === "full" && SIZE_CLASSES.full, className)}>
+            {(title || description || closable) && (
+              <div className="flex flex-col gap-1 border-b border-border/50 px-6 pt-6 pb-4">
+                <div className="flex items-start justify-between gap-4">
+                  {title && <h2 className="text-lg font-semibold leading-none tracking-tight text-foreground">{title}</h2>}
+                  {closable && <button onClick={() => setOpen(false)} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" aria-label="Close"><CloseIcon /></button>}
+                </div>
+                {description && <p className="text-sm text-muted-foreground">{description}</p>}
+              </div>
+            )}
+            <div className="flex-1 overflow-y-auto px-6 py-4">{children}</div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </>
   );
-
-  if (!isOpen) return trigger ? <div onClick={() => setOpen(true)} className="inline-block cursor-pointer">{trigger}</div> : null;
-  return trigger ? <div><div onClick={() => setOpen(true)} className="inline-block cursor-pointer">{trigger}</div>{content}</div> : content;
 }`;
-
-const LEFT_SOURCE = `import { Sheet } from "@/components/_sheet";
-
-<Sheet side="left" trigger={<button>Open Left</button>} title="Left Sheet">
-  <p>Content from the left.</p>
-</Sheet>`;
-
-const RIGHT_SOURCE = `import { Sheet } from "@/components/_sheet";
-
-<Sheet side="right" trigger={<button>Open Right</button>} title="Right Sheet">
-  <p>Content from the right.</p>
-</Sheet>`;
-
-const TOP_SOURCE = `import { Sheet } from "@/components/_sheet";
-
-<Sheet side="top" trigger={<button>Open Top</button>} title="Top Sheet">
-  <p>Content from the top.</p>
-</Sheet>`;
-
-const BOTTOM_SOURCE = `import { Sheet } from "@/components/_sheet";
-
-<Sheet side="bottom" trigger={<button>Open Bottom</button>} title="Bottom Sheet">
-  <p>Content from the bottom.</p>
-</Sheet>`;
-
-const DEFAULT_SOURCE = `import { Sheet } from "@/components/_sheet";
-
-<Sheet trigger={<button>Open Sheet</button>} title="Edit Profile" description="Make changes to your profile here.">
-  <div className="flex flex-col gap-4">
-    <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium">Name</label>
-      <input className="rounded border px-3 py-2 text-sm" />
-    </div>
-    <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium">Email</label>
-      <input className="rounded border px-3 py-2 text-sm" />
-    </div>
-  </div>
-</Sheet>`;
-
-function SheetDemo({ side }: { side: "left" | "right" | "top" | "bottom" }) {
-  return (
-    <Sheet side={side} trigger={<button className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted">{side.charAt(0).toUpperCase() + side.slice(1)}</button>} title={`${side.charAt(0).toUpperCase() + side.slice(1)} Sheet`} description={`This sheet slides in from the ${side}.`}>
-      <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
-    </Sheet>
-  );
-}
 
 export default function SheetPage() {
   return (
-    <ComponentDocPage name="Sheet" category="Overlays" description="A sliding panel that overlays content from any edge of the screen. Supports four directions and multiple sizes with controlled or uncontrolled state.">
+    <ComponentDocPage
+      name="Sheet"
+      category="Overlays"
+      description="A sliding panel that overlays content from any edge of the screen. Supports four directions, multiple sizes, controlled/uncontrolled state, and keyboard dismissal."
+    >
       <PreviewPanel filename="sheet-preview.tsx">
-        <div className="flex flex-wrap items-center gap-4">
-          <SheetDemo side="left" />
-          <SheetDemo side="right" />
-          <SheetDemo side="top" />
-          <SheetDemo side="bottom" />
+        <div className="flex flex-wrap items-center gap-3">
+          {(["left", "right", "top", "bottom"] as const).map((s) => (
+            <Sheet
+              key={s}
+              side={s}
+              title={`${s.charAt(0).toUpperCase() + s.slice(1)} Sheet`}
+              description={`This sheet slides in from the ${s}.`}
+              trigger={
+                <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </span>
+              }
+            >
+              <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+            </Sheet>
+          ))}
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer source={SHEET_SOURCE} filename="components/_sheet/Sheet.tsx" defaultExpanded />
+      <SourceCodeViewer
+        source={SHEET_SOURCE}
+        filename="components/ui/Sheet/Sheet.tsx"
+        defaultExpanded
+      />
 
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Default" description="A sheet sliding from the right with a form." code={DEFAULT_SOURCE} filename="sheet-default.tsx">
-          <Sheet trigger={<button className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-muted">Open Sheet</button>} title="Edit Profile" description="Make changes to your profile here.">
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        {/* Default */}
+        <ExampleBlock
+          title="Default"
+          description="Right sheet with title, description, and form content."
+          code={`import { Sheet } from "@/components/ui/Sheet";\n\n<Sheet\n  trigger={<button>Open</button>}\n  title="Edit Profile"\n  description="Make changes to your profile here."\n>\n  <div className="flex flex-col gap-4">\n    <div className="flex flex-col gap-2">\n      <label className="text-sm font-medium">Name</label>\n      <input className="rounded-xl border border-border bg-background px-3 py-2 text-sm" />\n    </div>\n    <div className="flex flex-col gap-2">\n      <label className="text-sm font-medium">Email</label>\n      <input className="rounded-xl border border-border bg-background px-3 py-2 text-sm" />\n    </div>\n  </div>\n</Sheet>`}
+          filename="sheet-default.tsx"
+        >
+          <Sheet
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                Open Sheet
+              </span>
+            }
+            title="Edit Profile"
+            description="Make changes to your profile here."
+          >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Name</label>
-                <input className="rounded border px-3 py-2 text-sm" />
+                <label className="text-sm font-medium text-foreground">Name</label>
+                <input
+                  className="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder="John Doe"
+                />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Email</label>
-                <input className="rounded border px-3 py-2 text-sm" />
+                <label className="text-sm font-medium text-foreground">Email</label>
+                <input
+                  className="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder="john@example.com"
+                />
               </div>
             </div>
           </Sheet>
         </ExampleBlock>
 
-        <ExampleBlock title="Left" description="Sheet slides in from the left edge." code={LEFT_SOURCE} filename="sheet-left.tsx">
-          <SheetDemo side="left" />
+        {/* Left */}
+        <ExampleBlock
+          title="Left"
+          description="Sheet slides in from the left edge."
+          code={`<Sheet side="left" trigger={<button>Open Left</button>} title="Left Sheet">\n  <p>Content from the left.</p>\n</Sheet>`}
+          filename="sheet-left.tsx"
+        >
+          <Sheet
+            side="left"
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                Left
+              </span>
+            }
+            title="Left Sheet"
+            description="This sheet slides in from the left."
+          >
+            <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+          </Sheet>
         </ExampleBlock>
 
-        <ExampleBlock title="Right" description="Sheet slides in from the right edge." code={RIGHT_SOURCE} filename="sheet-right.tsx">
-          <SheetDemo side="right" />
+        {/* Right */}
+        <ExampleBlock
+          title="Right"
+          description="Sheet slides in from the right edge (default)."
+          code={`<Sheet side="right" trigger={<button>Open Right</button>} title="Right Sheet">\n  <p>Content from the right.</p>\n</Sheet>`}
+          filename="sheet-right.tsx"
+        >
+          <Sheet
+            side="right"
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                Right
+              </span>
+            }
+            title="Right Sheet"
+            description="This sheet slides in from the right."
+          >
+            <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+          </Sheet>
         </ExampleBlock>
 
-        <ExampleBlock title="Top" description="Sheet slides in from the top edge." code={TOP_SOURCE} filename="sheet-top.tsx">
-          <SheetDemo side="top" />
+        {/* Top */}
+        <ExampleBlock
+          title="Top"
+          description="Sheet slides in from the top edge."
+          code={`<Sheet side="top" trigger={<button>Open Top</button>} title="Top Sheet">\n  <p>Content from the top.</p>\n</Sheet>`}
+          filename="sheet-top.tsx"
+        >
+          <Sheet
+            side="top"
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                Top
+              </span>
+            }
+            title="Top Sheet"
+            description="This sheet slides in from the top."
+          >
+            <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+          </Sheet>
         </ExampleBlock>
 
-        <ExampleBlock title="Bottom" description="Sheet slides in from the bottom edge." code={BOTTOM_SOURCE} filename="sheet-bottom.tsx">
-          <SheetDemo side="bottom" />
+        {/* Bottom */}
+        <ExampleBlock
+          title="Bottom"
+          description="Sheet slides in from the bottom edge."
+          code={`<Sheet side="bottom" trigger={<button>Open Bottom</button>} title="Bottom Sheet">\n  <p>Content from the bottom.</p>\n</Sheet>`}
+          filename="sheet-bottom.tsx"
+        >
+          <Sheet
+            side="bottom"
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                Bottom
+              </span>
+            }
+            title="Bottom Sheet"
+            description="This sheet slides in from the bottom."
+          >
+            <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+          </Sheet>
         </ExampleBlock>
-      </div>
+
+        {/* Sizes */}
+        <ExampleBlock
+          title="Sizes"
+          description="Sheets come in sm, md (default), lg, xl, and full sizes."
+          code={`<Sheet size="lg" trigger={<button>Large</button>} title="Large Sheet">\n  <p>Wide content area.</p>\n</Sheet>`}
+          filename="sheet-sizes.tsx"
+        >
+          <div className="flex flex-wrap gap-3">
+            {(["sm", "md", "lg", "xl", "full"] as const).map((s) => (
+              <Sheet
+                key={s}
+                size={s}
+                trigger={
+                  <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                    {s.toUpperCase()}
+                  </span>
+                }
+                title={`${s.toUpperCase()} Sheet`}
+                description={`This sheet uses the "${s}" size.`}
+              >
+                <p className="text-sm text-muted-foreground">Sheet content goes here.</p>
+              </Sheet>
+            ))}
+          </div>
+        </ExampleBlock>
+
+        {/* Not Closable */}
+        <ExampleBlock
+          title="Not Closable"
+          description="Disable the close button. Escape key still works."
+          code={`<Sheet closable={false} trigger={<button>No Close Button</button>} title="Locked">\n  <p>Use Escape to dismiss.</p>\n</Sheet>`}
+          filename="sheet-not-closable.tsx"
+        >
+          <Sheet
+            closable={false}
+            trigger={
+              <span className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted">
+                No Close Button
+              </span>
+            }
+            title="Locked"
+            description="This sheet has no close button. Press Escape to dismiss."
+          >
+            <p className="text-sm text-muted-foreground">
+              Use the Escape key to dismiss this sheet.
+            </p>
+          </Sheet>
+        </ExampleBlock>
+
+        {/* Controlled */}
+        <ExampleBlock
+          title="Controlled"
+          description="Control open state externally."
+          code={`const [open, setOpen] = useState(false);\n\n<button onClick={() => setOpen(true)}>Open</button>\n<Sheet open={open} onOpenChange={setOpen} title="Controlled">\n  <p>Controlled content.</p>\n</Sheet>`}
+          filename="sheet-controlled.tsx"
+        >
+          <ControlledSheetDemo />
+        </ExampleBlock>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">open</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">defaultOpen</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onOpenChange</td>
+                <td className="px-4 py-3 text-muted-foreground">(open: boolean) =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">side</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;top&quot; | &quot;right&quot; | &quot;bottom&quot; | &quot;left&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;right&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">size</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot; | &quot;full&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">&quot;md&quot;</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">trigger</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">children</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">title</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">description</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">closable</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">overlayClassName</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </ComponentDocPage>
+  );
+}
+
+function ControlledSheetDemo() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted"
+      >
+        Open Controlled
+      </button>
+      <Sheet open={open} onOpenChange={setOpen} title="Controlled Sheet">
+        <p className="text-sm text-muted-foreground">
+          This sheet&apos;s open state is managed externally.
+        </p>
+      </Sheet>
+    </>
   );
 }
