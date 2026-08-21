@@ -20,7 +20,6 @@ export interface DropdownMenuProps {
 
 export interface DropdownMenuContentProps {
   children: ReactNode;
-  align?: DropdownAlign;
   className?: string;
 }
 
