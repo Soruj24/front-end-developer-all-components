@@ -1,151 +1,8 @@
 "use client";
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { AlignCenter, Maximize2, Move } from "lucide-react";
-
-const CENTERLAYOUT_SOURCE = `"use client";
-
-import type { ReactNode } from "react";
-
-interface CenterProps {
-  axis?: "both" | "x" | "y";
-  inset?: boolean;
-  padding?: boolean;
-  className?: string;
-  children?: ReactNode;
-}
-
-export function Center({ axis = "both", inset = false, padding = false, className = "", children }: CenterProps) {
-  const justify = axis === "x" ? "justify-center" : axis === "y" ? "justify-start" : "justify-center";
-  const items = axis === "x" ? "items-start" : axis === "y" ? "items-center" : "items-center";
-  const position = inset ? "absolute inset-0" : "";
-  const pad = padding ? "p-8" : "";
-  const classes = [justify, items, position, pad, className].filter(Boolean).join(" ");
-
-  return <div className={"flex " + classes}>{children}</div>;
-}`;
-
-const HORIZONTAL_CODE = `<Center axis="x"><div>Horizontally centered only</div></Center>`;
-
-const VERTICAL_CODE = `<Center axis="y"><div>Vertically centered only</div></Center>`;
-
-const PADDING_CODE = `<Center padding><div className="max-w-sm">Centered with padding and max-width</div></Center>`;
-
-const ABSOLUTE_CODE = `<div className="relative h-48"><Center inset><div>Absolute Center</div></Center></div>`;
-
-const FLEXBOX_CODE = `<div className="flex items-center justify-center"><div>Flex Center</div></div>
-
-<div className="flex flex-col items-center gap-1"><div>Stacked</div><span>subtitle</span></div>`;
-
-const HERO_CODE = `<Center><div className="flex flex-col items-center gap-3 text-center"><h3>Welcome to Our Platform</h3><p>Build beautiful interfaces with our design system.</p><div className="flex gap-2"><div className="rounded-md bg-primary px-4 py-2 text-xs text-primary-foreground">Get Started</div><div className="rounded-md border bg-background px-4 py-2 text-xs">Learn More</div></div></div></Center>`;
-
-function CenterBothAxes() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <AlignCenter className="h-4 w-4" />
-        <span>Center on Both Axes</span>
-      </div>
-      <div className="flex h-64 items-center justify-center rounded-lg border bg-muted/30">
-        <div className="rounded-lg bg-primary/10 px-6 py-3 text-sm font-medium text-primary">Centered Content</div>
-      </div>
-    </div>
-  );
-}
-
-function CenterHorizontalOnly() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Move className="h-4 w-4" />
-        <span>Horizontal Center Only</span>
-      </div>
-      <div className="flex h-48 flex-col items-center justify-start gap-2 rounded-lg border bg-muted/30 p-4">
-        <div className="rounded-lg bg-green-500/10 px-6 py-3 text-sm font-medium text-green-600 dark:text-green-400">Top-aligned, horizontally centered</div>
-        <div className="rounded-lg bg-green-500/10 px-6 py-3 text-sm font-medium text-green-600 dark:text-green-400">Second item</div>
-      </div>
-    </div>
-  );
-}
-
-function CenterVerticalOnly() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Maximize2 className="h-4 w-4" />
-        <span>Vertical Center Only</span>
-      </div>
-      <div className="flex h-48 items-center justify-start gap-4 rounded-lg border bg-muted/30 p-4">
-        <div className="rounded-lg bg-amber-500/10 px-6 py-3 text-sm font-medium text-amber-600 dark:text-amber-400">Vertically centered</div>
-        <div className="rounded-lg bg-amber-500/10 px-6 py-3 text-sm font-medium text-amber-600 dark:text-amber-400">Next to it</div>
-      </div>
-    </div>
-  );
-}
-
-function CenterWithPadding() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Centered with responsive padding</p>
-      <div className="flex h-48 items-center justify-center rounded-lg border bg-muted/30 p-8">
-        <div className="w-full max-w-sm rounded-lg bg-purple-500/10 px-6 py-3 text-center text-sm font-medium text-purple-600 dark:text-purple-400">
-          Centered with padding and max-width
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CenterAbsolute() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Absolute centering within a relative container</p>
-      <div className="relative h-48 rounded-lg border bg-muted/30">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-blue-500/10 px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400">
-          Absolute Center
-        </div>
-        <div className="absolute right-3 top-3 text-xs text-muted-foreground">relative parent</div>
-      </div>
-    </div>
-  );
-}
-
-function CenterFlexbox() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Flexbox-based centering patterns</p>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex items-center justify-center rounded-lg border bg-muted/30 p-4">
-          <div className="rounded bg-rose-500/10 px-4 py-2 text-xs font-medium text-rose-600 dark:text-rose-400">Flex Center</div>
-        </div>
-        <div className="flex items-center justify-center rounded-lg border bg-muted/30 p-4">
-          <div className="flex flex-col items-center gap-1">
-            <div className="rounded bg-rose-500/10 px-4 py-2 text-xs font-medium text-rose-600 dark:text-rose-400">Stacked</div>
-            <span className="text-[10px] text-muted-foreground">subtitle</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CenterHeroPattern() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Common hero section pattern</p>
-      <div className="flex h-64 items-center justify-center rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <h3 className="text-lg font-semibold text-foreground">Welcome to Our Platform</h3>
-          <p className="max-w-md text-sm text-muted-foreground">Build beautiful interfaces with our comprehensive design system and component library.</p>
-          <div className="flex gap-2">
-            <div className="rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground">Get Started</div>
-            <div className="rounded-md border bg-background px-4 py-2 text-xs font-medium">Learn More</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { CENTER_SOURCE } from "./center-source";
+import { BothDemo, HorizontalDemo, VerticalDemo, PaddingDemo, AbsoluteDemo, FlexboxDemo, HeroDemo } from "./center-demos";
 
 export default function CenterLayoutPage() {
   return (
@@ -155,34 +12,107 @@ export default function CenterLayoutPage() {
       description="Center content both horizontally and vertically. Supports single-axis centering, absolute positioning, and responsive padding for hero sections and modals."
     >
       <PreviewPanel filename="center.tsx">
-        <CenterBothAxes />
+        <BothDemo />
       </PreviewPanel>
 
       <SourceCodeViewer
-        source={CENTERLAYOUT_SOURCE}
+        source={CENTER_SOURCE}
         filename="components/ui/Center/Center.tsx"
         defaultExpanded
       />
 
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Horizontal Center Only" description="Center content horizontally while keeping it top-aligned." code={HORIZONTAL_CODE}>
-          <CenterHorizontalOnly />
+      <div className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
+
+        <ExampleBlock
+          title="Horizontal Center Only"
+          description="Center content horizontally while keeping it top-aligned."
+          code={'<Center axis="x" className="h-48">\n  <div>Top-aligned, horizontally centered</div>\n</Center>'}
+        >
+          <HorizontalDemo />
         </ExampleBlock>
-        <ExampleBlock title="Vertical Center Only" description="Center content vertically while keeping it left-aligned." code={VERTICAL_CODE}>
-          <CenterVerticalOnly />
+
+        <ExampleBlock
+          title="Vertical Center Only"
+          description="Center content vertically while keeping it left-aligned."
+          code={'<Center axis="y" className="h-48">\n  <div>Vertically centered</div>\n</Center>'}
+        >
+          <VerticalDemo />
         </ExampleBlock>
-        <ExampleBlock title="Center with Padding" description="Center with responsive padding and max-width constraints." code={PADDING_CODE}>
-          <CenterWithPadding />
+
+        <ExampleBlock
+          title="Center with Padding"
+          description="Center with responsive padding and max-width constraints."
+          code={'<Center padding className="h-48">\n  <div className="max-w-sm">Centered with padding</div>\n</Center>'}
+        >
+          <PaddingDemo />
         </ExampleBlock>
-        <ExampleBlock title="Absolute Center" description="Absolute positioning for precise centering within a container." code={ABSOLUTE_CODE}>
-          <CenterAbsolute />
+
+        <ExampleBlock
+          title="Absolute Center"
+          description="Absolute positioning for precise centering within a container."
+          code={'<div className="relative h-48">\n  <Center inset>\n    <div>Absolute Center</div>\n  </Center>\n</div>'}
+        >
+          <AbsoluteDemo />
         </ExampleBlock>
-        <ExampleBlock title="Flexbox Patterns" description="Common flexbox centering patterns for different scenarios." code={FLEXBOX_CODE}>
-          <CenterFlexbox />
+
+        <ExampleBlock
+          title="Flexbox Patterns"
+          description="Common flexbox centering patterns for different scenarios."
+          code={'<Center>\n  <div>Flex Center</div>\n</Center>\n\n<Center>\n  <div className="flex flex-col items-center gap-1">\n    <div>Stacked</div>\n    <span>subtitle</span>\n  </div>\n</Center>'}
+        >
+          <FlexboxDemo />
         </ExampleBlock>
-        <ExampleBlock title="Hero Pattern" description="Centered hero section with title, description, and CTAs." code={HERO_CODE}>
-          <CenterHeroPattern />
+
+        <ExampleBlock
+          title="Hero Pattern"
+          description="Centered hero section with title, description, and CTAs."
+          code={'<Center className="h-64 bg-gradient-to-br from-primary/5 to-primary/10">\n  <div className="flex flex-col items-center gap-3 text-center">\n    <h3>Welcome</h3>\n    <p>Build beautiful interfaces.</p>\n    <div className="flex gap-2">...</div>\n  </div>\n</Center>'}
+        >
+          <HeroDemo />
         </ExampleBlock>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border border-border/60">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border/60 bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium">Prop</th>
+                <th className="px-4 py-3 text-left font-medium">Type</th>
+                <th className="px-4 py-3 text-left font-medium">Default</th>
+                <th className="px-4 py-3 text-left font-medium">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">axis</td>
+                <td className="px-4 py-3 text-muted-foreground">"both" | "x" | "y"</td>
+                <td className="px-4 py-3 text-muted-foreground">"both"</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">inset</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">padding</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">false</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </ComponentDocPage>
   );

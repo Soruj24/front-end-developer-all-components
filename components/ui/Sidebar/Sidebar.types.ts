@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 
+export type SidebarSide = "left" | "right";
+
 export interface SidebarProps {
   children: ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  side?: "left" | "right";
+  side?: SidebarSide;
+  width?: number;
+  collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
   className?: string;
 }
 
@@ -26,6 +29,21 @@ export interface SidebarFooterProps {
 export interface SidebarItemProps {
   children: ReactNode;
   active?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
+  className?: string;
+}
+
+export interface SidebarGroupProps {
+  label?: string;
+  children: ReactNode;
+  className?: string;
+}
+
+export interface SidebarTriggerProps {
+  className?: string;
+}
+
+export interface SidebarOverlayProps {
   className?: string;
 }

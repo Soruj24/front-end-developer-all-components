@@ -1,227 +1,92 @@
 "use client";
 
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { ArrowDown, ArrowRight, AlignVerticalSpaceAround, AlignHorizontalSpaceAround } from "lucide-react";
-
-const installCommand = `npx component-library@latest add stack-layout`;
-
-const usageCode = `import { Stack, Inline } from "@/components/ui/Stack";
-
-<Stack gap={4}>
-  <div>First</div>
-  <div>Second</div>
-  <div>Third</div>
-</Stack>
-
-<Inline gap={3} wrap>
-  <span>Tag 1</span>
-  <span>Tag 2</span>
-  <span>Tag 3</span>
-</Inline>`;
-
-function StackVertical() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <ArrowDown className="h-4 w-4" />
-        <span>Vertical Stack (gap: 4)</span>
-      </div>
-      <div className="flex flex-col gap-4 rounded-lg border p-4">
-        <div className="flex h-10 items-center justify-center rounded-md bg-primary/10 text-sm font-medium text-primary">Item 1</div>
-        <div className="flex h-10 items-center justify-center rounded-md bg-primary/10 text-sm font-medium text-primary">Item 2</div>
-        <div className="flex h-10 items-center justify-center rounded-md bg-primary/10 text-sm font-medium text-primary">Item 3</div>
-      </div>
-    </div>
-  );
-}
-
-function StackHorizontal() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <ArrowRight className="h-4 w-4" />
-        <span>Horizontal Stack (gap: 3)</span>
-      </div>
-      <div className="flex items-center gap-3 rounded-lg border p-4">
-        <div className="flex h-10 w-24 items-center justify-center rounded-md bg-green-500/10 text-sm font-medium text-green-600 dark:text-green-400">Left</div>
-        <div className="flex h-10 w-24 items-center justify-center rounded-md bg-green-500/10 text-sm font-medium text-green-600 dark:text-green-400">Center</div>
-        <div className="flex h-10 w-24 items-center justify-center rounded-md bg-green-500/10 text-sm font-medium text-green-600 dark:text-green-400">Right</div>
-      </div>
-    </div>
-  );
-}
-
-function StackWithDivider() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <AlignVerticalSpaceAround className="h-4 w-4" />
-        <span>Stack with Dividers</span>
-      </div>
-      <div className="flex flex-col rounded-lg border">
-        <div className="flex h-12 items-center px-4 text-sm font-medium">Profile</div>
-        <div className="h-px bg-border" />
-        <div className="flex h-12 items-center px-4 text-sm font-medium">Notifications</div>
-        <div className="h-px bg-border" />
-        <div className="flex h-12 items-center px-4 text-sm font-medium">Security</div>
-        <div className="h-px bg-border" />
-        <div className="flex h-12 items-center px-4 text-sm font-medium">Integrations</div>
-      </div>
-    </div>
-  );
-}
-
-function StackWithFill() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <AlignHorizontalSpaceAround className="h-4 w-4" />
-        <span>Stack with Fill</span>
-      </div>
-      <div className="flex gap-2 rounded-lg border p-2">
-        <div className="flex h-10 flex-1 items-center justify-center rounded-md bg-amber-500/10 text-xs font-medium text-amber-600 dark:text-amber-400">Auto</div>
-        <div className="flex h-10 w-32 items-center justify-center rounded-md bg-amber-500/10 text-xs font-medium text-amber-600 dark:text-amber-400">Fixed</div>
-        <div className="flex h-10 flex-1 items-center justify-center rounded-md bg-amber-500/10 text-xs font-medium text-amber-600 dark:text-amber-400">Auto</div>
-      </div>
-    </div>
-  );
-}
-
-function StackNested() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Nested stacks for complex layouts</p>
-      <div className="flex flex-col gap-4 rounded-lg border p-4">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center text-xs font-medium text-blue-600 dark:text-blue-400">A</div>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">User Name</span>
-            <span className="text-xs text-muted-foreground">user@example.com</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-green-500/10 flex items-center justify-center text-xs font-medium text-green-600 dark:text-green-400">B</div>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">Another User</span>
-            <span className="text-xs text-muted-foreground">another@example.com</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StackSpacingVariants() {
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">Different spacing options</p>
-      <div className="grid grid-cols-3 gap-4">
-        {(["gap-1", "gap-4", "gap-8"] as const).map((gap) => (
-          <div key={gap} className="flex flex-col gap-3">
-            <span className="text-xs font-medium text-muted-foreground">{gap}</span>
-            <div className={`flex flex-col ${gap} rounded-lg border p-3`}>
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex h-8 items-center justify-center rounded bg-purple-500/10 text-xs font-medium text-purple-600 dark:text-purple-400">{i}</div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { STACK_SOURCE } from "./stack-source";
+import { VerticalDemo, HorizontalDemo, DividerDemo, FillDemo, NestedDemo, SpacingDemo, WrapDemo, AlignDemo } from "./stack-demos";
 
 export default function StackLayoutPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Stack Layout</h1>
-          <Badge variant="primary">Layout</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Flexible vertical and horizontal stacking primitives with consistent spacing. Build complex layouts by composing simple stack components.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Stack Layout"
+      category="Layout"
+      description="Flexible vertical and horizontal stacking primitives with consistent spacing. Build complex layouts by composing Stack and Inline components with separators, alignment, and wrapping."
+    >
+      <PreviewPanel filename="stack.tsx">
+        <VerticalDemo />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={STACK_SOURCE}
+        filename="components/ui/Stack/Stack.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <div className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Vertical Stack</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Stack items vertically with consistent spacing.</p>
-        </div>
-        <ComponentPreview id="stack-vertical">
-          <StackVertical />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Horizontal Stack"
+          description="Stack items horizontally with consistent spacing."
+          code={'<Stack direction="horizontal" gap={3}>\n  <div>Left</div>\n  <div>Center</div>\n  <div>Right</div>\n</Stack>'}
+        >
+          <HorizontalDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Horizontal Stack</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Stack items horizontally with consistent spacing.</p>
-        </div>
-        <ComponentPreview id="stack-horizontal">
-          <StackHorizontal />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Stack with Dividers"
+          description="Vertical stack with separator lines between items using the separator prop."
+          code={'<Stack direction="vertical" gap={0} separator={<div className="h-px bg-border" />}>\n  <div>Profile</div>\n  <div>Notifications</div>\n  <div>Security</div>\n</Stack>'}
+        >
+          <DividerDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Stack with Dividers</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Vertical stack with separator lines between items.</p>
-        </div>
-        <ComponentPreview id="stack-divider">
-          <StackWithDivider />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Fill"
+          description="Mix fixed and flexible sizing within a horizontal stack."
+          code={'<Stack direction="horizontal" gap={2}>\n  <div className="flex-1">Auto</div>\n  <div className="w-32">Fixed</div>\n  <div className="flex-1">Auto</div>\n</Stack>'}
+        >
+          <FillDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Stack with Fill</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Mix fixed and flexible sizing within a horizontal stack.</p>
-        </div>
-        <ComponentPreview id="stack-fill">
-          <StackWithFill />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Alignment"
+          description="Align items with different heights using align and justify props."
+          code={'<Stack direction="horizontal" gap={3} align="center" justify="between">\n  <div>Start</div>\n  <div>Center</div>\n  <div>End</div>\n</Stack>'}
+        >
+          <AlignDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Nested Stacks</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Combine vertical and horizontal stacks for complex layouts.</p>
-        </div>
-        <ComponentPreview id="stack-nested">
-          <StackNested />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Nested Stacks"
+          description="Combine vertical and horizontal stacks for complex layouts."
+          code={'<Stack direction="vertical" gap={4}>\n  <Stack direction="horizontal" gap={3} align="center">\n    <Avatar />\n    <Stack direction="vertical" gap={0}>\n      <span>User Name</span>\n      <span>user@email.com</span>\n    </Stack>\n  </Stack>\n</Stack>'}
+        >
+          <NestedDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Spacing Variants</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Adjustable gap sizes for different density needs.</p>
-        </div>
-        <ComponentPreview id="stack-spacing">
-          <StackSpacingVariants />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Inline Wrap"
+          description="Inline component wraps items to the next line when space runs out."
+          code={'<Inline gap={2} wrap>\n  <span>Tag 1</span>\n  <span>Tag 2</span>\n  <span>Tag 3</span>\n</Inline>'}
+        >
+          <WrapDemo />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
+        <ExampleBlock
+          title="Spacing Variants"
+          description="Adjustable gap sizes for different density needs."
+          code={'<Stack direction="vertical" gap={1}>...</Stack>\n<Stack direction="vertical" gap={4}>...</Stack>\n<Stack direction="vertical" gap={8}>...</Stack>'}
+        >
+          <SpacingDemo />
+        </ExampleBlock>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">API Reference</h2>
+        <div className="overflow-hidden rounded-lg border border-border/60">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/50">
+              <tr className="border-b border-border/60 bg-muted/50">
                 <th className="px-4 py-3 text-left font-medium">Prop</th>
                 <th className="px-4 py-3 text-left font-medium">Type</th>
                 <th className="px-4 py-3 text-left font-medium">Default</th>
@@ -229,34 +94,46 @@ export default function StackLayoutPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b">
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">direction</td>
+                <td className="px-4 py-3 text-muted-foreground">"vertical" | "horizontal"</td>
+                <td className="px-4 py-3 text-muted-foreground">"vertical"</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b border-border/60">
                 <td className="px-4 py-3 font-mono text-xs">gap</td>
-                <td className="px-4 py-3 text-muted-foreground">number | string</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
                 <td className="px-4 py-3 text-muted-foreground">4</td>
                 <td className="px-4 py-3">No</td>
               </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical" | "horizontal"`}'}</td>
-                <td className="px-4 py-3 text-muted-foreground">{'{`"vertical"`}'}</td>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">align</td>
+                <td className="px-4 py-3 text-muted-foreground">"start" | "center" | "end" | "stretch"</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
                 <td className="px-4 py-3">No</td>
               </tr>
-              <tr className="border-b">
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">justify</td>
+                <td className="px-4 py-3 text-muted-foreground">"start" | "center" | "end" | "between" | "around" | "evenly"</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
+                <td className="px-4 py-3">No</td>
+              </tr>
+              <tr className="border-b border-border/60">
                 <td className="px-4 py-3 font-mono text-xs">wrap</td>
                 <td className="px-4 py-3 text-muted-foreground">boolean</td>
                 <td className="px-4 py-3 text-muted-foreground">false</td>
                 <td className="px-4 py-3">No</td>
               </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
+              <tr className="border-b border-border/60">
+                <td className="px-4 py-3 font-mono text-xs">separator</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">-</td>
                 <td className="px-4 py-3">No</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </section>
-    </div>
+      </div>
+    </ComponentDocPage>
   );
 }
