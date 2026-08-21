@@ -293,6 +293,8 @@ export { Form, FormField, FormLabel, FormMessage } from "./Form";
 export type { FormProps, FormFieldProps, FormLabelProps, FormMessageProps } from "./Form";
 export { Gallery, GalleryItem, GalleryImage } from "./Gallery";
 export type { GalleryProps, GalleryItemProps, GalleryImageProps } from "./Gallery";
+export { GestureArea } from "./GestureArea";
+export type { GestureAreaProps } from "./GestureArea";
 export { Grid, GridItem } from "./Grid";
 export type { GridProps, GridItemProps } from "./Grid";
 export { Icon } from "./Icon";
