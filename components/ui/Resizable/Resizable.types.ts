@@ -9,6 +9,8 @@ export interface ResizableProps {
 export interface ResizablePanelProps {
   children: ReactNode;
   defaultSize?: number;
+  minSize?: number;
+  collapsible?: boolean;
   className?: string;
 }
 
