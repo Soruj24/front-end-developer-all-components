@@ -1,44 +1,98 @@
-import { InputHTMLAttributes, forwardRef } from "react";
+import { type InputHTMLAttributes, forwardRef } from "react";
+import { cn } from "@/lib/cn";
 
-export interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
+export type SwitchSize = "sm" | "md" | "lg";
+
+export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  size?: SwitchSize;
   label?: string;
   description?: string;
+  error?: boolean | string;
 }
 
+const TRACK_SIZES: Record<SwitchSize, string> = {
+  sm: "h-5 w-9",
+  md: "h-6 w-11",
+  lg: "h-7 w-13",
+};
+
+const THUMB_SIZES: Record<SwitchSize, string> = {
+  sm: "h-4 w-4 peer-checked:translate-x-4",
+  md: "h-5 w-5 peer-checked:translate-x-5",
+  lg: "h-6 w-6 peer-checked:translate-x-6",
+};
+
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className = "", label, description, ...props }, ref) => {
+  ({ className, size = "md", label, description, error, disabled, id, ...props }, ref) => {
+    const switchId = id ?? (label ? `switch-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+
     return (
-      <label className={`flex items-start gap-3 ${className}`}>
-        <div className="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-ring-offset">
+      <label
+        htmlFor={switchId}
+        className={cn(
+          "flex items-start gap-3",
+          disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+          className,
+        )}
+      >
+        <div
+          className={cn(
+            "relative mt-0.5 inline-flex shrink-0 items-center rounded-full border-2 transition-all duration-200 ease-in-out",
+            TRACK_SIZES[size],
+            error
+              ? "border-rose-400 bg-rose-100 peer-checked:bg-rose-500 dark:border-rose-500 dark:bg-rose-950 dark:peer-checked:bg-rose-600"
+              : "border-transparent bg-muted peer-checked:bg-primary",
+            "focus-within:outline-none focus-within:ring-2 focus-within:ring-primary/50 focus-within:ring-offset-2 focus-within:ring-offset-background",
+          )}
+        >
           <input
             ref={ref}
+            id={switchId}
             type="checkbox"
             role="switch"
+            aria-invalid={!!error || undefined}
             className="peer sr-only"
+            disabled={disabled}
             {...props}
           />
-          <span className="absolute inset-0 rounded-full bg-muted peer-checked:bg-foreground" />
-          <span className="absolute left-0.5 h-5 w-5 rounded-full bg-background shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5" />
+          <span
+            className={cn(
+              "absolute inset-0 rounded-full transition-colors duration-200",
+              error
+                ? "bg-rose-100 peer-checked:bg-rose-500 dark:bg-rose-950 dark:peer-checked:bg-rose-600"
+                : "bg-muted peer-checked:bg-primary",
+            )}
+          />
+          <span
+            className={cn(
+              "absolute left-0.5 rounded-full bg-white shadow-sm transition-all duration-200 ease-in-out",
+              "peer-checked:shadow-md",
+              THUMB_SIZES[size],
+              !disabled && "group-hover:shadow-md",
+            )}
+          />
         </div>
-        {(label || description) && (
-          <div className="flex flex-col">
+        {(label || description || error) && (
+          <div className="flex flex-1 flex-col gap-0.5">
             {label && (
               <span className="text-sm font-medium text-foreground">
                 {label}
               </span>
             )}
             {description && (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {description}
               </span>
+            )}
+            {typeof error === "string" && (
+              <span className="text-xs text-rose-500">{error}</span>
             )}
           </div>
         )}
       </label>
     );
-  }
+  },
 );
 Switch.displayName = "Switch";
 
-export default Switch;
 export { Switch };
