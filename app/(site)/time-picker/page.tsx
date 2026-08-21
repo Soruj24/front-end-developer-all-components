@@ -1,189 +1,142 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Clock, ChevronUp, ChevronDown } from "lucide-react";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { TimePicker } from "@/components/ui/TimePicker";
+import type { TimeValue } from "@/components/ui/TimePicker";
+import { TIME_PICKER_SOURCE } from "./time-picker-source";
 
-const installCommand = `npx component-library@latest add time-picker`;
+const BASIC_CODE = `import { TimePicker } from "@/components/ui/TimePicker";
 
-const usageCode = `import { TimePicker } from "@/components/ui";
+<TimePicker value={time} onChange={setTime} />`;
 
-<TimePicker
-  value={time}
-  onChange={setTime}
-  format="24h"
-/>`;
+const TWELVE_H_CODE = `import { TimePicker } from "@/components/ui/TimePicker";
 
-function Spinner({ value, min, max, onChange }: { value: number; min: number; max: number; onChange: (v: number) => void }) {
-  const next = () => onChange(value >= max ? min : value + 1);
-  const prev = () => onChange(value <= min ? max : value - 1);
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <button onClick={next} className="rounded p-0.5 hover:bg-muted"><ChevronUp className="h-4 w-4" /></button>
-      <span className="w-10 text-center font-mono text-lg tabular-nums">{String(value).padStart(2, "0")}</span>
-      <button onClick={prev} className="rounded p-0.5 hover:bg-muted"><ChevronDown className="h-4 w-4" /></button>
-    </div>
-  );
-}
+<TimePicker value={time} onChange={setTime} format="12h" />`;
 
-function BasicTimeDemo() {
-  const [time, setTime] = useState({ h: 14, m: 30 });
-  return (
-    <div className="w-full max-w-xs space-y-3">
-      <div className="flex items-center justify-center gap-1 rounded-xl border border-border bg-background p-4">
-        <Spinner value={time.h} min={0} max={23} onChange={(h) => setTime({ ...time, h })} />
-        <span className="text-2xl font-bold">:</span>
-        <Spinner value={time.m} min={0} max={59} onChange={(m) => setTime({ ...time, m })} />
-      </div>
-      <p className="text-center text-sm text-muted-foreground">
-        {String(time.h).padStart(2, "0")}:{String(time.m).padStart(2, "0")}
-      </p>
-    </div>
-  );
-}
+const SECONDS_CODE = `import { TimePicker } from "@/components/ui/TimePicker";
 
-function TwelveHourDemo() {
-  const [time, setTime] = useState({ h: 9, m: 15, period: "AM" as "AM" | "PM" });
-  const togglePeriod = () => setTime({ ...time, period: time.period === "AM" ? "PM" : "AM" });
-
-  return (
-    <div className="w-full max-w-xs space-y-3">
-      <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-background p-4">
-        <Spinner value={time.h} min={1} max={12} onChange={(h) => setTime({ ...time, h })} />
-        <span className="text-2xl font-bold">:</span>
-        <Spinner value={time.m} min={0} max={59} onChange={(m) => setTime({ ...time, m })} />
-        <button onClick={togglePeriod}
-          className="ml-2 rounded-lg bg-primary px-3 py-2 text-sm font-bold text-primary-foreground">
-          {time.period}
-        </button>
-      </div>
-      <p className="text-center text-sm text-muted-foreground">
-        {time.h}:{String(time.m).padStart(2, "0")} {time.period}
-      </p>
-    </div>
-  );
-}
-
-function WithSecondsDemo() {
-  const [time, setTime] = useState({ h: 16, m: 45, s: 30 });
-  return (
-    <div className="w-full max-w-xs space-y-3">
-      <div className="flex items-center justify-center gap-1 rounded-xl border border-border bg-background p-4">
-        <Spinner value={time.h} min={0} max={23} onChange={(h) => setTime({ ...time, h })} />
-        <span className="text-2xl font-bold">:</span>
-        <Spinner value={time.m} min={0} max={59} onChange={(m) => setTime({ ...time, m })} />
-        <span className="text-2xl font-bold">:</span>
-        <Spinner value={time.s} min={0} max={59} onChange={(s) => setTime({ ...time, s })} />
-      </div>
-      <p className="text-center text-sm text-muted-foreground font-mono">
-        {String(time.h).padStart(2, "0")}:{String(time.m).padStart(2, "0")}:{String(time.s).padStart(2, "0")}
-      </p>
-    </div>
-  );
-}
+<TimePicker value={time} onChange={setTime} showSeconds />`;
 
 export default function TimePickerPage() {
+  const [time24, setTime24] = useState<TimeValue>({ h: 14, m: 30 });
+  const [time12, setTime12] = useState<TimeValue>({ h: 9, m: 15, period: "AM" });
+  const [timeSec, setTimeSec] = useState<TimeValue>({ h: 16, m: 45, s: 30 });
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Time Picker</h1>
-          <Badge variant="primary">Forms</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          A time selection component with spinner controls. Supports 12h/24h formats and optional seconds display.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Time Picker"
+      category="Forms"
+      description="A time selection component with spinner controls. Supports 12h/24h formats and optional seconds display with keyboard navigation."
+    >
+      <PreviewPanel filename="time-picker.tsx">
+        <TimePicker value={time24} onChange={setTime24} label="Select time" />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer
+        source={TIME_PICKER_SOURCE}
+        filename="components/ui/TimePicker/TimePicker.tsx"
+        defaultExpanded
+      />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Examples</h2>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Basic Time</h2>
-          <p className="mt-1 text-sm text-muted-foreground">24-hour time picker with hours and minutes.</p>
-        </div>
-        <ComponentPreview id="time-picker-basic">
-          <BasicTimeDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="12-Hour Format"
+          description="12-hour format with AM/PM toggle."
+          code={TWELVE_H_CODE}
+          filename="12h.tsx"
+        >
+          <TimePicker
+            value={time12}
+            onChange={setTime12}
+            format="12h"
+            label="Select time"
+          />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">12h / 24h</h2>
-          <p className="mt-1 text-sm text-muted-foreground">12-hour format with AM/PM toggle.</p>
-        </div>
-        <ComponentPreview id="time-picker-12h">
-          <TwelveHourDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="With Seconds"
+          description="Time picker with seconds precision."
+          code={SECONDS_CODE}
+          filename="seconds.tsx"
+        >
+          <TimePicker
+            value={timeSec}
+            onChange={setTimeSec}
+            showSeconds
+            label="Select time"
+          />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">With Seconds</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Time picker that includes seconds precision.</p>
-        </div>
-        <ComponentPreview id="time-picker-seconds">
-          <WithSecondsDemo />
-        </ComponentPreview>
-      </section>
+        <ExampleBlock
+          title="Disabled"
+          description="Disabled state prevents all interaction."
+          code={`<TimePicker value={{ h: 10, m: 30 }} onChange={() => {}} disabled />`}
+          filename="disabled.tsx"
+        >
+          <TimePicker
+            value={{ h: 10, m: 30 }}
+            onChange={() => {}}
+            disabled
+            label="Disabled picker"
+          />
+        </ExampleBlock>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">value</td>
-                <td className="px-4 py-3 text-muted-foreground">{`{ h: number; m: number; s?: number }`}</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onChange</td>
-                <td className="px-4 py-3 text-muted-foreground">(value: TimeValue) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">format</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;12h&quot; | &quot;24h&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;24h&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">showSeconds</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">disabled</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ExampleBlock
+          title="Keyboard Navigation"
+          description="Use arrow keys on the digit to increment/decrement. Tab between columns."
+          code={`{/* Focus a digit, press ArrowUp or ArrowDown */}`}
+          filename="keyboard.tsx"
+        >
+          <TimePicker
+            value={time24}
+            onChange={setTime24}
+            label="Keyboard accessible"
+            helperText="Focus a number and use arrow keys to change values."
+          />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="With Helper Text"
+          description="Add descriptive text below the picker."
+          code={`<TimePicker value={time} onChange={setTime} helperText="Office hours: 9 AM - 5 PM" />`}
+          filename="helper-text.tsx"
+        >
+          <TimePicker
+            value={time12}
+            onChange={setTime12}
+            format="12h"
+            label="Office hours"
+            helperText="Available between 9:00 AM and 5:00 PM"
+          />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="All Variants"
+          description="24h, 12h, and 12h with seconds side by side."
+          code={`<TimePicker format="24h" />
+<TimePicker format="12h" />
+<TimePicker format="12h" showSeconds />`}
+          filename="all-variants.tsx"
+        >
+          <div className="flex flex-col sm:flex-row gap-6">
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">24h</p>
+              <TimePicker value={time24} onChange={setTime24} format="24h" />
+            </div>
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">12h</p>
+              <TimePicker value={time12} onChange={setTime12} format="12h" />
+            </div>
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">12h + Seconds</p>
+              <TimePicker value={{ h: 9, m: 15, s: 45, period: "PM" }} onChange={() => {}} format="12h" showSeconds />
+            </div>
+          </div>
+        </ExampleBlock>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }

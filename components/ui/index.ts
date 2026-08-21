@@ -189,6 +189,8 @@ export { default as Table } from "./Table";
 export { default as Tabs } from "./Tabs";
 export { Textarea } from "./Textarea";
 export { default as Timeline } from "./Timeline";
+export { TimePicker } from "./TimePicker";
+export type { TimePickerProps, TimeValue } from "./TimePicker";
 export { default as Toast } from "./Toast";
 export { Sheet } from "./Sheet";
 export type { SheetProps } from "./Sheet";
