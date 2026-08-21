@@ -156,7 +156,8 @@ export { Rating } from "./Rating";
 export type { RatingProps } from "./Rating";
 export { ScrollArea } from "./ScrollArea";
 export type { ScrollAreaProps } from "./ScrollArea";
-export { default as SearchInput } from "./SearchInput";
+export { SearchInput } from "./SearchInput";
+export type { SearchInputProps } from "./SearchInput";
 export { Select } from "./Select";
 export {
   default as Skeleton,
