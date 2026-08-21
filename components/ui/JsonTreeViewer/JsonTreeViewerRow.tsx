@@ -30,40 +30,40 @@ export function TreeRow({ node, expanded, revealed, searching, query, maxItems, 
 
     return (
       <div key={node.path} className="group/row">
-        <div className="flex items-center gap-1.5 rounded-md px-1.5 py-[2px] font-mono text-[12.5px] leading-5 hover:bg-muted/50">
+        <div className="flex items-center gap-1.5 rounded-lg px-2 py-[3px] font-mono text-[12.5px] leading-5 transition-colors duration-150 hover:bg-muted/60">
           {!isRoot ? (
             <button type="button" onClick={() => toggle(node.path)} aria-expanded={isExpanded} className="flex min-w-0 flex-1 items-center gap-1.5 text-left">
-              <ChevronIcon className={cn("h-3.5 w-3.5 shrink-0 text-subtle transition-transform duration-200", isExpanded && "rotate-90")} />
+              <ChevronIcon className={cn("h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform duration-200", isExpanded && "rotate-90")} />
               <span className={cn("truncate", keyClass)}><Highlight text={node.key} query={query} /></span>
-              <span className="text-subtle">:</span>
-              <span className="text-subtle">{isExpanded ? openToken : `${openToken} … ${closeToken}`}</span>
-              {!isExpanded && <span className="truncate text-subtle">{isArray ? `${children.length} items` : `${children.length} keys`}</span>}
-              {!isExpanded && <span className="hidden shrink-0 rounded bg-muted px-1 py-px text-[10px] text-subtle sm:inline-block">{node.type}</span>}
+              <span className="text-muted-foreground">:</span>
+              <span className="text-muted-foreground">{isExpanded ? openToken : `${openToken} … ${closeToken}`}</span>
+              {!isExpanded && <span className="truncate text-muted-foreground">{isArray ? `${children.length} items` : `${children.length} keys`}</span>}
+              {!isExpanded && <span className="hidden shrink-0 rounded-md bg-muted px-1.5 py-px text-[10px] text-muted-foreground sm:inline-block">{node.type}</span>}
             </button>
           ) : (
-            <span className="flex min-w-0 flex-1 items-center gap-1.5 text-subtle">
+            <span className="flex min-w-0 flex-1 items-center gap-1.5 text-muted-foreground">
               {isExpanded ? openToken : `${openToken} … ${closeToken}`}
               {!isExpanded && <span className="truncate">{isArray ? `${children.length} items` : `${children.length} keys`}</span>}
             </span>
           )}
           <span className="ml-auto hidden shrink-0 items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover/row:opacity-100 sm:flex">
             <ActionBtn title="Copy path" onClick={() => copy(node.path, `path:${node.path}`)}>
-              {copiedPath ? <CheckIcon className="h-3.5 w-3.5 text-success" /> : <CopyIcon className="h-3.5 w-3.5" />}
+              {copiedPath ? <CheckIcon className="h-3.5 w-3.5 text-emerald-500" /> : <CopyIcon className="h-3.5 w-3.5" />}
             </ActionBtn>
             <ActionBtn title="Copy value" onClick={() => copy(prettyJson(node.raw), `value:${node.path}`)}>
-              {copiedValue ? <CheckIcon className="h-3.5 w-3.5 text-success" /> : <CopyIcon className="h-3.5 w-3.5 rotate-180" />}
+              {copiedValue ? <CheckIcon className="h-3.5 w-3.5 text-emerald-500" /> : <CopyIcon className="h-3.5 w-3.5 rotate-180" />}
             </ActionBtn>
           </span>
         </div>
         {isExpanded && (
-          <div className="animate-fade-in ml-[15px] border-l border-border/70 pl-2">
+          <div className="ml-[15px] border-l-2 border-border/50 pl-2">
             {shown.map((child) => <TreeRow key={child.path} node={child} expanded={expanded} revealed={revealed} searching={searching} query={query} maxItems={maxItems} copied={copied} isRoot={false} toggle={toggle} revealAll={revealAll} copy={copy} />)}
             {hidden > 0 && (
-              <button type="button" onClick={() => revealAll(node.path)} className="animate-fade-in flex items-center gap-1 rounded-md px-1.5 py-1 font-mono text-[11.5px] text-subtle transition-colors hover:bg-muted/60 hover:text-foreground">
+              <button type="button" onClick={() => revealAll(node.path)} className="flex items-center gap-1 rounded-lg px-2 py-1 font-mono text-[11.5px] text-muted-foreground transition-colors duration-150 hover:bg-muted/60 hover:text-foreground">
                 <BracketIcon className="h-3 w-3" />… {hidden} more {isArray ? "items" : "keys"}
               </button>
             )}
-            <div className="px-1.5 py-[1px] font-mono text-[12.5px] leading-5 text-subtle">{closeToken}</div>
+            <div className="px-2 py-[1px] font-mono text-[12.5px] leading-5 text-muted-foreground">{closeToken}</div>
           </div>
         )}
       </div>
@@ -71,18 +71,18 @@ export function TreeRow({ node, expanded, revealed, searching, query, maxItems, 
   }
 
   return (
-    <div key={node.path} className="group/row flex items-center gap-1.5 rounded-md px-1.5 py-[2px] font-mono text-[12.5px] leading-5 hover:bg-muted/50">
-      {!isRoot && <><span className="w-4 shrink-0" /><span className="truncate text-primary"><Highlight text={node.key} query={query} /></span><span className="text-subtle">:</span></>}
+    <div key={node.path} className="group/row flex items-center gap-1.5 rounded-lg px-2 py-[3px] font-mono text-[12.5px] leading-5 transition-colors duration-150 hover:bg-muted/60">
+      {!isRoot && <><span className="w-4 shrink-0" /><span className="truncate text-primary"><Highlight text={node.key} query={query} /></span><span className="text-muted-foreground">:</span></>}
       <span className={cn("max-w-[65%] truncate", leafClass)} title={typeof node.raw === "string" ? node.raw : undefined}>
         <Highlight text={formatLeaf(node)} query={query} />
       </span>
-      <span className="hidden shrink-0 rounded bg-muted px-1 py-px text-[10px] text-subtle sm:inline-block">{node.type}</span>
+      <span className="hidden shrink-0 rounded-md bg-muted px-1.5 py-px text-[10px] text-muted-foreground sm:inline-block">{node.type}</span>
       <span className="ml-auto hidden shrink-0 items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover/row:opacity-100 sm:flex">
         <ActionBtn title="Copy path" onClick={() => copy(node.path, `path:${node.path}`)}>
-          {copiedPath ? <CheckIcon className="h-3.5 w-3.5 text-success" /> : <CopyIcon className="h-3.5 w-3.5" />}
+          {copiedPath ? <CheckIcon className="h-3.5 w-3.5 text-emerald-500" /> : <CopyIcon className="h-3.5 w-3.5" />}
         </ActionBtn>
         <ActionBtn title="Copy value" onClick={() => copy(formatLeaf(node), `value:${node.path}`)}>
-          {copiedValue ? <CheckIcon className="h-3.5 w-3.5 text-success" /> : <CopyIcon className="h-3.5 w-3.5 rotate-180" />}
+          {copiedValue ? <CheckIcon className="h-3.5 w-3.5 text-emerald-500" /> : <CopyIcon className="h-3.5 w-3.5 rotate-180" />}
         </ActionBtn>
       </span>
     </div>

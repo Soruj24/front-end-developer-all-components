@@ -32,5 +32,9 @@ export const BracesIcon = icon(Braces);
 export { BracketIcon };
 
 export const LEAF_CLASS: Partial<Record<JsonType, string>> = {
-  string: "text-success", number: "text-info", boolean: "text-warning", null: "text-subtle italic", undefined: "text-subtle italic",
+  string: "text-emerald-600 dark:text-emerald-400",
+  number: "text-sky-600 dark:text-sky-400",
+  boolean: "text-amber-600 dark:text-amber-400",
+  null: "text-muted-foreground italic",
+  undefined: "text-muted-foreground italic",
 };
