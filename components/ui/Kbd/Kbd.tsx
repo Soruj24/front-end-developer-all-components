@@ -7,8 +7,8 @@ export function Kbd({ children, className }: KbdProps) {
   return (
     <kbd
       className={cn(
-        "pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-zinc-100 px-1.5 font-mono text-[10px] font-medium text-muted-foreground",
-        "dark:bg-zinc-800 dark:border-zinc-700",
+        "pointer-events-none inline-flex h-6 min-w-[1.5rem] select-none items-center justify-center gap-1 rounded-lg border border-border bg-muted px-1.5 font-mono text-[11px] font-medium text-muted-foreground",
+        "shadow-[0_1px_0_1px_var(--color-border)]",
         className,
       )}
     >

@@ -6,6 +6,7 @@ import {
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { Kbd } from "@/components/ui/Kbd";
 
 const KBD_SOURCE = `"use client";
 
@@ -20,67 +21,15 @@ export function Kbd({ children, className }: KbdProps) {
   return (
     <kbd
       className={cn(
-        "pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-zinc-100 px-1.5 font-mono text-[10px] font-medium text-muted-foreground",
-        "dark:bg-zinc-800 dark:border-zinc-700",
-        className
+        "pointer-events-none inline-flex h-6 min-w-[1.5rem] select-none items-center justify-center gap-1 rounded-lg border border-border bg-muted px-1.5 font-mono text-[11px] font-medium text-muted-foreground",
+        "shadow-[0_1px_0_1px_var(--color-border)]",
+        className,
       )}
     >
       {children}
     </kbd>
   );
 }`;
-
-const BASIC_SOURCE = `import { Kbd } from "@/components/ui/Kbd";
-
-function BasicExample() {
-  return (
-    <div className="flex items-center gap-4">
-      <Kbd>Ctrl</Kbd>
-      <Kbd>Shift</Kbd>
-      <Kbd>Enter</Kbd>
-      <Kbd>Esc</Kbd>
-    </div>
-  );
-}`;
-
-const SHORTCUTS_SOURCE = `import { Kbd } from "@/components/ui/Kbd";
-
-function ShortcutsExample() {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2">
-        <Kbd>Ctrl</Kbd>
-        <span className="text-muted-foreground">+</span>
-        <Kbd>K</Kbd>
-        <span className="text-sm text-muted-foreground">Open search</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Kbd>Ctrl</Kbd>
-        <span className="text-muted-foreground">+</span>
-        <Kbd>Shift</Kbd>
-        <span className="text-muted-foreground">+</span>
-        <Kbd>P</Kbd>
-        <span className="text-sm text-muted-foreground">Command palette</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Kbd>Ctrl</Kbd>
-        <span className="text-muted-foreground">+</span>
-        <Kbd>S</Kbd>
-        <span className="text-sm text-muted-foreground">Save file</span>
-      </div>
-    </div>
-  );
-}`;
-
-function InlineKbd({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <kbd
-      className={`pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-zinc-100 px-1.5 font-mono text-[10px] font-medium text-muted-foreground dark:bg-zinc-800 dark:border-zinc-700 ${className}`}
-    >
-      {children}
-    </kbd>
-  );
-}
 
 export default function KbdPage() {
   return (
@@ -90,11 +39,11 @@ export default function KbdPage() {
       description="Displays keyboard shortcuts or key combinations in a styled inline element."
     >
       <PreviewPanel filename="kbd-preview.tsx">
-        <div className="flex items-center gap-4">
-          <InlineKbd>Ctrl</InlineKbd>
-          <InlineKbd>Shift</InlineKbd>
-          <InlineKbd>Enter</InlineKbd>
-          <InlineKbd>Esc</InlineKbd>
+        <div className="flex items-center gap-3">
+          <Kbd>Ctrl</Kbd>
+          <Kbd>Shift</Kbd>
+          <Kbd>Enter</Kbd>
+          <Kbd>Esc</Kbd>
         </div>
       </PreviewPanel>
 
@@ -104,51 +53,199 @@ export default function KbdPage() {
         defaultExpanded
       />
 
-      <div className="flex flex-col gap-6">
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
         <ExampleBlock
           title="Basic Usage"
-          description="Render individual key names with the Kbd component."
-          code={BASIC_SOURCE}
+          description="Render individual key names."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<div className="flex items-center gap-3">
+  <Kbd>Ctrl</Kbd>
+  <Kbd>Shift</Kbd>
+  <Kbd>Enter</Kbd>
+  <Kbd>Esc</Kbd>
+</div>`}
           filename="basic.tsx"
         >
-          <div className="flex items-center gap-4">
-            <InlineKbd>Ctrl</InlineKbd>
-            <InlineKbd>Shift</InlineKbd>
-            <InlineKbd>Enter</InlineKbd>
-            <InlineKbd>Esc</InlineKbd>
+          <div className="flex items-center gap-3">
+            <Kbd>Ctrl</Kbd>
+            <Kbd>Shift</Kbd>
+            <Kbd>Enter</Kbd>
+            <Kbd>Esc</Kbd>
           </div>
         </ExampleBlock>
 
         <ExampleBlock
           title="Keyboard Shortcuts"
-          description="Combine multiple keys to represent keyboard shortcut combinations."
-          code={SHORTCUTS_SOURCE}
+          description="Combine multiple keys to represent shortcut combinations."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<div className="flex flex-col gap-3">
+  <div className="flex items-center gap-2">
+    <Kbd>Ctrl</Kbd>
+    <span className="text-muted-foreground">+</span>
+    <Kbd>K</Kbd>
+    <span className="text-sm text-muted-foreground">Open search</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <Kbd>Ctrl</Kbd>
+    <span className="text-muted-foreground">+</span>
+    <Kbd>Shift</Kbd>
+    <span className="text-muted-foreground">+</span>
+    <Kbd>P</Kbd>
+    <span className="text-sm text-muted-foreground">Command palette</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <Kbd>Ctrl</Kbd>
+    <span className="text-muted-foreground">+</span>
+    <Kbd>S</Kbd>
+    <span className="text-sm text-muted-foreground">Save file</span>
+  </div>
+</div>`}
           filename="shortcuts.tsx"
         >
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <InlineKbd>Ctrl</InlineKbd>
+              <Kbd>Ctrl</Kbd>
               <span className="text-muted-foreground">+</span>
-              <InlineKbd>K</InlineKbd>
+              <Kbd>K</Kbd>
               <span className="text-sm text-muted-foreground">Open search</span>
             </div>
             <div className="flex items-center gap-2">
-              <InlineKbd>Ctrl</InlineKbd>
+              <Kbd>Ctrl</Kbd>
               <span className="text-muted-foreground">+</span>
-              <InlineKbd>Shift</InlineKbd>
+              <Kbd>Shift</Kbd>
               <span className="text-muted-foreground">+</span>
-              <InlineKbd>P</InlineKbd>
+              <Kbd>P</Kbd>
               <span className="text-sm text-muted-foreground">Command palette</span>
             </div>
             <div className="flex items-center gap-2">
-              <InlineKbd>Ctrl</InlineKbd>
+              <Kbd>Ctrl</Kbd>
               <span className="text-muted-foreground">+</span>
-              <InlineKbd>S</InlineKbd>
+              <Kbd>S</Kbd>
               <span className="text-sm text-muted-foreground">Save file</span>
             </div>
           </div>
         </ExampleBlock>
-      </div>
+
+        <ExampleBlock
+          title="Single Keys"
+          description="Individual modifier and action keys."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<div className="flex flex-wrap items-center gap-2">
+  <Kbd>Esc</Kbd>
+  <Kbd>Tab</Kbd>
+  <Kbd>Caps Lock</Kbd>
+  <Kbd>Space</Kbd>
+  <Kbd>Backspace</Kbd>
+</div>`}
+          filename="single-keys.tsx"
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Kbd>Esc</Kbd>
+            <Kbd>Tab</Kbd>
+            <Kbd>Caps Lock</Kbd>
+            <Kbd>Space</Kbd>
+            <Kbd>Backspace</Kbd>
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Arrow Keys"
+          description="Display arrow key shortcuts."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<div className="flex items-center gap-2">
+  <Kbd>←</Kbd>
+  <Kbd>→</Kbd>
+  <Kbd>↑</Kbd>
+  <Kbd>↓</Kbd>
+</div>`}
+          filename="arrows.tsx"
+        >
+          <div className="flex items-center gap-2">
+            <Kbd>&larr;</Kbd>
+            <Kbd>&rarr;</Kbd>
+            <Kbd>&uarr;</Kbd>
+            <Kbd>&darr;</Kbd>
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="In Context"
+          description="Kbd elements used inline with descriptive text."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<p className="text-sm text-muted-foreground">
+  Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to open search.
+</p>`}
+          filename="in-context.tsx"
+        >
+          <div className="flex flex-col gap-2">
+            <p className="text-sm text-muted-foreground">
+              Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to open search.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Use <Kbd>Tab</Kbd> to navigate and <Kbd>Enter</Kbd> to select.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Press <Kbd>Esc</Kbd> to close the dialog.
+            </p>
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Custom Style"
+          description="Override the default style with className."
+          code={`import { Kbd } from "@/components/ui/Kbd";
+
+<Kbd className="bg-primary/10 text-primary border-primary/20">Custom</Kbd>`}
+          filename="custom.tsx"
+        >
+          <div className="flex items-center gap-3">
+            <Kbd className="border-primary/20 bg-primary/10 text-primary shadow-[0_1px_0_1px_var(--color-primary)/20]">Custom</Kbd>
+            <Kbd className="border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_1px_0_1px_var(--color-emerald-500)/20]">Success</Kbd>
+            <Kbd className="border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_1px_0_1px_var(--color-amber-500)/20]">Warning</Kbd>
+          </div>
+        </ExampleBlock>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">children</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
+                <td className="px-4 py-3 text-muted-foreground">string</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </ComponentDocPage>
   );
 }
