@@ -198,6 +198,8 @@ export type { TimePickerProps, TimeValue } from "./TimePicker";
 export { default as Toast } from "./Toast";
 export { Sheet } from "./Sheet";
 export type { SheetProps } from "./Sheet";
+export { StatusBadge } from "./StatusBadge";
+export type { StatusBadgeProps, StatusVariant, StatusSize } from "./StatusBadge";
 export { Toggle } from "./Toggle";
 export type { ToggleProps } from "./Toggle";
 export { ToggleGroup, ToggleGroupItem } from "./ToggleGroup";
