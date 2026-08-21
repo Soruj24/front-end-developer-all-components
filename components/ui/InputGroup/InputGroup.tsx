@@ -7,21 +7,22 @@ export function InputGroup({ prefix, suffix, className, children }: InputGroupPr
   return (
     <div
       className={cn(
-        "flex items-center rounded-md border bg-white dark:bg-zinc-900 dark:border-zinc-700",
-        "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-1",
+        "flex items-center rounded-xl border border-border bg-card transition-colors",
+        "focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
+        "hover:border-muted-foreground/30",
         className,
       )}
     >
       {prefix && (
-        <div className="flex items-center pl-3 text-sm text-muted-foreground">
+        <div className="flex shrink-0 items-center pl-3 text-sm text-muted-foreground">
           {prefix}
         </div>
       )}
-      <div className="flex-1 [&>input]:border-0 [&>input]:focus:ring-0 [&>input]:w-full [&>input]:bg-transparent [&>input]:py-2">
+      <div className="flex-1 [&>input]:w-full [&>input]:border-0 [&>input]:bg-transparent [&>input]:py-2.5 [&>input]:text-sm [&>input]:text-foreground [&>input]:placeholder:text-muted-foreground [&>input]:focus:outline-none focus:[&>input]:ring-0 [&>input]:focus:border-0">
         {children}
       </div>
       {suffix && (
-        <div className="flex items-center pr-3 text-sm text-muted-foreground">
+        <div className="flex shrink-0 items-center pr-3 text-sm text-muted-foreground">
           {suffix}
         </div>
       )}
