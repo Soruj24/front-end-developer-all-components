@@ -144,7 +144,7 @@ function ConfettiPresets() {
       ))}
     </div>
   );
-}`;
+}
 
 export { ConfettiCanvas, ConfettiDemo, ConfettiPresets };
 export const COLOR_PALETTE_EXAMPLE = `<div className="flex flex-wrap gap-3">
