@@ -4,55 +4,29 @@ import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
-/* ------------------------------------------------------------------ */
-/* Types                                                               */
-/* ------------------------------------------------------------------ */
-
 export interface FloatingToolbarAction {
   id: string;
   label: string;
   icon: React.ReactNode;
-  /** Keyboard hint shown in the tooltip, e.g. "⌘B". */
   shortcut?: string;
   disabled?: boolean;
-  /** Rendered as a pressed state (e.g. Bold active). */
   active?: boolean;
 }
 
 export interface FloatingToolbarProps {
   className?: string;
-  /** Actions, grouped — each group is separated by a divider. */
   groups: FloatingToolbarAction[][];
   onAction?: (action: FloatingToolbarAction) => void;
-  /** Small chip rendered before the actions (e.g. "3 selected"). */
   selectionLabel?: string;
-  /** Disables every action in the bar (e.g. when nothing is selected). */
   disabled?: boolean;
-  /** Controlled active action id. */
   activeItemId?: string;
-  /**
-   * Positioning mode.
-   * - `fixed`: floats over the viewport at the default (or dragged) position.
-   * - `absolute`: floats within the nearest positioned ancestor, draggable.
-   * - `sticky`: sticks to the top of its scroll container, not draggable.
-   */
   position?: "fixed" | "absolute" | "sticky";
-  /** Allow collapse to a small handle. Default true. */
   collapsible?: boolean;
   ariaLabel?: string;
 }
 
-/* ------------------------------------------------------------------ */
-/* Icons                                                               */
-/* ------------------------------------------------------------------ */
-
 const GripIcon = (
-  <svg
-    className="h-4 w-4"
-    viewBox="0 0 16 16"
-    fill="currentColor"
-    aria-hidden="true"
-  >
+  <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
     <circle cx="5" cy="4" r="1.1" />
     <circle cx="11" cy="4" r="1.1" />
     <circle cx="5" cy="8" r="1.1" />
@@ -64,10 +38,6 @@ const GripIcon = (
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, max));
-
-/* ------------------------------------------------------------------ */
-/* FloatingToolbar                                                     */
-/* ------------------------------------------------------------------ */
 
 export function FloatingToolbar({
   className,
@@ -87,7 +57,7 @@ export function FloatingToolbar({
   const [rowWidth, setRowWidth] = useState<number | null>(null);
 
   const pillRef = useRef<HTMLDivElement | null>(null);
-  const rowRef = useRef<HTMLDivElement | null>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const collapseRef = useRef<HTMLButtonElement | null>(null);
   const dragStateRef = useRef<{
@@ -129,7 +99,7 @@ export function FloatingToolbar({
       if (next < flatActions.length) buttonRefs.current[next]?.focus();
       else collapseRef.current?.focus();
     },
-    [stopCount, flatActions.length]
+    [stopCount, flatActions.length],
   );
 
   const handleKeyDown = useCallback(
@@ -148,7 +118,7 @@ export function FloatingToolbar({
         focusStop(stopCount - 1);
       }
     },
-    [focusStop, stopCount]
+    [focusStop, stopCount],
   );
 
   const handleActionClick = useCallback(
@@ -156,7 +126,7 @@ export function FloatingToolbar({
       if (disabled || action.disabled) return;
       onAction?.(action);
     },
-    [disabled, onAction]
+    [disabled, onAction],
   );
 
   const startDrag = useCallback(
@@ -179,7 +149,7 @@ export function FloatingToolbar({
         /* capture unsupported */
       }
     },
-    [position]
+    [position],
   );
 
   const moveDrag = useCallback((event: React.PointerEvent<HTMLButtonElement>) => {
@@ -194,10 +164,18 @@ export function FloatingToolbar({
       : { left: 0, top: 0, width: vw, height: vh };
     const dx = event.clientX - ds.startX;
     const dy = event.clientY - ds.startY;
-    const maxLeft = Math.max(parentRect.left + 8, parentRect.left + parentRect.width - el.offsetWidth - 8);
-    const maxTop = Math.max(parentRect.top + 8, parentRect.top + parentRect.height - el.offsetHeight - 8);
-    const left = clamp(ds.startLeft + dx, parentRect.left + 8, maxLeft) - parentRect.left;
-    const top = clamp(ds.startTop + dy, parentRect.top + 8, maxTop) - parentRect.top;
+    const maxLeft = Math.max(
+      parentRect.left + 8,
+      parentRect.left + parentRect.width - el.offsetWidth - 8,
+    );
+    const maxTop = Math.max(
+      parentRect.top + 8,
+      parentRect.top + parentRect.height - el.offsetHeight - 8,
+    );
+    const left =
+      clamp(ds.startLeft + dx, parentRect.left + 8, maxLeft) - parentRect.left;
+    const top =
+      clamp(ds.startTop + dy, parentRect.top + 8, maxTop) - parentRect.top;
     setPos({ left, top });
   }, []);
 
@@ -231,13 +209,13 @@ export function FloatingToolbar({
       role="toolbar"
       aria-label={ariaLabel}
       className={cn(
-        "z-50 flex w-max max-w-full select-none items-center gap-1 rounded-2xl border border-black/[0.08] bg-white/80 p-1.5 shadow-card backdrop-blur-xl dark:border-white/[0.1] dark:bg-zinc-900/80",
+        "z-50 flex w-max max-w-full select-none items-center gap-1 rounded-2xl border border-border bg-card/80 p-1.5 shadow-lg backdrop-blur-xl",
         position === "fixed" && "fixed",
         position === "absolute" && "absolute",
         position === "sticky" && "sticky top-4 mx-auto",
         "transition-[width,left,top,transform] duration-300 ease-spring",
         dragging && "transition-none",
-        className
+        className,
       )}
       style={style}
     >
@@ -246,9 +224,7 @@ export function FloatingToolbar({
           <button
             type="button"
             aria-label={collapsed ? "Expand toolbar" : "Drag toolbar"}
-            className={cn(
-              "grid size-9 shrink-0 cursor-grab touch-none place-items-center rounded-xl text-zinc-400 outline-none hover:bg-black/[0.05] hover:text-zinc-700 focus-visible:ring-2 focus-visible:ring-ring/70 active:cursor-grabbing dark:text-zinc-500 dark:hover:bg-white/[0.08] dark:hover:text-zinc-200"
-            )}
+            className="grid size-9 shrink-0 cursor-grab touch-none place-items-center rounded-xl text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 active:cursor-grabbing sm:size-10"
             onPointerDown={startDrag}
             onPointerMove={moveDrag}
             onPointerUp={endDrag}
@@ -263,18 +239,18 @@ export function FloatingToolbar({
           inert={collapsed}
           className={cn(
             "grid transition-[grid-template-columns] duration-300 ease-out",
-            collapsed ? "grid-cols-[0fr]" : "grid-cols-[1fr]"
+            collapsed ? "grid-cols-[0fr]" : "grid-cols-[1fr]",
           )}
         >
           <div className="min-w-0 overflow-x-clip overflow-y-visible">
             <div
               className={cn(
                 "flex items-center gap-0.5 transition-opacity duration-200",
-                collapsed && "opacity-0"
+                collapsed && "opacity-0",
               )}
             >
               {selectionLabel && (
-                <span className="mx-1 hidden h-9 shrink-0 items-center rounded-lg bg-black/[0.05] px-2.5 text-xs font-medium text-zinc-500 dark:bg-white/[0.08] dark:text-zinc-400 sm:flex sm:h-10">
+                <span className="mx-1 hidden h-9 shrink-0 items-center rounded-lg bg-muted px-2.5 text-xs font-medium text-muted-foreground sm:flex sm:h-10">
                   {selectionLabel}
                 </span>
               )}
@@ -283,7 +259,7 @@ export function FloatingToolbar({
                   {groupIndex > 0 && (
                     <span
                       aria-hidden="true"
-                      className="mx-0.5 h-6 w-px shrink-0 bg-black/[0.08] dark:bg-white/[0.12]"
+                      className="mx-0.5 h-6 w-px shrink-0 bg-border"
                     />
                   )}
                   {group.map((action, actionIndex) => {
@@ -306,20 +282,20 @@ export function FloatingToolbar({
                           onClick={() => handleActionClick(action)}
                           disabled={isDisabled}
                           className={cn(
-                            "flex size-9 shrink-0 items-center justify-center rounded-xl text-zinc-600 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/70 sm:size-10",
+                            "flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:size-10",
                             isActive
-                              ? "bg-foreground text-background"
-                              : "hover:bg-black/[0.05] hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/[0.08] dark:hover:text-zinc-50",
+                              ? "bg-primary text-primary-foreground"
+                              : "hover:bg-muted hover:text-foreground",
                             isDisabled &&
-                              "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-zinc-600 dark:hover:bg-transparent dark:hover:text-zinc-300"
+                              "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted-foreground",
                           )}
                         >
                           {action.icon}
                         </button>
-                        <span className="pointer-events-none absolute -top-9 left-1/2 z-40 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md bg-zinc-900 px-2 py-1 text-[11px] font-medium text-white opacity-0 shadow-lg transition-all duration-150 ease-out group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100 group-focus-visible/tooltip:scale-100 group-focus-visible/tooltip:opacity-100 dark:bg-zinc-100 dark:text-zinc-900">
+                        <span className="pointer-events-none absolute -top-9 left-1/2 z-40 -translate-x-1/2 scale-95 whitespace-nowrap rounded-lg border border-border bg-card px-2.5 py-1 text-[11px] font-medium text-foreground shadow-md opacity-0 transition-all duration-150 ease-out group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100 group-focus-visible/tooltip:scale-100 group-focus-visible/tooltip:opacity-100">
                           {action.label}
                           {action.shortcut && (
-                            <span className="ml-1.5 font-normal opacity-60">
+                            <span className="ml-1.5 font-normal text-muted-foreground">
                               {action.shortcut}
                             </span>
                           )}
@@ -339,12 +315,12 @@ export function FloatingToolbar({
                   onFocus={() => setFocusedIndex(flatActions.length)}
                   onKeyDown={(e) => handleKeyDown(e, flatActions.length)}
                   onClick={() => setCollapsed((c) => !c)}
-                  className="flex size-9 shrink-0 items-center justify-center rounded-xl text-zinc-400 outline-none hover:bg-black/[0.05] hover:text-zinc-700 focus-visible:ring-2 focus-visible:ring-ring/70 dark:text-zinc-500 dark:hover:bg-white/[0.08] dark:hover:text-zinc-200 sm:size-10"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground outline-none transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card sm:size-10"
                 >
                   <svg
                     className={cn(
                       "h-4 w-4 transition-transform duration-200",
-                      collapsed ? "rotate-0" : "rotate-180"
+                      collapsed ? "rotate-0" : "rotate-180",
                     )}
                     viewBox="0 0 24 24"
                     fill="none"
@@ -352,11 +328,7 @@ export function FloatingToolbar({
                     strokeWidth={2}
                     aria-hidden="true"
                   >
-                    <path
-                      d="M9 6l6 6-6 6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
               )}
