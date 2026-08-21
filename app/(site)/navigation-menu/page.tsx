@@ -10,9 +10,9 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/NavigationMenu";
 
-const NAVIGATIONMENU_SOURCE = `"use client";
+const NAVIGATION_MENU_SOURCE = `"use client";
 
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import { cn } from "@/lib/cn";
 
 interface NavigationMenuContextType {
@@ -20,13 +20,17 @@ interface NavigationMenuContextType {
   setOpenItem: (id: string | null) => void;
 }
 
-const NavigationMenuContext = createContext<NavigationMenuContextType>({
-  openItem: null,
-  setOpenItem: () => {},
-});
+const NavigationMenuContext = createContext<NavigationMenuContextType>({ openItem: null, setOpenItem: () => {} });
 
 export function NavigationMenu({ className, children }) {
   const [openItem, setOpenItem] = useState(null);
+  useEffect(() => {
+    if (!openItem) return;
+    const handleEscape = (e) => { if (e.key === "Escape") setOpenItem(null); };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [openItem]);
+
   return (
     <NavigationMenuContext.Provider value={{ openItem, setOpenItem }}>
       <nav className={cn("relative", className)}>{children}</nav>
@@ -35,24 +39,22 @@ export function NavigationMenu({ className, children }) {
 }
 
 export function NavigationMenuList({ children, className }) {
-  return <ul className={cn("flex items-center space-x-1", className)}>{children}</ul>;
+  return <ul role="menubar" className={cn("flex items-center gap-1", className)}>{children}</ul>;
 }
 
 export function NavigationMenuItem({ children, className }) {
-  return <li className={cn("relative", className)}>{children}</li>;
+  return <li role="none" className={cn("relative", className)}>{children}</li>;
 }
 
 export function NavigationMenuTrigger({ children, className }) {
   const { openItem, setOpenItem } = useContext(NavigationMenuContext);
   return (
-    <button
-      type="button"
+    <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded={openItem !== null}
       onClick={() => setOpenItem(openItem ? null : "nav")}
-      className={cn("flex items-center space-x-1 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800", className)}
-    >
+      className={cn("inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 active:bg-muted/80", openItem && "bg-muted text-foreground", className)}>
       {children}
-      <svg className={cn("h-3 w-3 transition-transform", openItem && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      <svg className={cn("h-3.5 w-3.5 transition-transform duration-200", openItem && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
       </svg>
     </button>
   );
@@ -64,7 +66,7 @@ export function NavigationMenuContent({ children, className }) {
   return (
     <>
       <div className="fixed inset-0 z-40" onClick={() => setOpenItem(null)} />
-      <div className={cn("absolute left-0 top-full z-50 mt-1 min-w-[200px] rounded-md border bg-white p-2 shadow-md dark:bg-zinc-900", className)}>
+      <div role="menu" className={cn("absolute left-0 top-full z-50 mt-1.5 min-w-[16rem] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg animate-in fade-in-0 zoom-in-95", className)}>
         {children}
       </div>
     </>
@@ -73,50 +75,20 @@ export function NavigationMenuContent({ children, className }) {
 
 export function NavigationMenuLink({ href, children, className }) {
   return (
-    <a href={href} className={cn("block rounded-sm px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800", className)}>
+    <a href={href} role="menuitem" className={cn("flex items-center rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 active:bg-muted/80", className)}>
       {children}
     </a>
   );
 }`;
-
-const DEFAULT_EXAMPLE = `<NavigationMenu>
-  <NavigationMenuList>
-    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
-    <NavigationMenuItem><NavigationMenuLink href="/about">About</NavigationMenuLink></NavigationMenuItem>
-    <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>`;
-
-const VERTICAL_EXAMPLE = `<NavigationMenu className="w-48">
-  <NavigationMenuList className="flex-col items-start space-x-0">
-    <NavigationMenuItem><NavigationMenuLink href="/docs">Getting Started</NavigationMenuLink></NavigationMenuItem>
-    <NavigationMenuItem><NavigationMenuLink href="/components">Components</NavigationMenuLink></NavigationMenuItem>
-    <NavigationMenuItem><NavigationMenuLink href="/examples">Examples</NavigationMenuLink></NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>`;
-
-const SUBMENU_EXAMPLE = `<NavigationMenu>
-  <NavigationMenuList>
-    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-      <NavigationMenuContent>
-        <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
-        <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
-        <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
-      </NavigationMenuContent>
-    </NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>`;
 
 export default function NavigationMenuPage() {
   return (
     <ComponentDocPage
       name="Navigation Menu"
       category="Navigation"
-      description="Accessible navigation menu with support for horizontal and vertical orientations, nested dropdowns, and keyboard navigation."
+      description="Accessible navigation with dropdowns, keyboard navigation (Escape to close), and horizontal/vertical orientations."
     >
-      <PreviewPanel filename="navigation-menu-preview">
+      <PreviewPanel filename="navigation-menu-preview.tsx">
         <div className="flex w-full flex-col gap-6">
           <NavigationMenu>
             <NavigationMenuList>
@@ -135,10 +107,25 @@ export default function NavigationMenuPage() {
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer source={NAVIGATIONMENU_SOURCE} filename="NavigationMenu.tsx" defaultExpanded />
+      <SourceCodeViewer source={NAVIGATION_MENU_SOURCE} filename="components/ui/NavigationMenu/NavigationMenu.tsx" defaultExpanded />
 
-      <div className="flex flex-col gap-6">
-        <ExampleBlock title="Default" description="Horizontal navigation menu with simple links." code={DEFAULT_EXAMPLE}>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
+
+        <ExampleBlock
+          title="Default"
+          description="Horizontal navigation menu with simple links."
+          code={`<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/about">About</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`}
+          filename="default.tsx"
+        >
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
@@ -148,9 +135,20 @@ export default function NavigationMenuPage() {
           </NavigationMenu>
         </ExampleBlock>
 
-        <ExampleBlock title="Vertical" description="Vertical orientation for sidebars." code={VERTICAL_EXAMPLE}>
+        <ExampleBlock
+          title="Vertical"
+          description="Vertical orientation for sidebars."
+          code={`<NavigationMenu className="w-48">
+  <NavigationMenuList className="flex-col items-start gap-0">
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Getting Started</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/components">Components</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/examples">Examples</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`}
+          filename="vertical.tsx"
+        >
           <NavigationMenu className="w-48">
-            <NavigationMenuList className="flex-col items-start space-x-0">
+            <NavigationMenuList className="flex-col items-start gap-0">
               <NavigationMenuItem><NavigationMenuLink href="/docs">Getting Started</NavigationMenuLink></NavigationMenuItem>
               <NavigationMenuItem><NavigationMenuLink href="/components">Components</NavigationMenuLink></NavigationMenuItem>
               <NavigationMenuItem><NavigationMenuLink href="/examples">Examples</NavigationMenuLink></NavigationMenuItem>
@@ -158,7 +156,24 @@ export default function NavigationMenuPage() {
           </NavigationMenu>
         </ExampleBlock>
 
-        <ExampleBlock title="With Submenu" description="Navigation menu with nested dropdown content." code={SUBMENU_EXAMPLE}>
+        <ExampleBlock
+          title="With Submenu"
+          description="Navigation menu with nested dropdown content."
+          code={`<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+        <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
+        <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`}
+          filename="submenu.tsx"
+        >
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem><NavigationMenuLink href="/">Home</NavigationMenuLink></NavigationMenuItem>
@@ -173,7 +188,49 @@ export default function NavigationMenuPage() {
             </NavigationMenuList>
           </NavigationMenu>
         </ExampleBlock>
-      </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="px-4 py-3 text-left font-medium text-foreground">Component</th>
+                <th className="px-4 py-3 text-left font-medium text-foreground">Props</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenu</td>
+                <td className="px-4 py-3 text-muted-foreground">children, className</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenuList</td>
+                <td className="px-4 py-3 text-muted-foreground">children, className</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenuItem</td>
+                <td className="px-4 py-3 text-muted-foreground">children, className</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenuTrigger</td>
+                <td className="px-4 py-3 text-muted-foreground">children, className</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenuContent</td>
+                <td className="px-4 py-3 text-muted-foreground">children, className</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">NavigationMenuLink</td>
+                <td className="px-4 py-3 text-muted-foreground">href, children, className</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </ComponentDocPage>
   );
 }
