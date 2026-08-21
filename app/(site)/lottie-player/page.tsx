@@ -1,125 +1,264 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Card, CardContent, Button } from "@/components/ui";
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { LottiePlayer } from "@/components/ui/LottiePlayer";
 
-const installCommand = "npx component-library@latest add lottie-player";
+const LOTTIEPLAYER_SOURCE = `"use client";
 
-const usageCode = `import { LottiePlayer } from "@/components/ui";
+import { cn } from "@/lib/cn";
+import type { ReactNode } from "react";
 
-export default function Example() {
-  return <LottiePlayer src="/animation.json" />;
+interface LottiePlayerProps {
+  animation?: ReactNode;
+  playing?: boolean;
+  loop?: boolean;
+  speed?: number;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onLoop?: () => void;
+  className?: string;
+}
+
+export function LottiePlayer({ animation, playing = true, loop = true, speed = 1, onPlay, onPause, onLoop, className }: LottiePlayerProps) {
+  return (
+    <div className={cn("flex flex-col items-center gap-4", className)}>
+      <div
+        className={cn(
+          "flex h-48 w-full items-center justify-center rounded-2xl border border-border bg-card",
+          "transition-all duration-300",
+        )}
+        style={{ animationDuration: \`\${1 / speed}s\`, animationPlayState: playing ? "running" : "paused" }}
+      >
+        {animation ?? (
+          <span className="text-6xl" style={{ animation: \`bounce \${1 / speed}s infinite\`, animationPlayState: playing ? "running" : "paused" }}>
+            ✨
+          </span>
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={playing ? onPause : onPlay} aria-label={playing ? "Pause" : "Play"}
+          className={cn(
+            "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium",
+            "transition-all duration-200",
+            "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+            playing ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.98]" : "bg-muted text-foreground hover:bg-muted/80 active:scale-[0.98]",
+          )}>
+          {playing ? "Pause" : "Play"}
+        </button>
+        <button type="button" onClick={onLoop} aria-label={loop ? "Loop on" : "Loop off"}
+          className={cn(
+            "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium",
+            "transition-all duration-200",
+            "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+            loop ? "bg-primary/10 text-primary hover:bg-primary/20" : "bg-muted text-muted-foreground hover:bg-muted/80",
+          )}>
+          Loop
+        </button>
+      </div>
+    </div>
+  );
 }`;
 
-function AnimatedIcon({ type }: { type: string }) {
-  const icons: Record<string, string> = {
-    rocket: "🚀",
-    check: "✅",
-    star: "⭐",
-    heart: "❤️",
-    fire: "🔥",
-  };
+function RocketAnimation({ playing, speed }: { playing: boolean; speed: number }) {
   return (
-    <span className="text-6xl" style={{ animation: "bounce 1s infinite" }}>
-      {icons[type] || "✨"}
+    <span className="text-6xl" style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>
+      🚀
+    </span>
+  );
+}
+
+function CheckAnimation({ playing, speed }: { playing: boolean; speed: number }) {
+  return (
+    <span className="text-6xl" style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>
+      ✅
+    </span>
+  );
+}
+
+function StarAnimation({ playing, speed }: { playing: boolean; speed: number }) {
+  return (
+    <span className="text-6xl" style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>
+      ⭐
+    </span>
+  );
+}
+
+function HeartAnimation({ playing, speed }: { playing: boolean; speed: number }) {
+  return (
+    <span className="text-6xl" style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>
+      ❤️
+    </span>
+  );
+}
+
+function FireAnimation({ playing, speed }: { playing: boolean; speed: number }) {
+  return (
+    <span className="text-6xl" style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>
+      🔥
     </span>
   );
 }
 
 const animations = [
-  { id: "rocket", label: "Rocket" },
-  { id: "check", label: "Success" },
-  { id: "star", label: "Star" },
-  { id: "heart", label: "Heart" },
-  { id: "fire", label: "Fire" },
+  { id: "rocket", label: "Rocket", component: RocketAnimation },
+  { id: "check", label: "Success", component: CheckAnimation },
+  { id: "star", label: "Star", component: StarAnimation },
+  { id: "heart", label: "Heart", component: HeartAnimation },
+  { id: "fire", label: "Fire", component: FireAnimation },
 ];
 
 export default function LottiePlayerPage() {
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(1);
+  const [loop, setLoop] = useState(true);
   const [current, setCurrent] = useState("rocket");
 
+  const CurrentAnimation = animations.find((a) => a.id === current)?.component ?? RocketAnimation;
+
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Lottie Player</h1>
-          <Badge variant="primary">Animation</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Animation player with play/pause controls, speed adjustment, loop options, and segment selection.
-        </p>
-      </header>
+    <ComponentDocPage
+      name="Lottie Player"
+      category="Animation"
+      description="Animation player with play/pause controls, speed adjustment, loop options, and segment selection."
+    >
+      <PreviewPanel filename="lottie-player-preview.tsx">
+        <LottiePlayer
+          animation={<RocketAnimation playing={playing} speed={speed} />}
+          playing={playing}
+          loop={loop}
+          speed={speed}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onLoop={() => setLoop((l) => !l)}
+        />
+      </PreviewPanel>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      <SourceCodeViewer source={LOTTIEPLAYER_SOURCE} filename="components/ui/LottiePlayer/LottiePlayer.tsx" defaultExpanded />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      <section className="flex flex-col gap-8">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <ExampleBlock
+          title="Default"
+          description="Basic animation player with play/pause and loop controls."
+          code={`import { LottiePlayer } from "@/components/ui/LottiePlayer";
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Default</h3>
-          <ComponentPreview id="lottie-player-default">
-            <div className="flex w-full items-center justify-center py-10">
-              <div className={`text-6xl ${playing ? "" : "pause"}`} style={{ animation: `bounce ${1 / speed}s infinite`, animationPlayState: playing ? "running" : "paused" }}>🚀</div>
+<LottiePlayer
+  animation={<span className="text-6xl">🚀</span>}
+  playing={true}
+  loop={true}
+/>`}
+          filename="default.tsx"
+        >
+          <LottiePlayer
+            animation={<RocketAnimation playing={playing} speed={speed} />}
+            playing={playing}
+            loop={loop}
+            speed={speed}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onLoop={() => setLoop((l) => !l)}
+          />
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Speed Control"
+          description="Adjust animation playback speed."
+          code={`const [speed, setSpeed] = useState(1);
+
+<div>
+  <LottiePlayer animation={<span className="text-6xl">🚀</span>} playing={true} speed={speed} />
+  <div className="mt-2 flex justify-center gap-2">
+    {[0.5, 1, 1.5, 2].map((s) => (
+      <button key={s} onClick={() => setSpeed(s)} className={speed === s ? "bg-primary text-white" : "bg-muted"}>
+        {s}x
+      </button>
+    ))}
+  </div>
+</div>`}
+          filename="speed.tsx"
+        >
+          <div className="w-full">
+            <LottiePlayer
+              animation={<RocketAnimation playing={playing} speed={speed} />}
+              playing={playing}
+              speed={speed}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+            />
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <span className="text-xs text-muted-foreground">Speed:</span>
+              {[0.5, 1, 1.5, 2].map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSpeed(s)}
+                  className={`inline-flex h-8 min-w-[2rem] items-center justify-center rounded-xl px-2 text-xs font-medium transition-all duration-200 ${
+                    speed === s
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  } focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none`}
+                >
+                  {s}x
+                </button>
+              ))}
             </div>
-          </ComponentPreview>
-        </div>
+          </div>
+        </ExampleBlock>
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">With Controls</h3>
-          <ComponentPreview id="lottie-player-controls">
-            <Card className="w-full max-w-sm">
-              <CardContent className="p-4">
-                <div className="mb-4 flex h-32 items-center justify-center">
-                  <AnimatedIcon type={current} />
-                </div>
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <Button variant="outline" size="sm" onClick={() => setPlaying(!playing)}>
-                    {playing ? "⏸ Pause" : "▶ Play"}
-                  </Button>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">Speed:</span>
-                  {[0.5, 1, 1.5, 2].map((s) => (
-                    <Button key={s} variant={speed === s ? "default" : "outline"} size="sm" onClick={() => setSpeed(s)} className="h-6 text-xs">{s}x</Button>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </ComponentPreview>
-        </div>
+        <ExampleBlock
+          title="Animation Picker"
+          description="Switch between different animations."
+          code={`const [current, setCurrent] = useState("rocket");
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Animation Picker</h3>
-          <ComponentPreview id="lottie-player-picker">
-            <div className="w-full">
-              <div className="mb-3 flex gap-2">
-                {animations.map((a) => (
-                  <Button key={a.id} variant={current === a.id ? "default" : "outline"} size="sm" onClick={() => setCurrent(a.id)}>{a.label}</Button>
-                ))}
-              </div>
-              <div className="flex h-40 items-center justify-center rounded-lg border border-border">
-                <AnimatedIcon type={current} />
-              </div>
+<div>
+  <div className="mb-3 flex gap-2">
+    {animations.map((a) => (
+      <button key={a.id} onClick={() => setCurrent(a.id)} className={current === a.id ? "bg-primary" : "bg-muted"}>
+        {a.label}
+      </button>
+    ))}
+  </div>
+  <LottiePlayer animation={<span className="text-6xl">{animations.find(a => a.id === current)?.icon}</span>} />
+</div>`}
+          filename="picker.tsx"
+        >
+          <div className="w-full">
+            <div className="mb-4 flex flex-wrap gap-2">
+              {animations.map((a) => (
+                <button
+                  key={a.id}
+                  onClick={() => setCurrent(a.id)}
+                  className={`inline-flex h-8 items-center justify-center rounded-xl px-3 text-xs font-medium transition-all duration-200 ${
+                    current === a.id
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  } focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none`}
+                >
+                  {a.label}
+                </button>
+              ))}
             </div>
-          </ComponentPreview>
-        </div>
+            <LottiePlayer
+              animation={<CurrentAnimation playing={playing} speed={speed} />}
+              playing={playing}
+              loop={loop}
+              speed={speed}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onLoop={() => setLoop((l) => !l)}
+            />
+          </div>
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          API Reference
+        </h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
@@ -131,10 +270,16 @@ export default function LottiePlayerPage() {
             </thead>
             <tbody>
               <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">src</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
+                <td className="px-4 py-3 font-mono text-xs text-foreground">animation</td>
+                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
+                <td className="px-4 py-3 text-muted-foreground">✨</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">playing</td>
+                <td className="px-4 py-3 text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 text-muted-foreground">true</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
               <tr className="border-b border-border">
                 <td className="px-4 py-3 font-mono text-xs text-foreground">loop</td>
@@ -142,16 +287,40 @@ export default function LottiePlayerPage() {
                 <td className="px-4 py-3 text-muted-foreground">true</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">speed</td>
+                <td className="px-4 py-3 text-muted-foreground">number</td>
+                <td className="px-4 py-3 text-muted-foreground">1</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onPlay</td>
+                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onPause</td>
+                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="px-4 py-3 font-mono text-xs text-foreground">onLoop</td>
+                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">No</td>
+              </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
                 <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">undefined</td>
+                <td className="px-4 py-3 text-muted-foreground">—</td>
                 <td className="px-4 py-3 text-muted-foreground">No</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
-    </div>
+    </ComponentDocPage>
   );
 }
