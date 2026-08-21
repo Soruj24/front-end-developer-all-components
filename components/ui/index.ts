@@ -136,6 +136,8 @@ export type {
 } from "./Drawer";
 export { Dock } from "./Dock";
 export type { DockItem, DockProps } from "./Dock";
+export { DragDropZone } from "./DragDropZone";
+export type { DragDropZoneProps } from "./DragDropZone";
 export { FloatingToolbar } from "./FloatingToolbar";
 export type { FloatingToolbarAction, FloatingToolbarProps } from "./FloatingToolbar";
 export { default as Dropdown } from "./Dropdown";
