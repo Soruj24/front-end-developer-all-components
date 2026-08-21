@@ -324,6 +324,8 @@ export type {
 } from "./NavigationMenu";
 export { Progress } from "./Progress";
 export type { ProgressProps } from "./Progress";
+export { QuickNav } from "./QuickNav";
+export type { QuickNavProps, QuickNavItem } from "./QuickNav";
 export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
 export { RangeCalendar } from "./RangeCalendar";
