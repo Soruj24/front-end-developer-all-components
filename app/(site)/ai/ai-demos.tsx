@@ -35,8 +35,8 @@ export function useAiChat() {
   const [imageInputRef, setImageInputRef] = useState(null);
   const [messagesEndRef, setMessagesEndRef] = useState(null);
   const [handleSend, setHandleSend] = useState(() => () => {});
-  const [handleKeyDown, setHandleKeyDown] = useState((e) => {
-    if (e.key === "Enter") sendMessage();
+  const [handleKeyDown, setHandleKeyDown] = useState(() => (e: { key: string }) => {
+    if (e.key === "Enter") handleSend();
   });
   const [handleRegenerate, setHandleRegenerate] = useState(() => () => {});
   const [handleEdit, setHandleEdit] = useState(() => () => {});
@@ -63,10 +63,6 @@ export function useAiChat() {
     e.preventDefault();
     setDragOver(false);
     // Handle file drop
-  };
-
-  const toggleRecordingHandler = () => {
-    setToggleRecording(!toggleRecording());
   };
 
   const followUpsFor = (msg: Message, latest: boolean) =>

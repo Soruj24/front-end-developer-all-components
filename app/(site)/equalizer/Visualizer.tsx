@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Pause, Play } from "lucide-react";
 
 export function Visualizer() {
   const [bars, setBars] = useState(Array.from({ length: 32 }, () => Math.random() * 100));
@@ -39,5 +40,3 @@ export function Visualizer() {
     </div>
   );
 }
-
-export { Visualizer };

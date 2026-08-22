@@ -33,8 +33,7 @@ export function PresetEQ() {
           {levels.map((level, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
               <div className="w-8 h-32 bg-muted rounded-full relative overflow-hidden">
-                const height = 50 + level * 3;
-                <div className="absolute bottom-0 w-full bg-primary rounded-full transition-all duration-300" style={{ height: `${Math.max(0, Math.min(100, height))}%` }} />
+                <div className="absolute bottom-0 w-full bg-primary rounded-full transition-all duration-300" style={{ height: `${Math.max(0, Math.min(100, 50 + level * 3))}%` }} />
               </div>
               <span className="text-[9px] text-muted-foreground">{["32", "64", "125", "250", "500", "1K", "4K", "16K"][i]}</span>
               <span className="text-xs font-mono text-primary">{level > 0 ? "+" : ""}{level}dB</span>
@@ -45,5 +44,3 @@ export function PresetEQ() {
     </div>
   );
 }
-
-export { PresetEQ };

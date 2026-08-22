@@ -57,10 +57,8 @@ export function CustomEQ() {
           {bands.map((band, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
               <div className="w-6 h-24 bg-muted rounded-full relative overflow-hidden">
-                const height = 50 + band.gain * 3;
-                <div className="absolute bottom-0 w-full bg-primary rounded-full transition-all" style={{ height: `${Math.max(0, Math.min(100, height))}%` }} />
-              </div>
-              <span className="text-[8px] text-muted-foreground">{`${band.freq}Hz`}</span>
+                <div className="absolute bottom-0 w-full bg-primary rounded-full transition-all" style={{ height: `${Math.max(0, Math.min(100, 50 + band.gain * 3))}%` }} />
+              </div>              <span className="text-[8px] text-muted-foreground">{`${band.freq}Hz`}</span>
             </div>
           ))}
         </div>
@@ -68,5 +66,3 @@ export function CustomEQ() {
     </div>
   );
 }
-
-export { CustomEQ };

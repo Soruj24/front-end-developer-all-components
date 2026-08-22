@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Pause, Play } from "lucide-react";
 
 export function AudioBars() {
   const [channels, setChannels] = useState({
@@ -47,5 +48,3 @@ export function AudioBars() {
     </div>
   );
 }
-
-export { AudioBars };
