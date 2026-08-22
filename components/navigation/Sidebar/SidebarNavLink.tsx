@@ -24,29 +24,29 @@ export function SidebarNavLink({ link, depth = 0, onNavigate }: SidebarNavLinkPr
         href={link.href}
         onClick={onNavigate}
         data-nav-link
-           className={cn(
-          "group relative flex items-center gap-2.5 rounded-lg py-1.5 pr-2 text-[13px] font-medium transition-[background-color,color,transform] duration-150 ease-out active:scale-[0.98]",
+        className={cn(
+          "group relative flex items-center gap-2 rounded-lg py-1.5 pr-2 text-[13px] font-medium outline-none transition-[background-color,color,box-shadow] duration-150",
           depth === 0 ? "pl-2.5" : "pl-7",
           active
-            ? "bg-accent-soft text-foreground font-semibold"
-            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+            ? "bg-primary-soft font-semibold text-primary"
+            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 active:bg-muted",
         )}
         aria-current={active ? "page" : undefined}
       >
         <span
           className={cn(
-            "absolute left-0 top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-accent transition-all duration-150",
-            active ? "opacity-100" : "opacity-0 group-hover:opacity-40"
+            "absolute left-0 top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded-full bg-primary transition-opacity duration-150",
+            active ? "opacity-100" : "opacity-0 group-hover:opacity-50",
           )}
           aria-hidden="true"
         />
         {link.icon && (
           <span
             className={cn(
-              "w-4 shrink-0 text-center text-xs transition-colors",
+              "w-4 shrink-0 text-center text-xs transition-colors duration-150",
               active
-                ? "text-accent"
-                : "text-muted-foreground/70 group-hover:text-foreground"
+                ? "text-primary"
+                : "text-muted-foreground/70 group-hover:text-foreground",
             )}
             aria-hidden="true"
           >
@@ -57,7 +57,7 @@ export function SidebarNavLink({ link, depth = 0, onNavigate }: SidebarNavLinkPr
       </Link>
 
       {link.children && link.children.length > 0 && (
-        <ul className="mt-0.5 flex flex-col gap-0.5">
+        <ul className="ml-[18px] mt-0.5 flex flex-col gap-0.5 border-l border-border/70">
           {link.children.map((child) => (
             <SidebarNavLink
               key={child.label}

@@ -1,4 +1,5 @@
-"use client";
+/** Verbatim source of components/navigation/Sidebar/Sidebar.tsx (Code Viewer). */
+export const SIDEBAR_SOURCE = `"use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -153,3 +154,4 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
     </>
   );
 }
+`;

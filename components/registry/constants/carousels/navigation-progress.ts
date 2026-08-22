@@ -3,30 +3,42 @@ import type { RegistryEntry } from "../../types";
 
 export const navigationProgress: RegistryEntry = entry({
     id: "navigation-progress",
-    title: "Progress Indicator",
-    description: "Gradient scroll-progress bar tied to page scroll.",
+    title: "Scroll Progress Indicator",
+    description: "Gradient progress bar that tracks the page reading position.",
     source: `import { useEffect, useState } from "react";
 
 export default function NavigationProgress() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
-        <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-150" style={{ width: \`\${scrollProgress}%\` }} />
+    <div className="flex w-full flex-col gap-3">
+      <div
+        role="progressbar"
+        aria-label="Page scroll progress"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress)}
+        className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
+      >
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-primary to-info transition-[width] duration-150 ease-out"
+          style={{ width: \`\${progress}%\` }}
+        />
       </div>
-      <p className="text-xs text-zinc-400">Scroll the page to see the progress bar move.</p>
+      <p className="text-xs text-muted-foreground">
+        Scroll the page to see the indicator track reading position ({Math.round(progress)}%).
+      </p>
     </div>
   );
 }`,
-  });
+    });

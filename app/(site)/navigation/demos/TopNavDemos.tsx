@@ -1,13 +1,11 @@
-import { entry } from "../../utils";
-import type { RegistryEntry } from "../../types";
+"use client";
 
-export const navigationSticky: RegistryEntry = entry({
-    id: "navigation-sticky",
-    title: "Sticky Nav with Dropdown, Mega Menu & Cmd+K",
-    description: "Sticky bar with hover mega menu, dropdown, command button, and animated mobile menu.",
-    source: `import { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { ChevronDownIcon, CommandIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  CommandIcon,
+} from "lucide-react";
 
 const navItems = ["Home", "Products", "About", "Contact"];
 
@@ -20,7 +18,41 @@ const megaMenuProducts = [
 const linkBase =
   "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40";
 
-export default function NavigationSticky() {
+/** Basic horizontal nav bar with pill links and an active state. */
+export function BasicNavDemo() {
+  return (
+    <nav
+      aria-label="Main"
+      className="flex w-full flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-background px-4 py-2.5 shadow-xs"
+    >
+      <span className="flex items-center gap-2">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-[11px] font-bold text-primary-foreground shadow-xs">
+          CL
+        </span>
+        <span className="text-sm font-semibold tracking-tight text-foreground">Logo</span>
+      </span>
+      <div className="flex flex-wrap items-center gap-1">
+        {navItems.map((item, i) => (
+          <Link
+            key={item}
+            href="#"
+            aria-current={i === 0 ? "page" : undefined}
+            className={`${linkBase} ${
+              i === 0
+                ? "bg-muted text-foreground"
+                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+            }`}
+          >
+            {item}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+/** Sticky nav bar with hover mega menu, dropdown, command hint and mobile menu. */
+export function StickyNavDemo() {
   const [megaOpen, setMegaOpen] = useState(false);
   const [navDropdown, setNavDropdown] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,7 +73,7 @@ export default function NavigationSticky() {
             </span>
             <span className="text-sm font-semibold tracking-tight text-foreground">Logo</span>
           </span>
-          <Link href="#" className={\`\${linkBase} text-muted-foreground hover:bg-muted/60 hover:text-foreground\`}>
+          <Link href="#" className={`${linkBase} text-muted-foreground hover:bg-muted/60 hover:text-foreground`}>
             Home
           </Link>
 
@@ -53,7 +85,7 @@ export default function NavigationSticky() {
             <button type="button" aria-haspopup="true" aria-expanded={megaOpen} className={trigger}>
               Products
               <ChevronDownIcon
-                className={\`h-3.5 w-3.5 transition-transform duration-200 \${megaOpen ? "rotate-180" : ""}\`}
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${megaOpen ? "rotate-180" : ""}`}
                 aria-hidden="true"
               />
             </button>
@@ -94,7 +126,7 @@ export default function NavigationSticky() {
             <button type="button" aria-haspopup="true" aria-expanded={navDropdown} className={trigger}>
               More
               <ChevronDownIcon
-                className={\`h-3.5 w-3.5 transition-transform duration-200 \${navDropdown ? "rotate-180" : ""}\`}
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${navDropdown ? "rotate-180" : ""}`}
                 aria-hidden="true"
               />
             </button>
@@ -131,17 +163,17 @@ export default function NavigationSticky() {
             aria-expanded={mobileOpen}
             className="flex h-9 w-9 flex-col items-center justify-center gap-1 rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 sm:hidden"
           >
-            <span className={\`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 \${mobileOpen ? "translate-y-[3px] rotate-45" : ""}\`} />
-            <span className={\`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 \${mobileOpen ? "opacity-0" : ""}\`} />
-            <span className={\`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 \${mobileOpen ? "-translate-y-[3px] -rotate-45" : ""}\`} />
+            <span className={`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 ${mobileOpen ? "translate-y-[3px] rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-4 rounded-full bg-current transition-all duration-200 ${mobileOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
           </button>
         </div>
       </nav>
 
       <div
-        className={\`grid transition-[grid-template-rows] duration-300 ease-out sm:hidden \${
+        className={`grid transition-[grid-template-rows] duration-300 ease-out sm:hidden ${
           mobileOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-        }\`}
+        }`}
       >
         <div className="min-h-0 overflow-hidden">
           <div className="mt-1 flex flex-col gap-1 rounded-xl border border-border bg-popover p-2 shadow-popover">
@@ -159,5 +191,4 @@ export default function NavigationSticky() {
       </div>
     </div>
   );
-}`,
-    });
+}

@@ -5,3 +5,4 @@ export { SidebarSearch } from "./SidebarSearch";
 export { SidebarToggle } from "./SidebarToggle";
 export { SidebarBackdrop } from "./SidebarBackdrop";
 export { SidebarFooter } from "./SidebarFooter";
+export { SidebarBrand } from "./SidebarBrand";

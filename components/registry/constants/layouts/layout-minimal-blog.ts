@@ -4,16 +4,30 @@ import type { RegistryEntry } from "../../types";
 export const layoutMinimalBlog: RegistryEntry = entry({
     id: "layout-minimal-blog",
     title: "Minimal Blog",
-    description: "Centered article layout with a narrow column.",
-    source: `export default function LayoutMinimalBlog() {
+    description: "Editorial reading layout: centred column with meta row.",
+    source: `import { BookmarkIcon, MessageSquareIcon } from "lucide-react";
+
+export default function LayoutMinimalBlog() {
   return (
-    <div className="flex h-48 w-full flex-col items-center overflow-hidden rounded-lg border border-black/[.08] bg-white dark:border-white/[.145] dark:bg-zinc-950">
-      <div className="flex h-full w-3/4 flex-col justify-center gap-2">
-        <div className="h-2 w-1/4 rounded bg-zinc-300 dark:bg-zinc-600" />
-        <div className="h-2 w-3/4 rounded bg-zinc-200 dark:bg-zinc-700" />
-        <div className="h-2 w-1/2 rounded bg-zinc-100 dark:bg-zinc-800" />
-        <div className="h-2 w-full rounded bg-zinc-100 dark:bg-zinc-800" />
-        <div className="h-2 w-2/3 rounded bg-zinc-100 dark:bg-zinc-800" />
+    <div className="flex h-48 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs">
+      <div className="mx-auto flex w-full max-w-72 flex-col gap-2 p-4">
+        <span className="text-[10px] font-medium uppercase tracking-wider text-primary">
+          Engineering
+        </span>
+        <h3 className="text-sm font-semibold tracking-tight">
+          Designing resilient layouts
+        </h3>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          Grids, flexbox and container queries working as one system.
+        </p>
+        <span className="mt-1 flex items-center gap-3 text-[10px] text-muted-foreground/70">
+          <span className="flex items-center gap-1">
+            <MessageSquareIcon className="h-3 w-3" aria-hidden="true" /> 12
+          </span>
+          <span className="flex items-center gap-1">
+            <BookmarkIcon className="h-3 w-3" aria-hidden="true" /> Save
+          </span>
+        </span>
       </div>
     </div>
   );

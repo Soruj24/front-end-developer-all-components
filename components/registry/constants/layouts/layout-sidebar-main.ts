@@ -4,26 +4,71 @@ import type { RegistryEntry } from "../../types";
 export const layoutSidebarMain: RegistryEntry = entry({
     id: "layout-sidebar-main",
     title: "Sidebar + Main & Left Nav",
-    description: "Icon sidebar and text navigation variants beside content.",
-    source: `export default function LayoutSidebarMain() {
+    description: "Icon rail and labelled navigation list beside content.",
+    source: `"use client";
+
+import {
+  BarChart3Icon,
+  HomeIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
+
+const railIcons = [
+  { key: "home", Icon: HomeIcon },
+  { key: "stats", Icon: BarChart3Icon },
+  { key: "settings", Icon: SettingsIcon },
+];
+
+const railButton =
+  "flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground/70 transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40";
+
+const zone =
+  "flex flex-1 items-center justify-center bg-muted/20 text-[11px] font-medium text-muted-foreground/50 dark:bg-muted/10";
+
+export default function LayoutSidebarMain() {
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex h-48 w-full overflow-hidden rounded-lg border border-black/[.08] dark:border-white/[.145]">
-        <div className="flex w-16 flex-col gap-1 border-r border-black/[.08] bg-zinc-50 p-2 dark:border-white/[.145] dark:bg-black">
-          {["⌂", "📊", "⚙"].map((icon, i) => (
-            <button key={i} className={\`flex h-7 items-center justify-center rounded-md text-xs \${i === 0 ? "bg-zinc-200 dark:bg-zinc-800" : "text-zinc-400"}\`}>{icon}</button>
+      <div className="flex h-48 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs">
+        <div className="flex w-14 flex-col items-center gap-1 border-r border-border bg-muted/40 p-2">
+          {railIcons.map(({ key, Icon }, i) => (
+            <button
+              key={key}
+              type="button"
+              aria-label={key}
+              aria-current={i === 0 ? "page" : undefined}
+              className={\`\${railButton} \${i === 0 ? "bg-primary-soft text-primary" : ""}\`}
+            >
+              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
           ))}
-          <button className="mt-auto flex h-7 items-center justify-center rounded-md text-xs text-zinc-400">👤</button>
+          <button type="button" aria-label="Account" className={\`\${railButton} mt-auto\`}>
+            <UserIcon className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
         </div>
-        <div className="flex flex-1 items-center justify-center bg-white text-[10px] text-zinc-300 dark:bg-zinc-950">Main Content</div>
+        <div className={zone}>Main Content</div>
       </div>
-      <div className="flex h-48 w-full overflow-hidden rounded-lg border border-black/[.08] dark:border-white/[.145]">
-        <div className="flex w-20 flex-col gap-1 border-r border-black/[.08] bg-zinc-50 p-2 dark:border-white/[.145] dark:bg-black">
+      <div className="flex h-48 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs">
+        <div className="flex w-24 flex-col gap-1 border-r border-border bg-muted/40 p-2">
+          <span className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+            Menu
+          </span>
           {["Dashboard", "Analytics", "Reports", "Settings"].map((item, i) => (
-            <button key={i} className={\`rounded px-2 py-1 text-left text-[10px] \${i === 0 ? "bg-zinc-200 font-medium dark:bg-zinc-800" : "text-zinc-400"}\`}>{item}</button>
+            <button
+              key={item}
+              type="button"
+              aria-current={i === 0 ? "page" : undefined}
+              className={\`rounded-md px-2 py-1 text-left text-[11px] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 \${
+                i === 0
+                  ? "bg-primary-soft font-medium text-primary"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }\`}
+            >
+              {item}
+            </button>
           ))}
         </div>
-        <div className="flex flex-1 items-center justify-center bg-white text-[10px] text-zinc-300 dark:bg-zinc-950">Content</div>
+        <div className={zone}>Content</div>
       </div>
     </div>
   );

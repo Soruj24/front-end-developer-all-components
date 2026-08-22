@@ -4,7 +4,7 @@ import type { RegistryEntry } from "../../types";
 export const navigationTabs: RegistryEntry = entry({
     id: "navigation-tabs",
     title: "Tabs",
-    description: "Underline tabs that switch active content.",
+    description: "Segmented tabs that switch the visible panel.",
     source: `import { useState } from "react";
 
 const tabItems = ["Details", "Reviews", "Shipping"];
@@ -13,22 +13,33 @@ export default function NavigationTabs() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex border-b border-black/[.08] dark:border-white/[.145]">
+    <div className="flex w-full flex-col gap-3">
+      <div
+        role="tablist"
+        aria-label="Product info"
+        className="flex w-fit items-center gap-1 rounded-xl border border-border bg-muted/40 p-1"
+      >
         {tabItems.map((tab, i) => (
           <button
             key={tab}
+            type="button"
+            role="tab"
+            aria-selected={i === activeTab}
             onClick={() => setActiveTab(i)}
-            className={\`px-4 py-2 text-sm font-medium transition-colors \${i === activeTab ? "border-b-2 border-zinc-950 text-zinc-950 dark:border-zinc-50 dark:text-zinc-50" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-50"}\`}
+            className={\`rounded-lg px-4 py-1.5 text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 \${
+              i === activeTab
+                ? "bg-background text-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
+            }\`}
           >
             {tab}
           </button>
         ))}
       </div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p role="tabpanel" className="text-sm text-muted-foreground">
         Showing content for &ldquo;{tabItems[activeTab]}&rdquo;.
       </p>
     </div>
   );
 }`,
-  });
+    });

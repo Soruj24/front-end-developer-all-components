@@ -4,7 +4,7 @@ import type { RegistryEntry } from "../../types";
 export const navigationScrollspy: RegistryEntry = entry({
     id: "navigation-scrollspy",
     title: "Scroll Spy & Section Highlights",
-    description: "Section buttons and panels that highlight on scroll.",
+    description: "Section pills and panels that highlight while scrolling.",
     source: `import { useEffect, useState } from "react";
 
 const sections = ["section-home", "section-features", "section-pricing", "section-contact"];
@@ -34,12 +34,19 @@ export default function NavigationScrollSpy() {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Page sections">
         {sections.map((id) => (
           <button
             key={id}
+            type="button"
+            role="tab"
+            aria-selected={activeSection === id}
             onClick={() => scrollTo(id)}
-            className={\`rounded-md px-3 py-1.5 text-xs font-medium transition-colors \${activeSection === id ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"}\`}
+            className={\`rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 \${
+              activeSection === id
+                ? "bg-foreground text-background shadow-xs"
+                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+            }\`}
           >
             {label(id)}
           </button>
@@ -50,10 +57,22 @@ export default function NavigationScrollSpy() {
           <section
             key={id}
             id={id}
-            className={\`rounded-lg border p-6 transition-colors \${activeSection === id ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-800/50" : "border-black/[.08] dark:border-white/[.145]"}\`}
+            className={\`rounded-xl border p-5 transition-colors duration-300 \${
+              activeSection === id
+                ? "border-foreground/20 bg-muted/40 dark:border-ring/40 dark:bg-muted/60"
+                : "border-border"
+            }\`}
           >
-            <h3 className="font-semibold">Section: {label(id)}</h3>
-            <p className="mt-1 text-sm text-zinc-500">
+            <h3 className="flex items-center gap-2 font-semibold text-foreground">
+              <span
+                className={\`h-2 w-2 rounded-full transition-colors duration-300 \${
+                  activeSection === id ? "bg-primary" : "bg-muted-foreground/30"
+                }\`}
+                aria-hidden="true"
+              />
+              Section: {label(id)}
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               This section is {activeSection === id ? "currently active" : "not active"} in the scroll spy.
             </p>
           </section>
@@ -62,4 +81,4 @@ export default function NavigationScrollSpy() {
     </div>
   );
 }`,
-  });
+    });
