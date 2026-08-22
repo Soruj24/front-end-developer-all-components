@@ -78,16 +78,10 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       };
     }, [visible]);
 
-    /* Move focus in on open, trap Tab, close on Escape, restore focus on close. */
+    /* Trap Tab, close on Escape while open; restore focus on close. */
     useEffect(() => {
       if (!open) return;
       const previouslyFocused = document.activeElement as HTMLElement | null;
-      const rafId = requestAnimationFrame(() => {
-        const panel = panelRef.current;
-        if (!panel) return;
-        const firstFocusable = panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
-        (firstFocusable ?? panel).focus();
-      });
 
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
@@ -112,11 +106,22 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
       document.addEventListener("keydown", handleKeyDown);
       return () => {
-        cancelAnimationFrame(rafId);
         document.removeEventListener("keydown", handleKeyDown);
         previouslyFocused?.focus?.();
       };
     }, [open]);
+
+    /* Move focus into the panel once it has actually mounted. */
+    useEffect(() => {
+      if (!visible) return;
+      const rafId = requestAnimationFrame(() => {
+        const panel = panelRef.current;
+        if (!panel || panel.contains(document.activeElement)) return;
+        const firstFocusable = panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        (firstFocusable ?? panel).focus();
+      });
+      return () => cancelAnimationFrame(rafId);
+    }, [visible]);
 
     if (!visible || !mounted) return null;
 

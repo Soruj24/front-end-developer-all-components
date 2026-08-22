@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropdown } from "@/components/ui/Dropdown";
+import Dropdown from "@/components/ui/Dropdown";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -100,7 +100,8 @@ const Dropdown = ({ trigger, items, align = "start", className }: DropdownProps)
   );
 };
 
-export default Dropdown;`";
+export default Dropdown;
+`;
 
 const BASIC_CODE = `import { Dropdown } from "@/components/ui/Dropdown";
 
