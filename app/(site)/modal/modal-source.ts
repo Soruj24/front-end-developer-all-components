@@ -1,7 +1,6 @@
-"use client";
+export const MODAL_SOURCE = `"use client";
 
 import { type ReactNode, forwardRef, useEffect, useId, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "fullscreen";
@@ -11,12 +10,14 @@ const EXIT_MS = 200;
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+/** Width variants. Fullscreen becomes a full-bleed sheet on mobile. */
 const SIZE_CLASSES: Record<ModalSize, string> = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-lg",
   xl: "max-w-xl",
-  fullscreen: "h-dvh max-h-none w-full max-w-full rounded-none sm:h-[95vh] sm:max-h-[95vh] sm:max-w-[95vw] sm:rounded-2xl",
+  fullscreen:
+    "h-dvh max-h-none w-full max-w-full rounded-none sm:h-[95vh] sm:max-h-[95vh] sm:max-w-[95vw] sm:rounded-2xl",
 };
 
 export interface ModalProps {
@@ -35,7 +36,6 @@ export interface ModalProps {
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
   ({ open, onClose, title, size = "md", children }, ref) => {
     const [visible, setVisible] = useState(open);
-    const [mounted, setMounted] = useState(false);
     const [closing, setClosing] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const titleId = useId();
@@ -45,10 +45,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       onCloseRef.current = onClose;
     }, [onClose]);
 
-    /* Portals need a real document; also keeps SSR output stable. */
-    useEffect(() => setMounted(true), []);
-
-    /* Enter/exit lifecycle: deferred callbacks let the exit animation play. */
+    /* Enter/exit lifecycle: transitions are deferred to callbacks so the
+       exit animation can play before the dialog unmounts. */
     useEffect(() => {
       if (open) {
         const rafId = requestAnimationFrame(() => {
@@ -85,7 +83,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       const rafId = requestAnimationFrame(() => {
         const panel = panelRef.current;
         if (!panel) return;
-        const firstFocusable = panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        const firstFocusable =
+          panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
         (firstFocusable ?? panel).focus();
       });
 
@@ -97,7 +96,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
         if (event.key !== "Tab") return;
         const panel = panelRef.current;
         if (!panel) return;
-        const items = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+        const items = Array.from(
+          panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+        );
         if (items.length === 0) return;
         const first = items[0];
         const last = items[items.length - 1];
@@ -118,13 +119,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       };
     }, [open]);
 
-    if (!visible || !mounted) return null;
+    if (!visible) return null;
 
     const isFullscreen = size === "fullscreen";
 
-    /* Portal to <body>: transformed ancestors (page transitions, reveals)
-       would otherwise become the containing block for position: fixed. */
-    return createPortal(
+    return (
       <div
         ref={ref}
         role="dialog"
@@ -148,10 +147,19 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           ref={panelRef}
           tabIndex={-1}
           className={cn(
-            "relative z-10 flex w-full flex-col outline-none border border-border bg-surface shadow-modal ring-1 ring-black/[0.02] dark:ring-white/[0.04]",
+            "relative z-10 flex w-full flex-col outline-none",
+            "border border-border bg-surface shadow-modal",
+            "ring-1 ring-black/[0.02] dark:ring-white/[0.04]",
             "transition-[opacity,transform] duration-200 ease-out will-change-transform motion-reduce:transition-none",
-            isFullscreen ? SIZE_CLASSES.fullscreen : cn("max-h-[calc(100dvh-1.5rem)] rounded-t-2xl sm:max-h-[88vh] sm:rounded-2xl", SIZE_CLASSES[size]),
-            closing ? "translate-y-3 scale-[0.98] opacity-0 sm:translate-y-0" : "animate-scale-in-fast",
+            isFullscreen
+              ? SIZE_CLASSES.fullscreen
+              : cn(
+                  "max-h-[calc(100dvh-1.5rem)] rounded-t-2xl sm:max-h-[88vh] sm:rounded-2xl",
+                  SIZE_CLASSES[size],
+                ),
+            closing
+              ? "translate-y-3 scale-[0.98] opacity-0 sm:translate-y-0"
+              : "animate-scale-in-fast",
           )}
         >
           {/* Close */}
@@ -161,14 +169,25 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
             aria-label="Close"
             className="absolute right-3.5 top-3.5 z-20 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-all duration-150 ease-out hover:bg-muted hover:text-foreground active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" className="h-4 w-4" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.75}
+              strokeLinecap="round"
+              className="h-4 w-4"
+              aria-hidden="true"
+            >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
 
           {title && (
             <header className="flex shrink-0 flex-col gap-1 pl-5 pr-12 pt-5 sm:pl-6 sm:pr-16 sm:pt-6">
-              <h2 id={titleId} className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
+              <h2
+                id={titleId}
+                className="text-base font-semibold tracking-tight text-foreground sm:text-lg"
+              >
                 {title}
               </h2>
             </header>
@@ -178,14 +197,15 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           <div
             className={cn(
               "min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-thin",
-              title ? "px-5 pb-5 pt-3 sm:px-6 sm:pb-6" : "px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6",
+              title
+                ? "px-5 pb-5 pt-3 sm:px-6 sm:pb-6"
+                : "px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6",
             )}
           >
             {children}
           </div>
         </div>
-      </div>,
-      document.body,
+      </div>
     );
   },
 );
@@ -193,3 +213,58 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 Modal.displayName = "Modal";
 
 export default Modal;
+`;
+
+export const BASIC_EXAMPLE = `import Modal from "@/components/ui/Modal";
+
+function BasicModal() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open Modal</button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Basic Modal">
+        <p>This is a basic modal dialog.</p>
+      </Modal>
+    </>
+  );
+}`;
+
+export const SIZES_EXAMPLE = `<Modal open={open} onClose={close} title="Large Modal" size="lg">
+  <p>This modal uses the large size variant.</p>
+</Modal>
+
+{/* sm | md | lg | xl | fullscreen */}`;
+
+export const WITHOUT_TITLE_EXAMPLE = `<Modal open={open} onClose={close}>
+  <p>No title — the close button floats top-right.</p>
+</Modal>`;
+
+export const FULLSCREEN_EXAMPLE = `<Modal open={open} onClose={close} size="fullscreen" title="Fullscreen">
+  <p>Fills the viewport — true full-screen below sm, 95vw x 95vh above.</p>
+</Modal>`;
+
+export const SCROLLABLE_EXAMPLE = `<Modal open={open} onClose={close} title="Release Notes" size="lg">
+  <div className="space-y-4">
+    {entries.map((entry) => (
+      <article key={entry.version}>
+        <h3>{entry.version}</h3>
+        <p>{entry.notes}</p>
+      </article>
+    ))}
+  </div>
+</Modal>
+
+{/* Long bodies scroll inside the header-fixed panel */}`;
+
+export const PLAYGROUND_EXAMPLE = `<Modal
+  open={open}
+  onClose={close}
+  title="Playground Modal"
+  size={size}          // sm | md | lg | xl | fullscreen
+>
+  <p>Tune props live in the playground below.</p>
+  <div className="mt-6 flex justify-end gap-3">
+    <button className="btn btn-outline btn-sm">Cancel</button>
+    <button className="btn btn-primary btn-sm">Confirm</button>
+  </div>
+</Modal>`;
