@@ -1,4 +1,5 @@
-"use client";
+// Auto-generated from components/ui/Dialog.tsx — keep in sync.
+export const DIALOG_SOURCE = `"use client";
 
 import { type ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -183,3 +184,4 @@ export function DialogContent({ children, className }: { children: ReactNode; cl
     document.body,
   );
 }
+`;
