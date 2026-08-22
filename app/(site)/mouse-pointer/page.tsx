@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { MousePointer, Hand, Crosshair, Move, Target, Zap, Cursor } from "lucide-react";
+import { MousePointer, Hand, Crosshair, Move, Target, Zap, MousePointer2 } from "lucide-react";
 
 const installCommand = `npx component-library@latest add mouse-pointer`;
 
@@ -64,7 +64,7 @@ function CursorEffectDemo() {
     <div className="rounded-lg border bg-background p-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Cursor className="h-4 w-4 text-muted-foreground" />
+          <MousePointer2 className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium">Cursor Effect</span>
         </div>
         <span className="text-xs text-muted-foreground">Cursors: {clickCount}</span>
@@ -152,7 +152,7 @@ function HoverCardDemo() {
   const cards = [
     { title: "Analytics", desc: "View detailed metrics", icon: Target },
     { title: "Performance", desc: "Monitor load times", icon: Zap },
-    { title: "Interactions", desc: "Track user clicks", icon: Cursor },
+    { title: "Interactions", desc: "Track user clicks", icon: MousePointer2 },
   ];
   return (
     <div className="rounded-lg border bg-background p-6">

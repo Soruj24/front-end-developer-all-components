@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Play, Pause } from "lucide-react";
 
-function BarEqualizer() {
+export function BarEqualizer() {
   const [levels, setLevels] = useState([65, 80, 45, 90, 55, 70, 35, 60]);
   const [animating, setAnimating] = useState(false);
   useEffect(() => {

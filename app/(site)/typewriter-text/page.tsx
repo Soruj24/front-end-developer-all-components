@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Type, Play, Pause, RotateCcw, Cursor, Edit3, Zap } from "lucide-react";
+import { Type, Play, Pause, RotateCcw, MousePointer2, Edit3, Zap } from "lucide-react";
 
 const installCommand = `npx shadcn@latest add typewriter-text`;
 
@@ -84,7 +84,7 @@ function BlinkingCursor() {
           onClick={() => setCursorVisible(!cursorVisible)}
           className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent"
         >
-          <Cursor className="mr-1 h-4 w-4" />
+          <MousePointer2 className="mr-1 h-4 w-4" />
           {cursorVisible ? "Hide" : "Show"} Cursor
         </button>
         <span className="text-sm text-muted-foreground">
@@ -421,7 +421,7 @@ export default function TypewriterTextPage() {
               </tr>
               <tr>
                 <td className="p-3 font-mono text-xs">onComplete</td>
-                <td className="p-3">() => void</td>
+                <td className="p-3">{"() => void"}</td>
                 <td className="p-3">undefined</td>
                 <td className="p-3">Callback when animation completes</td>
               </tr>

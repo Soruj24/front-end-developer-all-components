@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Code, Braces, Type, GitBranch, Terminal, FileCode, Copy } from "lucide-react";
+import { Braces, Type, GitBranch, Terminal, FileCode, Copy } from "lucide-react";
 
-function CodeBlockDemo() {
+export function BracketsCodeDemo() {
   return (
     <div className="rounded-xl border border-border bg-muted/50 p-4 font-mono text-sm overflow-x-auto">
       <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
@@ -12,18 +12,18 @@ function CodeBlockDemo() {
         <GitBranch className="h-3 w-3" />
         <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px]">main</span>
       </div>
-      function Button({ children, variant = "primary" }) {
-        return (
-          <button className="btn btn-primary">
-            {children}
-          </button>
-        );
-      }
+      <pre className="text-[13px] leading-relaxed text-foreground">{`function Button({ children, variant = "primary" }) {
+  return (
+    <button className="btn btn-primary">
+      {children}
+    </button>
+  );
+}`}</pre>
     </div>
   );
 }
 
-function InlineCode() {
+export function InlineCode() {
   return (
     <div className="flex flex-wrap items-center gap-3">
       {["useState", "useEffect", "useCallback", "useMemo", "useRef", "useReducer"].map((hook) => (
@@ -36,30 +36,30 @@ function InlineCode() {
   );
 }
 
-function SyntaxHighlight() {
+export function SyntaxHighlight() {
   return (
     <div className="rounded-xl border border-border bg-muted/50 p-4 font-mono text-sm overflow-x-auto">
       <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
         <Type className="h-3 w-3 text-blue-500" />
         <span>types.ts</span>
       </div>
-      interface User {
-        id: string;
-        name: string;
-        email: string;
-        roles: "admin" | "user" | "guest";
-        metadata?: Record<string, unknown>;
-      }
+      <pre className="text-[13px] leading-relaxed text-foreground">{`interface User {
+  id: string;
+  name: string;
+  email: string;
+  roles: "admin" | "user" | "guest";
+  metadata?: Record<string, unknown>;
+}
 
-      type UserResponse = User & {
-        createdAt: Date;
-        updatedAt: Date;
-      };
+type UserResponse = User & {
+  createdAt: Date;
+  updatedAt: Date;
+};`}</pre>
     </div>
   );
 }
 
-function BracketPair() {
+export function BracketPair() {
   return (
     <div className="rounded-xl border border-border bg-card p-6 max-w-md">
       <div className="flex items-center gap-3 mb-4">
@@ -72,16 +72,16 @@ function BracketPair() {
         </div>
       </div>
       <div className="font-mono text-sm space-y-1 bg-muted/50 rounded p-4">
-        <div className="flex gap-1"><span className="text-purple-500">{</span><span className="flex-1">function calculate() {</span><span className="text-purple-500">}</span></div>
-        <div className="pl-4 flex gap-1"><span className="text-blue-500">[</span><span className="flex-1">const arr = [1, 2, 3]</span><span className="text-blue-500">]</span></div>
-        <div className="pl-8 flex gap-1"><span className="text-green-500">(</span><span className="flex-1">return arr.map(x => x * 2)</span><span className="text-green-500">)</span></div>
-        <div className="pl-4 flex gap-1"><span className="text-purple-500">}</span></div>
+        <div className="flex gap-1"><span className="text-purple-500">{"{"}</span><span className="flex-1">{"function calculate() {"}</span><span className="text-purple-500">{"}"}</span></div>
+        <div className="pl-4 flex gap-1"><span className="text-blue-500">[</span><span className="flex-1">{"const arr = [1, 2, 3]"}</span><span className="text-blue-500">]</span></div>
+        <div className="pl-8 flex gap-1"><span className="text-green-500">(</span><span className="flex-1">{"return arr.map(x => x * 2)"}</span><span className="text-green-500">)</span></div>
+        <div className="pl-4 flex gap-1"><span className="text-purple-500">{"}"}</span></div>
       </div>
     </div>
   );
 }
 
-function CodeSnippet() {
+export function CodeSnippet() {
   return (
     <div className="rounded-xl border border-border bg-card p-4 flex items-center gap-4">
       <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
@@ -99,7 +99,7 @@ function CodeSnippet() {
   );
 }
 
-function TerminalCode() {
+export function TerminalCode() {
   return (
     <div className="rounded-xl border border-border bg-black p-4 font-mono text-sm text-green-400">
       <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
@@ -118,7 +118,7 @@ function TerminalCode() {
   );
 }
 
-function EditorCode() {
+export function EditorCode() {
   const [code, setCode] = useState(`const greeting = "Hello, World!";\nconsole.log(greeting);`);
 
   return (

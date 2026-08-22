@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function CustomEQ() {
+export function CustomEQ() {
   const [bands, setBands] = useState([
     { freq: 60, gain: 0 }, { freq: 170, gain: 0 }, { freq: 310, gain: 0 },
     { freq: 600, gain: 0 }, { freq: 1000, gain: 0 }, { freq: 3000, gain: 0 },

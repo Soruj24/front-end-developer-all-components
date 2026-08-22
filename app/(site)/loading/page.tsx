@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Badge } from "@/components/design-system/Badge";
+import { Spinner } from "@/components/ui/Spinner";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import Skeleton from "@/components/ui/Skeleton";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -11,7 +13,9 @@ import {
 
 const installCommand = `npx component-library@latest add loading`;
 
-const usageCode = `import { Spinner, ProgressBar, Skeleton } from "@/components/loading";
+const usageCode = `import { Spinner } from "@/components/ui/Spinner";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import Skeleton from "@/components/ui/Skeleton";
 
 <Spinner size="md" />
 <ProgressBar value={60} />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function CircleEqualizer() {
+export function CircleEqualizer() {
   const [levels] = useState([50, 70, 30, 85, 40, 60, 25, 75]);
   return (
     <div className="w-full p-4">

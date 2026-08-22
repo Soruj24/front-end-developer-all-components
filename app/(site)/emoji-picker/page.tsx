@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 import { ComponentDocPage, PreviewPanel, ExampleBlock, SourceCodeViewer } from "@/components/docs";
-import { EmojiGrid, CategoryTabs, SearchEmoji, FrequentlyUsed, SkinTone, EmojiPreview, InsertEmoji } from "./emoji-picker-source";
+import { EmojiGrid, CategoryTabs, SearchEmoji, FrequentlyUsed, SkinTone, EmojiPreview, InsertEmoji } from "./emoji-picker";
 
 const sourceCode = `import { useState } from "react";
 import { Smile, Frown, Meh, Heart, ThumbsUp, Star, Search } from "lucide-react";
 
 const categories = [
-  { name: "Smileys", emojis: ["😀", "😃", "😄"] },
-  { name: "Animals", emojis: ["🐶", "🐱"] },
+  { name: "Smileys", emojis: ["ðŸ˜€", "ðŸ˜ƒ", "ðŸ˜„"] },
+  { name: "Animals", emojis: ["ðŸ¶", "ðŸ±"] },
 ];
 
 function EmojiGrid() {

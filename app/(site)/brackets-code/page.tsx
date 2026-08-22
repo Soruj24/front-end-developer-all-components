@@ -1,6 +1,5 @@
 "use client";
 
-import { Code, Braces, Type, GitBranch, Terminal, FileCode, Copy } from "lucide-react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { BRACKETS_CODE_SOURCE } from "./brackets-code-source";
 import {
@@ -102,13 +101,17 @@ type UserResponse = User & {
           <TerminalCode />
         </ExampleBlock>
 
-        <ExampleBlock title="Live Editor" description="Editable code area with language detection." code={`<textarea
+        <ExampleBlock
+          title="Live Editor"
+          description="Editable code area with language detection."
+          code={`<textarea
   value={code}
   onChange={(e) => setCode(e.target.value)}
   className="w-full h-32 p-3 font-mono text-sm bg-transparent border-none outline-none resize-none text-foreground placeholder:text-muted-foreground"
   placeholder="Write code here..."
   spellCheck={false} />
 `}
+        >
           <EditorCode />
         </ExampleBlock>
       </div>

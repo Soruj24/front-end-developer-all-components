@@ -2,7 +2,6 @@
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Slant } from "lucide-react";
 
 const installCommand = `npx component-library@latest add zaxis-skew`;
 const usageCode = `// usage`;

@@ -1,6 +1,7 @@
 "use client";
+
 import { useState } from "react";
-import { Smile, Frown, Meh, Heart, ThumbsUp, Star, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 const categories = [
   { name: "Smileys", emojis: ["😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "🙃", "😉", "😊", "😇", "🥰", "😍", "🤩", "😘", "😗", "😚", "🙂", "🥲", "😋", "😛", "😜"] },
@@ -9,7 +10,7 @@ const categories = [
   { name: "Activities", emojis: ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏉", "🎱", "🏓", "🏸", "🥅", "🏒", "🏑", "🥍", "🏏", "🪃", "🥌", "🎿", "⛷️", "🏂", "🪂", "🏋️", "🤼"] },
 ];
 
-function EmojiGrid() {
+export function EmojiGrid() {
   const [activeCategory, setActiveCategory] = useState(0);
   const category = categories[activeCategory];
   return (
@@ -45,7 +46,7 @@ function EmojiGrid() {
   );
 }
 
-function CategoryTabs() {
+export function CategoryTabs() {
   const [selected, setSelected] = useState("Smileys");
   return (
     <div className="w-full p-4">
@@ -62,7 +63,7 @@ function CategoryTabs() {
           ))}
         </div>
         <div className="p-3 grid grid-cols-8 gap-1 max-h-48 overflow-y-auto">
-          {categories.find(c => c.name === selected)?.emojis.map((e) => (
+          {categories.find((c) => c.name === selected)?.emojis.map((e) => (
             <button key={e} className="h-8 w-8 rounded hover:bg-muted flex items-center justify-center text-lg">{e}</button>
           ))}
         </div>
@@ -71,10 +72,10 @@ function CategoryTabs() {
   );
 }
 
-function SearchEmoji() {
+export function SearchEmoji() {
   const [query, setQuery] = useState("");
-  const allEmojis = categories.flatMap(c => c.emojis);
-  const filtered = query ? allEmojis.filter(e => e.toLowerCase().includes(query.toLowerCase())) : allEmojis.slice(0, 32);
+  const allEmojis = categories.flatMap((c) => c.emojis);
+  const filtered = query ? allEmojis.filter((e) => e.toLowerCase().includes(query.toLowerCase())) : allEmojis.slice(0, 32);
   return (
     <div className="w-full p-4">
       <div className="max-w-md mx-auto rounded-xl border border-border bg-card overflow-hidden">
@@ -101,10 +102,10 @@ function SearchEmoji() {
   );
 }
 
-function FrequentlyUsed() {
+export function FrequentlyUsed() {
   const [recent, setRecent] = useState(["😀", "👍", "❤️", "🎉", "🚀", "✨", "😂", "🔥"]);
-  const addRecent = (emoji) => {
-    setRecent(prev => [emoji, ...prev.filter(e => e !== emoji)].slice(0, 8));
+  const addRecent = (emoji: string) => {
+    setRecent((prev) => [emoji, ...prev.filter((e) => e !== emoji)].slice(0, 8));
     navigator.clipboard.writeText(emoji);
   };
   return (
@@ -123,7 +124,7 @@ function FrequentlyUsed() {
         <div className="rounded-xl border border-border bg-card overflow-hidden">
           <div className="px-4 py-3 border-b border-border font-medium text-sm">All Emojis</div>
           <div className="p-3 grid grid-cols-8 gap-1 max-h-48 overflow-y-auto">
-            {categories.flatMap(c => c.emojis).slice(0, 40).map((e) => (
+            {categories.flatMap((c) => c.emojis).slice(0, 40).map((e) => (
               <button key={e} onClick={() => addRecent(e)} className="h-8 w-8 rounded hover:bg-muted flex items-center justify-center text-lg">{e}</button>
             ))}
           </div>
@@ -133,7 +134,7 @@ function FrequentlyUsed() {
   );
 }
 
-function SkinTone() {
+export function SkinTone() {
   const [tone, setTone] = useState(0);
   const tones = ["👍", "👍🏻", "👍🏼", "👍🏽", "👍🏾", "👍🏿"];
   return (
@@ -168,14 +169,14 @@ function SkinTone() {
   );
 }
 
-function EmojiPreview() {
+export function EmojiPreview() {
   const [selected, setSelected] = useState("😀");
   return (
     <div className="w-full p-4">
       <div className="max-w-md mx-auto rounded-xl border border-border bg-card overflow-hidden">
         <div className="p-6 text-center">
           <span className="text-8xl">{selected}</span>
-          <div className="mt-4 text-sm text-muted-foreground font-mono">{selected} U+{selected.codePointAt(0).toString(16).toUpperCase()}</div>
+          <div className="mt-4 text-sm text-muted-foreground font-mono">{selected} U+{selected.codePointAt(0)?.toString(16).toUpperCase()}</div>
         </div>
         <div className="p-4 border-t border-border grid grid-cols-8 gap-1">
           {categories[0].emojis.slice(0, 24).map((e) => (
@@ -189,7 +190,7 @@ function EmojiPreview() {
   );
 }
 
-function InsertEmoji() {
+export function InsertEmoji() {
   const [text, setText] = useState("Type here and add emojis: ");
   return (
     <div className="w-full p-4">

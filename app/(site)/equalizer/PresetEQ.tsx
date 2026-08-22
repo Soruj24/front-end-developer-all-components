@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function PresetEQ() {
+export function PresetEQ() {
   const [preset, setPreset] = useState("flat");
   const presets = {
     flat: [0, 0, 0, 0, 0, 0, 0, 0],

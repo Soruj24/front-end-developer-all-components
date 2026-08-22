@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Target, Crosshair, Bullseye, TrendingUp, Award, Star, CheckCircle } from "lucide-react";
+import { Target, Crosshair, TrendingUp, Award, Star, CheckCircle } from "lucide-react";
 
 const installCommand = `npx component-library@latest add target-goal`;
 const usageCode = `<TargetGoal progress={75} label="Sales Target" />`;
@@ -99,7 +99,7 @@ function ProgressRing() {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
-        <Bullseye className="h-5 w-5 text-green-500" />
+        <Target className="h-5 w-5 text-green-500" />
         <h3 className="font-medium">Progress Ring</h3>
       </div>
       <div className="flex flex-col items-center space-y-4">

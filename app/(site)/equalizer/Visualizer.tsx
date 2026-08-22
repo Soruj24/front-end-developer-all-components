@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function Visualizer() {
+export function Visualizer() {
   const [bars, setBars] = useState(Array.from({ length: 32 }, () => Math.random() * 100));
   const [running, setRunning] = useState(true);
   useEffect(() => {

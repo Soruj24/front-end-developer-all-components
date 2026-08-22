@@ -4,15 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import {
-  Tent,
-  TreePine,
-  Compass,
-  Map,
-  Sun,
-  Moon,
-  Campfire,
-} from "lucide-react";
+import { Tent, TreePine, Compass, Map, Sun, Moon, FlameKindling,  } from "lucide-react";
 
 const installCommand = `npx shadcn@latest add tent-camp`;
 
@@ -239,7 +231,7 @@ function CampfireSetup() {
   return (
     <div className="rounded-lg border bg-card p-6 space-y-4">
       <div className="flex items-center gap-2">
-        <Campfire className="h-5 w-5 text-orange-500" />
+        <FlameKindling className="h-5 w-5 text-orange-500" />
         <h3 className="font-semibold">Campfire Setup</h3>
       </div>
       <div className="space-y-2">

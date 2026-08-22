@@ -1,7 +1,6 @@
 "use client";
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { CONTACT_CARD_SOURCE } from "./contact-card-source";
 import { COOKIE_CONSENT_SOURCE, BANNER_EXAMPLE, CATEGORIES_EXAMPLE, WIDGET_EXAMPLE } from "./cookie-consent-source";
 
 export default function CookieConsentPage() {

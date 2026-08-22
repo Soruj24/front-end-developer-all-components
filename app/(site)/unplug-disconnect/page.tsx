@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Plug, Unplug, Wifi, WifiOff, Cable, CableOff } from "lucide-react";
+import { Plug, Unplug, Wifi, WifiOff, Cable } from "lucide-react";
 
 const installCommand = `npx component-library@latest add unplug-disconnect`;
 const usageCode = `import { UnplugDisconnect } from "@/components/_unplug-disconnect";

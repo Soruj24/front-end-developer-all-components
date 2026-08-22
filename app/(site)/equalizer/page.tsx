@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Activity, Volume2, SlidersHorizontal, Music, Settings, Play, Pause } from "lucide-react";
@@ -8,13 +8,13 @@ import { PreviewPanel } from "@/components/docs";
 import { ExampleBlock } from "@/components/docs";
 import { SourceCodeViewer } from "@/components/docs";
 
-import { BarEqualizer } from "./BarEqualizer-source";
-import { CircleEqualizer } from "./CircleEqualizer-source";
-import { FrequencyBands } from "./FrequencyBands-source";
-import { PresetEQ } from "./PresetEQ-source";
-import { CustomEQ } from "./CustomEQ-source";
-import { Visualizer } from "./Visualizer-source";
-import { AudioBars } from "./AudioBars-source";
+import { BarEqualizer } from "./BarEqualizer";
+import { CircleEqualizer } from "./CircleEqualizer";
+import { FrequencyBands } from "./FrequencyBands";
+import { PresetEQ } from "./PresetEQ";
+import { CustomEQ } from "./CustomEQ";
+import { Visualizer } from "./Visualizer";
+import { AudioBars } from "./AudioBars";
 
 export default function EqualizerPage() {
   return (

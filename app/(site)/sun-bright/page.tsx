@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Sun, Sunrise, Sunset, Cloud, Thermometer, Eye, Brightness } from "lucide-react";
+import { Sun, Sunrise, Sunset, Cloud, Thermometer, Eye, SunMedium } from "lucide-react";
 
 const installCommand = `npx component-library@latest add sun-bright`;
 const usageCode = `<SunBright size="lg" animated />`;
@@ -15,7 +15,7 @@ function BrightnessControl() {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
-        <Brightness className="h-5 w-5 text-yellow-500" />
+        <SunMedium className="h-5 w-5 text-yellow-500" />
         <h3 className="font-medium">Brightness Control</h3>
       </div>
       <div className="space-y-4">
@@ -199,7 +199,7 @@ function DayMode() {
   return (
     <div className="rounded-lg border bg-card p-6 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
-        <Brightness className="h-5 w-5 text-yellow-500" />
+        <SunMedium className="h-5 w-5 text-yellow-500" />
         <h3 className="font-medium">Day Mode</h3>
       </div>
       <div className={`rounded-lg p-6 text-center transition-all ${

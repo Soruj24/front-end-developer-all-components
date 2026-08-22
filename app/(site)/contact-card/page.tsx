@@ -2,6 +2,7 @@
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { CONTACT_CARD_SOURCE } from "./contact-card-source";
+import { ContactCard } from "./contact-card";
 
 export default function ContactCardPage() {
   return (

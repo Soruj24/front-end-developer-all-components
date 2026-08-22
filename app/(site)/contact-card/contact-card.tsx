@@ -1,4 +1,4 @@
-export const CONTACT_CARD_SOURCE = `"use client";
+"use client";
 
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ export function ContactCard({ name, role, email, className = "" }: ContactCardPr
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className={\`rounded-xl border border-border bg-card p-6 \${className} transition-colors dark:border-border dark:bg-zinc-900 hover:bg-muted/50 dark:hover:bg-muted/20\`}>
+    <div className={`rounded-xl border border-border bg-card p-6 ${className} transition-colors dark:border-border dark:bg-zinc-900 hover:bg-muted/50 dark:hover:bg-muted/20`}>
       <div className="flex flex-col items-center text-center">
         <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-lg font-semibold text-primary">
           {name.split(" ")[0].charAt(0)}
@@ -28,10 +28,4 @@ export function ContactCard({ name, role, email, className = "" }: ContactCardPr
       </div>
     </div>
   );
-}`;
-
-export const BASIC_EXAMPLE = `<ContactCard name="Jane Doe" role="Senior Engineer" email="jane@example.com" />`;
-
-export const DETAILED_EXAMPLE = `<ContactCard name="Alex Brown" role="Product Designer" email="alex@company.com" />`;
-
-export const COMPACT_EXAMPLE = `<ContactCard name="Sarah Chen" role="Frontend Dev" />`;
+}

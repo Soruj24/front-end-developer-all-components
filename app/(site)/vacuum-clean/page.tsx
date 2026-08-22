@@ -2,7 +2,6 @@
 
 import { Badge } from "@/components/design-system/Badge";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Vacuum } from "lucide-react";
 
 const installCommand = `npx component-library@latest add vacuum-clean`;
 const usageCode = `import { VacuumClean } from "@/components/_vacuum-clean";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function AudioBars() {
+export function AudioBars() {
   const [channels, setChannels] = useState({
     left: Array.from({ length: 16 }, () => Math.random() * 100),
     right: Array.from({ length: 16 }, () => Math.random() * 100),

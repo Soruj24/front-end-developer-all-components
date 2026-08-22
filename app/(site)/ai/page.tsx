@@ -2,7 +2,7 @@
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { AI_SOURCE } from "./ai-source";
-import { AiDemos } from "./ai-demos";
+import AiDemos from "./ai-demos";
 
 const DEFAULT_EXAMPLE = `const { messages, input, setInput, isTyping, handleSend, handleKeyDown } = useAiChat();`;
 

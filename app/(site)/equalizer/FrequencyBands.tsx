@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function FrequencyBands() {
+export function FrequencyBands() {
   const [bands, setBands] = useState([
     { freq: "32Hz", gain: 0 }, { freq: "64Hz", gain: 2 }, { freq: "125Hz", gain: -1 },
     { freq: "250Hz", gain: 3 }, { freq: "500Hz", gain: 1 }, { freq: "1kHz", gain: 0 },

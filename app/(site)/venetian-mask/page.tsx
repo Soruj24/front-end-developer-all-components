@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/design-system/Badge";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Eye, EyeOff, Mask } from "lucide-react";
+import { Eye, EyeOff, VenetianMask } from "lucide-react";
 
 const installCommand = `npx component-library@latest add venetian-mask`;
 const usageCode = `import { VenetianMask } from "@/components/_venetian-mask";
@@ -13,7 +13,7 @@ function MaskCard({ name, style, color }: { name: string; style: string; color: 
   return (
     <div className={`relative overflow-hidden rounded-lg border border-border p-4 ${color}`}>
       <div className="mb-3 flex items-center gap-2">
-        <Mask className="h-5 w-5" />
+        <VenetianMask className="h-5 w-5" />
         <p className="text-sm font-medium">{name}</p>
       </div>
       <p className="text-xs text-muted-foreground">{style}</p>
@@ -77,11 +77,11 @@ export default function VenetianMaskPage() {
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Size Variants</h2>
         <div className="flex items-end gap-4">
-          <Mask className="h-6 w-6 text-muted-foreground" />
-          <Mask className="h-8 w-8 text-muted-foreground" />
-          <Mask className="h-10 w-10 text-muted-foreground" />
-          <Mask className="h-12 w-12 text-muted-foreground" />
-          <Mask className="h-16 w-16 text-muted-foreground" />
+          <VenetianMask className="h-6 w-6 text-muted-foreground" />
+          <VenetianMask className="h-8 w-8 text-muted-foreground" />
+          <VenetianMask className="h-10 w-10 text-muted-foreground" />
+          <VenetianMask className="h-12 w-12 text-muted-foreground" />
+          <VenetianMask className="h-16 w-16 text-muted-foreground" />
         </div>
       </section>
 

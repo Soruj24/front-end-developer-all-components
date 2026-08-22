@@ -136,6 +136,7 @@ export default function Pricing() {
           <Active />
         </ComponentPreview>
       </section>
+      </section>
 
       {/* API Reference */}
       <section className="flex flex-col gap-4">

@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
-import { Calendar, RefreshCcw, Settings, Moon, Sun, MapPin, Globe, BarChart, Layout, ArrowRightArrowLeft, Timer, Zap, LogOut } from "lucide-react";
+import { Calendar, RefreshCcw, Settings, Moon, Sun, MapPin, Globe, BarChart, Layout, Timer, Zap, LogOut } from "lucide-react";
 
 const DATE_RANGE_SOURCE = "use client";
 
@@ -24,7 +24,7 @@ function DateRangeDemo() {
         <label className="block text-sm font-medium text-foreground mb-1">From</label>
         <input
           type="date"
-          value:from={dateRange.from}
+          value={dateRange.from}
           onChange={(e) =>
             setDateRange({
               from: e.target.valueAsDate ?? null,
@@ -44,7 +44,7 @@ function DateRangeDemo() {
         <label className="block text-sm font-medium text-foreground mb-1">To</label>
         <input
           type="date"
-          value:to={dateRange.to}
+          value={dateRange.to}
           onChange={(e) =>
             setDateRange({
               from: dateRange.from,

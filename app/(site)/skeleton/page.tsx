@@ -1,7 +1,6 @@
 "use client";
 
-import {
-  Skeleton,
+import Skeleton, {
   SkeletonCard,
   SkeletonListItem,
   SkeletonTable,
