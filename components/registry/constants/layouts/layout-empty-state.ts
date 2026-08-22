@@ -3,18 +3,27 @@ import type { RegistryEntry } from "../../types";
 
 export const layoutEmptyState: RegistryEntry = entry({
     id: "layout-empty-state",
-    title: "Empty State Layout",
-    description: "Content area showing an empty state.",
-    source: `export default function LayoutEmptyState() {
+    title: "Empty State",
+    description: "Friendly empty state with a primary call to action.",
+    source: `import { InboxIcon } from "lucide-react";
+
+export default function LayoutEmptyState() {
   return (
-    <div className="flex h-48 w-full flex-col overflow-hidden rounded-lg border border-black/[.08] dark:border-white/[.145]">
-      <div className="flex h-7 items-center justify-between border-b border-black/[.08] bg-white px-3 dark:border-white/[.145] dark:bg-black">
-        <span className="text-[10px] font-bold">Inbox</span>
-      </div>
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 bg-zinc-50 dark:bg-zinc-900">
-        <span className="text-lg text-zinc-300">📭</span>
-        <span className="text-xs text-zinc-400">No messages yet</span>
-        <span className="text-[10px] text-zinc-300">Get started by sending your first message</span>
+    <div className="flex h-48 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs">
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 p-6 text-center">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
+          <InboxIcon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        </span>
+        <h3 className="text-xs font-semibold tracking-tight">No messages yet</h3>
+        <p className="max-w-52 text-[11px] leading-relaxed text-muted-foreground">
+          When teammates mention you, it will show up here.
+        </p>
+        <button
+          type="button"
+          className="mt-1 rounded-md border border-input px-2.5 py-1 text-[11px] font-medium transition-colors duration-150 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+        >
+          Invite teammates
+        </button>
       </div>
     </div>
   );

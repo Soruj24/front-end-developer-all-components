@@ -3,34 +3,55 @@ import type { RegistryEntry } from "../../types";
 
 export const layoutProfile: RegistryEntry = entry({
     id: "layout-profile",
-    title: "Profile Layout",
-    description: "Avatar header with interactive tabs below.",
-    source: `import { useState } from "react";
+    title: "Profile",
+    description: "Profile header with tabbed content sections.",
+    source: `"use client";
+
+import { useState } from "react";
+import { UserIcon, UsersIcon } from "lucide-react";
+
+const profileTabs = ["Posts", "About", "Friends"] as const;
 
 export default function LayoutProfile() {
-  const [tab, setTab] = useState("Posts");
-
+  const [tab, setTab] = useState<(typeof profileTabs)[number]>("Posts");
   return (
-    <div className="flex h-48 w-full flex-col overflow-hidden rounded-lg border border-black/[.08] dark:border-white/[.145]">
-      <div className="flex items-center gap-3 border-b border-black/[.08] bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 text-white">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm">👤</span>
-        <div>
-          <div className="text-xs font-bold">Alex Rivera</div>
-          <div className="text-[10px] text-white/70">@alexriv</div>
+    <div className="flex h-48 w-full overflow-hidden rounded-xl border border-border bg-background shadow-xs">
+      <div className="flex flex-1 flex-col items-center p-4">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <UserIcon className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <h3 className="mt-2 text-xs font-semibold tracking-tight">Riley Chen</h3>
+        <p className="text-[10px] text-muted-foreground">Product Engineer</p>
+        <div
+          role="tablist"
+          aria-label="Profile sections"
+          className="mt-3 flex gap-1 rounded-lg bg-muted p-0.5"
+        >
+          {profileTabs.map((item) => (
+            <button
+              key={item}
+              type="button"
+              role="tab"
+              aria-selected={tab === item}
+              onClick={() => setTab(item)}
+              className={\`rounded-md px-2.5 py-1 text-[11px] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 \${
+                tab === item
+                  ? "bg-background font-medium shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }\`}
+            >
+              {item === "Friends" ? (
+                <span className="flex items-center gap-1">
+                  <UsersIcon className="h-3 w-3" aria-hidden="true" /> Friends
+                </span>
+              ) : (
+                item
+              )}
+            </button>
+          ))}
         </div>
+        <p className="mt-3 text-[11px] text-muted-foreground/70">{tab} content</p>
       </div>
-      <div className="flex gap-0 border-b border-black/[.08] bg-white px-3 dark:border-white/[.145] dark:bg-black">
-        {["Posts", "Photos", "About"].map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={\`px-3 py-1.5 text-[10px] font-medium \${tab === t ? "border-b-2 border-zinc-950 text-zinc-950 dark:border-zinc-50 dark:text-zinc-50" : "text-zinc-400"}\`}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-      <div className="flex flex-1 items-center justify-center bg-white text-[10px] text-zinc-300 dark:bg-zinc-950">{tab}</div>
     </div>
   );
 }`,

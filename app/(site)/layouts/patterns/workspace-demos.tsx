@@ -70,7 +70,7 @@ export function KanbanDemo() {
   return (
     <div className="flex h-48 w-full gap-2 overflow-hidden rounded-xl border border-border bg-muted/20 p-2 shadow-xs dark:bg-muted/10">
       {columns.map(({ title, count }) => (
-        <section key={title} aria-label={title} className="flex flex-1 flex-col gap-1.5 rounded-lg bg-background p-1.5 shadow-xs">
+        <section key={title} aria-label={title} className="flex flex-1 flex-col gap-1.5 rounded-lg border border-border bg-background p-1.5 shadow-xs">
           <header className="flex items-center justify-between px-0.5">
             <span className="text-[11px] font-medium">{title}</span>
             <span className="rounded-full bg-muted px-1.5 text-[10px] text-muted-foreground">{count}</span>
