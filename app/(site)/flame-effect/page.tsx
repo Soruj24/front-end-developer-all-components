@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
@@ -13,6 +13,11 @@ const usageCode = `import { FlameEffect } from "@/components/flame-effect";
 
 function FlameParticle({ delay, height, color }: { delay: number; height: number; color?: string }) {
   const [offset, setOffset] = useState(0);
+
+  const randomOffset = useMemo(() => {
+    const seed = Math.sin(delay * 127.1 + 311.7) * 43758.5453;
+    return (seed - Math.floor(seed) - 0.5) * 20;
+  }, [delay]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,10 +32,10 @@ function FlameParticle({ delay, height, color }: { delay: number; height: number
     <div
       className="absolute rounded-full"
       style={{
-        width: size,
-        height: size,
-        bottom: offset,
-        left: `calc(50% + ${(Math.random() - 0.5) * 20}px)`,
+        width: `${size}px`,
+        height: `${size}px`,
+        bottom: `${offset}px`,
+        left: `calc(50% + ${randomOffset}px)`,
         opacity,
         background: `radial-gradient(circle, ${color || "#f97316"}, #ef4444)`,
         filter: "blur(1px)",
@@ -41,12 +46,20 @@ function FlameParticle({ delay, height, color }: { delay: number; height: number
 }
 
 function FlameRenderer({ color = "#f97316", height = 96, width = 64 }: { color?: string; height?: number; width?: number }) {
+  const particleHeights = useMemo(
+    () => Array.from({ length: 12 }, (_, i) => {
+      const seed = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+      return 40 + (seed - Math.floor(seed)) * 20;
+    }),
+    []
+  );
+
   return (
-    <div className="relative" style={{ height, width }}>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full" style={{ height: height * 0.67, width: width * 0.625, background: `linear-gradient(to top, ${color}, transparent)`, filter: "blur(4px)", opacity: 0.6 }} />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full" style={{ height: height * 0.5, width: width * 0.375, background: `linear-gradient(to top, ${color}, #fbbf24)`, filter: "blur(2px)", opacity: 0.8 }} />
-      {[...Array(12)].map((_, i) => (
-        <FlameParticle key={i} delay={i * 0.3} height={40 + Math.random() * 20} color={color} />
+    <div className="relative" style={{ height: `${height}px`, width: `${width}px` }}>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full" style={{ height: `${height * 0.67}px`, width: `${width * 0.625}px`, background: `linear-gradient(to top, ${color}, transparent)`, filter: "blur(4px)", opacity: 0.6 }} />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full" style={{ height: `${height * 0.5}px`, width: `${width * 0.375}px`, background: `linear-gradient(to top, ${color}, #fbbf24)`, filter: "blur(2px)", opacity: 0.8 }} />
+      {particleHeights.map((h, i) => (
+        <FlameParticle key={i} delay={i * 0.3} height={h} color={color} />
       ))}
     </div>
   );
@@ -65,6 +78,14 @@ function FlameColorsDemo() {
 }
 
 function CampfireSceneDemo() {
+  const emberOpacities = useMemo(
+    () => Array.from({ length: 8 }, (_, i) => {
+      const seed = Math.sin(i * 73.97 + 191.3) * 43758.5453;
+      return (seed - Math.floor(seed)) * 0.5 + 0.2;
+    }),
+    []
+  );
+
   return (
     <div className="relative h-48 w-56 flex items-end justify-center rounded-xl overflow-hidden bg-gradient-to-t from-amber-950 via-amber-900/20 to-transparent">
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-1">
@@ -76,8 +97,8 @@ function CampfireSceneDemo() {
         <FlameRenderer color="#f97316" />
       </div>
       <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="h-0.5 w-1 rounded-full bg-orange-400/40" style={{ opacity: Math.random() * 0.5 + 0.2 }} />
+        {emberOpacities.map((op, i) => (
+          <div key={i} className="h-0.5 w-1 rounded-full bg-orange-400/40" style={{ opacity: op }} />
         ))}
       </div>
     </div>
@@ -89,8 +110,8 @@ function IntensityControlDemo() {
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-36 w-24">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full transition-all" style={{ width: 20 + intensity / 5, height: 40 + intensity, background: `linear-gradient(to top, #f97316, #fbbf24)`, filter: `blur(${3 + intensity / 20}px)`, opacity: 0.5 + intensity / 200 }} />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full transition-all" style={{ width: 12 + intensity / 10, height: 30 + intensity / 1.5, background: `linear-gradient(to top, #ef4444, #f97316)`, filter: `blur(${2 + intensity / 30}px)`, opacity: 0.7 + intensity / 300 }} />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full transition-all" style={{ width: `${20 + intensity / 5}px`, height: `${40 + intensity}px`, background: `linear-gradient(to top, #f97316, #fbbf24)`, filter: `blur(${3 + intensity / 20}px)`, opacity: 0.5 + intensity / 200 }} />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-full transition-all" style={{ width: `${12 + intensity / 10}px`, height: `${30 + intensity / 1.5}px`, background: `linear-gradient(to top, #ef4444, #f97316)`, filter: `blur(${2 + intensity / 30}px)`, opacity: 0.7 + intensity / 300 }} />
       </div>
       <div className="flex items-center gap-3">
         <Flame className="h-3 w-3 text-orange-500" />
