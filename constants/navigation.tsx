@@ -627,7 +627,6 @@ export const navigationSections: NavSection[] = [
       { label: "Key Input", href: "/key-input", icon: <Key className="h-4 w-4" />, desc: "Keyboard key indicator" },
       { label: "Keyboard Layout", href: "/keyboard-layout", icon: <Keyboard className="h-4 w-4" />, desc: "Keyboard layout visualizer" },
       { label: "Laptop Mockup", href: "/laptop-mockup", icon: <Laptop className="h-4 w-4" />, desc: "Laptop device mockup" },
-      { label: "Layers Stack", href: "/layers-stack", icon: <Layers className="h-4 w-4" />, desc: "Layers stacking effect" },
       { label: "Leaf Nature", href: "/leaf-nature", icon: <Leaf className="h-4 w-4" />, desc: "Nature leaf decoration" },
       { label: "Letter Text", href: "/letter-text", icon: <LetterText className="h-4 w-4" />, desc: "Letter text styling" },
       { label: "Life Buoy", href: "/life-buoy", icon: <LifeBuoy className="h-4 w-4" />, desc: "Life buoy help icon" },
