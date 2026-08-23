@@ -6,6 +6,83 @@ import { SearchTrigger } from "@/components/search/SearchTrigger";
 import { SearchDialog } from "@/components/search/SearchDialog";
 import { Reveal } from "./Reveal";
 
+function HeroComponentPreview() {
+  const [activeTab, setActiveTab] = useState<"button" | "card" | "input">("button");
+
+  return (
+    <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border/60 bg-background shadow-card">
+      {/* Tabs */}
+      <div className="flex border-b border-border/40">
+        {(["button", "card", "input"] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-1 px-4 py-2.5 text-xs font-medium capitalize transition-colors ${
+              activeTab === tab
+                ? "border-b-2 border-foreground text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Preview */}
+      <div className="flex items-center justify-center bg-muted/30 p-8">
+        {activeTab === "button" && (
+          <div className="flex flex-wrap items-center gap-3">
+            <button className="inline-flex h-9 items-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-all hover:opacity-90 active:scale-[0.98]">
+              Primary
+            </button>
+            <button className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-all hover:bg-muted active:scale-[0.98]">
+              Secondary
+            </button>
+            <button className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-transparent px-4 text-sm font-medium text-foreground transition-all hover:bg-muted active:scale-[0.98]">
+              Outline
+            </button>
+            <button className="inline-flex h-9 items-center gap-2 rounded-md bg-transparent px-4 text-sm font-medium text-foreground transition-all hover:bg-muted active:scale-[0.98]">
+              Ghost
+            </button>
+          </div>
+        )}
+
+        {activeTab === "card" && (
+          <div className="w-full max-w-sm rounded-xl border border-border/60 bg-background p-4">
+            <div className="mb-3 h-32 rounded-lg bg-muted/50" />
+            <div className="mb-2 h-4 w-3/4 rounded bg-muted/50" />
+            <div className="mb-4 h-3 w-1/2 rounded bg-muted/50" />
+            <div className="flex gap-2">
+              <div className="h-8 flex-1 rounded-md bg-foreground/10" />
+              <div className="h-8 flex-1 rounded-md bg-foreground" />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "input" && (
+          <div className="w-full max-w-sm space-y-3">
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-foreground">Email</label>
+              <div className="flex h-9 rounded-md border border-border bg-background px-3 text-sm">
+                <span className="text-muted-foreground">developer@example.com</span>
+              </div>
+            </div>
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-foreground">Password</label>
+              <div className="flex h-9 rounded-md border border-border bg-background px-3 text-sm">
+                <span className="text-muted-foreground">••••••••</span>
+              </div>
+            </div>
+            <button className="inline-flex h-9 w-full items-center justify-center rounded-md bg-foreground text-sm font-medium text-background">
+              Sign In
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function HomeHero() {
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -24,11 +101,12 @@ export function HomeHero() {
               </span>
 
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance max-w-4xl">
-                Build Better Interfaces, Faster.
+                Build faster with production-ready components.
               </h1>
 
               <p className="max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                Discover, customize, generate and share production-ready React + Tailwind CSS components.
+                Discover, customize, generate, and ship reusable Tailwind CSS
+                components for your next project.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -64,10 +142,14 @@ export function HomeHero() {
             <div className="w-full max-w-2xl">
               <SearchTrigger
                 onClick={() => setSearchOpen(true)}
-                placeholder="Search components, templates and documentation..."
+                placeholder="Search components, templates, blocks..."
                 className="w-full"
               />
             </div>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <HeroComponentPreview />
           </Reveal>
 
           <Reveal delay={200}>

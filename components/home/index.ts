@@ -15,3 +15,6 @@ export { CommunitySection } from "./CommunitySection";
 export { FinalCTA } from "./FinalCTA";
 export { SectionHeading } from "./SectionHeading";
 export { Reveal } from "./Reveal";
+export { QuickStart } from "./QuickStart";
+export { DeveloperWorkflow } from "./DeveloperWorkflow";
+export { HowToUse } from "./HowToUse";

@@ -12,6 +12,9 @@ import {
   CommunitySection,
   TemplatesSection,
   FinalCTA,
+  QuickStart,
+  DeveloperWorkflow,
+  HowToUse,
 } from "@/components/home";
 import {
   getFeaturedComponents,
@@ -43,8 +46,10 @@ export default async function Home() {
 
       <div className="flex flex-col">
         <HomeHero />
-        <AIComponentGenerator />
+        <QuickStart />
         <FeaturedComponents components={featured} />
+        <HowToUse />
+        <DeveloperWorkflow />
         <CategoriesSection categories={categories} />
         <TemplatesSection />
         <VisualBuilderSection />

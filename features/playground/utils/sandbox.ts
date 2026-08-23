@@ -166,6 +166,9 @@ export async function runProject(
 }
 
 export function unmountPreview(): void {
-  activeRoot?.unmount();
+  const root = activeRoot;
   activeRoot = null;
+  if (root) {
+    setTimeout(() => root.unmount(), 0);
+  }
 }
