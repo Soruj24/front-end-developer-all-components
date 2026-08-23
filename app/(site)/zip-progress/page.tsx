@@ -1,49 +1,66 @@
-"use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Loader2 } from "lucide-react";
+﻿"use client";
 
-const installCommand = `npx component-library@latest add zip-progress`;
-const usageCode = `// usage`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { ZIP_PROGRESS_SOURCE } from "./zip-progress-source";
+import {
+  BASIC_PROGRESS_EXAMPLE,
+  PROGRESS_STATUSES_EXAMPLE,
+  PROGRESS_WITH_SIZE_EXAMPLE,
+  PROGRESS_COMPACT_EXAMPLE,
+  PROGRESS_COMPLETE_EXAMPLE,
+  PROGRESS_ERROR_EXAMPLE,
+  PLAYGROUND_EXAMPLE,
+} from "./zip-progress-examples";
+import {
+  BasicProgress,
+  ProgressStatuses,
+  ProgressWithSize,
+  ProgressCompact,
+  ProgressComplete,
+  ProgressError,
+  PlaygroundDemo,
+} from "./demos";
 
 export default function ZipProgressPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Zip Progress</h1>
-          <Badge variant="primary">Feedback</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A zip progress component that displays real-time progress feedback during zip compression or extraction operations.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Zip Progress Demo</h2><p className="mt-1 text-sm text-muted-foreground">Real-time progress tracking for zip operations.</p></div>
-        <ComponentPreview id="zip-progress-demo"><div className="w-full p-4">
-          <div className="flex flex-col gap-3 rounded-lg border p-4">
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              <span className="text-sm font-medium">Compressing files...</span>
-            </div>
-            <div className="h-2 rounded-full bg-muted">
-              <div className="h-full w-3/4 rounded-full bg-primary transition-all" />
-            </div>
-            <p className="text-xs text-muted-foreground">12 of 16 files processed • 3.2 MB of 4.1 MB</p>
-          </div>
-        </div></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Zip Progress"
+      category="Feedback"
+      description="A zip progress component that displays real-time progress feedback during zip compression or extraction operations."
+    >
+      <PreviewPanel filename="basic-progress.tsx">
+        <BasicProgress />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={ZIP_PROGRESS_SOURCE}
+        filename="components/ui/ZipProgress/BasicProgress.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Playground" description="Switch between all zip progress variants." code={PLAYGROUND_EXAMPLE}>
+          <PlaygroundDemo />
+        </ExampleBlock>
+        <ExampleBlock title="Basic Progress" description="Animated progress bar with spinner and file count." code={BASIC_PROGRESS_EXAMPLE}>
+          <BasicProgress />
+        </ExampleBlock>
+        <ExampleBlock title="Progress Statuses" description="Three-phase progress: compressing, extracting, complete." code={PROGRESS_STATUSES_EXAMPLE}>
+          <ProgressStatuses />
+        </ExampleBlock>
+        <ExampleBlock title="With Size" description="Progress with file size tracking and pause/resume controls." code={PROGRESS_WITH_SIZE_EXAMPLE}>
+          <ProgressWithSize />
+        </ExampleBlock>
+        <ExampleBlock title="Compact" description="Multiple file progress bars in a dense list." code={PROGRESS_COMPACT_EXAMPLE}>
+          <ProgressCompact />
+        </ExampleBlock>
+        <ExampleBlock title="Complete" description="Success state with green styling and checkmark." code={PROGRESS_COMPLETE_EXAMPLE}>
+          <ProgressComplete />
+        </ExampleBlock>
+        <ExampleBlock title="Error" description="Error state with retry button and failure message." code={PROGRESS_ERROR_EXAMPLE}>
+          <ProgressError />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
