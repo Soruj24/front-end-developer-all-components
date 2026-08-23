@@ -27,7 +27,27 @@ export default function ModalCenterPage() {
       </section>
       <section className="flex flex-col gap-4">
         <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Preview</h2><p className="mt-1 text-sm text-muted-foreground">Centered modal dialog with backdrop blur effect.</p></div>
-        <ComponentPreview id="modal-center"><div className="w-full p-4"><div className="flex items-center justify-center py-8"><div className="relative w-full max-w-md"><div className="fixed inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center p-4" style={{position:"relative",inset:"auto"}}><div className="w-full bg-background rounded-xl border shadow-2xl p-6"><div className="flex items-center justify-between mb-4"><h2 className="text-lg font-semibold text-foreground">Modal Title</h2><button className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg></button></div><p className="text-sm text-muted-foreground mb-6">This is a centered modal dialog with a backdrop overlay. Click outside or press Escape to close.</p><div className="flex justify-end gap-3"><button className="px-4 py-2 rounded-lg border text-sm font-medium hover:bg-muted transition-colors">Cancel</button><button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">Confirm</button></div></div></div></div></div></ComponentPreview>
+        <ComponentPreview id="modal-center">
+          <div className="w-full p-4">
+            <div className="flex items-center justify-center py-8">
+              <div className="relative w-full max-w-md">
+                <div className="bg-background rounded-xl border shadow-2xl p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-foreground">Modal Title</h2>
+                    <button className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-6">This is a centered modal dialog with a backdrop overlay. Click outside or press Escape to close.</p>
+                  <div className="flex justify-end gap-3">
+                    <button className="px-4 py-2 rounded-lg border text-sm font-medium hover:bg-muted transition-colors">Cancel</button>
+                    <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ComponentPreview>
       </section>
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>

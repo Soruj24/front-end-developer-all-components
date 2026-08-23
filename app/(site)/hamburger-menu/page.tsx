@@ -308,8 +308,8 @@ export default function HamburgerMenuPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{""default" | "slide" | "overlay" | "fullscreen""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{""default""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"default" | "slide" | "overlay" | "fullscreen"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"default"`}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

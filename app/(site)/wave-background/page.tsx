@@ -277,7 +277,7 @@ export default function WaveBackgroundPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{""hero" | "divider" | "footer""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"hero" | "divider" | "footer"`}</td>
                 <td className="px-4 py-3 text-muted-foreground">"divider"</td>
                 <td className="px-4 py-3">No</td>
               </tr>

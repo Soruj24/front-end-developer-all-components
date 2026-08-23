@@ -10,7 +10,7 @@ function AccordionDemo(icon, title, badgeNum) {
   return (
     <div className="rounded-xl border bg-background p-6 flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        {icon className="w-5 h-5 text-primary"} 
+        {icon}
         <h3 className="font-semibold text-foreground">{title}</h3>
         <Badge variant="outline" className="ml-auto">Demo {badgeNum}</Badge>
       </div>

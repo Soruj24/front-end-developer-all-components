@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
-import ComponentPreview from "@/components/preview";
-import CodeBlock from "@/components/home/CodeBlock";
+import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { CheckSquare, Square, Check, Trash2, Plus, Clock, Star } from "lucide-react";
 
 const installCommand = "npx ui-add task-list";

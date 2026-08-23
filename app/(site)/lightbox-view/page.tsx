@@ -287,12 +287,12 @@ export default function LightboxViewPage() {
               </tr>
             </thead>
             <tbody>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">images</td><td className="px-4 py-3 text-muted-foreground">{src: string; alt: string; caption?: string}[]</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">Yes</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">images</td><td className="px-4 py-3 text-muted-foreground">{`{src: string; alt: string; caption?: string}[]`}</td><td className="px-4 py-3 text-muted-foreground">[]</td><td className="px-4 py-3">Yes</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">initialIndex</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">0</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">showThumbnails</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">showCaptions</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">enableZoom</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3">No</td></tr>
-        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onClose</td><td className="px-4 py-3 text-muted-foreground">() => void</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
+        <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">onClose</td><td className="px-4 py-3 text-muted-foreground">{`() => void`}</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">Yes</td></tr>
         <tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr>
             </tbody>
           </table>

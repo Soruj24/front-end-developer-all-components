@@ -377,8 +377,8 @@ export default function ZigzagPathPage() {
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">{""horizontal" | "vertical""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{""horizontal""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"horizontal" | "vertical"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"horizontal"`}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">

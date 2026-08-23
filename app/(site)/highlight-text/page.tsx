@@ -320,8 +320,8 @@ export default function HighlightTextPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">{""solid" | "underline" | "gradient" | "neon""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{""solid""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"solid" | "underline" | "gradient" | "neon"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"solid"`}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr className="border-b">
@@ -332,8 +332,8 @@ export default function HighlightTextPage() {
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-3 font-mono text-xs">as</td>
-                <td className="px-4 py-3 text-muted-foreground">{""mark" | "span" | "div""}</td>
-                <td className="px-4 py-3 text-muted-foreground">{""span""}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"mark" | "span" | "div"`}</td>
+                <td className="px-4 py-3 text-muted-foreground">{`"span"`}</td>
                 <td className="px-4 py-3">No</td>
               </tr>
               <tr>

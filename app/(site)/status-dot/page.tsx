@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
-import ComponentPreview from "@/components/preview";
-import CodeBlock from "@/components/home/CodeBlock";
+import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { Circle, CheckCircle, XCircle, AlertCircle, Clock, Wifi, Signal } from "lucide-react";
 
 const installCommand = "npx ui-add status-dot";

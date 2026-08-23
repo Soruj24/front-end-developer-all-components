@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
-import ComponentPreview from "@/components/preview";
-import CodeBlock from "@/components/home/CodeBlock";
+import { ComponentPreview } from "@/components/preview";
+import { CodeBlock } from "@/components/home/CodeBlock";
 import { Square, Circle, Triangle, Hexagon, Star, Pentagon, Diamond } from "lucide-react";
 
 const installCommand = "npx ui-add shape-builder";
