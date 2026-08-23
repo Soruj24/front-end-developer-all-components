@@ -1,51 +1,61 @@
-"use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Hand } from "lucide-react";
+﻿"use client";
 
-const installCommand = `npx component-library@latest add zoom-gesture`;
-const usageCode = `// usage`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { ZOOM_GESTURE_SOURCE } from "./zoom-gesture-source";
+import {
+  BASIC_GESTURE_EXAMPLE,
+  GESTURE_TYPES_EXAMPLE,
+  ZOOM_BOUNDS_EXAMPLE,
+  ZOOM_WITH_RESET_EXAMPLE,
+  ZOOM_PRESETS_EXAMPLE,
+  PLAYGROUND_EXAMPLE,
+} from "./zoom-gesture-examples";
+import {
+  BasicGesture,
+  GestureTypes,
+  ZoomBounds,
+  ZoomWithReset,
+  ZoomPresets,
+  PlaygroundDemo,
+} from "./demos";
 
 export default function ZoomGesturePage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Zoom Gesture</h1>
-          <Badge variant="primary">Input</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A zoom gesture component that supports pinch-to-zoom, double-tap zoom, and mouse wheel zoom interactions.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Zoom Gesture Demo</h2><p className="mt-1 text-sm text-muted-foreground">Pinch, double-tap, or scroll to zoom in and out.</p></div>
-        <ComponentPreview id="zoom-gesture-demo"><div className="w-full p-4">
-          <div className="flex flex-col items-center gap-4 rounded-lg border p-6">
-            <Hand className="h-8 w-8 text-primary" />
-            <div className="text-center">
-              <p className="text-sm font-medium">Gesture Zoom</p>
-              <p className="text-xs text-muted-foreground">Pinch to zoom • Double-tap to reset</p>
-            </div>
-            <div className="flex gap-2">
-              <span className="rounded-full bg-muted px-3 py-1 text-xs">1x</span>
-              <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">2x</span>
-              <span className="rounded-full bg-muted px-3 py-1 text-xs">3x</span>
-            </div>
-          </div>
-        </div></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Zoom Gesture"
+      category="Input"
+      description="A zoom gesture component that supports pinch-to-zoom, double-tap zoom, and mouse wheel zoom interactions."
+    >
+      <PreviewPanel filename="basic-gesture.tsx">
+        <BasicGesture />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={ZOOM_GESTURE_SOURCE}
+        filename="components/ui/ZoomGesture/BasicGesture.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Playground" description="Switch between all zoom gesture variants." code={PLAYGROUND_EXAMPLE}>
+          <PlaygroundDemo />
+        </ExampleBlock>
+        <ExampleBlock title="Basic Gesture" description="Mouse wheel zoom with preset buttons." code={BASIC_GESTURE_EXAMPLE}>
+          <BasicGesture />
+        </ExampleBlock>
+        <ExampleBlock title="Gesture Types" description="Scroll and double-tap gesture detection with visual feedback." code={GESTURE_TYPES_EXAMPLE}>
+          <GestureTypes />
+        </ExampleBlock>
+        <ExampleBlock title="Zoom Bounds" description="Bounded zoom with min/max limits and boundary indicators." code={ZOOM_BOUNDS_EXAMPLE}>
+          <ZoomBounds />
+        </ExampleBlock>
+        <ExampleBlock title="With Reset" description="Zoom with drag-to-pan and reset button." code={ZOOM_WITH_RESET_EXAMPLE}>
+          <ZoomWithReset />
+        </ExampleBlock>
+        <ExampleBlock title="Presets" description="7 preset zoom levels from 0.5x to 4x." code={ZOOM_PRESETS_EXAMPLE}>
+          <ZoomPresets />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
