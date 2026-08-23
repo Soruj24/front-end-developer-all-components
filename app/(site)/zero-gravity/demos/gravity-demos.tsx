@@ -74,12 +74,13 @@ export function GravityControlled() {
   const [speed, setSpeed] = useState("normal");
 
   const speeds = { slow: "4s", normal: "2s", fast: "1s" };
+  const playState = active ? "running" : "paused";
 
   return (
     <div className="mx-auto max-w-sm space-y-3">
       <div className="relative h-40 overflow-hidden rounded-xl border border-zinc-200 bg-gradient-to-b from-violet-50 to-purple-50 shadow-sm dark:border-zinc-700 dark:from-violet-950/50 dark:to-purple-950/50">
-        {active && [1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="absolute rounded-full bg-gradient-to-br from-violet-400 to-purple-500 shadow-lg" style={{ left: `${i * 18}%`, top: `${30 + (i % 3) * 20}%`, width: `${10 + i * 3}px`, height: `${10 + i * 3}px`, animation: `float ${speeds[speed as keyof typeof speeds]} ease-in-out infinite`, animationDelay: `${i * 0.2}s` }} />
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="absolute rounded-full bg-gradient-to-br from-violet-400 to-purple-500 shadow-lg" style={{ left: `${i * 18}%`, top: `${30 + (i % 3) * 20}%`, width: `${10 + i * 3}px`, height: `${10 + i * 3}px`, animationName: "float", animationDuration: speeds[speed as keyof typeof speeds], animationTimingFunction: "ease-in-out", animationIterationCount: "infinite", animationDelay: `${i * 0.2}s`, animationPlayState: playState }} />
         ))}
         <style>{`@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }`}</style>
       </div>

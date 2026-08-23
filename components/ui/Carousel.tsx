@@ -51,12 +51,12 @@ const Carousel = ({
 
   const slideClasses =
     variant === "fade"
-      ? "absolute inset-0 transition-opacity duration-500"
-      : "w-full shrink-0 transition-transform duration-500";
+      ? "absolute inset-0 transition-opacity duration-500 ease-in-out"
+      : "w-full shrink-0 transition-transform duration-500 ease-in-out";
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl"
+      className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
       onMouseEnter={() => pauseOnHover && setPaused(true)}
       onMouseLeave={() => pauseOnHover && setPaused(false)}
     >
@@ -93,7 +93,8 @@ const Carousel = ({
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-surface/80 text-foreground shadow transition-colors hover:bg-surface dark:hover:bg-muted"
+            aria-label="Previous slide"
+            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-300"
           >
             <svg
               className="h-4 w-4"
@@ -111,7 +112,8 @@ const Carousel = ({
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-surface/80 text-foreground shadow transition-colors hover:bg-surface dark:hover:bg-muted"
+            aria-label="Next slide"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:focus-visible:ring-zinc-300"
           >
             <svg
               className="h-4 w-4"
@@ -130,15 +132,17 @@ const Carousel = ({
         </>
       )}
       {showDots && slides.length > 1 && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/80 px-2.5 py-1.5 shadow-sm backdrop-blur-sm dark:border-zinc-700 dark:bg-zinc-900/80">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`h-2 rounded-full transition-all ${
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === current ? "true" : undefined}
+              className={`h-2 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-300 ${
                 i === current
-                  ? "w-6 bg-white"
-                  : "w-2 bg-white/50 hover:bg-white/80"
+                  ? "w-6 bg-zinc-900 dark:bg-zinc-100"
+                  : "w-2 bg-zinc-300 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-500"
               }`}
             />
           ))}
