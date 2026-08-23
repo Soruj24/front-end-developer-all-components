@@ -298,7 +298,6 @@ export const navigationSections: NavSection[] = [
     icon: <Layers className="h-4 w-4" />,
     description: "Reusable UI primitives",
     links: [
-      { label: "Accordion Menu", href: "/accordion-menu", icon: <List className="h-4 w-4" />, desc: "Multi-level accordion navigation menu" },
       { label: "Accordion", href: "/accordion", icon: <ChevronsRight className="h-4 w-4" />, desc: "Single, multiple, icon accordions" },
       { label: "Activity Feed", href: "/activity-feed", icon: <ScrollText className="h-4 w-4" />, desc: "Real-time activity and notification feed" },
       { label: "Alert Dialog", href: "/alert-dialog", icon: <AlertTriangle className="h-4 w-4" />, desc: "Modal alert dialogs with confirm/cancel" },

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import {
-  Accordion,
   Breadcrumb,
   Dock,
   FloatingToolbar,
@@ -12,19 +11,6 @@ import {
 } from "@/components/ui";
 
 export const navigation: Record<string, () => ReactNode> = {
-  accordion: () => (
-    <div className="w-full max-w-md">
-      <Accordion
-        multiple
-        items={[
-          { title: "What is the registry?", content: "A catalog of 1,000+ dependency-free UI components.", icon: <span>▣</span> },
-          { title: "How do I install a component?", content: "Run the CLI command shown on the component page.", icon: <span>⌘</span> },
-          { title: "Are the components accessible?", content: "Yes — keyboard, screen reader, and focus management included.", icon: <span>✦</span> },
-        ]}
-      />
-    </div>
-  ),
-
   tabs: () => <TabsDemo />,
 
   breadcrumb: () => (

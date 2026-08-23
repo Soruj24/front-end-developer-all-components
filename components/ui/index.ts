@@ -3,7 +3,6 @@
  *
  * Import from the barrel: `import { Button, Card } from "@/components/ui"`.
  */
-export { default as Accordion } from "./Accordion";
 export { Alert } from "./Alert";
 export { Avatar } from "./Avatar";
 export { Badge } from "./Badge";
