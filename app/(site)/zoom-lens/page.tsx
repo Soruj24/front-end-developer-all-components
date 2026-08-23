@@ -1,47 +1,61 @@
-"use client";
-import { Badge } from "@/components/design-system/Badge";
-import { ComponentPreview } from "@/components/preview";
-import { CodeBlock } from "@/components/home/CodeBlock";
-import { Search } from "lucide-react";
+﻿"use client";
 
-const installCommand = `npx component-library@latest add zoom-lens`;
-const usageCode = `// usage`;
+import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { ZOOM_LENS_SOURCE } from "./zoom-lens-source";
+import {
+  BASIC_LENS_EXAMPLE,
+  LENS_SIZES_EXAMPLE,
+  LENS_SHAPES_EXAMPLE,
+  LENS_WITH_GRID_EXAMPLE,
+  LENS_WITH_ZOOM_EXAMPLE,
+  PLAYGROUND_EXAMPLE,
+} from "./zoom-lens-examples";
+import {
+  BasicLens,
+  LensSizes,
+  LensShapes,
+  LensWithGrid,
+  LensWithZoom,
+  PlaygroundDemo,
+} from "./demos";
 
 export default function ZoomLensPage() {
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
-      <header className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Zoom Lens</h1>
-          <Badge variant="primary">Input</Badge>
-        </div>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">A zoom lens component that magnifies content on hover, providing a detailed view of specific areas.</p>
-      </header>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-      <section className="flex flex-col gap-4">
-        <div><h2 className="text-xl font-semibold tracking-tight text-foreground">Zoom Lens Demo</h2><p className="mt-1 text-sm text-muted-foreground">Hover over the content to see the zoom lens effect.</p></div>
-        <ComponentPreview id="zoom-lens-demo"><div className="w-full p-4">
-          <div className="relative group">
-            <div className="rounded-lg border bg-muted/30 p-8 text-center text-sm text-muted-foreground">
-              Hover over this area to zoom in
-            </div>
-            <div className="pointer-events-none absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-              <Search className="h-4 w-4" />
-            </div>
-          </div>
-        </div></ComponentPreview>
-      </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border"><table className="w-full text-sm"><thead><tr className="border-b bg-muted/50"><th className="px-4 py-3 text-left font-medium">Prop</th><th className="px-4 py-3 text-left font-medium">Type</th><th className="px-4 py-3 text-left font-medium">Default</th><th className="px-4 py-3 text-left font-medium">Required</th></tr></thead><tbody><tr className="border-b"><td className="px-4 py-3 font-mono text-xs">className</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">-</td><td className="px-4 py-3">No</td></tr></tbody></table></div>
-      </section>
-    </div>
+    <ComponentDocPage
+      name="Zoom Lens"
+      category="Input"
+      description="A zoom lens component that magnifies content on hover, providing a detailed view of specific areas."
+    >
+      <PreviewPanel filename="basic-lens.tsx">
+        <BasicLens />
+      </PreviewPanel>
+
+      <SourceCodeViewer
+        source={ZOOM_LENS_SOURCE}
+        filename="components/ui/ZoomLens/BasicLens.tsx"
+        defaultExpanded
+      />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Playground" description="Switch between all zoom lens variants." code={PLAYGROUND_EXAMPLE}>
+          <PlaygroundDemo />
+        </ExampleBlock>
+        <ExampleBlock title="Basic Lens" description="Circle lens that follows the cursor with 2x magnification." code={BASIC_LENS_EXAMPLE}>
+          <BasicLens />
+        </ExampleBlock>
+        <ExampleBlock title="Lens Sizes" description="Three lens sizes: small (96px), medium (128px), large (160px)." code={LENS_SIZES_EXAMPLE}>
+          <LensSizes />
+        </ExampleBlock>
+        <ExampleBlock title="Lens Shapes" description="Four lens shapes: circle, rounded, square, sharp." code={LENS_SHAPES_EXAMPLE}>
+          <LensShapes />
+        </ExampleBlock>
+        <ExampleBlock title="With Grid" description="Toggle crosshair grid overlay on the lens." code={LENS_WITH_GRID_EXAMPLE}>
+          <LensWithGrid />
+        </ExampleBlock>
+        <ExampleBlock title="With Zoom" description="Adjustable zoom level from 1.5x to 4x." code={LENS_WITH_ZOOM_EXAMPLE}>
+          <LensWithZoom />
+        </ExampleBlock>
+      </div>
+    </ComponentDocPage>
   );
 }
