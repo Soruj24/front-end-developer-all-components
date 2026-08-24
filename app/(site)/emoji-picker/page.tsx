@@ -26,28 +26,28 @@ export default function EmojiPickerPage() {
   return (
     <ComponentDocPage title="Emoji Picker">
       <PreviewPanel>
-        <ExampleBlock title="Emoji Grid">
+        <ExampleBlock title="Emoji Grid" code={sourceCode}>
           <EmojiGrid />
         </ExampleBlock>
-        <ExampleBlock title="Category Tabs">
+        <ExampleBlock title="Category Tabs" code={sourceCode}>
           <CategoryTabs />
         </ExampleBlock>
-        <ExampleBlock title="Search Emoji">
+        <ExampleBlock title="Search Emoji" code={sourceCode}>
           <SearchEmoji />
         </ExampleBlock>
-        <ExampleBlock title="Frequently Used">
+        <ExampleBlock title="Frequently Used" code={sourceCode}>
           <FrequentlyUsed />
         </ExampleBlock>
-        <ExampleBlock title="Skin Tone">
+        <ExampleBlock title="Skin Tone" code={sourceCode}>
           <SkinTone />
         </ExampleBlock>
-        <ExampleBlock title="Emoji Preview">
+        <ExampleBlock title="Emoji Preview" code={sourceCode}>
           <EmojiPreview />
         </ExampleBlock>
-        <ExampleBlock title="Insert Emoji">
+        <ExampleBlock title="Insert Emoji" code={sourceCode}>
           <InsertEmoji />
         </ExampleBlock>
-        <SourceCodeViewer code={sourceCode} filename="emoji-picker.tsx" />
+        <SourceCodeViewer source={sourceCode} filename="emoji-picker.tsx" />
       </PreviewPanel>
     </ComponentDocPage>
   );

@@ -84,21 +84,13 @@ export default function DrawerPanelPage() {
       <section className="flex flex-col gap-6">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Left Drawer</h3>
-          <p className="text-sm text-muted-foreground">A navigation drawer from the left side.</p>
-          <ExampleBlock code={usageCode}>
-            <LeftDrawerDemo />
-          </ExampleBlock>
-        </div>
+        <ExampleBlock title="Left Drawer" description="A navigation drawer from the left side." code={usageCode}>
+          <LeftDrawerDemo />
+        </ExampleBlock>
 
-        <div className="flex flex-col gap-3">
-          <h3 className="text-lg font-medium text-foreground">Bottom Drawer</h3>
-          <p className="text-sm text-muted-foreground">A drawer that slides up from the bottom.</p>
-          <ExampleBlock code={usageCode}>
-            <BottomDrawerDemo />
-          </ExampleBlock>
-        </div>
+        <ExampleBlock title="Bottom Drawer" description="A drawer that slides up from the bottom." code={usageCode}>
+          <BottomDrawerDemo />
+        </ExampleBlock>
       </section>
 
       <section className="flex flex-col gap-4">

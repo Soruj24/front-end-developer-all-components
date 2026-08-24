@@ -135,7 +135,7 @@ export function PricingCalculator({
         <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface/60 p-5">
           <div className="flex items-end justify-between">
             <span className="text-sm text-muted-foreground">Total</span>
-            <span className="text-3xl font-semibold tabular-nums text-foreground">${subtotal.toFixed(2)}</span>
+            <span className="text-3xl font-semibold tabular-nums text-foreground">\${subtotal.toFixed(2)}</span>
           </div>
           {cycle === "annual" && (
             <p className="text-xs text-success">You save {annualDiscountPercent}% with annual billing.</p>

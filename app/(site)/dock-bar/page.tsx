@@ -6,6 +6,16 @@ import {
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { DockBar } from "@/components/ui/Analytics/DockBar";
+
+const navItems = [
+  { icon: "🏠", label: "Home" },
+  { icon: "📁", label: "Files" },
+  { icon: "🌐", label: "Browser" },
+  { icon: "✉️", label: "Mail" },
+  { icon: "⚙️", label: "Settings" },
+  { icon: "🎵", label: "Music" },
+];
 
 const installCommand = `npx component-library@latest add dock-bar`;
 const usageCode = `import { DockBar } from "@/components/ui/dock-bar";

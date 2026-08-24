@@ -131,7 +131,7 @@ export default function MarqueeScrollPage() {
             `}</style>
             <div className="relative overflow-hidden py-4">
               <div className="flex gap-8 whitespace-nowrap" style={{ animation: "marquee 15s linear infinite" }}>
-                {[...words, ...words].map((w, i) => (
+                {[...["React", "TypeScript", "Next.js", "Tailwind", "Node.js", "Prisma", "Vercel", "Figma"], ...["React", "TypeScript", "Next.js", "Tailwind", "Node.js", "Prisma", "Vercel", "Figma"]].map((w, i) => (
                   <span key={i} className="text-2xl font-bold text-foreground/10">{w}</span>
                 ))}
               </div>
@@ -149,7 +149,7 @@ export default function MarqueeScrollPage() {
             `}</style>
             <div className="relative overflow-hidden py-4">
               <div className="flex gap-6 whitespace-nowrap" style={{ animation: "marquee 12s linear infinite reverse" }}>
-                {[...tags, ...tags].map((t, i) => (
+                {[...Array.from({ length: 6 }, (_, i) => `Tag ${i + 1}`), ...Array.from({ length: 6 }, (_, i) => `Tag ${i + 1}`)].map((t, i) => (
                   <div key={i} className="flex-none rounded-full border px-6 py-3">
                     <span className="text-sm font-medium text-foreground">{t}</span>
                   </div>

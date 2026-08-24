@@ -66,7 +66,7 @@ export default function LoadingPage() {
             </div>
           </ExampleBlock>
 
-          <ExampleBlock title="Spinner Variants">
+          <ExampleBlock title="Spinner Variants" code={usageCode}>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col items-center gap-2 rounded border p-3">
                 <span className="text-xs text-muted-foreground">Small</span>
@@ -107,7 +107,7 @@ export default function LoadingPage() {
             </div>
           </ExampleBlock>
 
-          <ExampleBlock title="Progress Bars">
+          <ExampleBlock title="Progress Bars" code={usageCode}>
             <div className="grid grid-cols-2 gap-3">
               <div className="h-2.5 w-24 rounded bg-muted overflow-hidden">
                 <div className="h-full bg-blue-500 w-3/4 rounded-full" />
@@ -128,7 +128,7 @@ export default function LoadingPage() {
             </div>
           </ExampleBlock>
 
-          <ExampleBlock title="Skeleton Screens">
+          <ExampleBlock title="Skeleton Screens" code={usageCode}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <div className="rounded bg-muted p-4">
                 <div className="h-6 w-full rounded bg-muted" />
@@ -166,7 +166,7 @@ export default function LoadingPage() {
             </div>
           </ExampleBlock>
 
-          <ExampleBlock title="Overlays & Animations">
+          <ExampleBlock title="Overlays & Animations" code={usageCode}>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="rounded bg-muted p-4">
                 <h2 className="mb-3 font-medium">Full-Screen Overlay</h2>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Stethoscope, Heart, Activity, Thermometer, Pill, Hospital, User } from "lucide-react";
+import { Stethoscope, Heart, Activity, Thermometer, Pill, Hospital, User, FileText } from "lucide-react";
 
 const installCommand = `npx component-library@latest add stethoscope-med`;
 const usageCode = `<HealthCheck patientId="PT-001" onComplete={handleComplete} />`;

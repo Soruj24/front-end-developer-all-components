@@ -20,49 +20,49 @@ export default function EqualizerPage() {
   return (
     <ComponentDocPage name="Equalizer" category="Media" description="An audio equalizer component with frequency bands, sliders, and visual frequency display for audio applications.">
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Bar Equalizer" description="Vertical frequency band sliders with animation.">
+        <ExampleBlock title="Bar Equalizer" description="Vertical frequency band sliders with animation." code={BarEqualizer.toString()}>
           <PreviewPanel>
             <BarEqualizer />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Circle Equalizer" description="Circular frequency band visualization.">
+        <ExampleBlock title="Circle Equalizer" description="Circular frequency band visualization." code={CircleEqualizer.toString()}>
           <PreviewPanel>
             <CircleEqualizer />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Frequency Bands" description="10-band graphic equalizer with slider controls.">
+        <ExampleBlock title="Frequency Bands" description="10-band graphic equalizer with slider controls." code={FrequencyBands.toString()}>
           <PreviewPanel>
             <FrequencyBands />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Preset EQ" description="Pre-configured EQ presets for different genres.">
+        <ExampleBlock title="Preset EQ" description="Pre-configured EQ presets for different genres." code={PresetEQ.toString()}>
           <PreviewPanel>
             <PresetEQ />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Custom EQ" description="Parametric EQ with frequency, gain, and Q controls.">
+        <ExampleBlock title="Custom EQ" description="Parametric EQ with frequency, gain, and Q controls." code={CustomEQ.toString()}>
           <PreviewPanel>
             <CustomEQ />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Visualizer" description="Animated frequency spectrum visualizer.">
+        <ExampleBlock title="Visualizer" description="Animated frequency spectrum visualizer." code={Visualizer.toString()}>
           <PreviewPanel>
             <Visualizer />
           </PreviewPanel>
         </ExampleBlock>
       </section>
       <section className="flex flex-col gap-4">
-        <ExampleBlock title="Audio Bars" description="Stereo channel level meters.">
+        <ExampleBlock title="Audio Bars" description="Stereo channel level meters." code={AudioBars.toString()}>
           <PreviewPanel>
             <AudioBars />
           </PreviewPanel>

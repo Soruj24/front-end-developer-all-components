@@ -35,11 +35,11 @@ export default function PaginationBarPage() {
       />
 
       <div className="flex flex-col gap-6">
-        <ExampleBlock title="Default" description="Standard pagination with page numbers and navigation buttons.">
+        <ExampleBlock title="Default" description="Standard pagination with page numbers and navigation buttons." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p1} total={10} onChange={setP1} />
         </ExampleBlock>
 
-        <ExampleBlock title="Sizes" description="Small, medium, and large pagination bars.">
+        <ExampleBlock title="Sizes" description="Small, medium, and large pagination bars." code={PAGINATION_BAR_SOURCE}>
           <div className="flex flex-col gap-4">
             <PaginationBar current={p2} total={10} onChange={setP2} size="sm" />
             <PaginationBar current={p3} total={10} onChange={setP3} size="md" />
@@ -47,31 +47,31 @@ export default function PaginationBarPage() {
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="Pill Variant" description="Fully rounded pill-shaped page buttons.">
+        <ExampleBlock title="Pill Variant" description="Fully rounded pill-shaped page buttons." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p5} total={10} onChange={setP5} variant="pill" />
         </ExampleBlock>
 
-        <ExampleBlock title="Outline" description="Active page highlighted with outline style.">
+        <ExampleBlock title="Outline" description="Active page highlighted with outline style." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p6} total={10} onChange={setP6} variant="outline" />
         </ExampleBlock>
 
-        <ExampleBlock title="With Info" description="Pagination with page info text.">
+        <ExampleBlock title="With Info" description="Pagination with page info text." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p7} total={12} onChange={setP7} showInfo />
         </ExampleBlock>
 
-        <ExampleBlock title="Without First/Last" description="Compact pagination without first/last buttons.">
+        <ExampleBlock title="Without First/Last" description="Compact pagination without first/last buttons." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p8} total={10} onChange={setP8} showFirstLast={false} />
         </ExampleBlock>
 
-        <ExampleBlock title="Few Pages" description="Pagination with only a few total pages.">
+        <ExampleBlock title="Few Pages" description="Pagination with only a few total pages." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p9} total={3} onChange={setP9} />
         </ExampleBlock>
 
-        <ExampleBlock title="Many Pages" description="Pagination with ellipsis for large page counts.">
+        <ExampleBlock title="Many Pages" description="Pagination with ellipsis for large page counts." code={PAGINATION_BAR_SOURCE}>
           <PaginationBar current={p10} total={50} onChange={setP10} />
         </ExampleBlock>
 
-        <ExampleBlock title="Table Footer" description="Pagination integrated into a table footer.">
+        <ExampleBlock title="Table Footer" description="Pagination integrated into a table footer." code={PAGINATION_BAR_SOURCE}>
           <div className="w-full rounded-lg border border-border">
             <table className="min-w-full divide-y divide-border">
               <thead className="bg-muted/40">

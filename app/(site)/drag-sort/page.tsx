@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Move, Grip, GripVertical, ArrowUp, ArrowDown, List, Grid } from "lucide-react";
+import { Grip, GripVertical, ArrowUp, ArrowDown, List } from "lucide-react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 
 function DraggableList() {
@@ -55,13 +55,13 @@ function KanbanBoard() {
   return (
     <div className="w-full p-4">
       <div className="flex gap-4 max-w-3xl mx-auto">
-        {["todo", "inProgress", "done"].map((col) => (
+        {(["todo", "inProgress", "done"] as const).map((col) => (
           <div key={col} className="flex-1 rounded-lg bg-muted/50 p-3 min-h-[200px]">
             <h4 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">
               {col === "todo" ? "To Do" : col === "inProgress" ? "In Progress" : "Done"}
             </h4>
             <div className="space-y-2">
-              {columns[col as keyof typeof columns].map((item) => (
+              {columns[col].map((item) => (
                 <div key={item.id} className="rounded border border-border bg-card p-3 cursor-grab hover:bg-muted/50">
                   <span className="text-sm">{item.text}</span>
                 </div>
@@ -84,7 +84,7 @@ function ReorderItems() {
   return (
     <div className="w-full p-4">
       <div className="max-w-sm space-y-2">
-        {items.map((item, i) => (
+        {items.map((item) => (
           <div key={item.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 cursor-grab hover:bg-muted/50 transition-colors">
             <ArrowUp className="h-4 w-4 text-muted-foreground shrink-0 opacity-50" />
             <ArrowDown className="h-4 w-4 text-muted-foreground shrink-0 opacity-50" />
@@ -115,7 +115,7 @@ function NestedSort() {
               <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{group.items.length}</span>
             </div>
             <div className="p-2 space-y-1">
-              {group.items.map((item, i) => (
+              {group.items.map((item) => (
                 <div key={item.id} className="flex items-center gap-2 px-2 py-1.5 rounded bg-muted/50 text-sm">
                   <GripVertical className="h-3 w-3 text-muted-foreground" />
                   <span>{item.text}</span>
@@ -172,16 +172,67 @@ function AutoScroll() {
   );
 }
 
+const DRAG_SORT_SOURCE = `function DraggableList() {
+  const [items] = useState([
+    { id: 1, text: "Design mockups", color: "bg-blue-500" },
+    { id: 2, text: "Write documentation", color: "bg-green-500" },
+    { id: 3, text: "Build components", color: "bg-purple-500" },
+    { id: 4, text: "Deploy to production", color: "bg-orange-500" },
+  ]);
+  return (
+    <div className="max-w-sm space-y-2">
+      {items.map((item, i) => (
+        <div key={item.id} className="flex items-center gap-3 rounded-lg border p-3 cursor-grab">
+          <GripVertical className="h-4 w-4" />
+          <span>{item.text}</span>
+        </div>
+      ))}
+    </div>
+  );
+}`;
+
 export default function DragSortPage() {
   return (
-    <ComponentDocPage>
-      <PreviewPanel>
-        <DraggableList /><SortableGrid /><KanbanBoard /><ReorderItems /><NestedSort /><HandleSort /><AutoScroll />
+    <ComponentDocPage
+      name="Drag Sort"
+      category="Interaction"
+      description="Drag-and-drop sorting patterns for lists, grids, kanban boards, and nested structures."
+    >
+      <PreviewPanel filename="drag-sort-preview.tsx">
+        <DraggableList />
+        <SortableGrid />
+        <KanbanBoard />
+        <ReorderItems />
+        <NestedSort />
+        <HandleSort />
+        <AutoScroll />
       </PreviewPanel>
-      <ExampleBlock>
-        <SourceCodeViewer code={DraggableList.toString()} language="tsx" title="DraggableList" />
-        <DraggableList /><SortableGrid /><KanbanBoard /><ReorderItems /><NestedSort /><HandleSort /><AutoScroll />
-      </ExampleBlock>
+
+      <SourceCodeViewer source={DRAG_SORT_SOURCE} filename="DragSort.tsx" />
+
+      <div className="flex flex-col gap-6">
+        <ExampleBlock title="Draggable List" description="Vertical list with drag handles." code={DRAG_SORT_SOURCE}>
+          <DraggableList />
+        </ExampleBlock>
+        <ExampleBlock title="Sortable Grid" description="Grid layout with sortable items." code={DRAG_SORT_SOURCE}>
+          <SortableGrid />
+        </ExampleBlock>
+        <ExampleBlock title="Kanban Board" description="Column-based task management." code={DRAG_SORT_SOURCE}>
+          <KanbanBoard />
+        </ExampleBlock>
+        <ExampleBlock title="Reorder Items" description="Priority-based reordering." code={DRAG_SORT_SOURCE}>
+          <ReorderItems />
+        </ExampleBlock>
+        <ExampleBlock title="Nested Sort" description="Groups with nested sortable items." code={DRAG_SORT_SOURCE}>
+          <NestedSort />
+        </ExampleBlock>
+        <ExampleBlock title="Handle Sort" description="Drag handle-only sorting." code={DRAG_SORT_SOURCE}>
+          <HandleSort />
+        </ExampleBlock>
+        <ExampleBlock title="Auto Scroll" description="Auto-scrolling when dragging near edges." code={DRAG_SORT_SOURCE}>
+          <AutoScroll />
+        </ExampleBlock>
+      </div>
     </ComponentDocPage>
   );
 }

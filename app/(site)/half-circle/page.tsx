@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Badge } from "@/components/design-system/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { Circle, PieChart, TrendingUp, Activity, Gauge, Target, Zap } from "lucide-react";
+import { Circle, PieChart, TrendingUp, Activity, Gauge, Target, Zap, Cpu } from "lucide-react";
 
 const installCommand = `npx component-library@latest add half-circle`;
 const usageCode = `import { HalfCircle } from "@/components/half-circle";

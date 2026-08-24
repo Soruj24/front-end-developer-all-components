@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import { TrafficChart, TrafficSources, Geographic, TopPages, Devices } from "@/components/ui/Analytics";
 
 const SOURCE = `"use client";
 
