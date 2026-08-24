@@ -50,7 +50,7 @@ export function useAiChat() {
   const [toggleRecording, setToggleRecording] = useState(() => () => {});
   const [getRandomFollowUps, setGetRandomFollowUps] = useState(() => () => []);
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(true);
   };
@@ -59,7 +59,7 @@ export function useAiChat() {
     setDragOver(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     // Handle file drop
@@ -342,7 +342,7 @@ import { useAiChat } from "@/features/ai";
           onInputChange={setInput}
           onKeyDown={handleKeyDown}
           dragOver={dragOver}
-          onDragOver={(e) => {
+          onDragOver={(e: React.DragEvent) => {
             e.preventDefault();
             setDragOver(true);
           }}

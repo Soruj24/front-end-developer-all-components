@@ -138,10 +138,34 @@ export const LONG_EXAMPLE = `<Accordion items={longItems} startOpen={-1} />`;
 
 export const ICONS_EXAMPLE = `<Accordion items={itemsWithIcons} startOpen={-1} />`;
 
-export const GROUPED_EXAMPLE = `<Accordion items={section.items} variant="boxed" startOpen={-1} />`;
+export const GROUPED_EXAMPLE = `
 
-export const USECASES_EXAMPLE = `<Accordion items={useCase.items} variant="boxed" startOpen={-1} />`;
+<Accordion items={section.items} variant="boxed" startOpen={-1} />`;
 
-export const NESTED_EXAMPLE = `<Accordion items={nestedData} startOpen={-1} />`;
+export const USECASES_EXAMPLE = `
 
-export const FAQ_EXAMPLE = `<AccordionItem title={item.q} body={item.a} />`;
+<Accordion items={useCase.items} variant="boxed" startOpen={-1} />`;
+
+export const NESTED_EXAMPLE = `
+
+<Accordion items={nestedData} startOpen={-1} />`;
+
+export const FAQ_EXAMPLE = `
+ const faqItems = [
+    {
+      title: "What is your return policy?",
+      body:
+        "Our return policy allows you to return products within 30 days of purchase. Please ensure that the items are in their original condition and packaging.",
+    },
+    {
+      title: "How long does shipping take?",
+      body:
+        "Shipping times vary based on your location. Typically, orders are processed within 1-2 business days and shipping can take anywhere from 3-7 business days.",
+    },
+    {
+      title: "Do you offer international shipping?",
+      body:
+        "Yes, we offer international shipping to select countries. Shipping fees and delivery times may vary based on the destination.",
+    },
+  ];
+<AccordionItem items={faqItems} />`;
