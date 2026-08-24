@@ -5,7 +5,7 @@ export const alertWithAction: RegistryEntry = entry({
   id: "alert-with-action",
   title: "With Action",
   description: "Alerts with action buttons for user interaction.",
-  source: `import { Alert } from "@/components/_alert";
+  source: `import { Alert } from "@/components/ui/Alert";
 
 function WarningIcon() {
   return (
@@ -39,10 +39,10 @@ export default function AlertWithAction() {
       </Alert>
 
       <Alert
-        variant="destructive"
+        variant="error"
         icon={<ErrorIcon />}
         action={
-          <button type="button" className="rounded bg-red-500 px-3 py-1 text-xs font-medium text-white hover:bg-red-600">
+          <button type="button" className="rounded bg-danger px-3 py-1 text-xs font-medium text-danger-foreground hover:bg-danger/90">
             Dismiss
           </button>
         }

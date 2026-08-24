@@ -5,8 +5,8 @@ export const alertVariants: RegistryEntry = entry({
   id: "alert-variants",
   title: "Variants",
   description:
-    "Five visual styles — default, destructive, success, warning, and info.",
-  source: `import { Alert } from "@/components/_alert";
+    "Six visual styles — info, success, warning, error, default, and destructive.",
+  source: `import { Alert, AlertTitle, AlertDescription } from "@/components/ui/Alert";
 
 function InfoIcon() {
   return (
@@ -40,22 +40,15 @@ function ErrorIcon() {
   );
 }
 
-const iconMap = {
-  default: <InfoIcon />,
-  info: <InfoIcon />,
-  success: <CheckIcon />,
-  warning: <WarningIcon />,
-  destructive: <ErrorIcon />,
-};
-
-const variants = ["default", "destructive", "success", "warning", "info"] as const;
+const variants = ["info", "success", "warning", "error", "default", "destructive"] as const;
 
 export default function AlertVariants() {
   return (
     <div className="flex flex-col gap-3">
       {variants.map((variant) => (
-        <Alert key={variant} variant={variant} icon={iconMap[variant]}>
-          <span className="font-medium capitalize">{variant}</span> alert — This is a sample alert message.
+        <Alert key={variant} variant={variant} icon>
+          <AlertTitle className="capitalize">{variant}</AlertTitle>
+          <AlertDescription>This is a {variant} alert message.</AlertDescription>
         </Alert>
       ))}
     </div>

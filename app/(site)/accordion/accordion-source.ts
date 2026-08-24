@@ -1,29 +1,57 @@
 export const ACCORDION_SOURCE = `"use client";
 
-import { useId, useState, useCallback } from "react";
+import * as React from "react";
 import { cn } from "@/lib/cn";
 
-interface AccordionItemData {
+export interface AccordionItemData {
+  id?: string;
   title: string;
-  body: string;
+  body: React.ReactNode;
   disabled?: boolean;
+  icon?: React.ReactNode;
 }
 
-type AccordionVariant = "bordered" | "ghost" | "boxed" | "separated" | "minimal";
+export type AccordionVariant =
+  | "bordered"
+  | "ghost"
+  | "boxed"
+  | "separated"
+  | "minimal";
+
+export interface AccordionProps {
+  items: AccordionItemData[];
+  multi?: boolean;
+  variant?: AccordionVariant;
+  startOpen?: number;
+  className?: string;
+  onChange?: (openItems: number[]) => void;
+}
 
 const containerClasses: Record<AccordionVariant, string> = {
-  bordered: "rounded-xl border border-border overflow-hidden",
-  ghost: "",
-  boxed: "flex flex-col gap-1.5",
-  separated: "flex flex-col gap-2",
-  minimal: "",
+  bordered:
+    "overflow-hidden rounded-xl border border-border bg-background",
+
+  ghost:
+    "bg-transparent",
+
+  boxed:
+    "flex flex-col gap-1.5",
+
+  separated:
+    "flex flex-col gap-2",
+
+  minimal:
+    "bg-transparent",
 };
 
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
+      aria-hidden="true"
       className={cn(
-        "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-[cubic-bezier(0.87,0,0.13,1)]",
+        "h-4 w-4 shrink-0 text-muted-foreground",
+        "transition-transform duration-300",
+        "ease-[cubic-bezier(0.87,0,0.13,1)]",
         open && "rotate-180",
       )}
       fill="none"
@@ -43,73 +71,152 @@ export function Accordion({
   multi = false,
   variant = "bordered",
   startOpen = 0,
-}: {
-  items: AccordionItemData[];
-  multi?: boolean;
-  variant?: AccordionVariant;
-  startOpen?: number;
-}) {
-  const [open, setOpen] = useState<number[]>([startOpen]);
-  const uid = useId();
+  className,
+  onChange,
+}: AccordionProps) {
+  const initialOpen =
+    startOpen >= 0 && startOpen < items.length
+      ? [startOpen]
+      : [];
 
-  const toggle = useCallback(
-    (i: number) => {
-      if (items[i].disabled) return;
-      setOpen((prev) => {
-        if (!multi) return prev.includes(i) ? [] : [i];
-        return prev.includes(i) ? prev.filter((idx) => idx !== i) : [...prev, i];
+  const [openItems, setOpenItems] =
+    React.useState<number[]>(initialOpen);
+
+  const baseId = React.useId();
+
+  const toggle = React.useCallback(
+    (index: number) => {
+      const item = items[index];
+
+      if (!item || item.disabled) {
+        return;
+      }
+
+      setOpenItems((previous) => {
+        let next: number[];
+
+        if (multi) {
+          next = previous.includes(index)
+            ? previous.filter((itemIndex) => itemIndex !== index)
+            : [...previous, index];
+        } else {
+          next = previous.includes(index) ? [] : [index];
+        }
+
+        onChange?.(next);
+
+        return next;
       });
     },
-    [items, multi],
+    [items, multi, onChange],
   );
 
-  const isCard = variant === "boxed" || variant === "separated";
+  const isCardVariant =
+    variant === "boxed" || variant === "separated";
 
   return (
-    <div className={containerClasses[variant]}>
-      {items.map((item, i) => {
-        const isOpen = open.includes(i);
-        const panelId = \`\${uid}-\${i}\`;
-        const buttonId = \`\${panelId}-trigger\`;
+    <div
+      className={cn(
+        containerClasses[variant],
+        className,
+      )}
+    >
+      {items.map((item, index) => {
+        const isOpen = openItems.includes(index);
+
+        const itemId =
+          item.id ?? \`\${baseId}-item-\${index}\`;
+
+        const triggerId =
+          \`\${itemId}-trigger\`;
+
+        const contentId =
+          \`\${itemId}-content\`;
+
         return (
           <div
-            key={item.title}
+            key={itemId}
             className={cn(
-              isCard && "rounded-xl border border-border bg-background overflow-hidden",
-              !isCard && variant !== "minimal" && i < items.length - 1 && "border-b border-border",
+              "group",
+              isCardVariant && [
+                "overflow-hidden rounded-xl",
+                "border border-border",
+                "bg-background",
+              ],
+              !isCardVariant &&
+                variant !== "minimal" &&
+                index < items.length - 1 &&
+                "border-b border-border",
             )}
           >
             <button
               type="button"
-              id={buttonId}
+              id={triggerId}
               aria-expanded={isOpen}
-              aria-controls={panelId}
+              aria-controls={contentId}
               disabled={item.disabled}
-              onClick={() => toggle(i)}
+              onClick={() => toggle(index)}
               className={cn(
-                "flex w-full items-center gap-3 px-4 py-3.5 text-left",
-                "text-sm font-medium text-foreground",
+                "flex w-full items-center gap-3",
+                "px-4 py-3.5 sm:px-5 sm:py-4",
+                "text-left text-sm font-medium",
+                "text-foreground",
                 "transition-colors duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                "disabled:cursor-not-allowed disabled:opacity-40",
-                !isOpen && "hover:bg-muted/60",
+
+                "focus-visible:outline-none",
+                "focus-visible:ring-2",
+                "focus-visible:ring-ring",
+                "focus-visible:ring-inset",
+
+                "disabled:cursor-not-allowed",
+                "disabled:opacity-40",
+
+                !item.disabled &&
+                  !isOpen &&
+                  "hover:bg-muted/60",
+
                 isOpen && "bg-muted/40",
               )}
             >
-              <span className="flex-1">{item.title}</span>
+              {item.icon && (
+                <span
+                  aria-hidden="true"
+                  className="shrink-0 text-muted-foreground"
+                >
+                  {item.icon}
+                </span>
+              )}
+
+              <span className="min-w-0 flex-1">
+                {item.title}
+              </span>
+
               <ChevronIcon open={isOpen} />
             </button>
+
             <div
-              id={panelId}
+              id={contentId}
               role="region"
-              aria-labelledby={buttonId}
+              aria-labelledby={triggerId}
               className={cn(
-                "grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.87,0,0.13,1)]",
-                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                "grid overflow-hidden",
+                "transition-[grid-template-rows]",
+                "duration-300",
+                "ease-[cubic-bezier(0.87,0,0.13,1)]",
+                isOpen
+                  ? "grid-rows-[1fr]"
+                  : "grid-rows-[0fr]",
               )}
             >
               <div className="min-h-0 overflow-hidden">
-                <div className="px-4 pb-4 pt-1 text-sm text-muted-foreground leading-relaxed">
+                <div
+                  className={cn(
+                    "px-4 pb-4 pt-1",
+                    "text-sm leading-6",
+                    "text-muted-foreground",
+                    "sm:px-5 sm:pb-5",
+                  )}
+                >
                   {item.body}
                 </div>
               </div>
@@ -119,53 +226,199 @@ export function Accordion({
       })}
     </div>
   );
-}`;
+}
+`;
+export const BASIC_EXAMPLE = `
+const items = [
+  {
+    title: "What is React?",
+    body: "React is a JavaScript library for building user interfaces.",
+  },
+  {
+    title: "What is Next.js?",
+    body: "Next.js is a React framework for building full-stack web applications.",
+  },
+  {
+    title: "What is Tailwind CSS?",
+    body: "Tailwind CSS is a utility-first CSS framework.",
+  },
+];
 
-export const VARIANTS_EXAMPLE = `<Accordion items={faqItems} variant="bordered" />
-<Accordion items={faqItems} variant="ghost" />
-<Accordion items={simpleItems} variant="boxed" />
-<Accordion items={simpleItems} variant="separated" />
-<Accordion items={faqItems} variant="minimal" />`;
+<Accordion items={items} />
+`;
 
-export const OPEN_MODE_EXAMPLE = `<Accordion items={faqItems} />
-<Accordion items={faqItems} multi />`;
+export const VARIANTS_EXAMPLE = `
+<Accordion
+  items={faqItems}
+  variant="bordered"
+/>
 
-export const CONTROLS_EXAMPLE = `<Accordion items={faqItems} multi startOpen={expanded ? 0 : -1} />`;
+<Accordion
+  items={faqItems}
+  variant="ghost"
+/>
 
-export const DISABLED_EXAMPLE = `<Accordion items={disabledItems} startOpen={-1} />`;
+<Accordion
+  items={faqItems}
+  variant="boxed"
+/>
 
-export const LONG_EXAMPLE = `<Accordion items={longItems} startOpen={-1} />`;
+<Accordion
+  items={faqItems}
+  variant="separated"
+/>
 
-export const ICONS_EXAMPLE = `<Accordion items={itemsWithIcons} startOpen={-1} />`;
+<Accordion
+  items={faqItems}
+  variant="minimal"
+/>
+`;
 
-export const GROUPED_EXAMPLE = `
+export const OPEN_MODE_EXAMPLE = `
+{/* Only one item can be open */}
+<Accordion
+  items={faqItems}
+/>
 
-<Accordion items={section.items} variant="boxed" startOpen={-1} />`;
+{/* Multiple items can be open */}
+<Accordion
+  items={faqItems}
+  multi
+/>
+`;
 
-export const USECASES_EXAMPLE = `
+export const CONTROLS_EXAMPLE = `
+{/* First item open */}
+<Accordion
+  items={faqItems}
+  startOpen={0}
+/>
 
-<Accordion items={useCase.items} variant="boxed" startOpen={-1} />`;
+{/* Second item open */}
+<Accordion
+  items={faqItems}
+  startOpen={1}
+/>
 
-export const NESTED_EXAMPLE = `
+{/* Everything closed */}
+<Accordion
+  items={faqItems}
+  startOpen={-1}
+/>
+`;
 
-<Accordion items={nestedData} startOpen={-1} />`;
+export const DISABLED_EXAMPLE = `
+const disabledItems = [
+  {
+    title: "Available feature",
+    body: "This section can be opened.",
+  },
+  {
+    title: "Disabled feature",
+    body: "This section is currently unavailable.",
+    disabled: true,
+  },
+  {
+    title: "Another feature",
+    body: "This section can also be opened.",
+  },
+];
 
-export const FAQ_EXAMPLE = `
- const faqItems = [
-    {
-      title: "What is your return policy?",
-      body:
-        "Our return policy allows you to return products within 30 days of purchase. Please ensure that the items are in their original condition and packaging.",
-    },
-    {
-      title: "How long does shipping take?",
-      body:
-        "Shipping times vary based on your location. Typically, orders are processed within 1-2 business days and shipping can take anywhere from 3-7 business days.",
-    },
-    {
-      title: "Do you offer international shipping?",
-      body:
-        "Yes, we offer international shipping to select countries. Shipping fees and delivery times may vary based on the destination.",
-    },
-  ];
-<AccordionItem items={faqItems} />`;
+<Accordion
+  items={disabledItems}
+  startOpen={-1}
+/>
+`;
+
+export const ICONS_EXAMPLE = `
+import {
+  ShieldCheck,
+  Sparkles,
+  Settings,
+} from "lucide-react";
+
+const itemsWithIcons = [
+  {
+    title: "Security",
+    body: "Manage security settings and authentication.",
+    icon: <ShieldCheck className="h-4 w-4" />,
+  },
+  {
+    title: "AI Features",
+    body: "Configure AI-powered features for your application.",
+    icon: <Sparkles className="h-4 w-4" />,
+  },
+  {
+    title: "Settings",
+    body: "Manage your application preferences.",
+    icon: <Settings className="h-4 w-4" />,
+  },
+];
+
+<Accordion
+  items={itemsWithIcons}
+  variant="boxed"
+  startOpen={-1}
+/>
+`;
+
+export const LONG_EXAMPLE = `
+const longItems = [
+  {
+    title: "Terms and Conditions",
+    body: (
+      <div className="space-y-3">
+        <p>
+          These terms and conditions explain the rules and
+          regulations for using this application.
+        </p>
+
+        <p>
+          By accessing this application, you agree to be
+          bound by these terms and conditions.
+        </p>
+
+        <p>
+          If you disagree with any part of these terms,
+          you should not use the application.
+        </p>
+      </div>
+    ),
+  },
+];
+
+<Accordion
+  items={longItems}
+  startOpen={-1}
+/>
+`;
+
+export const CUSTOM_CONTENT_EXAMPLE = `
+const items = [
+  {
+    title: "Account Information",
+    body: (
+      <div className="space-y-4">
+        <p>
+          Manage your account information and preferences.
+        </p>
+
+        <div className="rounded-lg border border-border p-3">
+          <p className="text-xs text-muted-foreground">
+            Account status
+          </p>
+
+          <p className="mt-1 font-medium text-foreground">
+            Active
+          </p>
+        </div>
+      </div>
+    ),
+  },
+];
+
+<Accordion
+  items={items}
+  variant="boxed"
+/>
+`;

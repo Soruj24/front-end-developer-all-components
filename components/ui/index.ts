@@ -3,7 +3,14 @@
  *
  * Import from the barrel: `import { Button, Card } from "@/components/ui"`.
  */
-export { Alert } from "./Alert";
+export { Alert, AlertTitle, AlertDescription } from "./Alert";
+export type {
+  AlertProps,
+  AlertVariant,
+  AlertSize,
+  AlertTitleProps,
+  AlertDescriptionProps,
+} from "./Alert";
 export { Avatar } from "./Avatar";
 export { Badge } from "./Badge";
 export { BentoGrid } from "./BentoGrid";

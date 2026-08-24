@@ -4,8 +4,8 @@ import type { RegistryEntry } from "../../types";
 export const alertCustomContent: RegistryEntry = entry({
   id: "alert-custom-content",
   title: "Custom Content",
-  description: "Alerts with rich, multi-line content.",
-  source: `import { Alert } from "@/components/_alert";
+  description: "Alerts with title, description, and rich content.",
+  source: `import { Alert, AlertTitle, AlertDescription } from "@/components/ui/Alert";
 
 function InfoIcon() {
   return (
@@ -27,23 +27,19 @@ export default function AlertCustomContent() {
   return (
     <div className="flex flex-col gap-3">
       <Alert variant="info" icon={<InfoIcon />}>
-        <div className="flex flex-col gap-1">
-          <span className="font-semibold">System Maintenance</span>
-          <span className="text-sm opacity-90">
-            Scheduled maintenance window: Saturday 2:00 AM — 4:00 AM UTC.
-            Some services may be temporarily unavailable.
-          </span>
-        </div>
+        <AlertTitle>System Maintenance</AlertTitle>
+        <AlertDescription>
+          Scheduled maintenance window: Saturday 2:00 AM — 4:00 AM UTC.
+          Some services may be temporarily unavailable.
+        </AlertDescription>
       </Alert>
 
       <Alert variant="warning" icon={<WarningIcon />}>
-        <div className="flex flex-col gap-1">
-          <span className="font-semibold">Storage quota almost reached</span>
-          <span className="text-sm opacity-90">
-            You&apos;ve used 95% of your allocated storage.
-            Consider archiving old files or upgrading your plan.
-          </span>
-        </div>
+        <AlertTitle>Storage quota almost reached</AlertTitle>
+        <AlertDescription>
+          You&apos;ve used 95% of your allocated storage.
+          Consider archiving old files or upgrading your plan.
+        </AlertDescription>
       </Alert>
     </div>
   );

@@ -4,8 +4,8 @@ import type { RegistryEntry } from "../../types";
 export const alertDismissible: RegistryEntry = entry({
   id: "alert-dismissible",
   title: "Dismissible",
-  description: "Alerts with a close button for dismissal.",
-  source: `import { Alert } from "@/components/_alert";
+  description: "Alerts with a close button for dismissal and Escape key support.",
+  source: `import { Alert } from "@/components/ui/Alert";
 
 function InfoIcon() {
   return (
@@ -23,38 +23,14 @@ function CheckIcon() {
   );
 }
 
-function CloseIcon() {
-  return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
-
 export default function AlertDismissible() {
   return (
     <div className="flex flex-col gap-3">
-      <Alert
-        variant="info"
-        icon={<InfoIcon />}
-        action={
-          <button type="button" className="rounded-sm opacity-70 hover:opacity-100">
-            <CloseIcon />
-          </button>
-        }
-      >
+      <Alert variant="info" icon={<InfoIcon />} dismissible>
         A new software update is available. See what&apos;s new in version 3.0.
       </Alert>
 
-      <Alert
-        variant="success"
-        icon={<CheckIcon />}
-        action={
-          <button type="button" className="rounded-sm opacity-70 hover:opacity-100">
-            <CloseIcon />
-          </button>
-        }
-      >
+      <Alert variant="success" icon={<CheckIcon />} dismissible>
         Your changes have been saved successfully.
       </Alert>
     </div>

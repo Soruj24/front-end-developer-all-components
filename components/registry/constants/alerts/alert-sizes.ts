@@ -5,7 +5,7 @@ export const alertSizes: RegistryEntry = entry({
   id: "alert-sizes",
   title: "Sizes",
   description: "Three size options — small, medium, and large.",
-  source: `import { Alert } from "@/components/_alert";
+  source: `import { Alert } from "@/components/ui/Alert";
 
 function InfoIcon() {
   return (
@@ -21,7 +21,7 @@ export default function AlertSizes() {
   return (
     <div className="flex flex-col gap-3">
       {sizes.map((size) => (
-        <Alert key={size} variant="info" size={size} icon={<InfoIcon />}>
+        <Alert key={size} variant="info" size={size} icon>
           <span className="font-medium capitalize">{size}</span> size alert with icon.
         </Alert>
       ))}

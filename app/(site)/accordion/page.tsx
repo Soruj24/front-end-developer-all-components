@@ -8,7 +8,9 @@ import {
   VARIANTS_EXAMPLE,
   OPEN_MODE_EXAMPLE,
   DISABLED_EXAMPLE,
-  FAQ_EXAMPLE,
+  ICONS_EXAMPLE,
+  LONG_EXAMPLE,
+  CUSTOM_CONTENT_EXAMPLE
 } from "./accordion-source";
 import {
   VariantsSection,
@@ -70,7 +72,7 @@ export default function AccordionPage() {
         <ExampleBlock
           title="FAQ"
           description="AccordionItem as a standalone building block for FAQ pages."
-          code={FAQ_EXAMPLE}
+          code={ICONS_EXAMPLE }
         >
           <div className="w-full max-w-xl">
             <FaqSection />
