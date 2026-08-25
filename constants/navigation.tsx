@@ -589,7 +589,6 @@ export const navigationSections: NavSection[] = [
       { label: "Dawn Gradient", href: "/dawn-gradient", icon: <Sunrise className="h-4 w-4" />, desc: "Dawn gradient background" },
       { label: "Disc Spinner", href: "/disc-spinner", icon: <Disc className="h-4 w-4" />, desc: "Disc loading spinner" },
       { label: "DNA Helix", href: "/dna-helix", icon: <Dna className="h-4 w-4" />, desc: "DNA helix animation" },
-      { label: "Download Button", href: "/download-button", icon: <Download className="h-4 w-4" />, desc: "Download button with progress" },
       { label: "Droplet Color", href: "/droplet-color", icon: <Droplet className="h-4 w-4" />, desc: "Color droplet picker" },
       { label: "Dumbbell Chart", href: "/dumbbell-chart", icon: <Dumbbell className="h-4 w-4" />, desc: "Dumbbell comparison chart" },
       { label: "Easel Canvas", href: "/easel-canvas", icon: <Paintbrush className="h-4 w-4" />, desc: "Easel drawing canvas" },
