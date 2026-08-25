@@ -38,13 +38,21 @@ function EcommerceContent() {
   const updateParam = useCallback(
     (key: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "0" && value !== "featured" && value !== "All" && value !== "") {
+      if (
+        value &&
+        value !== "0" &&
+        value !== "featured" &&
+        value !== "All" &&
+        value !== ""
+      ) {
         params.set(key, value);
       } else {
         params.delete(key);
       }
       params.delete("page");
-      router.push(`/e-commerce${params.toString() ? `?${params.toString()}` : ""}`);
+      router.push(
+        `/e-commerce${params.toString() ? `?${params.toString()}` : ""}`,
+      );
     },
     [router, searchParams],
   );
@@ -138,26 +146,35 @@ function EcommerceContent() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Shop</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Shop
+          </h1>
           <Badge variant="primary">5 examples</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          E-commerce storefront with product grid, filters, search, sorting, pagination, and cart.
+          E-commerce storefront with product grid, filters, search, sorting,
+          pagination, and cart.
         </p>
       </header>
 
-      
- 
-
       {/* Examples */}
       <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Product Grid with Filters</h3>
-          <p className="text-sm text-muted-foreground">Filterable product grid with category, price, rating, and sort controls.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Product Grid with Filters
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Filterable product grid with category, price, rating, and sort
+            controls.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6">
-            <ProductBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
+            <ProductBreadcrumbs
+              items={[{ label: "Home", href: "/" }, { label: "Shop" }]}
+            />
             <div className="flex flex-col gap-8 lg:flex-row mt-6">
               <ProductFilters
                 selectedCategory={category}
@@ -174,7 +191,8 @@ function EcommerceContent() {
               <div className="flex-1">
                 <div className="mb-4 flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
+                    {filtered.length} product{filtered.length !== 1 ? "s" : ""}{" "}
+                    found
                   </p>
                   <div className="flex items-center gap-2">
                     {cart.totalSavings > 0 && (
@@ -184,18 +202,37 @@ function EcommerceContent() {
                     )}
                   </div>
                 </div>
-                <ProductGrid products={paginatedProducts} onAddToCart={cart.addItem} />
+                <ProductGrid
+                  products={paginatedProducts}
+                  onAddToCart={cart.addItem}
+                />
                 {totalPages > 1 && (
                   <div className="mt-8 flex items-center justify-center gap-1.5">
-                    <button onClick={() => setPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40">
+                    <button
+                      onClick={() => setPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                    >
                       Prev
                     </button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <button key={page} onClick={() => setPage(page)} className={`h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors ${page === currentPage ? "bg-primary text-primary-foreground shadow-sm" : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-                        {page}
-                      </button>
-                    ))}
-                    <button onClick={() => setPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => setPage(page)}
+                          className={`h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors ${page === currentPage ? "bg-primary text-primary-foreground shadow-sm" : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                        >
+                          {page}
+                        </button>
+                      ),
+                    )}
+                    <button
+                      onClick={() =>
+                        setPage(Math.min(totalPages, currentPage + 1))
+                      }
+                      disabled={currentPage === totalPages}
+                      className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+                    >
                       Next
                     </button>
                   </div>
@@ -205,8 +242,6 @@ function EcommerceContent() {
           </div>
         </div>
       </section>
-
-
     </div>
   );
 }
@@ -223,7 +258,10 @@ export default function EcommercePage() {
             <div className="flex-1">
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="h-72 animate-pulse rounded-xl bg-muted" />
+                  <div
+                    key={i}
+                    className="h-72 animate-pulse rounded-xl bg-muted"
+                  />
                 ))}
               </div>
             </div>
