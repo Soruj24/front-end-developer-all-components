@@ -30,25 +30,25 @@ function calculateTimeLeft(target: Date): TimeLeft {
 
 const sizeConfig = {
   sm: {
-    digit: "h-12 w-12 text-xl",
+    digit: "h-11 w-11 text-lg",
     label: "text-[10px]",
-    separator: "text-xl",
-    gap: "gap-2",
-    card: "px-1 py-1",
+    separator: "text-lg",
+    gap: "gap-1.5",
+    padding: "p-1",
   },
   md: {
-    digit: "h-16 w-16 text-3xl",
+    digit: "h-14 w-14 text-2xl",
     label: "text-[11px]",
-    separator: "text-3xl",
-    gap: "gap-3",
-    card: "px-2 py-2",
+    separator: "text-2xl",
+    gap: "gap-2",
+    padding: "p-1.5",
   },
   lg: {
-    digit: "h-20 w-20 sm:h-24 sm:w-24 text-4xl sm:text-5xl",
+    digit: "h-18 w-18 text-4xl sm:h-20 sm:w-20 sm:text-5xl",
     label: "text-xs",
-    separator: "text-4xl sm:text-5xl",
-    gap: "gap-3 sm:gap-4",
-    card: "px-3 py-3 sm:px-4 sm:py-4",
+    separator: "text-3xl sm:text-4xl",
+    gap: "gap-2.5 sm:gap-3",
+    padding: "p-2 sm:p-2.5",
   },
 } as const;
 
@@ -59,7 +59,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
       onComplete,
       showLabels = true,
       showSeparators = true,
-      variant = "default",
+      variant = "card",
       size = "md",
       className,
       ...props
@@ -71,6 +71,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
       calculateTimeLeft(target.current),
     );
     const [isComplete, setIsComplete] = useState(false);
+    const [prevValues, setPrevValues] = useState<TimeLeft>(timeLeft);
 
     const handleComplete = useCallback(() => {
       setIsComplete(true);
@@ -86,6 +87,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
     useEffect(() => {
       const timer = setInterval(() => {
         const tl = calculateTimeLeft(target.current);
+        setPrevValues(timeLeft);
         setTimeLeft(tl);
         if (
           tl.days === 0 &&
@@ -98,29 +100,34 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
         }
       }, 1000);
       return () => clearInterval(timer);
-    }, [targetDate, handleComplete]);
+    }, [targetDate, handleComplete, timeLeft]);
 
     const config = sizeConfig[size];
 
-    const items: { label: string; value: number }[] = [
-      { label: "Days", value: timeLeft.days },
-      { label: "Hours", value: timeLeft.hours },
-      { label: "Min", value: timeLeft.minutes },
-      { label: "Sec", value: timeLeft.seconds },
+    const items: { label: string; value: number; key: keyof TimeLeft }[] = [
+      { label: "Days", value: timeLeft.days, key: "days" },
+      { label: "Hours", value: timeLeft.hours, key: "hours" },
+      { label: "Min", value: timeLeft.minutes, key: "minutes" },
+      { label: "Sec", value: timeLeft.seconds, key: "seconds" },
     ];
 
-    const renderDigit = (value: number, label: string) => {
+    const renderDigit = (value: number, label: string, key: keyof TimeLeft) => {
       const digitText = String(value).padStart(2, "0");
+      const changed = prevValues[key] !== value;
 
       if (variant === "card") {
         return (
           <div className="flex flex-col items-center gap-1.5">
             <div
               className={cn(
-                "flex items-center justify-center rounded-xl border border-border bg-card font-mono font-bold tabular-nums tracking-tight shadow-sm",
+                "relative flex items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-card font-mono font-bold tabular-nums tracking-tight",
+                "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+                "transition-all duration-300 ease-out",
+                "hover:border-border hover:shadow-md hover:ring-black/[0.06] dark:hover:ring-white/[0.12]",
                 config.digit,
-                config.card,
-                isComplete && "border-emerald-500/30 bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400",
+                config.padding,
+                isComplete && "border-success/30 bg-success/5 text-success ring-success/10",
+                changed && !isComplete && "scale-[1.02]",
               )}
             >
               {digitText}
@@ -128,7 +135,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
             {showLabels && (
               <span
                 className={cn(
-                  "font-medium uppercase tracking-wider text-muted-foreground",
+                  "font-medium uppercase tracking-wider text-muted-foreground/70",
                   config.label,
                 )}
               >
@@ -144,10 +151,15 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
           <div className="flex flex-col items-center gap-1.5">
             <div
               className={cn(
-                "flex items-center justify-center rounded-full bg-primary/10 font-mono font-bold tabular-nums tracking-tight text-primary",
+                "relative flex items-center justify-center overflow-hidden rounded-full",
+                "bg-primary/10 font-mono font-bold tabular-nums tracking-tight text-primary",
+                "ring-1 ring-primary/10",
+                "transition-all duration-300 ease-out",
+                "hover:bg-primary/15 hover:ring-primary/20",
                 config.digit,
-                config.card,
-                isComplete && "bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400",
+                config.padding,
+                isComplete && "bg-success/10 text-success ring-success/20",
+                changed && !isComplete && "scale-[1.02]",
               )}
             >
               {digitText}
@@ -155,7 +167,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
             {showLabels && (
               <span
                 className={cn(
-                  "font-medium uppercase tracking-wider text-muted-foreground",
+                  "font-medium uppercase tracking-wider text-muted-foreground/70",
                   config.label,
                 )}
               >
@@ -172,8 +184,10 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
           <span
             className={cn(
               "font-mono font-bold tabular-nums tracking-tight text-foreground",
+              "transition-colors duration-300",
               config.digit,
-              isComplete && "text-emerald-600 dark:text-emerald-400",
+              isComplete && "text-success",
+              changed && !isComplete && "text-primary",
             )}
           >
             {digitText}
@@ -181,7 +195,7 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
           {showLabels && (
             <span
               className={cn(
-                "font-medium uppercase tracking-wider text-muted-foreground",
+                "font-medium uppercase tracking-wider text-muted-foreground/70",
                 config.label,
               )}
             >
@@ -197,18 +211,21 @@ const Countdown = forwardRef<HTMLDivElement, CountdownProps>(
         ref={ref}
         role="timer"
         aria-label="Countdown timer"
+        aria-live="polite"
         className={cn("inline-flex items-center", config.gap, className)}
         {...props}
       >
         {items.map((item, i) => (
           <div key={item.label} className="flex items-center">
-            {renderDigit(item.value, item.label)}
+            {renderDigit(item.value, item.label, item.key)}
             {showSeparators && i < items.length - 1 && (
               <span
                 className={cn(
-                  "mx-1 font-bold text-muted-foreground/40 sm:mx-1.5",
+                  "mx-0.5 font-bold text-muted-foreground/30 sm:mx-1",
+                  "transition-colors duration-300",
                   config.separator,
                   variant !== "default" && "mb-5",
+                  isComplete && "text-success/40",
                 )}
                 aria-hidden="true"
               >
