@@ -52,15 +52,6 @@ for await (const chunk of response) {
 
 > This component supports thinking phases, tool calls, and citations out of the box.
 
-### API Reference
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| stream | AsyncGenerator | Stream source |
-| content | string | Static content |
-| autoScroll | boolean | Auto-scroll to bottom |
-| maxHeight | number | Maximum height |
-
 That covers the basics. Start building amazing AI experiences!`;
 
 export default function StreamingResponsePage() {
@@ -176,97 +167,7 @@ export default function StreamingResponsePage() {
         </ExampleBlock>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          API Reference
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">stream</td>
-                <td className="px-4 py-3 text-muted-foreground">StreamSource</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">content</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">loading</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">autoScroll</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">maxHeight</td>
-                <td className="px-4 py-3 text-muted-foreground">number | string</td>
-                <td className="px-4 py-3 text-muted-foreground">420</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">showHeader</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;card&quot; | &quot;plain&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;card&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">title</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;Assistant&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">thinkingLabel</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;Thinking&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">onDone</td>
-                <td className="px-4 py-3 text-muted-foreground">(text: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">onError</td>
-                <td className="px-4 py-3 text-muted-foreground">(message: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">onRetry</td>
-                <td className="px-4 py-3 text-muted-foreground">() =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
     </ComponentDocPage>
   );
 }

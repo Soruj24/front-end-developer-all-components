@@ -154,54 +154,7 @@ export default function RestaurantPage() {
         </div>
       </section>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">restaurant</td>
-                <td className="px-4 py-3 text-muted-foreground">Restaurant</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">items</td>
-                <td className="px-4 py-3 text-muted-foreground">MenuItem[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onAddToCart</td>
-                <td className="px-4 py-3 text-muted-foreground">(item: MenuItem) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">reviews</td>
-                <td className="px-4 py-3 text-muted-foreground">Review[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
 
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} cart={cart} cartTotal={cartTotal} deliveryFee={deliveryFee} onAdd={addToCart} onRemove={removeFromCart} />
     </div>

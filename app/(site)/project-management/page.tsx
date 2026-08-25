@@ -119,54 +119,7 @@ export default function ProjectManagementPage() {
         </div>
       </section>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">projects</td>
-                <td className="px-4 py-3 text-muted-foreground">Project[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">tasks</td>
-                <td className="px-4 py-3 text-muted-foreground">Task[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">team</td>
-                <td className="px-4 py-3 text-muted-foreground">TeamMember[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onTaskMove</td>
-                <td className="px-4 py-3 text-muted-foreground">(taskId: string, status: string) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
     </div>
   );
 }

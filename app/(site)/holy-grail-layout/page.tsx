@@ -77,77 +77,7 @@ export default function HolyGrailLayoutPage() {
         </ExampleBlock>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-xl border border-border/60">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border/60 bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">header</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Top header slot</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">footer</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Bottom footer slot</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sidebar</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Left sidebar content</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sidebarRight</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Right sidebar content</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sidebarSide</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;left&quot; | &quot;right&quot; | &quot;both&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;left&quot;</td>
-                <td className="px-4 py-3">Which sidebar(s) to show</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sidebarWidth</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">240</td>
-                <td className="px-4 py-3">Left sidebar width in px</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sidebarRightWidth</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">240</td>
-                <td className="px-4 py-3">Right sidebar width in px</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">sticky</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">Sticky header and sidebars</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Additional CSS classes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+
     </ComponentDocPage>
   );
 }

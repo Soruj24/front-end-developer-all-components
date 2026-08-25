@@ -215,54 +215,7 @@ function EcommerceContent() {
         </div>
       </section>
 
-      {/* API Reference */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">products</td>
-                <td className="px-4 py-3 text-muted-foreground">Product[]</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">onAddToCart</td>
-                <td className="px-4 py-3 text-muted-foreground">(product: Product) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Yes</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">selectedCategory</td>
-                <td className="px-4 py-3 text-muted-foreground">ProductCategory</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;All&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-3 font-mono text-xs">sort</td>
-                <td className="px-4 py-3 text-muted-foreground">ProductSort</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;featured&quot;</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
     </div>
   );
 }

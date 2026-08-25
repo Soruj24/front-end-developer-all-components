@@ -14,7 +14,6 @@ import {
 } from "./demos/UtilityDemos";
 import { SidebarShowcase } from "./demos/SidebarShowcase";
 import { NavPlayground } from "./demos/NavPlayground";
-import { ApiReference } from "./demos/ApiReference";
 import { SIDEBAR_SOURCE } from "./demos/source-core";
 import { SECTION_SOURCE, NAV_LINK_SOURCE } from "./demos/source-nav";
 import {

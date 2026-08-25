@@ -81,59 +81,7 @@ export default function StackLayoutPage() {
         </ExampleBlock>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-lg border border-border/60">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border/60 bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">"vertical" | "horizontal"</td>
-                <td className="px-4 py-3 text-muted-foreground">"vertical"</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">gap</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">4</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">align</td>
-                <td className="px-4 py-3 text-muted-foreground">"start" | "center" | "end" | "stretch"</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">justify</td>
-                <td className="px-4 py-3 text-muted-foreground">"start" | "center" | "end" | "between" | "around" | "evenly"</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">wrap</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">separator</td>
-                <td className="px-4 py-3 text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+
     </ComponentDocPage>
   );
 }

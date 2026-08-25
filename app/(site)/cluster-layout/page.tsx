@@ -321,53 +321,7 @@ export default function ClusterLayoutPage() {
         </ExampleBlock>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">API Reference</h2>
-        <div className="overflow-hidden rounded-xl border border-border/60">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border/60 bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium">Prop</th>
-                <th className="px-4 py-3 text-left font-medium">Type</th>
-                <th className="px-4 py-3 text-left font-medium">Default</th>
-                <th className="px-4 py-3 text-left font-medium">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">gap</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">2</td>
-                <td className="px-4 py-3">Spacing multiplier (gap * 0.25rem)</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">justify</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;start&quot; | &quot;center&quot; | &quot;end&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;start&quot;</td>
-                <td className="px-4 py-3">Horizontal alignment</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">align</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;start&quot; | &quot;center&quot; | &quot;end&quot; | &quot;stretch&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Vertical alignment</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">responsive</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">true</td>
-                <td className="px-4 py-3">Stack items full-width on mobile</td>
-              </tr>
-              <tr className="border-b border-border/60">
-                <td className="px-4 py-3 font-mono text-xs">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">-</td>
-                <td className="px-4 py-3">Additional CSS classes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+
     </ComponentDocPage>
   );
 }

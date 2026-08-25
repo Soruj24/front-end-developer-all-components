@@ -191,61 +191,7 @@ export default function StepperInputPage() {
         </ExampleBlock>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          API Reference
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">steps</td>
-                <td className="px-4 py-3 text-muted-foreground">Step[]</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">currentStep</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Yes</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">variant</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;default&quot; | &quot;numbered&quot; | &quot;dots&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;numbered&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">orientation</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">onStepClick</td>
-                <td className="px-4 py-3 text-muted-foreground">(step: number) =&gt; void</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">No</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
 
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-semibold tracking-tight text-foreground">

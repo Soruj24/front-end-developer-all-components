@@ -42,7 +42,6 @@ import {
 } from "./patterns/status-demos";
 import { AppShellPreview } from "./patterns/AppShellPreview";
 import { LayoutPlayground } from "./patterns/LayoutPlayground";
-import { ApiReference } from "./patterns/ApiReference";
 import { SIDEBAR_MAIN_SOURCE, HOLY_GRAIL_SOURCE } from "./sources/shell-sources";
 import {
   OVERLAY_SIDEBAR_SOURCE,
@@ -170,11 +169,6 @@ export default function LayoutsPage() {
           <SourceCodeViewer source={OVERLAY_SIDEBAR_SOURCE} filename="layouts/patterns/panel-demos.tsx — OverlaySidebarDemo" />
           <SourceCodeViewer source={WIZARD_SOURCE} filename="layouts/patterns/content-demos.tsx — WizardDemo" />
         </div>
-      </Section>
-
-      {/* API Reference */}
-      <Section title="API Reference">
-        <ApiReference />
       </Section>
     </div>
   );

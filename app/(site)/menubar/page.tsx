@@ -283,47 +283,7 @@ export default function MenubarPage() {
         </ExampleBlock>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          API Reference
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Component</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Props</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">Menubar</td>
-                <td className="px-4 py-3 text-muted-foreground">children, className</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">MenubarMenu</td>
-                <td className="px-4 py-3 text-muted-foreground">children</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">MenubarTrigger</td>
-                <td className="px-4 py-3 text-muted-foreground">children, className</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">MenubarContent</td>
-                <td className="px-4 py-3 text-muted-foreground">children, className</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">MenubarItem</td>
-                <td className="px-4 py-3 text-muted-foreground">children, className, shortcut, disabled</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">MenubarSeparator</td>
-                <td className="px-4 py-3 text-muted-foreground">className</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
     </ComponentDocPage>
   );
 }

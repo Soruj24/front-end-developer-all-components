@@ -189,55 +189,7 @@ export default function ResizablePage() {
         </ExampleBlock>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          API Reference
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-4 py-3 text-left font-medium text-foreground">Component</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Prop</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Type</th>
-                <th className="px-4 py-3 text-left font-medium text-foreground">Default</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">Resizable</td>
-                <td className="px-4 py-3 text-muted-foreground">direction</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td>
-                <td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">ResizablePanel</td>
-                <td className="px-4 py-3 text-muted-foreground">defaultSize</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">50</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">ResizablePanel</td>
-                <td className="px-4 py-3 text-muted-foreground">minSize</td>
-                <td className="px-4 py-3 text-muted-foreground">number</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-              </tr>
-              <tr className="border-b border-border">
-                <td className="px-4 py-3 font-mono text-xs text-foreground">ResizablePanel</td>
-                <td className="px-4 py-3 text-muted-foreground">collapsible</td>
-                <td className="px-4 py-3 text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 text-muted-foreground">false</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-xs text-foreground">ResizableHandle</td>
-                <td className="px-4 py-3 text-muted-foreground">className</td>
-                <td className="px-4 py-3 text-muted-foreground">string</td>
-                <td className="px-4 py-3 text-muted-foreground">—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
     </ComponentDocPage>
   );
 }
