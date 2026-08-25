@@ -278,22 +278,6 @@ export { KeyboardShortcuts } from "./KeyboardShortcuts";
 export type { KeyboardShortcutsProps } from "./KeyboardShortcuts";
 export { Marker } from "./Marker";
 export type { MarkerProps } from "./Marker";
-export {
-  Menubar,
-  MenubarMenu,
-  MenubarTrigger,
-  MenubarContent,
-  MenubarItem,
-  MenubarSeparator,
-} from "./Menubar";
-export type {
-  MenubarProps,
-  MenubarMenuProps,
-  MenubarTriggerProps,
-  MenubarContentProps,
-  MenubarItemProps,
-  MenubarSeparatorProps,
-} from "./Menubar";
 export { Message } from "./Message";
 export type { MessageProps, MessageVariant } from "./Message";
 export { MessageScroller } from "./MessageScroller";

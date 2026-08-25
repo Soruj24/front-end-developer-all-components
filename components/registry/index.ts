@@ -60,7 +60,6 @@ import { directions } from "./constants/directions";
 import { items } from "./constants/items";
 import { kbds } from "./constants/kbds";
 import { markers } from "./constants/markers";
-import { menubars } from "./constants/menubars";
 import { messages } from "./constants/messages";
 import { messageScrollers } from "./constants/message-scrollers";
 import { nativeSelects } from "./constants/native-selects";
@@ -137,7 +136,6 @@ const allEntries: RegistryEntry[] = [
   ...items,
   ...kbds,
   ...markers,
-  ...menubars,
   ...messages,
   ...messageScrollers,
   ...nativeSelects,

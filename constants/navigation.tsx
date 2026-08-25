@@ -189,7 +189,6 @@ export const navigationSections: NavSection[] = [
       { label: "Markdown Editor", href: "/markdown-editor", icon: <PenTool className="h-4 w-4" />, desc: "Rich markdown editor with preview" },
       { label: "Marker", href: "/marker", icon: <Bookmark className="h-4 w-4" />, desc: "Highlight marker component" },
       { label: "Masonry", href: "/masonry", icon: <Grid3x3 className="h-4 w-4" />, desc: "Masonry grid layout" },
-      { label: "Menubar", href: "/menubar", icon: <PanelTop className="h-4 w-4" />, desc: "Horizontal menu bars" },
       { label: "Message Scroller", href: "/message-scroller", icon: <ArrowUpDown className="h-4 w-4" />, desc: "Auto-scrolling message list" },
       { label: "Message", href: "/message", icon: <MessageCircle className="h-4 w-4" />, desc: "Message display component" },
       { label: "Multi Select", href: "/multi-select", icon: <Check className="h-4 w-4" />, desc: "Multi-select dropdown with tags" },

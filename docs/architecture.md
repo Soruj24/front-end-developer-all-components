@@ -47,7 +47,7 @@ components/_<name>/
 ```
 
 **44 components** follow this pattern:
-`_alert`, `_alert-dialog`, `_aspect-ratio`, `_attachment`, `_breadcrumb`, `_bubble`, `_button-group`, `_checkbox`, `_collapsible`, `_combobox`, `_command`, `_context-menu`, `_data-table`, `_date-picker`, `_dialog`, `_direction`, `_drawer`, `_dropdown-menu`, `_field`, `_hover-card`, `_input-group`, `_input-otp`, `_item`, `_kbd`, `_label`, `_marker`, `_menubar`, `_message`, `_message-scroller`, `_native-select`, `_navigation-menu`, `_popover`, `_progress`, `_radio-group`, `_resizable`, `_scroll-area`, `_select`, `_separator`, `_sheet`, `_slider`, `_spinner`, `_textarea`, `_toggle`, `_toggle-group`, `_typography`
+`_alert`, `_alert-dialog`, `_aspect-ratio`, `_attachment`, `_breadcrumb`, `_bubble`, `_button-group`, `_checkbox`, `_collapsible`, `_combobox`, `_command`, `_context-menu`, `_data-table`, `_date-picker`, `_dialog`, `_direction`, `_drawer`, `_dropdown-menu`, `_field`, `_hover-card`, `_input-group`, `_input-otp`, `_item`, `_kbd`, `_label`, `_marker`, `_message`, `_message-scroller`, `_native-select`, `_navigation-menu`, `_popover`, `_progress`, `_radio-group`, `_resizable`, `_scroll-area`, `_select`, `_separator`, `_sheet`, `_slider`, `_spinner`, `_textarea`, `_toggle`, `_toggle-group`, `_typography`
 
 ### UI Components (`components/ui/`)
 
