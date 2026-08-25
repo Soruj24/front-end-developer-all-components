@@ -9,7 +9,6 @@ import {
   CommandPalette,
   PricingCalculator,
   SpotlightSearch,
-  VariantMatrix,
 } from "@/components/ui";
 
 export const surfaces: Record<string, () => ReactNode> = {
@@ -26,33 +25,6 @@ export const surfaces: Record<string, () => ReactNode> = {
           { id: "stats", title: "Stats", span: { cols: 1, rows: 2 }, content: <Box className="bg-success-soft"><span>Stats</span></Box> },
           { id: "chart", title: "Chart", span: { cols: 2, rows: 1 }, content: <Box className="bg-warning-soft"><span>Chart</span></Box> },
           { id: "cta", title: "CTA", span: { cols: 1, rows: 1 }, content: <Box className="bg-info-soft"><span>CTA</span></Box> },
-        ]}
-      />
-    </div>
-  ),
-
-  "variant-matrix": () => (
-    <div className="w-full max-w-xl">
-      <VariantMatrix
-        title="Button"
-        searchable={false}
-        filterable={false}
-        rows={[
-          { id: "sm", label: "Small" },
-          { id: "md", label: "Medium" },
-        ]}
-        columns={[
-          { id: "primary", label: "Primary" },
-          { id: "outline", label: "Outline" },
-          { id: "ghost", label: "Ghost" },
-        ]}
-        cells={[
-          { id: "a", row: "sm", column: "primary", preview: <Button size="sm" variant="primary">Action</Button>, config: '<Button size="sm" variant="primary">' },
-          { id: "b", row: "sm", column: "outline", preview: <Button size="sm" variant="outline">Action</Button>, config: '<Button size="sm" variant="outline">' },
-          { id: "c", row: "sm", column: "ghost", preview: <Button size="sm" variant="ghost">Action</Button>, config: '<Button size="sm" variant="ghost">' },
-          { id: "d", row: "md", column: "primary", preview: <Button size="md" variant="primary">Action</Button>, config: '<Button variant="primary">' },
-          { id: "e", row: "md", column: "outline", preview: <Button size="md" variant="outline">Action</Button>, config: '<Button variant="outline">' },
-          { id: "f", row: "md", column: "ghost", preview: <Button size="md" variant="ghost">Action</Button>, config: '<Button variant="ghost">' },
         ]}
       />
     </div>

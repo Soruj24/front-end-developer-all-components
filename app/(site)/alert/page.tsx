@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 import {
   Alert,
   AlertTitle,
@@ -70,12 +75,12 @@ export interface AlertDescriptionProps
 /* ------------------------------------------------------------------ */
 
 const variantClasses: Record<AlertVariant, string> = {
-  info: "border-l-info bg-info-soft text-foreground",
-  success: "border-l-success bg-success-soft text-foreground",
-  warning: "border-l-warning bg-warning-soft text-foreground",
-  error: "border-l-danger bg-danger-soft text-foreground",
-  default: "border-l-muted-foreground/40 bg-muted/50 text-foreground",
-  destructive: "border-l-danger bg-danger-soft text-foreground",
+  info: "border-info/40 bg-info/5 text-info dark:bg-info/10",
+  success: "border-success/40 bg-success/5 text-success dark:bg-success/10",
+  warning: "border-warning/40 bg-warning/5 text-warning dark:bg-warning/10",
+  error: "border-danger/40 bg-danger/5 text-danger dark:bg-danger/10",
+  default: "border-border bg-muted/30 text-foreground dark:bg-muted/20",
+  destructive: "border-danger/40 bg-danger/5 text-danger dark:bg-danger/10",
 };
 
 const iconColorClasses: Record<AlertVariant, string> = {
@@ -97,9 +102,9 @@ const builtInIcons: Record<AlertVariant, string> = {
 };
 
 const sizeClasses: Record<AlertSize, string> = {
-  sm: "gap-2 rounded-md border-l-[3px] px-3 py-2 text-xs",
-  md: "gap-3 rounded-lg border-l-4 px-4 py-3 text-sm",
-  lg: "gap-4 rounded-xl border-l-4 px-6 py-5 text-base",
+  sm: "gap-2.5 rounded-lg border px-3.5 py-2.5 text-xs",
+  md: "gap-3 rounded-xl border px-4 py-3.5 text-sm",
+  lg: "gap-4 rounded-xl border px-5 py-4 text-base",
 };
 
 /* ------------------------------------------------------------------ */
@@ -109,7 +114,10 @@ const sizeClasses: Record<AlertSize, string> = {
 function AlertTitle({ className, children, ...props }: AlertTitleProps) {
   return (
     <h5
-      className={cn("font-semibold leading-none tracking-tight", className)}
+      className={cn(
+        "font-semibold leading-snug tracking-[-0.01em]",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -125,7 +133,10 @@ function AlertDescription({
 }: AlertDescriptionProps) {
   return (
     <p
-      className={cn("text-sm leading-relaxed opacity-90", className)}
+      className={cn(
+        "text-[0.8125rem] leading-relaxed opacity-80",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -146,7 +157,11 @@ function CloseButton({
   size: AlertSize;
 }) {
   const btnSize =
-    size === "sm" ? "h-4 w-4" : size === "lg" ? "h-6 w-6" : "h-5 w-5";
+    size === "sm"
+      ? "h-6 w-6"
+      : size === "lg"
+        ? "h-8 w-8"
+        : "h-7 w-7";
 
   return (
     <button
@@ -154,15 +169,16 @@ function CloseButton({
       onClick={onClick}
       aria-label="Dismiss alert"
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-md",
+        "inline-flex shrink-0 items-center justify-center rounded-lg",
         btnSize,
-        "text-current/50 transition-colors",
-        "hover:bg-current/10 hover:text-current",
+        "text-current/40 transition-all duration-150",
+        "hover:bg-current/10 hover:text-current/70",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "active:scale-95",
       )}
     >
       <svg
-        className={cn(size === "sm" ? "h-3 w-3" : "h-4 w-4")}
+        className={cn(size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -206,7 +222,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
       setTimeout(() => {
         setDismissed(true);
         onDismiss?.();
-      }, 200);
+      }, 150);
     }, [onDismiss]);
 
     useEffect(() => {
@@ -228,12 +244,12 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
         ref={ref}
         role="alert"
         className={cn(
-          "flex items-start border-l transition-all duration-200",
+          "relative flex items-start border transition-all duration-200 ease-out",
           sizeClasses[size],
           variantClasses[variant],
           visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-1 pointer-events-none",
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 -translate-y-1.5 scale-[0.98] pointer-events-none",
           className,
         )}
         {...props}
@@ -241,12 +257,12 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
         {showIcon && (
           <span
             className={cn(
-              "flex shrink-0 items-center justify-center font-semibold",
+              "flex shrink-0 items-center justify-center rounded-md",
               size === "sm"
-                ? "mt-px text-sm"
+                ? "mt-px h-5 w-5 text-sm"
                 : size === "lg"
-                  ? "mt-0.5 text-lg"
-                  : "mt-0.5 text-base",
+                  ? "mt-0.5 h-7 w-7 text-lg"
+                  : "mt-0.5 h-6 w-6 text-base",
               iconColorClasses[variant],
             )}
             aria-hidden="true"
@@ -275,15 +291,47 @@ export default Alert;`;
 /*  Example code strings                                               */
 /* ------------------------------------------------------------------ */
 
-const VARIANTS_CODE = `<Alert variant="info">Your email has been verified.</Alert>
-<Alert variant="success">Changes saved successfully.</Alert>
-<Alert variant="warning">Trial expires in 3 days.</Alert>
-<Alert variant="error">Payment declined.</Alert>
-<Alert variant="default">A neutral system message.</Alert>`;
+const VARIANTS_CODE = `<Alert variant="info">
+  <AlertTitle>Info</AlertTitle>
+  <AlertDescription>Your email has been verified.</AlertDescription>
+</Alert>
 
-const SIZES_CODE = `<Alert variant="info" size="sm">Compact notification.</Alert>
-<Alert variant="info" size="md">Standard message.</Alert>
-<Alert variant="info" size="lg">Large, prominent alert.</Alert>`;
+<Alert variant="success">
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Changes saved successfully.</AlertDescription>
+</Alert>
+
+<Alert variant="warning">
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>Trial expires in 3 days.</AlertDescription>
+</Alert>
+
+<Alert variant="error">
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>Payment declined.</AlertDescription>
+</Alert>
+
+<Alert variant="default">
+  <AlertTitle>Default</AlertTitle>
+  <AlertDescription>A neutral system message.</AlertDescription>
+</Alert>
+
+<Alert variant="destructive">
+  <AlertTitle>Destructive</AlertTitle>
+  <AlertDescription>This action cannot be undone.</AlertDescription>
+</Alert>`;
+
+const SIZES_CODE = `<Alert variant="info" size="sm">
+  Compact notification for tight spaces.
+</Alert>
+
+<Alert variant="info" size="md">
+  Standard message — the default size.
+</Alert>
+
+<Alert variant="info" size="lg">
+  Large, prominent alert for critical notices.
+</Alert>`;
 
 const DISMISSIBLE_CODE = `<Alert variant="info" dismissible onDismiss={() => {}}>
   A new software update is available.
@@ -307,14 +355,19 @@ const TITLE_DESC_CODE = `<Alert variant="error" icon>
   </AlertDescription>
 </Alert>`;
 
-const ACTION_CODE = `<Alert variant="warning" icon action={<button>Upgrade</button>}>
+const ACTION_CODE = `<Alert
+  variant="warning"
+  icon
+  action={<button>Upgrade</button>}
+>
   Storage quota 90% full. Upgrade for more space.
 </Alert>`;
 
 const REAL_WORLD_CODE = `<Alert variant="success" icon dismissible>
   <AlertTitle>Order confirmed</AlertTitle>
   <AlertDescription>
-    Your order #38291 has been placed. Estimated delivery: Thursday.
+    Your order #38291 has been placed.
+    Estimated delivery: Thursday.
   </AlertDescription>
 </Alert>`;
 
@@ -324,40 +377,90 @@ const REAL_WORLD_CODE = `<Alert variant="success" icon dismissible>
 
 function InfoIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
   );
 }
 
 function CheckIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
   );
 }
 
 function WarningIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+      />
     </svg>
   );
 }
 
 function ErrorIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
   );
 }
 
 function RocketIcon() {
   return (
-    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+    <svg
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+      />
     </svg>
   );
 }
@@ -377,7 +480,9 @@ export default function AlertPage() {
         <div className="flex w-full max-w-lg flex-col gap-3">
           <Alert variant="info" icon>
             <AlertTitle>Information</AlertTitle>
-            <AlertDescription>System updates are available for download.</AlertDescription>
+            <AlertDescription>
+              System updates are available for download.
+            </AlertDescription>
           </Alert>
           <Alert variant="success" icon>
             <AlertTitle>Success</AlertTitle>
@@ -389,73 +494,143 @@ export default function AlertPage() {
           </Alert>
           <Alert variant="error" icon>
             <AlertTitle>Error</AlertTitle>
-            <AlertDescription>Unable to connect to the server.</AlertDescription>
+            <AlertDescription>
+              Unable to connect to the server.
+            </AlertDescription>
           </Alert>
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer source={ALERT_SOURCE} filename="components/ui/Alert.tsx" defaultExpanded />
+      <SourceCodeViewer
+        source={ALERT_SOURCE}
+        filename="components/ui/Alert.tsx"
+        defaultExpanded
+      />
 
       <div className="flex flex-col gap-6">
-        <ExampleBlock title="Variants" description="Six visual styles for different message types." code={VARIANTS_CODE}>
+        <ExampleBlock
+          title="Variants"
+          description="Six visual styles for different message types."
+          code={VARIANTS_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
-            <Alert variant="info" icon><AlertTitle>Info</AlertTitle><AlertDescription>Your email has been verified.</AlertDescription></Alert>
-            <Alert variant="success" icon><AlertTitle>Success</AlertTitle><AlertDescription>Changes saved successfully.</AlertDescription></Alert>
-            <Alert variant="warning" icon><AlertTitle>Warning</AlertTitle><AlertDescription>Trial expires in 3 days.</AlertDescription></Alert>
-            <Alert variant="error" icon><AlertTitle>Error</AlertTitle><AlertDescription>Payment declined.</AlertDescription></Alert>
-            <Alert variant="default"><AlertTitle>Default</AlertTitle><AlertDescription>A neutral system message.</AlertDescription></Alert>
-            <Alert variant="destructive" icon><AlertTitle>Destructive</AlertTitle><AlertDescription>This action cannot be undone.</AlertDescription></Alert>
+            <Alert variant="info" icon>
+              <AlertTitle>Info</AlertTitle>
+              <AlertDescription>Your email has been verified.</AlertDescription>
+            </Alert>
+            <Alert variant="success" icon>
+              <AlertTitle>Success</AlertTitle>
+              <AlertDescription>
+                Changes saved successfully.
+              </AlertDescription>
+            </Alert>
+            <Alert variant="warning" icon>
+              <AlertTitle>Warning</AlertTitle>
+              <AlertDescription>Trial expires in 3 days.</AlertDescription>
+            </Alert>
+            <Alert variant="error" icon>
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>Payment declined.</AlertDescription>
+            </Alert>
+            <Alert variant="default">
+              <AlertTitle>Default</AlertTitle>
+              <AlertDescription>A neutral system message.</AlertDescription>
+            </Alert>
+            <Alert variant="destructive" icon>
+              <AlertTitle>Destructive</AlertTitle>
+              <AlertDescription>This action cannot be undone.</AlertDescription>
+            </Alert>
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="Sizes" description="Small, medium, and large options." code={SIZES_CODE}>
+        <ExampleBlock
+          title="Sizes"
+          description="Small, medium, and large options."
+          code={SIZES_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
-            <Alert variant="info" size="sm" icon>Compact notification for tight spaces.</Alert>
-            <Alert variant="info" size="md" icon>Standard message — the default size.</Alert>
-            <Alert variant="info" size="lg" icon>Large, prominent alert for critical notices.</Alert>
+            <Alert variant="info" size="sm" icon>
+              Compact notification for tight spaces.
+            </Alert>
+            <Alert variant="info" size="md" icon>
+              Standard message — the default size.
+            </Alert>
+            <Alert variant="info" size="lg" icon>
+              Large, prominent alert for critical notices.
+            </Alert>
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="Dismissible" description="Close button and Escape key support." code={DISMISSIBLE_CODE}>
+        <ExampleBlock
+          title="Dismissible"
+          description="Close button and Escape key support."
+          code={DISMISSIBLE_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
-            <Alert variant="info" dismissible icon>A new software update is available. See what&apos;s new in v3.0.</Alert>
-            <Alert variant="success" dismissible icon>Your export has been downloaded successfully.</Alert>
+            <Alert variant="info" dismissible icon>
+              A new software update is available. See what&apos;s new in v3.0.
+            </Alert>
+            <Alert variant="success" dismissible icon>
+              Your export has been downloaded successfully.
+            </Alert>
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="With Icon" description="Built-in icons or custom icon elements." code={WITH_ICON_CODE}>
+        <ExampleBlock
+          title="With Icon"
+          description="Built-in icons or custom icon elements."
+          code={WITH_ICON_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
             <Alert variant="success" icon>
               <AlertTitle>Deployment complete</AlertTitle>
-              <AlertDescription>v2.4.1 is now live in production.</AlertDescription>
+              <AlertDescription>
+                v2.4.1 is now live in production.
+              </AlertDescription>
             </Alert>
             <Alert variant="warning" icon={<RocketIcon />}>
               <AlertTitle>New feature available</AlertTitle>
-              <AlertDescription>AI-powered search is now in beta.</AlertDescription>
+              <AlertDescription>
+                AI-powered search is now in beta.
+              </AlertDescription>
             </Alert>
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="Title &amp; Description" description="Structured content with heading and body." code={TITLE_DESC_CODE}>
+        <ExampleBlock
+          title="Title & Description"
+          description="Structured content with heading and body."
+          code={TITLE_DESC_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
             <Alert variant="error" icon>
               <AlertTitle>Authentication failed</AlertTitle>
-              <AlertDescription>Please check your credentials and try again. If the problem persists, contact support.</AlertDescription>
+              <AlertDescription>
+                Please check your credentials and try again. If the problem
+                persists, contact support.
+              </AlertDescription>
             </Alert>
             <Alert variant="info" icon>
               <AlertTitle>Maintenance scheduled</AlertTitle>
-              <AlertDescription>Saturday 2:00 AM — 4:00 AM UTC. Some services may be temporarily unavailable.</AlertDescription>
+              <AlertDescription>
+                Saturday 2:00 AM — 4:00 AM UTC. Some services may be
+                temporarily unavailable.
+              </AlertDescription>
             </Alert>
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="With Action" description="Action button at the trailing edge." code={ACTION_CODE}>
+        <ExampleBlock
+          title="With Action"
+          description="Action button at the trailing edge."
+          code={ACTION_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
             <Alert
               variant="warning"
               icon
               action={
-                <button className="rounded-md bg-warning px-3 py-1.5 text-xs font-medium text-warning-foreground transition-colors hover:bg-warning/90">
+                <button className="rounded-lg bg-warning/15 px-3 py-1.5 text-xs font-medium text-warning transition-colors hover:bg-warning/25">
                   Upgrade
                 </button>
               }
@@ -466,7 +641,7 @@ export default function AlertPage() {
               variant="error"
               icon
               action={
-                <button className="rounded-md bg-danger px-3 py-1.5 text-xs font-medium text-danger-foreground transition-colors hover:bg-danger/90">
+                <button className="rounded-lg bg-danger/15 px-3 py-1.5 text-xs font-medium text-danger transition-colors hover:bg-danger/25">
                   Retry
                 </button>
               }
@@ -476,15 +651,24 @@ export default function AlertPage() {
           </div>
         </ExampleBlock>
 
-        <ExampleBlock title="Real-World Example" description="Production-ready alert with all features." code={REAL_WORLD_CODE}>
+        <ExampleBlock
+          title="Real-World Example"
+          description="Production-ready alert with all features."
+          code={REAL_WORLD_CODE}
+        >
           <div className="flex w-full max-w-lg flex-col gap-3">
             <Alert variant="success" icon dismissible>
               <AlertTitle>Order confirmed</AlertTitle>
-              <AlertDescription>Your order #38291 has been placed. Estimated delivery: Thursday.</AlertDescription>
+              <AlertDescription>
+                Your order #38291 has been placed. Estimated delivery: Thursday.
+              </AlertDescription>
             </Alert>
             <Alert variant="error" icon dismissible>
               <AlertTitle>Upload failed</AlertTitle>
-              <AlertDescription>The file exceeds the 10 MB limit. Compress or split the file and try again.</AlertDescription>
+              <AlertDescription>
+                The file exceeds the 10 MB limit. Compress or split the file and
+                try again.
+              </AlertDescription>
             </Alert>
           </div>
         </ExampleBlock>

@@ -42,7 +42,6 @@ import { floatingToolbars } from "./constants/floatingToolbars";
 import { bentoGrids } from "./constants/bentoGrids";
 import { spotlightSearches } from "./constants/spotlightSearches";
 import { dependencyGraphs } from "./constants/dependencyGraphs";
-import { variantMatrices } from "./constants/variantMatrices";
 import { pricingCalculators } from "./constants/pricingCalculators";
 import { propsEditors } from "./constants/propsEditors";
 import { commands } from "./constants/commands";
@@ -54,7 +53,7 @@ import { breadcrumbs } from "./constants/breadcrumbs";
 import { bubbles } from "./constants/bubbles";
 import { buttonGroups } from "./constants/button-groups";
 import { checkboxes } from "./constants/checkboxes";
-import { collapsibles } from "./constants/collapsibles";
+
 import { comboboxes } from "./constants/combobox";
 import { contextMenus } from "./constants/context-menu";
 import { directions } from "./constants/directions";
@@ -120,7 +119,6 @@ const allEntries: RegistryEntry[] = [
   ...bentoGrids,
   ...spotlightSearches,
   ...dependencyGraphs,
-  ...variantMatrices,
   ...pricingCalculators,
   ...propsEditors,
   ...commands,
@@ -132,7 +130,7 @@ const allEntries: RegistryEntry[] = [
   ...bubbles,
   ...buttonGroups,
   ...checkboxes,
-  ...collapsibles,
+
   ...comboboxes,
   ...contextMenus,
   ...directions,

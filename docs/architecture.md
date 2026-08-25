@@ -56,7 +56,6 @@ Higher-level composed components. Some are already refactored into folders:
 | Component | Files | Status |
 |-----------|-------|--------|
 | `BentoGrid/` | 11 | Refactored, all ≤150 lines |
-| `VariantMatrix/` | 9 | Refactored, all ≤150 lines |
 | `ApiExplorer/` | 16 | Partially refactored |
 | `StreamingResponse/` | 4 | Partially extracted |
 

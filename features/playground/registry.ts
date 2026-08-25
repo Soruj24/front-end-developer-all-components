@@ -14,7 +14,6 @@ const CATEGORY_ROUTES: Array<[prefix: string, route: string]> = [
   ["bento-grid", "/bento-grid"],
   ["spotlight-search", "/spotlight-search"],
   ["dependency-graph", "/dependency-graph"],
-  ["variant-matrix", "/variant-matrix"],
   ["pricing-calculator", "/pricing-calculator"],
   ["pagination", "/pagination"],
   ["navigation", "/navigation"],

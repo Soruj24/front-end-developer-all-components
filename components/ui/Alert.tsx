@@ -56,12 +56,14 @@ export interface AlertDescriptionProps
 /* ------------------------------------------------------------------ */
 
 const variantClasses: Record<AlertVariant, string> = {
-  info: "border-l-info bg-info-soft text-foreground",
-  success: "border-l-success bg-success-soft text-foreground",
-  warning: "border-l-warning bg-warning-soft text-foreground",
-  error: "border-l-danger bg-danger-soft text-foreground",
-  default: "border-l-muted-foreground/40 bg-muted/50 text-foreground",
-  destructive: "border-l-danger bg-danger-soft text-foreground",
+  info: "border-info/40 bg-info/5 text-info dark:bg-info/10",
+  success: "border-success/40 bg-success/5 text-success dark:bg-success/10",
+  warning: "border-warning/40 bg-warning/5 text-warning dark:bg-warning/10",
+  error: "border-danger/40 bg-danger/5 text-danger dark:bg-danger/10",
+  default:
+    "border-border bg-muted/30 text-foreground dark:bg-muted/20",
+  destructive:
+    "border-danger/40 bg-danger/5 text-danger dark:bg-danger/10",
 };
 
 const iconColorClasses: Record<AlertVariant, string> = {
@@ -83,9 +85,9 @@ const builtInIcons: Record<AlertVariant, string> = {
 };
 
 const sizeClasses: Record<AlertSize, string> = {
-  sm: "gap-2 rounded-md border-l-[3px] px-3 py-2 text-xs",
-  md: "gap-3 rounded-lg border-l-4 px-4 py-3 text-sm",
-  lg: "gap-4 rounded-xl border-l-4 px-6 py-5 text-base",
+  sm: "gap-2.5 rounded-lg border px-3.5 py-2.5 text-xs",
+  md: "gap-3 rounded-xl border px-4 py-3.5 text-sm",
+  lg: "gap-4 rounded-xl border px-5 py-4 text-base",
 };
 
 /* ------------------------------------------------------------------ */
@@ -95,7 +97,10 @@ const sizeClasses: Record<AlertSize, string> = {
 function AlertTitle({ className, children, ...props }: AlertTitleProps) {
   return (
     <h5
-      className={cn("font-semibold leading-none tracking-tight", className)}
+      className={cn(
+        "font-semibold leading-snug tracking-[-0.01em]",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -111,7 +116,10 @@ function AlertDescription({
 }: AlertDescriptionProps) {
   return (
     <p
-      className={cn("text-sm leading-relaxed opacity-90", className)}
+      className={cn(
+        "text-[0.8125rem] leading-relaxed opacity-80",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -131,7 +139,12 @@ function CloseButton({
   onClick: () => void;
   size: AlertSize;
 }) {
-  const btnSize = size === "sm" ? "h-4 w-4" : size === "lg" ? "h-6 w-6" : "h-5 w-5";
+  const btnSize =
+    size === "sm"
+      ? "h-6 w-6"
+      : size === "lg"
+        ? "h-8 w-8"
+        : "h-7 w-7";
 
   return (
     <button
@@ -139,15 +152,16 @@ function CloseButton({
       onClick={onClick}
       aria-label="Dismiss alert"
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-md",
+        "inline-flex shrink-0 items-center justify-center rounded-lg",
         btnSize,
-        "text-current/50 transition-colors",
-        "hover:bg-current/10 hover:text-current",
+        "text-current/40 transition-all duration-150",
+        "hover:bg-current/10 hover:text-current/70",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "active:scale-95",
       )}
     >
       <svg
-        className={cn(size === "sm" ? "h-3 w-3" : "h-4 w-4")}
+        className={cn(size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -191,7 +205,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
       setTimeout(() => {
         setDismissed(true);
         onDismiss?.();
-      }, 200);
+      }, 150);
     }, [onDismiss]);
 
     useEffect(() => {
@@ -213,12 +227,12 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
         ref={ref}
         role="alert"
         className={cn(
-          "flex items-start border-l transition-all duration-200",
+          "relative flex items-start border transition-all duration-200 ease-out",
           sizeClasses[size],
           variantClasses[variant],
           visible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-1 pointer-events-none",
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 -translate-y-1.5 scale-[0.98] pointer-events-none",
           className,
         )}
         {...props}
@@ -226,8 +240,12 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
         {showIcon && (
           <span
             className={cn(
-              "flex shrink-0 items-center justify-center font-semibold",
-              size === "sm" ? "mt-px text-sm" : size === "lg" ? "mt-0.5 text-lg" : "mt-0.5 text-base",
+              "flex shrink-0 items-center justify-center rounded-md",
+              size === "sm"
+                ? "mt-px h-5 w-5 text-sm"
+                : size === "lg"
+                  ? "mt-0.5 h-7 w-7 text-lg"
+                  : "mt-0.5 h-6 w-6 text-base",
               iconColorClasses[variant],
             )}
             aria-hidden="true"

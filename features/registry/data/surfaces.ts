@@ -12,16 +12,6 @@ export const surfaces = [
     features: ["dark-mode", "responsive"],
   }),
   component({
-    slug: "variant-matrix",
-    name: "Variant Matrix",
-    description: "Rows by columns of live previews with per-cell copy.",
-    category: "surfaces",
-    tags: ["matrix", "preview", "qa"],
-    updatedAt: "2026-04-28T00:00:00.000Z",
-    stats: { downloads: 68_230, likes: 942, bookmarks: 361, comments: 25, views: 168_000 },
-    features: ["dark-mode", "responsive"],
-  }),
-  component({
     slug: "pricing-calculator",
     name: "Pricing Calculator",
     description: "Quantity sliders with tiers, billing toggle, and coupons.",

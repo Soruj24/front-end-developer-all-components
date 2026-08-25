@@ -23,13 +23,6 @@ export type {
   GraphNode,
   DependencyGraphProps,
 } from "./DependencyGraph";
-export { VariantMatrix } from "./VariantMatrix";
-export type {
-  VariantMatrixAxis,
-  VariantMatrixCell,
-  VariantMatrixLegend,
-  VariantMatrixProps,
-} from "./VariantMatrix";
 export {
   PricingCalculator,
   calculatePrice,
@@ -249,8 +242,7 @@ export { Center } from "./Center";
 export type { CenterProps, CenterAxis } from "./Center";
 export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";
-export { Collapsible } from "./Collapsible";
-export type { CollapsibleProps } from "./Collapsible";
+
 export { Combobox } from "./Combobox";
 export type { ComboboxProps, ComboboxOption } from "./Combobox";
 export { Command } from "./Command";
@@ -285,9 +277,6 @@ export { Kbd } from "./Kbd";
 export type { KbdProps } from "./Kbd";
 export { KeyboardShortcuts } from "./KeyboardShortcuts";
 export type { KeyboardShortcutsProps } from "./KeyboardShortcuts";
-export { Label } from "./Label";
-export type { LabelProps } from "./Label";
-
 export { Marker } from "./Marker";
 export type { MarkerProps } from "./Marker";
 export {
