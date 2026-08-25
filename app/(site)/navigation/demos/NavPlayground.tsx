@@ -78,7 +78,7 @@ export function NavPlayground() {
       <div className="flex justify-center rounded-xl border border-dashed border-border bg-muted/20 p-6 dark:bg-muted/30">
         <aside
           aria-label="Sidebar playground"
-          className="flex h-[380px] w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border bg-background shadow-card"
+          className="flex h-[380px] w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border/60 bg-card shadow-card ring-1 ring-black/[0.04] dark:ring-white/[0.08]"
         >
           <SidebarBrand />
           <div className="px-3 pb-1 pt-3">

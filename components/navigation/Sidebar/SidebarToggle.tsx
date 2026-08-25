@@ -13,7 +13,7 @@ export function SidebarToggle({ open, onClick }: SidebarToggleProps) {
     <button
       type="button"
       onClick={onClick}
-      className="fixed left-4 top-20 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-lg backdrop-blur-md transition-all duration-200 ease-out hover:scale-105 hover:bg-muted active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 supports-[backdrop-filter]:bg-background/75 sm:hidden"
+      className="fixed left-4 top-20 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/90 text-foreground shadow-lg backdrop-blur-md transition-all duration-200 ease-out hover:scale-105 hover:bg-muted active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background supports-[backdrop-filter]:bg-background/75 sm:hidden"
       aria-label={open ? "Close sidebar" : "Open sidebar"}
       aria-expanded={open}
     >

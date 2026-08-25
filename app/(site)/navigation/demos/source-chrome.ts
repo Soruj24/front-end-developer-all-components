@@ -5,12 +5,12 @@ import { siteConfig } from "@/config/site";
 /** Brand mark at the top of the sidebar. */
 export function SidebarBrand() {
   return (
-    <div className="flex h-14 shrink-0 items-center border-b border-border px-3">
+    <div className="flex h-14 shrink-0 items-center border-b border-border/60 px-3">
       <Link
         href="/"
-        className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-1.5 transition-colors duration-150 hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 active:bg-muted"
+        className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-1.5 transition-all duration-150 ease-out hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:bg-muted"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold tracking-wide text-primary-foreground shadow-sm transition-transform duration-200 ease-out group-hover:scale-105">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold tracking-wide text-primary-foreground shadow-sm ring-1 ring-primary/20 transition-all duration-200 ease-out group-hover:scale-105 group-hover:shadow-md">
           {siteConfig.shortName}
         </span>
         <span className="truncate text-[15px] font-semibold tracking-tight text-foreground">
@@ -55,7 +55,7 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
   return (
     <div className="relative">
       <SearchIcon
-        className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/70"
+        className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/60"
         aria-hidden="true"
       />
       <input
@@ -65,10 +65,10 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
         placeholder="Search pages..."
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-9 w-full rounded-lg border border-input bg-muted/40 pl-8 pr-8 text-[13px] text-foreground shadow-xs transition-[border-color,box-shadow,background-color] duration-150 placeholder:text-muted-foreground/60 hover:bg-muted/60 focus-visible:border-ring focus-visible:bg-background focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/25"
+        className="h-9 w-full rounded-lg border border-border/60 bg-muted/30 pl-8 pr-8 text-[13px] text-foreground shadow-xs transition-all duration-150 ease-out placeholder:text-muted-foreground/50 hover:bg-muted/50 hover:border-border focus-visible:border-primary/40 focus-visible:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
       />
       {!value && (
-        <kbd className="pointer-events-none absolute right-2 top-1/2 hidden h-5 -translate-y-1/2 items-center rounded-md border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
+        <kbd className="pointer-events-none absolute right-2 top-1/2 hidden h-5 -translate-y-1/2 items-center rounded-md border border-border/60 bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground/70 sm:flex">
           /
         </kbd>
       )}
@@ -92,7 +92,7 @@ export function SidebarToggle({ open, onClick }: SidebarToggleProps) {
     <button
       type="button"
       onClick={onClick}
-      className="fixed left-4 top-20 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-lg backdrop-blur-md transition-all duration-200 ease-out hover:scale-105 hover:bg-muted active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 supports-[backdrop-filter]:bg-background/75 sm:hidden"
+      className="fixed left-4 top-20 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/90 text-foreground shadow-lg backdrop-blur-md transition-all duration-200 ease-out hover:scale-105 hover:bg-muted active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background supports-[backdrop-filter]:bg-background/75 sm:hidden"
       aria-label={open ? "Close sidebar" : "Open sidebar"}
       aria-expanded={open}
     >
@@ -117,7 +117,7 @@ export function SidebarBackdrop({ onClick }: SidebarBackdropProps) {
   return (
     <div
       onClick={onClick}
-      className="fixed inset-0 z-30 animate-fade-in-fast bg-overlay backdrop-blur-[2px] sm:hidden"
+      className="fixed inset-0 z-30 animate-fade-in-fast bg-overlay/80 backdrop-blur-sm sm:hidden"
       aria-hidden="true"
     />
   );
@@ -129,8 +129,8 @@ export const FOOTER_SOURCE = `import { navigationLinkCount } from "@/constants/n
 /** Compact footer line inside the sidebar. */
 export function SidebarFooter() {
   return (
-    <div className="flex shrink-0 items-center justify-between border-t border-border px-4 py-3 text-[11px] font-medium text-muted-foreground">
-      <span className="rounded-md bg-muted/60 px-1.5 py-0.5 tabular-nums">
+    <div className="flex shrink-0 items-center justify-between border-t border-border/60 px-4 py-3 text-[11px] font-medium text-muted-foreground">
+      <span className="rounded-md bg-muted/50 px-1.5 py-0.5 tabular-nums ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
         {navigationLinkCount} pages
       </span>
       <span className="flex items-center gap-1.5">

@@ -273,20 +273,6 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    title: "Navigation",
-    icon: <Globe className="h-4 w-4" />,
-    description: "Site navigation patterns",
-    links: [
-      { label: "Navigation", href: "/navigation", icon: <Globe className="h-4 w-4" />, desc: "Sidebars, top bars, breadcrumbs" },
-      { label: "Layouts", href: "/layouts", icon: <Layout className="h-4 w-4" />, desc: "Page layout patterns and app shells" },
-      { label: "Navbar", href: "/navbar", icon: <PanelTop className="h-4 w-4" />, desc: "Fixed, transparent, sticky navbars" },
-      { label: "Header", href: "/header", icon: <PanelTop className="h-4 w-4" />, desc: "Brand, nav, search, CTA headers" },
-      { label: "Sidebar", href: "/sidebar", icon: <PanelLeft className="h-4 w-4" />, desc: "Collapsible, nested, icon sidebar" },
-      { label: "Footer", href: "/footer", icon: <PanelTop className="h-4 w-4" />, desc: "Multi-column, simple, social footers" },
-      { label: "Search", href: "/search", icon: <Search className="h-4 w-4" />, desc: "Search bars, command palette" },
-    ],
-  },
-  {
     title: "Overlays",
     icon: <Circle className="h-4 w-4" />,
     description: "Modals, dialogs, and floating UI",
@@ -296,7 +282,6 @@ export const navigationSections: NavSection[] = [
       { label: "Popover", href: "/popover", icon: <CircleAlert className="h-4 w-4" />, desc: "Click, hover popovers" },
       { label: "Toast", href: "/toast", icon: <Bell className="h-4 w-4" />, desc: "Success, error, info notifications" },
       { label: "Dropdown", href: "/dropdown", icon: <ChevronDown className="h-4 w-4" />, desc: "Menu dropdowns, select dropdowns" },
-      { label: "Accordion", href: "/accordion", icon: <ChevronsRight className="h-4 w-4" />, desc: "Single, multiple, icon accordions" },
       { label: "Carousel", href: "/carousel", icon: <ChevronsRight className="h-4 w-4" />, desc: "Image, card, testimonial carousels" },
     ],
   },

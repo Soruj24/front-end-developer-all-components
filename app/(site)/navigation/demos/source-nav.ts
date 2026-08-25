@@ -9,10 +9,8 @@ import { SidebarNavLink } from "./SidebarNavLink";
 
 interface SidebarSectionProps {
   section: NavSection;
-  /** Whether the accordion body is expanded. */
   open: boolean;
   onToggle: () => void;
-  /** Called after navigation so the mobile sidebar can close. */
   onNavigate: () => void;
 }
 
@@ -37,16 +35,16 @@ export function SidebarSection({ section, open, onToggle, onNavigate }: SidebarS
         }}
         aria-expanded={open}
         aria-controls={contentId}
-        className="group flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] font-medium text-foreground/80 outline-none transition-[background-color,color,box-shadow] duration-150 hover:bg-muted/80 hover:text-foreground active:bg-muted active:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
+        className="group flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] font-medium text-foreground/70 outline-none transition-all duration-150 ease-out hover:bg-muted/60 hover:text-foreground active:bg-muted focus-visible:bg-muted/50 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
       >
-        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-xs text-muted-foreground transition-colors duration-150 group-hover:text-foreground">
+        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-xs text-muted-foreground/60 transition-colors duration-150 group-hover:text-foreground/80">
           {section.icon}
         </span>
         <span className="flex-1 truncate">{section.title}</span>
         <ChevronDownIcon
           className={cn(
-            "h-3.5 w-3.5 shrink-0 text-muted-foreground/50 transition-transform duration-300 ease-out group-hover:text-muted-foreground",
-            open && "rotate-180 text-muted-foreground",
+            "h-3.5 w-3.5 shrink-0 text-muted-foreground/40 transition-all duration-300 ease-out group-hover:text-muted-foreground/70",
+            open && "rotate-180 text-muted-foreground/60",
           )}
           aria-hidden="true"
         />
@@ -55,7 +53,7 @@ export function SidebarSection({ section, open, onToggle, onNavigate }: SidebarS
       <div
         id={contentId}
         className={cn(
-          "grid transition-[grid-template-rows,opacity] duration-300 ease-out",
+          "grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
         )}
       >
@@ -81,9 +79,7 @@ import type { NavLink } from "@/types/navigation";
 
 interface SidebarNavLinkProps {
   link: NavLink;
-  /** Indentation level for nested links. */
   depth?: number;
-  /** Called after navigation so the mobile sidebar can close. */
   onNavigate: () => void;
 }
 
@@ -99,18 +95,18 @@ export function SidebarNavLink({ link, depth = 0, onNavigate }: SidebarNavLinkPr
         onClick={onNavigate}
         data-nav-link
         className={cn(
-          "group relative flex items-center gap-2 rounded-lg py-1.5 pr-2 text-[13px] font-medium outline-none transition-[background-color,color,box-shadow] duration-150",
+          "group relative flex items-center gap-2 rounded-lg py-1.5 pr-2 text-[13px] font-medium outline-none transition-all duration-150 ease-out",
           depth === 0 ? "pl-2.5" : "pl-7",
           active
-            ? "bg-primary-soft font-semibold text-primary"
-            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:bg-muted/60 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 active:bg-muted",
+            ? "bg-primary/10 font-semibold text-primary"
+            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground focus-visible:bg-muted/50 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 active:bg-muted",
         )}
         aria-current={active ? "page" : undefined}
       >
         <span
           className={cn(
-            "absolute left-0 top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded-full bg-primary transition-opacity duration-150",
-            active ? "opacity-100" : "opacity-0 group-hover:opacity-50",
+            "absolute left-0 top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded-full bg-primary transition-all duration-200 ease-out",
+            active ? "opacity-100" : "opacity-0 group-hover:opacity-40",
           )}
           aria-hidden="true"
         />
@@ -120,7 +116,7 @@ export function SidebarNavLink({ link, depth = 0, onNavigate }: SidebarNavLinkPr
               "w-4 shrink-0 text-center text-xs transition-colors duration-150",
               active
                 ? "text-primary"
-                : "text-muted-foreground/70 group-hover:text-foreground",
+                : "text-muted-foreground/60 group-hover:text-foreground/80",
             )}
             aria-hidden="true"
           >
@@ -131,7 +127,7 @@ export function SidebarNavLink({ link, depth = 0, onNavigate }: SidebarNavLinkPr
       </Link>
 
       {link.children && link.children.length > 0 && (
-        <ul className="ml-[18px] mt-0.5 flex flex-col gap-0.5 border-l border-border/70">
+        <ul className="ml-[18px] mt-0.5 flex flex-col gap-0.5 border-l border-border/50">
           {link.children.map((child) => (
             <SidebarNavLink
               key={child.label}

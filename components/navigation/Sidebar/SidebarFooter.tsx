@@ -3,8 +3,8 @@ import { navigationLinkCount } from "@/constants/navigation";
 /** Compact footer line inside the sidebar. */
 export function SidebarFooter() {
   return (
-    <div className="flex shrink-0 items-center justify-between border-t border-border px-4 py-3 text-[11px] font-medium text-muted-foreground">
-      <span className="rounded-md bg-muted/60 px-1.5 py-0.5 tabular-nums">
+    <div className="flex shrink-0 items-center justify-between border-t border-border/60 px-4 py-3 text-[11px] font-medium text-muted-foreground">
+      <span className="rounded-md bg-muted/50 px-1.5 py-0.5 tabular-nums ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
         {navigationLinkCount} pages
       </span>
       <span className="flex items-center gap-1.5">

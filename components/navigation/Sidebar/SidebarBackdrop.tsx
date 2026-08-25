@@ -9,7 +9,7 @@ export function SidebarBackdrop({ onClick }: SidebarBackdropProps) {
   return (
     <div
       onClick={onClick}
-      className="fixed inset-0 z-30 animate-fade-in-fast bg-overlay backdrop-blur-[2px] sm:hidden"
+      className="fixed inset-0 z-30 animate-fade-in-fast bg-overlay/80 backdrop-blur-sm sm:hidden"
       aria-hidden="true"
     />
   );

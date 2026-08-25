@@ -31,7 +31,7 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
   return (
     <div className="relative">
       <SearchIcon
-        className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/70"
+        className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground/60"
         aria-hidden="true"
       />
       <input
@@ -41,10 +41,10 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
         placeholder="Search pages..."
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-9 w-full rounded-lg border border-input bg-muted/40 pl-8 pr-8 text-[13px] text-foreground shadow-xs transition-[border-color,box-shadow,background-color] duration-150 placeholder:text-muted-foreground/60 hover:bg-muted/60 focus-visible:border-ring focus-visible:bg-background focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/25"
+        className="h-9 w-full rounded-lg border border-border/60 bg-muted/30 pl-8 pr-8 text-[13px] text-foreground shadow-xs transition-all duration-150 ease-out placeholder:text-muted-foreground/50 hover:bg-muted/50 hover:border-border focus-visible:border-primary/40 focus-visible:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
       />
       {!value && (
-        <kbd className="pointer-events-none absolute right-2 top-1/2 hidden h-5 -translate-y-1/2 items-center rounded-md border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
+        <kbd className="pointer-events-none absolute right-2 top-1/2 hidden h-5 -translate-y-1/2 items-center rounded-md border border-border/60 bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground/70 sm:flex">
           /
         </kbd>
       )}

@@ -35,7 +35,6 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
 
   const navSections = sections?.length ? sections : navigationSections;
 
-  // Sections default to collapsed except the one holding the active page.
   const [collapsed, setCollapsed] = useState<Set<string>>(() => {
     const set = new Set<string>();
     for (const section of navSections) {
@@ -51,7 +50,6 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
 
   const isSearching = search.trim().length > 0;
 
-  // Escape closes the mobile drawer.
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -114,9 +112,13 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col border-r border-border bg-background transition-[transform,box-shadow] duration-300 ease-out sm:sticky sm:top-14 sm:h-[calc(100vh-3.5rem)] sm:translate-x-0 sm:shadow-none",
+          "fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col",
+          "border-r border-border/60 bg-card",
+          "ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          "transition-[transform,box-shadow] duration-300 ease-out",
+          "sm:sticky sm:top-14 sm:h-[calc(100vh-3.5rem)] sm:translate-x-0 sm:shadow-none",
           open
-            ? "translate-x-0 shadow-modal sm:shadow-none"
+            ? "translate-x-0 shadow-xl sm:shadow-none"
             : "-translate-x-full",
         )}
         aria-label="Documentation"
@@ -129,7 +131,7 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
         <nav
           ref={navRef}
           onKeyDown={onNavKeyDown}
-          className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-3"
+          className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-3"
           aria-label="Documentation pages"
         >
           {filteredSections.map((section) => (
@@ -142,7 +144,7 @@ export function Sidebar({ sections }: { sections?: NavSection[] }) {
             />
           ))}
           {filteredSections.length === 0 && (
-            <p className="rounded-lg border border-dashed border-border px-3 py-8 text-center text-[13px] text-muted-foreground">
+            <p className="rounded-lg border border-dashed border-border/60 px-3 py-8 text-center text-[13px] text-muted-foreground">
               No pages match &quot;{search}&quot;
             </p>
           )}

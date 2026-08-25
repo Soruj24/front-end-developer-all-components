@@ -4,12 +4,12 @@ import { siteConfig } from "@/config/site";
 /** Brand mark at the top of the sidebar. */
 export function SidebarBrand() {
   return (
-    <div className="flex h-14 shrink-0 items-center border-b border-border px-3">
+    <div className="flex h-14 shrink-0 items-center border-b border-border/60 px-3">
       <Link
         href="/"
-        className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-1.5 transition-colors duration-150 hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 active:bg-muted"
+        className="group flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-1.5 transition-all duration-150 ease-out hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:bg-muted"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold tracking-wide text-primary-foreground shadow-sm transition-transform duration-200 ease-out group-hover:scale-105">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 text-[11px] font-bold tracking-wide text-primary-foreground shadow-sm ring-1 ring-primary/20 transition-all duration-200 ease-out group-hover:scale-105 group-hover:shadow-md">
           {siteConfig.shortName}
         </span>
         <span className="truncate text-[15px] font-semibold tracking-tight text-foreground">

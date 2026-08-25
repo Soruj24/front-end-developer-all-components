@@ -29,7 +29,7 @@ export function SidebarShowcase() {
   return (
     <aside
       aria-label="Sidebar live preview"
-      className="flex h-[420px] w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border bg-background text-left shadow-card"
+      className="flex h-[420px] w-full max-w-sm flex-col overflow-hidden rounded-xl border border-border/60 bg-card text-left shadow-card ring-1 ring-black/[0.04] dark:ring-white/[0.08]"
     >
       <SidebarBrand />
       <div className="px-3 pb-1 pt-3">
