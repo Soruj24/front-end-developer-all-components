@@ -1,9 +1,9 @@
 export const MENUBAR_STYLES: Record<string, string> = {
-  base: "flex h-10 items-center gap-1 rounded-md bg-gray-100 p-1 dark:bg-gray-800",
-  item: "flex items-center gap-2 rounded px-3 py-1.5 text-sm hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer",
-  itemSelected: "bg-gray-200 dark:bg-gray-700",
-  itemDisabled: "opacity-50 cursor-not-allowed",
-  shortcut: "ml-auto text-xs text-gray-500",
-  icon: "flex-shrink-0 w-4 h-4",
-  separator: "my-1 h-px bg-border",
+  base: "inline-flex h-9 items-center gap-0.5 rounded-lg border border-border/60 bg-card p-0.5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+  item: "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-out hover:bg-accent hover:text-accent-foreground cursor-pointer",
+  itemSelected: "bg-accent text-accent-foreground",
+  itemDisabled: "pointer-events-none opacity-40",
+  shortcut: "ml-auto font-mono text-[11px] tracking-wider text-muted-foreground/60",
+  icon: "flex-shrink-0 h-4 w-4",
+  separator: "-mx-1 my-1 h-px bg-border/60",
 };
