@@ -1,9 +1,0 @@
-export { DanceMoveRenderer } from "./dance-move-renderer";
-export { DanceMoveSelectorDemo } from "./dance-move-selector";
-export { MusicVisualizerDemo } from "./music-visualizer";
-export { DanceBattleDemo } from "./dance-battle";
-export { StepSequencerDemo } from "./step-sequencer";
-export { ClubNightDemo } from "./club-night";
-export { DjBoothDemo } from "./dj-booth";
-export { DanceTutorialDemo } from "./dance-tutorial";
-export { PlaygroundDemo } from "./playground";
