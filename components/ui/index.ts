@@ -235,8 +235,6 @@ export { ButtonGroup } from "./ButtonGroup";
 export type { ButtonGroupProps, ButtonGroupOrientation } from "./ButtonGroup";
 export { Cluster } from "./Cluster";
 export type { ClusterProps, ClusterJustify, ClusterAlign } from "./Cluster";
-export { Center } from "./Center";
-export type { CenterProps, CenterAxis } from "./Center";
 export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";
 
