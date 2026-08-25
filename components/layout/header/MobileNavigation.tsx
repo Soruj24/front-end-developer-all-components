@@ -37,7 +37,7 @@ const USER_ITEMS = [
   { label: "My Components", href: "/components" },
   { label: "Favorites", href: "/favorites" },
   { label: "Projects", href: "/projects" },
-  { label: "Settings", href: "/settings" },
+  { label: "Settings", href: "/account/settings" },
 ];
 
 export function MobileNavigation({

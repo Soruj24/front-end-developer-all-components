@@ -27,7 +27,7 @@ const USER_ITEMS = [
   { label: "My Templates", href: "/templates" },
   { label: "Favorites", href: "/favorites" },
   { label: "Projects", href: "/projects" },
-  { label: "Settings", href: "/settings" },
+  { label: "Settings", href: "/account/settings" },
 ];
 
 const ADMIN_ITEMS = [

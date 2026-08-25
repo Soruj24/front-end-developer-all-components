@@ -26,19 +26,13 @@ export function SidebarFooter({ collapsed }: SidebarFooterProps) {
         <>
           <div className="flex items-center gap-3">
             <Link
-              href="/settings"
+              href="/account/settings"
               className={cn(INTERACTIVE.navLink, FOCUS.ring)}
               aria-label="Settings"
             >
               Settings
             </Link>
-            <Link
-              href="/help"
-              className={cn(INTERACTIVE.navLink, FOCUS.ring)}
-              aria-label="Help"
-            >
-              Help
-            </Link>
+
           </div>
           <span className={cn("flex items-center gap-1.5", TEXT.small, COLOR.muted)}>
             <span className={STATUS_DOT.wrapper}>
@@ -53,7 +47,7 @@ export function SidebarFooter({ collapsed }: SidebarFooterProps) {
       {collapsed && (
         <>
           <Link
-            href="/settings"
+            href="/account/settings"
             className={cn(INTERACTIVE.iconButtonSm, FOCUS.ring)}
             title="Settings"
             aria-label="Settings"

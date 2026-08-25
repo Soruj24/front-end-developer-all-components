@@ -102,7 +102,7 @@ export function SiteHeaderUser({
             Account
           </Link>
           <Link
-            href="/settings"
+            href="/account/settings"
             onClick={() => setIsOpen(false)}
             className={cn(
               "flex w-full items-center rounded-lg px-3 py-2",
