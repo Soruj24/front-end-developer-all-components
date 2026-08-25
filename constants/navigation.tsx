@@ -263,7 +263,6 @@ export const navigationSections: NavSection[] = [
       { label: "Segmented Control", href: "/segmented-control", icon: <ToggleRight className="h-4 w-4" />, desc: "Segmented button control" },
       { label: "Stepper Input", href: "/stepper-input", icon: <Hash className="h-4 w-4" />, desc: "Number stepper with +/- buttons" },
       { label: "Rating Input", href: "/rating-input", icon: <Star className="h-4 w-4" />, desc: "Star rating input" },
-      { label: "Breadcrumb Bar", href: "/breadcrumb-bar", icon: <ChevronRight className="h-4 w-4" />, desc: "Breadcrumb navigation bar" },
       { label: "Step Progress", href: "/step-progress", icon: <ChevronsRight className="h-4 w-4" />, desc: "Step progress indicator" },
       { label: "Split View", href: "/split-view", icon: <SplitSquareHorizontal className="h-4 w-4" />, desc: "Split pane layout" },
       { label: "Stack Layout", href: "/stack-layout", icon: <Rows3 className="h-4 w-4" />, desc: "Vertical/horizontal stack" },
