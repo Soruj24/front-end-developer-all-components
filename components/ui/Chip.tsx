@@ -42,7 +42,7 @@ const Chip = forwardRef<HTMLButtonElement, ChipProps>(
     ref,
   ) => {
     const handleRemove = useCallback(
-      (e: React.MouseEvent) => {
+      (e: React.SyntheticEvent) => {
         e.stopPropagation();
         e.preventDefault();
         onRemove?.();
@@ -79,12 +79,19 @@ const Chip = forwardRef<HTMLButtonElement, ChipProps>(
       >
         {children}
         {removable && (
-          <button
-            type="button"
+          <span
+            role="button"
+            tabIndex={0}
             aria-label="Remove"
             onClick={handleRemove}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleRemove(e);
+              }
+            }}
             className={cn(
-              "ml-0.5 -mr-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full transition-colors duration-150",
+              "ml-0.5 -mr-1 flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors duration-150",
               "hover:bg-black/10 dark:hover:bg-white/15",
               "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
             )}
@@ -92,7 +99,7 @@ const Chip = forwardRef<HTMLButtonElement, ChipProps>(
             <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </button>
+          </span>
         )}
       </button>
     );
