@@ -152,10 +152,7 @@ export default function NavigationPage() {
         </div>
       </Section>
 
-      {/* API Reference */}
-      <Section title="API Reference">
-        <ApiReference />
-      </Section>
+       
     </div>
   );
 }
