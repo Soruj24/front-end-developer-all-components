@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/cn";
 
 interface BlogShareButtonsProps {
@@ -17,7 +17,11 @@ export function BlogShareButtons({
   className,
 }: BlogShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-  const shareUrl = typeof window !== "undefined" ? window.location.href : url;
+  const [shareUrl, setShareUrl] = useState(url);
+
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
 
   const handleCopy = async () => {
     try {

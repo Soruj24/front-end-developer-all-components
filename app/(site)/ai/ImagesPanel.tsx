@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/cn";
 import { ImageIcon } from "./icons";
 
 const generatedImages = [
@@ -10,11 +11,11 @@ const generatedImages = [
 
 export function ImagesPanel({ analyzingImage, imagePreview }: { analyzingImage: boolean; imagePreview: string | null }) {
   return (
-    <div className="hidden w-64 flex-shrink-0 border-l border-border p-4 dark:border-border xl:block">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Generated Images</h3>
+    <div className="hidden w-64 flex-shrink-0 border-l border-border/60 p-4 xl:block">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Generated Images</h3>
       <div className="space-y-3">
         {generatedImages.map((img, i) => (
-          <div key={i} className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${img.gradient} p-4 shadow-sm`}>
+          <div key={i} className={cn("group relative overflow-hidden rounded-xl bg-gradient-to-br", img.gradient, "p-4 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]")}>
             <div className="flex h-24 items-center justify-center">
               <ImageIcon className="h-8 w-8 text-white/40" strokeWidth={1.5} />
             </div>
@@ -23,15 +24,15 @@ export function ImagesPanel({ analyzingImage, imagePreview }: { analyzingImage: 
         ))}
       </div>
 
-      <div className="mt-4 border-t border-border pt-4 dark:border-border">
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Image Analysis</h3>
+      <div className="mt-4 border-t border-border/60 pt-4">
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Image Analysis</h3>
         {analyzingImage ? (
-          <div className="flex items-center gap-2 rounded-lg bg-muted p-3 dark:bg-muted">
+          <div className="flex items-center gap-2 rounded-lg bg-muted p-3">
             <span className="h-2 w-2 animate-[typing-dot_1.4s_ease-in-out_infinite] rounded-full bg-blue-400" />
             <span className="text-xs text-muted-foreground">Analyzing image...</span>
           </div>
         ) : imagePreview ? (
-          <div className="relative overflow-hidden rounded-xl">
+          <div className="relative overflow-hidden rounded-xl ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
             <img src={imagePreview} alt="Uploaded preview" className="h-24 w-full object-cover" />
           </div>
         ) : (

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ChangeEvent, DragEvent, KeyboardEvent, RefObject } from "react";
+import { cn } from "@/lib/cn";
 import { CodeBlock } from "@/components/markdown";
 import { PaperclipIcon, ImageIcon, MicIcon } from "./icons";
 import { InlineSelect } from "@/components/ui/InlineSelect";
@@ -69,16 +70,17 @@ export function InputArea({
   generatedCode: string;
 }) {
   return (
-    <div className="border-t border-border px-4 py-4 dark:border-border">
+    <div className="border-t border-border/60 px-4 py-4">
       <div className="mx-auto max-w-3xl space-y-3">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>{contextTokens.toLocaleString()} / 8,192 tokens</span>
             <div className="h-1.5 w-20 overflow-hidden rounded-full bg-muted">
               <div
-                className={`h-full rounded-full transition-all ${
-                  contextTokens > 7000 ? "bg-red-500" : contextTokens > 5000 ? "bg-amber-500" : "bg-blue-500"
-                }`}
+                className={cn(
+                  "h-full rounded-full transition-all",
+                  contextTokens > 7000 ? "bg-red-500" : contextTokens > 5000 ? "bg-amber-500" : "bg-blue-500",
+                )}
                 style={{ width: `${(contextTokens / 8192) * 100}%` }}
               />
             </div>
@@ -89,11 +91,14 @@ export function InputArea({
               <button
                 key={t}
                 onClick={() => onToneChange(t)}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-colors ${
+                className={cn(
+                  "rounded-lg px-2.5 py-1 text-xs font-medium transition-all",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  "active:scale-[0.97]",
                   selectedTone === t
                     ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400"
-                    : "bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted"
-                }`}
+                    : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground",
+                )}
               >
                 {t}
               </button>
@@ -106,7 +111,7 @@ export function InputArea({
           onChange={(e) => onSystemPromptChange(e.target.value)}
           placeholder="System prompt..."
           rows={1}
-          className="w-full resize-none rounded-lg border border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground outline-none transition-colors focus:border-blue-400 dark:border-border dark:bg-muted/50 dark:text-muted-foreground/70"
+          className="w-full resize-none rounded-lg border border-border/60 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground outline-none transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/60"
         />
 
         <div className="flex gap-3">
@@ -115,13 +120,14 @@ export function InputArea({
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
-              className={`absolute inset-0 z-10 flex items-center justify-center rounded-xl border-2 border-dashed transition-all ${
+              className={cn(
+                "absolute inset-0 z-10 flex items-center justify-center rounded-xl border-2 border-dashed transition-all",
                 dragOver
-                  ? "border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-blue-950/20"
-                  : "border-transparent"
-              }`}
+                  ? "border-primary bg-primary/5"
+                  : "border-transparent",
+              )}
             >
-              {dragOver && <span className="text-sm font-medium text-blue-500">Drop files here</span>}
+              {dragOver && <span className="text-sm font-medium text-primary">Drop files here</span>}
             </div>
             <input
               type="text"
@@ -129,26 +135,28 @@ export function InputArea({
               onChange={(e) => onInputChange(e.target.value)}
               onKeyDown={onKeyDown}
               placeholder="Type your message..."
-              className="w-full rounded-xl border border-border bg-muted/40 px-5 py-3 pl-4 pr-28 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-border dark:bg-muted dark:text-zinc-100 dark:placeholder-zinc-500"
+              className="w-full rounded-xl border border-border/60 bg-muted/40 px-5 py-3 pl-4 pr-28 text-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-sm"
             />
             <div className="absolute bottom-2 right-2 flex items-center gap-1">
-              <button onClick={() => fileInputRef.current?.click()} className="rounded-lg p-1.5 text-muted-foreground/70 hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted dark:hover:text-zinc-300" title="Upload file">
+              <button onClick={() => fileInputRef.current?.click()} className="rounded-lg p-1.5 text-muted-foreground/70 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" title="Upload file">
                 <PaperclipIcon className="h-4 w-4" />
               </button>
               <input ref={fileInputRef} type="file" className="hidden" onChange={() => {}} />
 
-              <button onClick={() => imageInputRef.current?.click()} className="rounded-lg p-1.5 text-muted-foreground/70 hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted dark:hover:text-zinc-300" title="Upload image for analysis">
+              <button onClick={() => imageInputRef.current?.click()} className="rounded-lg p-1.5 text-muted-foreground/70 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" title="Upload image for analysis">
                 <ImageIcon className="h-4 w-4" />
               </button>
               <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onImageUpload} />
 
               <button
                 onClick={onToggleRecording}
-                className={`rounded-lg p-1.5 transition-colors ${
+                className={cn(
+                  "rounded-lg p-1.5 transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                   isRecording
                     ? "bg-red-100 text-red-500 dark:bg-red-900/30"
-                    : "text-muted-foreground/70 hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted dark:hover:text-zinc-300"
-                }`}
+                    : "text-muted-foreground/70 hover:bg-accent hover:text-foreground",
+                )}
                 title={isRecording ? "Stop recording" : "Voice input"}
               >
                 {isRecording ? (
@@ -165,7 +173,14 @@ export function InputArea({
           <button
             onClick={onSend}
             disabled={!canSend}
-            className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className={cn(
+              "rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white",
+              "shadow-sm shadow-blue-600/20 transition-all",
+              "hover:bg-blue-700 hover:shadow-md hover:shadow-blue-600/25",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+              "active:scale-[0.97]",
+              "disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none",
+            )}
           >
             Send
           </button>
@@ -181,7 +196,7 @@ export function InputArea({
               step="0.1"
               value={temperature}
               onChange={(e) => onTemperatureChange(parseFloat(e.target.value))}
-              className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-muted accent-blue-500 dark:bg-muted"
+              className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-muted accent-blue-500"
             />
           </div>
           <div className="flex items-center gap-3">
@@ -193,13 +208,13 @@ export function InputArea({
               step="100"
               value={maxTokens}
               onChange={(e) => onMaxTokensChange(parseInt(e.target.value))}
-              className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-muted accent-blue-500 dark:bg-muted"
+              className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-muted accent-blue-500"
             />
           </div>
         </div>
 
         <details className="group">
-          <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-muted-foreground dark:hover:text-zinc-300">Code Generator</summary>
+          <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Code Generator</summary>
           <div className="mt-2 space-y-2">
             <div className="flex gap-2">
               <input
@@ -207,7 +222,7 @@ export function InputArea({
                 value={codeInput}
                 onChange={(e) => onCodeInputChange(e.target.value)}
                 placeholder="Describe the code you need..."
-                className="flex-1 rounded-lg border border-border bg-muted/40 px-4 py-2 text-sm outline-none focus:border-blue-500 dark:border-border dark:bg-muted dark:text-zinc-100"
+                className="flex-1 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/60"
               />
               <InlineSelect
                 options={[
@@ -221,7 +236,7 @@ export function InputArea({
                 onChange={(val) => onCodeLanguageChange(val)}
                 size="sm"
               />
-              <button onClick={onGenerateCode} className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700">
+              <button onClick={onGenerateCode} className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 active:scale-[0.97]">
                 Generate
               </button>
             </div>

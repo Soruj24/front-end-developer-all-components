@@ -14,9 +14,9 @@ export function ChatMessage({ message, isStreaming }: ChatMessageProps) {
         className={cn(
           "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "border border-border bg-background/80",
-          isStreaming && "border-dashed"
+            ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+            : "border border-border/60 bg-background/80 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          isStreaming && "border-dashed",
         )}
       >
         {message.content}

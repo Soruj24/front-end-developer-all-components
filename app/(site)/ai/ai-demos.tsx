@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Send, Mic, Moon, Sun, } from "lucide-react";
+import { Send, Mic, Moon, Sun } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
@@ -62,7 +63,6 @@ export function useAiChat() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    // Handle file drop
   };
 
   const followUpsFor = (msg: Message, latest: boolean) =>
@@ -129,7 +129,7 @@ function ChatMessageDemo({ msg, isStreaming, streamingText, followUps, onCopy, o
   return (
     <div className="mb-4">
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 rounded-md flex-shrink-0 flex items-center justify-center bg-primary/10 text-primary">
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <Send className="h-4 w-4" />
         </div>
         <div className="flex-1 min-w-0">
@@ -143,11 +143,11 @@ function ChatMessageDemo({ msg, isStreaming, streamingText, followUps, onCopy, o
 
 function SidebarDemo({ visible, onClose, onClear }: any) {
   return (
-    <div className="w-64 border-right border-border bg-muted flex-shrink-0">
+    <div className="w-64 border-r border-border/60 bg-muted/30 flex-shrink-0">
       <div className="p-4">
-        <h3 className="font-semibold text-sidebar">Sidebar</h3>
-        <button onClick={onClose} className="mt-4 w-full rounded border border-border px-3 py-1 text-sm hover:bg-muted">Close</button>
-        <button onClick={onClear} className="mt-2 w-full rounded border border-border px-3 py-1 text-sm text-red-500 hover:bg-red-500/10">Clear</button>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Conversations</h3>
+        <button onClick={onClose} className="mt-4 w-full rounded-lg border border-border/60 px-3 py-1.5 text-sm hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Close</button>
+        <button onClick={onClear} className="mt-2 w-full rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-500 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Clear</button>
       </div>
     </div>
   );
@@ -155,36 +155,36 @@ function SidebarDemo({ visible, onClose, onClear }: any) {
 
 function TopBarDemo({ sidebarVisible, onToggleSidebar, model, onModelChange, webSearch, onToggleWebSearch, darkMode, onToggleDark, shareFeedback, exportFeedback, onShare, onExport }: any) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
+    <div className="flex items-center justify-between border-b border-border/60 px-4 py-3 bg-muted/20">
       <div className="flex items-center gap-4">
-        <h2 className="text-xl font-semibold">AI Chat</h2>
+        <h2 className="text-xl font-semibold text-foreground">AI Chat</h2>
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">Model: {model}</span>
-          <button onClick={onToggleSidebar} className="rounded-md px-3 py-1 text-xs text-muted-foreground hover:bg-muted">Sidebar</button>
+          <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Model: {model}</span>
+          <button onClick={onToggleSidebar} className="rounded-lg px-3 py-1.5 text-xs text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Sidebar</button>
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <button onClick={onShare} className="rounded-md px-3 py-1 text-xs text-muted-foreground hover:bg-muted">Share</button>
-        <button onClick={onExport} className="rounded-md px-3 py-1 text-xs text-muted-foreground hover:bg-muted">Export</button>
+        <button onClick={onShare} className="rounded-lg px-3 py-1.5 text-xs text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Share</button>
+        <button onClick={onExport} className="rounded-lg px-3 py-1.5 text-xs text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Export</button>
       </div>
     </div>
   );
 }
 
 function ImagesPanelDemo({ analyzingImage, imagePreview }: any) {
-  return <div className="mt-4 p-4 rounded bg-muted/50">Images Panel</div>;
+  return <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-border/60">Images Panel</div>;
 }
 
 function InputAreaDemo({ contextTokens, selectedTone, onToneChange, systemPrompt, onSystemPromptChange, input, onInputChange, onKeyDown, dragOver, onDragOver, onDragLeave, onDrop, fileInputRef, imageInputRef, onImageUpload, isRecording, onToggleRecording, onSend, canSend, temperature, onTemperatureChange, maxTokens, onMaxTokensChange, codeInput, onCodeInputChange, onGenerateCode, generatedCode }: any) {
   return (
-    <div className="mt-6 p-4 rounded bg-muted/50">
+    <div className="mt-6 p-4 rounded-lg bg-muted/30 border border-border/60">
       <input
         value={input}
         onChange={(e) => onInputChange(e.target.value)}
         onKeyDown={onKeyDown}
-        className="w-full rounded border p-2 focus:outline-none focus:border-primary"
+        className="w-full rounded-lg border border-border/60 bg-background p-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
       />
-      <button onClick={onSend} disabled={!canSend} className="mt-2 rounded bg-primary text-primary-foreground px-3 py-1 text-sm hover:bg-primary/90">
+      <button onClick={onSend} disabled={!canSend} className="mt-2 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.97] disabled:opacity-50">
         Send
       </button>
     </div>
@@ -193,28 +193,29 @@ function InputAreaDemo({ contextTokens, selectedTone, onToneChange, systemPrompt
 
 function ErrorBannerDemo({ message, onRetry }: any) {
   return (
-    <div className="mt-4 p-3 rounded bg-red-500/10 border border-red-500/20">
+    <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
       <p className="text-sm text-red-400">{message}</p>
-      <button onClick={onRetry} className="mt-2 rounded bg-red-500/20 px-3 py-1 text-sm">Retry</button>
+      <button onClick={onRetry} className="mt-2 rounded-lg bg-red-500/20 px-3 py-1 text-sm hover:bg-red-500/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Retry</button>
     </div>
   );
 }
 
 function RateLimitBannerDemo({ visible, cooldown }: any) {
   return visible ? (
-    <div className="mt-4 p-3 rounded bg-orange-500/10 border border-orange-500/20">
+    <div className="mt-4 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
       <p className="text-sm text-orange-400">Rate limited. Try again in {cooldown}s.</p>
     </div>
   ) : null;
 }
 
 function ClearDialogDemo({ visible, onCancel, onConfirm }: any) {
+  if (!visible) return null;
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded border flex flex-col gap-4">
-        <p>Clear conversation?</p>
-        <button onClick={onConfirm} className="rounded bg-primary text-primary-foreground px-4 py-2">Clear</button>
-        <button onClick={onCancel} className="rounded border border-border px-4 py-2">Cancel</button>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm">
+      <div className="bg-card p-8 rounded-2xl border border-border/60 shadow-xl ring-1 ring-black/[0.04] dark:ring-white/[0.08] flex flex-col gap-4">
+        <p className="text-foreground font-medium">Clear conversation?</p>
+        <button onClick={onConfirm} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.97]">Clear</button>
+        <button onClick={onCancel} className="rounded-lg border border-border/60 px-4 py-2 text-sm text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Cancel</button>
       </div>
     </div>
   );
@@ -225,7 +226,14 @@ function QuickPromptsDemo({ prompt }: any) {
     <button
       key={prompt}
       onClick={() => {}}
-      className="rounded-full border border-border bg-white px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-blue-300 dark:border-border dark:bg-muted dark:text-muted-foreground dark:hover:border-blue-600 dark:hover:text-blue-400"
+      className={cn(
+        "rounded-full border border-border/60 bg-card px-4 py-2 text-sm text-muted-foreground",
+        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        "transition-all",
+        "hover:border-primary/30 hover:text-primary hover:bg-primary/5 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        "active:scale-[0.97]",
+      )}
     >
       {prompt}
     </button>
@@ -255,7 +263,7 @@ export default function AiDemos() {
     latest && msg.role === "assistant" && streamingMsgId !== msg.id ? getRandomFollowUps() : [];
 
   return (
-    <div className={`${darkMode ? "dark" : ""}`}>
+    <div className={cn(darkMode && "dark")}>
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">AI Chat</h1>
@@ -269,7 +277,7 @@ export default function AiDemos() {
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <div className="rounded-xl border border-border bg-muted/50 p-4 font-mono text-sm overflow-x-auto">
+        <div className="rounded-xl border border-border/60 bg-muted/50 p-4 font-mono text-sm overflow-x-auto shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
           <pre className="text-xs">{`import { useAiChat } from "@/features/ai";`}</pre>
         </div>
       </section>
