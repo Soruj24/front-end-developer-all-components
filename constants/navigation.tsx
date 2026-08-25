@@ -448,7 +448,6 @@ export const navigationSections: NavSection[] = [
       { label: "Cluster Layout", href: "/cluster-layout", icon: <Grip className="h-4 w-4" />, desc: "Cluster layout" },
       { label: "Sidebar Layout", href: "/sidebar-layout", icon: <PanelLeft className="h-4 w-4" />, desc: "Sidebar content layout" },
       { label: "Holy Grail Layout", href: "/holy-grail-layout", icon: <Layout className="h-4 w-4" />, desc: "Classic holy grail layout" },
-      { label: "Responsive Container", href: "/responsive-container", icon: <Smartphone className="h-4 w-4" />, desc: "Responsive container" },
       { label: "Drag Handle", href: "/drag-handle", icon: <Move className="h-4 w-4" />, desc: "Drag handle component" },
     ],
   },
