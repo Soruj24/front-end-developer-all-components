@@ -29,15 +29,15 @@ function RocketIcon() {
 export function PremiumButtonsExample() {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-500/30">
+      <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_2px_8px_-2px_rgba(99,102,241,0.4)] hover:from-blue-700 hover:to-indigo-700 hover:shadow-[0_4px_16px_-4px_rgba(99,102,241,0.5)]">
         <SparklesIcon />
         Upgrade Pro
       </Button>
-      <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-500/20 hover:from-emerald-600 hover:to-teal-600 hover:shadow-lg hover:shadow-emerald-500/30">
+      <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_2px_8px_-2px_rgba(16,185,129,0.4)] hover:from-emerald-600 hover:to-teal-600 hover:shadow-[0_4px_16px_-4px_rgba(16,185,129,0.5)]">
         <ZapIcon />
         Quick Start
       </Button>
-      <Button className="bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-md shadow-violet-500/20 hover:from-violet-600 hover:to-purple-600 hover:shadow-lg hover:shadow-violet-500/30">
+      <Button className="bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-[0_2px_8px_-2px_rgba(139,92,246,0.4)] hover:from-violet-600 hover:to-purple-600 hover:shadow-[0_4px_16px_-4px_rgba(139,92,246,0.5)]">
         <RocketIcon />
         Launch
       </Button>

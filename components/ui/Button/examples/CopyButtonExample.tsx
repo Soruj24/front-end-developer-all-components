@@ -42,7 +42,7 @@ export function CopyButtonExample() {
 
   return (
     <div className="flex w-full max-w-md flex-col gap-3">
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-4 py-2.5">
+      <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 px-4 py-2.5">
         <span ref={textRef} className="flex-1 font-mono text-sm text-foreground">
           npx create-app@latest
         </span>
@@ -59,7 +59,7 @@ export function CopyButtonExample() {
           )}
         </Button>
       </div>
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-4 py-2.5">
+      <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 px-4 py-2.5">
         <span ref={textRef} className="flex-1 font-mono text-sm text-foreground">
           npm install @company/ui
         </span>

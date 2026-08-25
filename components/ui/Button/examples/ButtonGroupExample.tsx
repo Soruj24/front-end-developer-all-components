@@ -43,7 +43,7 @@ function ListIcon() {
 export function ButtonGroupExample() {
   return (
     <div className="flex flex-col gap-4">
-      <div className="inline-flex w-fit overflow-hidden rounded-lg border border-border">
+      <div className="inline-flex w-fit overflow-hidden rounded-md border border-border">
         <button type="button" className="inline-flex items-center gap-1.5 border-r border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted">
           <GridIcon />
           Grid
@@ -54,7 +54,7 @@ export function ButtonGroupExample() {
         </button>
       </div>
 
-      <div className="inline-flex w-fit overflow-hidden rounded-lg border border-border">
+      <div className="inline-flex w-fit overflow-hidden rounded-md border border-border">
         <button type="button" className="inline-flex items-center gap-1.5 border-r border-border bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted">
           <FilterIcon />
           Filter

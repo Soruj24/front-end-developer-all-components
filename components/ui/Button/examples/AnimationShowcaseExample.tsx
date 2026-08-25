@@ -27,17 +27,17 @@ export function AnimationShowcaseExample() {
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <Button variant="outline" className="transition-all duration-200 hover:shadow-md">
+        <Button variant="outline" className="transition-all duration-200 hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)]">
           Hover shadow
         </Button>
-        <span className="text-xs text-muted-foreground">hover:shadow-md</span>
+        <span className="text-xs text-muted-foreground">hover:shadow</span>
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <Button variant="secondary" className="transition-all duration-200 hover:scale-105">
+        <Button variant="secondary" className="transition-all duration-200 hover:scale-[1.02]">
           Hover scale
         </Button>
-        <span className="text-xs text-muted-foreground">hover:scale-105</span>
+        <span className="text-xs text-muted-foreground">hover:scale-[1.02]</span>
       </div>
 
       <div className="flex flex-col items-center gap-2">
@@ -48,7 +48,7 @@ export function AnimationShowcaseExample() {
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <Button variant="destructive" className="transition-all duration-200 hover:shadow-lg hover:shadow-destructive/20">
+        <Button variant="destructive" className="transition-all duration-200 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.2)]">
           <DownloadIcon />
           Download
         </Button>
