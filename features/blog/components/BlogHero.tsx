@@ -15,11 +15,14 @@ export function BlogHero({ post, className }: BlogHeroProps) {
     <Link
       href={`/blog/${post.slug}`}
       className={cn(
-        "group relative flex min-h-[340px] flex-col justify-end overflow-hidden rounded-2xl",
+        "group relative flex min-h-[340px] flex-col justify-end overflow-hidden rounded-xl",
         "bg-gradient-to-br from-primary/90 via-primary to-primary/70",
         "p-8 text-white transition-all duration-300",
-        "hover:shadow-xl hover:shadow-primary/20",
-        className
+        "shadow-lg shadow-primary/10 ring-1 ring-black/[0.04]",
+        "hover:shadow-xl hover:shadow-primary/20 hover:ring-black/[0.08]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
+        "active:scale-[0.99]",
+        className,
       )}
     >
       {post.coverImage && (
@@ -40,7 +43,7 @@ export function BlogHero({ post, className }: BlogHeroProps) {
           {post.category}
         </Badge>
 
-        <h2 className="mb-3 text-2xl font-bold leading-tight tracking-tight sm:text-3xl group-hover:underline">
+        <h2 className="mb-3 text-2xl font-bold leading-tight tracking-tight sm:text-3xl group-hover:underline group-hover:underline-offset-4">
           {post.title}
         </h2>
 

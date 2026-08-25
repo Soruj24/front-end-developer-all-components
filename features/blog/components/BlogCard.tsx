@@ -11,11 +11,11 @@ interface BlogCardProps {
 }
 
 const categoryColors: Record<string, string> = {
-  Technology: "bg-blue-500/10 text-blue-500",
-  Design: "bg-purple-500/10 text-purple-500",
-  Business: "bg-amber-500/10 text-amber-500",
-  AI: "bg-emerald-500/10 text-emerald-500",
-  Security: "bg-rose-500/10 text-rose-500",
+  Technology: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  Design: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+  Business: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  AI: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  Security: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
 };
 
 export function BlogCard({ post, className }: BlogCardProps) {
@@ -23,12 +23,17 @@ export function BlogCard({ post, className }: BlogCardProps) {
     <Link
       href={`/blog/${post.slug}`}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl border border-border/50 bg-background",
-        "transition-all duration-200 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 hover:border-primary/20",
-        className
+        "group flex flex-col overflow-hidden rounded-xl border border-border/60 bg-card",
+        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        "transition-all duration-200",
+        "hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20",
+        "hover:border-border hover:ring-black/[0.08] dark:hover:ring-white/[0.12]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        "active:scale-[0.98]",
+        className,
       )}
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden bg-muted/30">
         {post.coverImage ? (
           <Image
             src={post.coverImage}
@@ -38,9 +43,9 @@ export function BlogCard({ post, className }: BlogCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-muted/30">
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-muted/50 to-muted/80">
             <svg
-              className="h-12 w-12 text-muted-foreground/30"
+              className="h-12 w-12 text-muted-foreground/20"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -56,7 +61,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
         )}
         {post.featured && (
           <div className="absolute top-3 left-3">
-            <Badge className="bg-yellow-500/90 text-white text-[10px] font-bold uppercase tracking-wider">
+            <Badge className="rounded-full bg-yellow-500/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
               Featured
             </Badge>
           </div>
@@ -67,7 +72,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
         <Badge
           className={cn(
             "w-fit rounded-full px-2.5 py-0.5 text-[11px] font-medium",
-            categoryColors[post.category] || "bg-muted text-muted-foreground"
+            categoryColors[post.category] || "bg-muted text-muted-foreground",
           )}
         >
           {post.category}
@@ -81,7 +86,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
           {post.excerpt}
         </p>
 
-        <div className="mt-auto flex items-center gap-3 border-t border-border/50 pt-3">
+        <div className="mt-auto flex items-center gap-3 border-t border-border/60 pt-3">
           <Avatar
             fallback={post.author.name
               .split(" ")

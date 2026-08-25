@@ -19,13 +19,20 @@ export function BlogNextPrev({
     <div
       className={cn(
         "grid gap-4 sm:grid-cols-2",
-        className
+        className,
       )}
     >
       {prevPost ? (
         <Link
           href={`/blog/${prevPost.slug}`}
-          className="group flex flex-col gap-2 rounded-xl border border-border/50 bg-background p-5 transition-all hover:border-primary/30 hover:shadow-md hover:shadow-black/5"
+          className={cn(
+            "group flex flex-col gap-2 rounded-xl border border-border/60 bg-card p-5",
+            "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+            "transition-all",
+            "hover:border-border hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:ring-black/[0.08] dark:hover:ring-white/[0.12]",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+            "active:scale-[0.98]",
+          )}
         >
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <svg
@@ -54,7 +61,14 @@ export function BlogNextPrev({
       {nextPost ? (
         <Link
           href={`/blog/${nextPost.slug}`}
-          className="group flex flex-col items-end gap-2 rounded-xl border border-border/50 bg-background p-5 text-right transition-all hover:border-primary/30 hover:shadow-md hover:shadow-black/5"
+          className={cn(
+            "group flex flex-col items-end gap-2 rounded-xl border border-border/60 bg-card p-5 text-right",
+            "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+            "transition-all",
+            "hover:border-border hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:ring-black/[0.08] dark:hover:ring-white/[0.12]",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+            "active:scale-[0.98]",
+          )}
         >
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             Next Article

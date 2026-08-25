@@ -34,10 +34,10 @@ function CommentItem({
     <div
       className={cn(
         "group",
-        depth > 0 && "ml-8 border-l-2 border-border/50 pl-4"
+        depth > 0 && "ml-8 border-l-2 border-border/60 pl-4",
       )}
     >
-      <div className="rounded-lg bg-muted/30 p-4">
+      <div className="rounded-lg bg-muted/30 p-4 ring-1 ring-black/[0.02] dark:ring-white/[0.04]">
         <div className="mb-2 flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
             {comment.author
@@ -62,7 +62,8 @@ function CommentItem({
             onClick={handleLike}
             className={cn(
               "flex items-center gap-1 text-xs transition-colors",
-              liked ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm",
+              liked ? "text-primary" : "text-muted-foreground hover:text-foreground",
             )}
           >
             <svg
@@ -82,7 +83,7 @@ function CommentItem({
           </button>
           <button
             onClick={() => setShowReply(!showReply)}
-            className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
           >
             <svg
               className="h-3.5 w-3.5"
@@ -107,7 +108,7 @@ function CommentItem({
           <div className="flex gap-2">
             <textarea
               placeholder="Write a reply..."
-              className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+              className="flex-1 rounded-lg border border-border/60 bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
               rows={2}
             />
             <Button size="sm" className="shrink-0">
@@ -139,12 +140,12 @@ export function BlogComments({ comments, className }: BlogCommentsProps) {
         </h2>
       </div>
 
-      <div className="rounded-xl border border-border/50 bg-background p-5">
+      <div className="rounded-xl border border-border/60 bg-card p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Leave a comment..."
-          className="w-full rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+          className="w-full rounded-lg border border-border/60 bg-muted/30 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           rows={3}
         />
         <div className="mt-3 flex justify-end">

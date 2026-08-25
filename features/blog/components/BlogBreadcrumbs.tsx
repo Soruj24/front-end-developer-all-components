@@ -37,7 +37,7 @@ export function BlogBreadcrumbs({ items, className }: BlogBreadcrumbsProps) {
           {item.href ? (
             <Link
               href={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
             >
               {item.label}
             </Link>

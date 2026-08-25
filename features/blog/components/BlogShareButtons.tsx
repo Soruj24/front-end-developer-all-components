@@ -82,7 +82,8 @@ export function BlogShareButtons({
           rel="noopener noreferrer"
           className={cn(
             "inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors",
-            social.color
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+            social.color,
           )}
           title={`Share on ${social.name}`}
         >
@@ -93,9 +94,10 @@ export function BlogShareButtons({
         onClick={handleCopy}
         className={cn(
           "inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
           copied
             ? "text-green-500"
-            : "hover:text-foreground hover:bg-muted"
+            : "hover:text-foreground hover:bg-muted",
         )}
         title={copied ? "Copied!" : "Copy link"}
       >

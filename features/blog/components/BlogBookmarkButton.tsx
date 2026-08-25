@@ -17,14 +17,14 @@ export function BlogBookmarkButton({
 
   useEffect(() => {
     const bookmarks = JSON.parse(
-      localStorage.getItem("blog-bookmarks") || "[]"
+      localStorage.getItem("blog-bookmarks") || "[]",
     );
     setBookmarked(bookmarks.includes(postId));
   }, [postId]);
 
   const toggleBookmark = () => {
     const bookmarks = JSON.parse(
-      localStorage.getItem("blog-bookmarks") || "[]"
+      localStorage.getItem("blog-bookmarks") || "[]",
     );
     let updated: string[];
     if (bookmarked) {
@@ -42,10 +42,11 @@ export function BlogBookmarkButton({
       size="icon"
       className={cn(
         "h-9 w-9 text-muted-foreground",
+        "focus-visible:ring-2 focus-visible:ring-primary",
         bookmarked
           ? "text-primary hover:text-primary/80"
           : "hover:text-foreground",
-        className
+        className,
       )}
       onClick={toggleBookmark}
     >

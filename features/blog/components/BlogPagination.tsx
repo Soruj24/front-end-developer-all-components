@@ -47,10 +47,12 @@ export function BlogPagination({
         onClick={() => onPageChange?.(currentPage - 1)}
         disabled={currentPage === 1}
         className={cn(
-          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-          "border border-border text-muted-foreground",
-          "hover:bg-muted hover:text-foreground",
-          "disabled:pointer-events-none disabled:opacity-40"
+          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all",
+          "border border-border/60 text-muted-foreground shadow-sm",
+          "hover:bg-accent hover:text-foreground hover:border-border",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "disabled:pointer-events-none disabled:opacity-40",
+          "active:scale-[0.97]",
         )}
       >
         <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,25 +74,29 @@ export function BlogPagination({
             key={page}
             onClick={() => onPageChange?.(page)}
             className={cn(
-              "h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors",
+              "h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-all",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+              "active:scale-[0.97]",
               page === currentPage
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                : "border border-border/60 text-muted-foreground shadow-sm hover:bg-accent hover:text-foreground hover:border-border",
             )}
           >
             {page}
           </button>
-        )
+        ),
       )}
 
       <button
         onClick={() => onPageChange?.(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={cn(
-          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-          "border border-border text-muted-foreground",
-          "hover:bg-muted hover:text-foreground",
-          "disabled:pointer-events-none disabled:opacity-40"
+          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all",
+          "border border-border/60 text-muted-foreground shadow-sm",
+          "hover:bg-accent hover:text-foreground hover:border-border",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "disabled:pointer-events-none disabled:opacity-40",
+          "active:scale-[0.97]",
         )}
       >
         Next

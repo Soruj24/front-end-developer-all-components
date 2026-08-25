@@ -14,13 +14,11 @@ function parseMarkdownToSections(markdown: string) {
   let currentSection = { type: "p", content: "", id: "" };
   let inCodeBlock = false;
   let codeContent = "";
-  let codeLanguage = "";
 
   for (const line of lines) {
     if (line.trim().startsWith("```")) {
       if (!inCodeBlock) {
         inCodeBlock = true;
-        codeLanguage = line.trim().replace("```", "");
         codeContent = "";
       } else {
         inCodeBlock = false;
@@ -149,8 +147,8 @@ function renderNumberedList(text: string) {
 function CodeBlock({ content }: { content: string }) {
   const lines = content.split("\n");
   return (
-    <div className="my-6 overflow-hidden rounded-xl border border-border/50">
-      <div className="flex items-center gap-2 border-b border-border/50 bg-muted/50 px-4 py-2">
+    <div className="my-6 overflow-hidden rounded-xl border border-border/60 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
+      <div className="flex items-center gap-2 border-b border-border/60 bg-muted/50 px-4 py-2">
         <div className="flex gap-1.5">
           <div className="h-3 w-3 rounded-full bg-red-500/60" />
           <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
@@ -222,7 +220,7 @@ export function BlogContent({ content, className }: BlogContentProps) {
     <div
       className={cn(
         "prose prose-neutral dark:prose-invert max-w-none",
-        className
+        className,
       )}
     >
       {sections.map((section, i) => {

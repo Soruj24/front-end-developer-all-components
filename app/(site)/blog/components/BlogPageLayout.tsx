@@ -31,7 +31,7 @@ export function BlogPageLayout() {
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.tags?.some((tag) =>
-        tag.toLowerCase().includes(searchQuery.toLowerCase())
+        tag.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     return matchesCategory && matchesSearch && !post.featured;
   });
@@ -39,7 +39,7 @@ export function BlogPageLayout() {
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const paginatedPosts = filteredPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
-    currentPage * POSTS_PER_PAGE
+    currentPage * POSTS_PER_PAGE,
   );
 
   const totalViews = BLOG_POSTS.reduce((acc, post) => acc + (post.views || 0), 0);

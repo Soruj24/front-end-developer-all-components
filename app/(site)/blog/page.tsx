@@ -40,10 +40,10 @@ export function BlogPage() {
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={\`rounded-full px-3 py-1 text-xs font-medium transition-colors \${
+            className={\`rounded-full px-3 py-1 text-xs font-medium transition-all \${
               category === cat
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
+                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
             }\`}
           >
             {cat}
@@ -52,7 +52,10 @@ export function BlogPage() {
       </div>
       <div className="grid gap-6 sm:grid-cols-2">
         {filtered.map((post) => (
-          <article key={post.id} className="rounded-xl border border-border bg-card p-5">
+          <article
+            key={post.id}
+            className="rounded-xl border border-border/60 bg-card p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]"
+          >
             <span className="text-xs font-medium text-primary">{post.category}</span>
             <h2 className="mt-1 text-lg font-semibold text-foreground">{post.title}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{post.excerpt}</p>

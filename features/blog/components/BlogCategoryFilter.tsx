@@ -27,10 +27,12 @@ export function BlogCategoryFilter({
           key={cat}
           onClick={() => onSelect(cat)}
           className={cn(
-            "whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+            "whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+            "active:scale-[0.97]",
             active === cat
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+              ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+              : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground",
           )}
         >
           {cat}

@@ -62,7 +62,7 @@ export function BlogTableOfContents({
           }
         }
       },
-      { rootMargin: "-80px 0px -80% 0px", threshold: 0.1 }
+      { rootMargin: "-80px 0px -80% 0px", threshold: 0.1 },
     );
 
     for (const heading of headings) {
@@ -76,8 +76,8 @@ export function BlogTableOfContents({
   if (headings.length === 0) return null;
 
   return (
-    <nav className={cn("rounded-xl border border-border/50 bg-background p-5", className)}>
-      <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+    <nav className={cn("rounded-xl border border-border/60 bg-card p-5 shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]", className)}>
+      <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         On This Page
       </h3>
       <ul className="space-y-1">
@@ -88,9 +88,10 @@ export function BlogTableOfContents({
               className={cn(
                 "block rounded-md px-3 py-1.5 text-sm transition-colors",
                 heading.level === 3 && "pl-6",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 activeId === heading.id
                   ? "bg-primary/10 font-medium text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
               )}
             >
               {heading.title}

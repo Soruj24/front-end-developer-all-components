@@ -28,10 +28,11 @@ export function BlogSearch({ value, onChange, className }: BlogSearchProps) {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search articles..."
         className={cn(
-          "w-full rounded-lg border border-border bg-background py-2.5 pl-10 pr-4 text-sm",
-          "outline-none transition-colors",
+          "w-full rounded-lg border border-border/60 bg-background py-2.5 pl-10 pr-4 text-sm",
+          "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          "outline-none transition-all",
           "placeholder:text-muted-foreground",
-          "focus:border-primary focus:ring-1 focus:ring-primary"
+          "focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-sm",
         )}
       />
     </div>
