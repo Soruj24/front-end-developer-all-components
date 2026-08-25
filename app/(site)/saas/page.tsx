@@ -14,15 +14,7 @@ import {
   Footer,
 } from "@/features/saas";
 
-const installCommand = `npx component-library@latest add saas`;
-
-const usageCode = `import {
-  Navbar, HeroSection, FeaturesSection, PricingSection,
-  TestimonialsSection, HowItWorksSection, IntegrationsSection,
-  CaseStudiesSection, FAQSection, CTASection, Footer
-} from "@/features/saas";
-
-<SaasPage />`;
+ 
 
 export default function SaasPage() {
   return (
@@ -36,18 +28,9 @@ export default function SaasPage() {
           Complete SaaS landing page with navbar, hero, features, pricing, testimonials, integrations, FAQ, and CTA.
         </p>
       </header>
+ 
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+     
 
       {/* Examples */}
       <section className="flex flex-col gap-6">

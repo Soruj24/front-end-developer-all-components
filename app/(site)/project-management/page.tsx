@@ -21,46 +21,35 @@ import {
   NotificationList,
 } from "@/features/project-management";
 
-const installCommand = `npx component-library@latest add project-management`;
-
-const usageCode = `import { KanbanBoard, ProjectGrid, IssueTracker } from "@/features/project-management";
-
-<ProjectGrid />
-<KanbanBoard />
-<IssueTracker />`;
-
 export default function ProjectManagementPage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Project Management</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Project Management
+          </h1>
           <Badge variant="primary">18 examples</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Project management dashboard with kanban boards, sprints, issues, time tracking, and roadmaps.
+          Project management dashboard with kanban boards, sprints, issues, time
+          tracking, and roadmaps.
         </p>
       </header>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
-
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
-
       {/* Examples */}
       <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Projects & Kanban</h3>
-          <p className="text-sm text-muted-foreground">Project grid overview and kanban board for task management.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Projects & Kanban
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Project grid overview and kanban board for task management.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
             <ProjectGrid />
             <KanbanBoard />
@@ -68,8 +57,12 @@ export default function ProjectManagementPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Team & Activity</h3>
-          <p className="text-sm text-muted-foreground">Team members grid and activity feed timeline.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Team & Activity
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Team members grid and activity feed timeline.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
             <TeamGrid />
             <div className="grid gap-6 lg:grid-cols-2">
@@ -80,8 +73,12 @@ export default function ProjectManagementPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Issues & Sprints</h3>
-          <p className="text-sm text-muted-foreground">Issue tracker, sprint board, and burndown chart.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Issues & Sprints
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Issue tracker, sprint board, and burndown chart.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
             <div className="grid gap-6 lg:grid-cols-2">
               <IssueTracker />
@@ -95,8 +92,12 @@ export default function ProjectManagementPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Time & Resources</h3>
-          <p className="text-sm text-muted-foreground">Time tracking, meetings, documents, and templates.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Time & Resources
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Time tracking, meetings, documents, and templates.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
             <div className="grid gap-6 lg:grid-cols-2">
               <TimeTracking />
@@ -110,16 +111,18 @@ export default function ProjectManagementPage() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h3 className="text-lg font-semibold text-foreground">Budget & Roadmap</h3>
-          <p className="text-sm text-muted-foreground">Budget overview and roadmap timeline visualization.</p>
+          <h3 className="text-lg font-semibold text-foreground">
+            Budget & Roadmap
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Budget overview and roadmap timeline visualization.
+          </p>
           <div className="rounded-lg border border-border bg-background p-6 flex flex-col gap-6">
             <BudgetOverview />
             <RoadmapTimeline />
           </div>
         </div>
       </section>
-
-
     </div>
   );
 }
