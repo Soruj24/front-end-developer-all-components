@@ -271,7 +271,7 @@ export default function HoverCardPage() {
           code={INLINE_SRC}
           filename="inline.tsx"
         >
-          <p className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground">
             Check out the{" "}
             <HoverCard
               trigger={
@@ -285,7 +285,7 @@ export default function HoverCardPage() {
               </p>
             </HoverCard>{" "}
             for more details.
-          </p>
+          </div>
         </ExampleBlock>
       </section>
 
