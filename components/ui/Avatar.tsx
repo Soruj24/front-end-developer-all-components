@@ -12,10 +12,10 @@ const sizeClasses: Record<Size, string> = {
 };
 
 const statusDot: Record<Status, string> = {
-  online: "bg-emerald-500",
+  online: "bg-success",
   offline: "bg-muted-foreground/50",
-  away: "bg-amber-500",
-  busy: "bg-rose-500",
+  away: "bg-warning",
+  busy: "bg-danger",
 };
 
 const statusSize: Record<Size, string> = {

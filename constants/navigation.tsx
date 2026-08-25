@@ -150,8 +150,6 @@ export const navigationSections: NavSection[] = [
       { label: "Camera Capture", href: "/camera-capture", icon: <Camera className="h-4 w-4" />, desc: "Webcam photo and video capture" },
       { label: "Cards", href: "/cards", icon: <CardSim className="h-4 w-4" />, desc: "Cards, tiles, media cards, interactive" },
       { label: "Checkbox", href: "/checkbox", icon: <Check className="h-4 w-4" />, desc: "Checkboxes with labels and states" },
-      { label: "Chip", href: "/chip", icon: <Tag className="h-4 w-4" />, desc: "Compact chip and tag elements" },
-
       { label: "Color Picker", href: "/color-picker", icon: <Circle className="h-4 w-4" />, desc: "HSL/RGB color picker with swatches" },
       { label: "Combobox", href: "/combobox", icon: <ChevronDown className="h-4 w-4" />, desc: "Searchable dropdown selects" },
       { label: "Command", href: "/command", icon: <Command className="h-4 w-4" />, desc: "Command palette with search" },
@@ -233,7 +231,6 @@ export const navigationSections: NavSection[] = [
       { label: "Tooltip", href: "/tooltip", icon: <CircleAlert className="h-4 w-4" />, desc: "Hover tooltips" },
       { label: "Tree", href: "/tree", icon: <Folder className="h-4 w-4" />, desc: "Tree view with expand/collapse" },
       { label: "Typography", href: "/typography", icon: <Type className="h-4 w-4" />, desc: "Text styling components" },
-      { label: "Chip Input", href: "/chip-input", icon: <Tag className="h-4 w-4" />, desc: "Tag/chip input with autocomplete" },
       { label: "Signature Pad", href: "/signature-pad", icon: <PenLine className="h-4 w-4" />, desc: "Signature capture canvas" },
       { label: "Dual Range Slider", href: "/dual-range-slider", icon: <SlidersHorizontal className="h-4 w-4" />, desc: "Dual-handle range slider" },
       { label: "Password Generator", href: "/password-generator", icon: <Lock className="h-4 w-4" />, desc: "Random password generator" },

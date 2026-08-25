@@ -8,9 +8,9 @@ const variantClasses: Record<Variant, string> = {
   default: "bg-secondary text-secondary-foreground",
   primary: "bg-primary text-primary-foreground shadow-sm shadow-primary/20",
   secondary: "bg-secondary text-secondary-foreground",
-  success: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-400/20",
-  warning: "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-400/20",
-  error: "bg-rose-50 text-rose-700 ring-1 ring-rose-600/20 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-400/20",
+  success: "bg-success/10 text-success ring-1 ring-success/20",
+  warning: "bg-warning/10 text-warning ring-1 ring-warning/20",
+  error: "bg-danger/10 text-danger ring-1 ring-danger/20",
   outline: "border border-border text-foreground",
 };
 
@@ -43,7 +43,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         ref={ref}
         className={cn(
           "inline-flex items-center gap-1.5 rounded-full font-medium whitespace-nowrap",
-          "transition-colors duration-150",
+          "transition-all duration-150 ease-out",
           variantClasses[variant],
           sizeClasses[size],
           className,

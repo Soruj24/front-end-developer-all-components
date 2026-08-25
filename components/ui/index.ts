@@ -63,7 +63,6 @@ export type {
   CardFooterProps,
 } from "./Card";
 export { default as Carousel } from "./Carousel";
-export { Chip } from "./Chip";
 export { CommandPalette } from "./CommandPalette";
 export type { CommandItem, CommandPaletteProps } from "./CommandPalette";
 export { default as CommandMenu } from "./CommandMenu";

@@ -7,7 +7,6 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  Chip,
   Input,
   ProgressBar,
   Rating,
@@ -57,19 +56,6 @@ export const elements: Record<string, () => ReactNode> = {
         size="xl"
         status="online"
       />
-    </div>
-  ),
-
-  chip: () => (
-    <div className="flex flex-wrap items-center justify-center gap-2">
-      <Chip>React</Chip>
-      <Chip variant="primary" removable>
-        TypeScript
-      </Chip>
-      <Chip variant="success">Stable</Chip>
-      <Chip variant="warning">Beta</Chip>
-      <Chip variant="error">Deprecated</Chip>
-      <Chip variant="outline">Outline</Chip>
     </div>
   ),
 

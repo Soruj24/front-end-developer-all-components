@@ -5,9 +5,9 @@ import type { ProgressProps, ProgressVariant, ProgressSize } from "./Progress.ty
 
 const VARIANT_MAP: Record<ProgressVariant, string> = {
   default: "bg-foreground",
-  success: "bg-emerald-500 dark:bg-emerald-400",
-  warning: "bg-amber-500 dark:bg-amber-400",
-  danger: "bg-red-500 dark:bg-red-400",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-danger",
   info: "bg-primary",
 };
 

@@ -54,7 +54,7 @@ export function DrawerTrigger({
       type="button"
       onClick={() => setOpen(true)}
       className={cn(
-        "inline-flex items-center justify-center rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-200",
+        "inline-flex items-center justify-center rounded-xl border border-border/60 bg-card px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-200",
         "hover:bg-muted hover:border-border",
         "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
         "active:scale-[0.98]",
@@ -122,7 +122,7 @@ export function DrawerContent({
   return (
     <div className="fixed inset-0 z-50">
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in-0"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm animate-in fade-in-0"
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
@@ -131,7 +131,7 @@ export function DrawerContent({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "fixed z-50 flex flex-col bg-card shadow-xl",
+          "fixed z-50 flex flex-col bg-card shadow-xl ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
           "animate-in duration-300 ease-out fill-mode-forwards",
           panel,
           slide,
@@ -154,7 +154,7 @@ export function DrawerHeader({
   return (
     <div
       className={cn(
-        "flex items-start justify-between gap-4 border-b border-border px-6 py-5",
+        "flex items-start justify-between gap-4 border-b border-border/60 px-6 py-5",
         className,
       )}
     >
@@ -211,7 +211,7 @@ export function DrawerFooter({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 border-t border-border px-6 py-4",
+        "flex items-center gap-2 border-t border-border/60 px-6 py-4",
         className,
       )}
     >
@@ -233,9 +233,9 @@ export function DrawerClose({
       type="button"
       onClick={() => setOpen(false)}
       className={cn(
-        "inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors",
-        "hover:bg-muted hover:text-foreground",
-        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+        "inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-all duration-150 ease-out",
+        "hover:bg-muted hover:text-foreground active:scale-90",
+        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
       aria-label="Close drawer"

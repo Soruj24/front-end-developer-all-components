@@ -5,9 +5,9 @@ import type { ProgressBarProps, ProgressBarVariant, ProgressBarSize } from "./Pr
 
 const VARIANT_MAP: Record<ProgressBarVariant, string> = {
   default: "bg-foreground",
-  success: "bg-emerald-500 dark:bg-emerald-400",
-  warning: "bg-amber-500 dark:bg-amber-400",
-  error: "bg-red-500 dark:bg-red-400",
+  success: "bg-success",
+  warning: "bg-warning",
+  error: "bg-danger",
 };
 
 const SIZE_MAP: Record<ProgressBarSize, { bar: string; label: string }> = {

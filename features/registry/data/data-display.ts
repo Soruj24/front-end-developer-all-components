@@ -96,14 +96,4 @@ export const dataDisplay = [
     stats: { downloads: 98_240, likes: 1_310, bookmarks: 501, comments: 42, views: 232_000 },
     features: ["dark-mode", "responsive"],
   }),
-  component({
-    slug: "chip",
-    name: "Chip",
-    description: "Compact selectable tokens for tags, filters, and pills.",
-    category: "data-display",
-    tags: ["tag", "token", "filter"],
-    updatedAt: "2026-01-08T00:00:00.000Z",
-    stats: { downloads: 76_540, likes: 928, bookmarks: 344, comments: 27, views: 188_000 },
-    features: ["icons", "disabled", "dark-mode", "accessibility"],
-  }),
 ];

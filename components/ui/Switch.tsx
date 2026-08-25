@@ -40,7 +40,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             "relative mt-0.5 inline-flex shrink-0 items-center rounded-full border-2 transition-all duration-200 ease-in-out",
             TRACK_SIZES[size],
             error
-              ? "border-rose-400 bg-rose-100 peer-checked:bg-rose-500 dark:border-rose-500 dark:bg-rose-950 dark:peer-checked:bg-rose-600"
+              ? "border-danger/40 bg-danger/10 peer-checked:bg-danger"
               : "border-transparent bg-muted peer-checked:bg-primary",
             "focus-within:outline-none focus-within:ring-2 focus-within:ring-primary/50 focus-within:ring-offset-2 focus-within:ring-offset-background",
           )}
@@ -59,13 +59,13 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             className={cn(
               "absolute inset-0 rounded-full transition-colors duration-200",
               error
-                ? "bg-rose-100 peer-checked:bg-rose-500 dark:bg-rose-950 dark:peer-checked:bg-rose-600"
+                ? "bg-danger/10 peer-checked:bg-danger"
                 : "bg-muted peer-checked:bg-primary",
             )}
           />
           <span
             className={cn(
-              "absolute left-0.5 rounded-full bg-white shadow-sm transition-all duration-200 ease-in-out",
+              "absolute left-0.5 rounded-full bg-background shadow-sm transition-all duration-200 ease-in-out",
               "peer-checked:shadow-md",
               THUMB_SIZES[size],
               !disabled && "group-hover:shadow-md",
@@ -85,7 +85,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               </span>
             )}
             {typeof error === "string" && (
-              <span className="text-xs text-rose-500">{error}</span>
+              <span className="text-xs text-danger">{error}</span>
             )}
           </div>
         )}

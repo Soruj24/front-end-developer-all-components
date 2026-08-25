@@ -5,8 +5,6 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import type { SheetProps, SheetSide, SheetSize } from "./Sheet.types";
 
-/* eslint-disable react-hooks/set-state-in-effect */
-
 const SIDE_CLASSES: Record<SheetSide, string> = {
   left: "inset-y-0 left-0 h-full w-80 max-w-[85vw] border-r rounded-r-2xl",
   right: "inset-y-0 right-0 h-full w-80 max-w-[85vw] border-l rounded-l-2xl",
@@ -120,10 +118,9 @@ export default function Sheet({
 
   const sheetContent = (
     <div className="fixed inset-0 z-50">
-      {/* Overlay */}
       <div
         className={cn(
-          "fixed inset-0 bg-black/50 backdrop-blur-sm",
+          "fixed inset-0 bg-overlay backdrop-blur-sm",
           isOpen ? "animate-in fade-in-0" : "animate-out fade-out-0",
           overlayClassName,
         )}
@@ -131,7 +128,6 @@ export default function Sheet({
         aria-hidden="true"
       />
 
-      {/* Panel */}
       <div
         ref={panelRef}
         data-state={isOpen ? "open" : "closed"}
@@ -139,8 +135,8 @@ export default function Sheet({
         aria-modal="true"
         aria-label={typeof title === "string" ? title : undefined}
         className={cn(
-          "fixed z-50 flex flex-col bg-background shadow-2xl shadow-black/10",
-          "border-border/50",
+          "fixed z-50 flex flex-col bg-card shadow-xl ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          "border-border/60",
           "duration-300 ease-out",
           isOpen ? "data-[state=open]:animate-in" : "data-[state=closed]:animate-out",
           SIDE_CLASSES[side],
@@ -158,9 +154,8 @@ export default function Sheet({
           className,
         )}
       >
-        {/* Header */}
         {(title || description || closable) && (
-          <div className="flex flex-col gap-1 border-b border-border/50 px-6 pt-6 pb-4">
+          <div className="flex flex-col gap-1 border-b border-border/60 px-6 pt-6 pb-4">
             <div className="flex items-start justify-between gap-4">
               {title && (
                 <h2 className="text-lg font-semibold leading-none tracking-tight text-foreground">
@@ -173,9 +168,9 @@ export default function Sheet({
                   onClick={() => setOpen(false)}
                   className={cn(
                     "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
-                    "text-muted-foreground transition-colors",
-                    "hover:bg-muted hover:text-foreground",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                    "text-muted-foreground transition-all duration-150 ease-out",
+                    "hover:bg-muted hover:text-foreground active:scale-90",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     "disabled:pointer-events-none disabled:opacity-50",
                   )}
                   aria-label="Close"
@@ -190,7 +185,6 @@ export default function Sheet({
           </div>
         )}
 
-        {/* Body */}
         <div className="flex-1 overflow-y-auto px-6 py-4">{children}</div>
       </div>
     </div>
