@@ -7,37 +7,19 @@ import {
   useJobSearch,
   useBookmarks,
   FEATURED_JOBS,
-  SIMILAR_JOBS,
-  RECOMMENDED_JOBS,
-  COMPANIES,
-  COMPANY_REVIEWS,
   APPLICATIONS,
   RECRUITER,
-  RECENT_SEARCHES,
-  CAREER_RESOURCES,
-  JobHeroSection,
   FeaturedJobCard,
   JobCard,
   JobFilters,
   ApplicationTracker,
   SavedJobs,
   RecruiterCard,
-  CompanyCard,
-  CompanyReviewCard,
-  CareerResources,
-  JobStats,
   MarketTrends,
-  Newsletter,
-  Footer,
   ALL_JOBS,
 } from "@/features/job-board";
 
-const installCommand = `npx component-library@latest add job-board`;
 
-const usageCode = `import { JobCard, JobFilters, FeaturedJobCard } from "@/features/job-board";
-
-<JobFilters onCategoryChange={setCategory} />
-<JobCard job={job} />`;
 
 export default function JobBoardPage() {
   const { search, setSearch, location, setLocation, selectedTypes, toggleType, selectedLevels, toggleLevel, salaryMin, setSalaryMin, salaryMax, setSalaryMax, filteredJobs } = useJobSearch();
@@ -58,17 +40,9 @@ export default function JobBoardPage() {
         </p>
       </header>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
-      </section>
+      
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
-        <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
-      </section>
+      
 
       {/* Examples */}
       <section className="flex flex-col gap-6">
