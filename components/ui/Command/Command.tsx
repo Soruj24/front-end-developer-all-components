@@ -50,12 +50,11 @@ export function Command({
   return (
     <div
       className={cn(
-        "flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-lg",
+        "flex flex-col overflow-hidden rounded-xl border border-border/60 bg-card text-card-foreground shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
         className,
       )}
     >
-      {/* Search bar */}
-      <div className="flex items-center gap-2.5 border-b border-border px-3.5 py-2.5">
+      <div className="flex items-center gap-2.5 border-b border-border/60 px-3.5 py-2.5">
         {loading ? <LoaderIcon /> : <SearchIcon />}
         <input
           ref={inputRef}
@@ -77,7 +76,6 @@ export function Command({
         )}
       </div>
 
-      {/* Results */}
       <div className="max-h-80 overflow-y-auto p-1.5 scrollbar-thin">
         {typeof children === "function"
           ? (children as (search: string) => React.ReactNode)(search)

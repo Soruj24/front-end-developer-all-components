@@ -22,14 +22,14 @@ export function Toolbar({
   onToggleTheme,
 }: ToolbarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2 border-b border-border bg-surface/60 px-3 py-2">
+    <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-muted/50 px-3 py-2">
       <div className="mr-auto flex min-w-0 items-center gap-2.5">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary-soft text-primary">
+        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10 text-primary">
           <LinkIcon className="h-4 w-4" />
         </div>
         <div className="flex min-w-0 flex-col leading-tight">
           <span className="truncate text-sm font-semibold">{title}</span>
-          <span className="font-mono text-[10px] text-subtle">
+          <span className="font-mono text-[10px] text-muted-foreground">
             {endpointCount} endpoints · {baseUrl}
           </span>
         </div>

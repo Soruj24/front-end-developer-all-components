@@ -28,7 +28,7 @@ export function ToolbarButton({
       className={cn(
         "inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40",
         active &&
-          "border-primary/40 bg-primary-soft text-primary hover:bg-primary-soft hover:text-primary"
+          "border-primary/40 bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary"
       )}
     >
       {children}

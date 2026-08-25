@@ -15,7 +15,7 @@ export function PaletteSearchBar({ query, setQuery, setSelected, stack, placehol
         <button type="button" onClick={goBack} aria-label="Go back" className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"><ArrowLeftIcon className="h-4 w-4" /></button>
       ) : <SearchIcon className="h-4 w-4 shrink-0 text-muted-foreground" />}
       <input value={query} onChange={(e) => { setQuery(e.target.value); setSelected(0); }} onKeyDown={handleKeyDown} placeholder={placeholder}
-        autoFocus spellCheck={false} autoComplete="off" className="w-full bg-transparent py-3.5 text-sm text-foreground outline-none placeholder:text-subtle" />
+        autoFocus spellCheck={false} autoComplete="off" className="w-full bg-transparent py-3.5 text-sm text-foreground outline-none placeholder:text-muted-foreground" />
       {query ? (
         <button type="button" onClick={() => { setQuery(""); setSelected(0); }} aria-label="Clear search" className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"><XIcon className="h-4 w-4" /></button>
       ) : <Kbd>⌘K</Kbd>}
@@ -33,7 +33,7 @@ export function PaletteBreadcrumb({ stack, setStack, setSelected }: PaletteBread
       <button type="button" onClick={() => { setStack([]); setSelected(0); }} className="rounded px-1 py-0.5 transition-colors hover:bg-muted hover:text-foreground">Search</button>
       {stack.map((level, index) => (
         <Fragment key={level.id}>
-          <span aria-hidden="true" className="text-subtle">/</span>
+          <span aria-hidden="true" className="text-muted-foreground">/</span>
           <button type="button" onClick={() => { setStack(stack.slice(0, index + 1)); setSelected(0); }}
             className="max-w-[160px] truncate rounded px-1 py-0.5 transition-colors hover:bg-muted hover:text-foreground">{level.label}</button>
         </Fragment>
@@ -54,9 +54,9 @@ export function PaletteResults({ listRef, sections, safeSelected, query, favorit
     <div ref={listRef} role="listbox" aria-label="Commands" className="scrollbar-thin overflow-y-auto p-1.5" style={{ maxHeight }}>
       {sections.flatMap((s) => s.rows).length === 0 ? (
         <div className="flex flex-col items-center gap-1.5 py-12 text-center">
-          <SearchIcon className="h-8 w-8 text-subtle" />
+          <SearchIcon className="h-8 w-8 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">{emptyMessage}</p>
-          <p className="text-xs text-subtle">Try a different search term</p>
+          <p className="text-xs text-muted-foreground">Try a different search term</p>
         </div>
       ) : (() => {
         let rowIndex = 0;
@@ -64,7 +64,7 @@ export function PaletteResults({ listRef, sections, safeSelected, query, favorit
           if (section.rows.length === 0) return null;
           return (
             <div key={si}>
-              {section.title && <div className="px-2.5 pb-1 pt-2.5 text-[11px] font-semibold uppercase tracking-wider text-subtle">{section.title}</div>}
+              {section.title && <div className="px-2.5 pb-1 pt-2.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{section.title}</div>}
               {section.rows.map((row) => { const idx = rowIndex++; return <PaletteRow key={row.key} row={row} index={idx} selected={idx === safeSelected} query={query} favorites={favorites} pinned={pinned} onSelect={selectRow} onToggleFavorite={toggleFavorite} onTogglePinned={togglePinned} onMouseEnter={() => setSelected(idx)} />; })}
             </div>
           );

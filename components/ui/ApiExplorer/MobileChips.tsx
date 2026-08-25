@@ -21,7 +21,7 @@ export function MobileChips({ endpoints, selectedId, onSelect }: MobileChipsProp
           className={cn(
             "flex shrink-0 items-center gap-1.5 rounded-lg border px-2 py-1 text-xs transition-colors",
             selectedId === endpoint.id
-              ? "border-primary bg-primary-soft text-primary"
+              ? "border-primary bg-primary/10 text-primary"
               : "border-border bg-background text-muted-foreground hover:text-foreground"
           )}
         >

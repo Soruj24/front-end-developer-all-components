@@ -10,7 +10,7 @@ export function Resizable({ direction = "horizontal", children, className }: Res
       role="region"
       aria-label="Resizable panel group"
       className={cn(
-        "flex overflow-hidden rounded-xl border border-border bg-card",
+        "flex overflow-hidden rounded-xl border border-border/60 bg-card ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
         direction === "horizontal" ? "flex-row" : "flex-col",
         className,
       )}

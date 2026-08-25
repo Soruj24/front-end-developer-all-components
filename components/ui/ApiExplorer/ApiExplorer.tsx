@@ -219,7 +219,7 @@ export function ApiExplorer({
                   {response.status}
                 </span>
               )}
-              <span className="ml-auto text-[10px] text-subtle">Ctrl/Cmd + Enter to send</span>
+              <span className="ml-auto text-[10px] text-muted-foreground">Ctrl/Cmd + Enter to send</span>
             </div>
             <ResponsePanel
               sending={sending}

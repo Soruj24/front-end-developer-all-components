@@ -8,6 +8,7 @@ import {
   ReactNode,
   KeyboardEvent,
 } from "react";
+import { cn } from "@/lib/cn";
 
 interface CommandItem {
   id: string;
@@ -102,13 +103,13 @@ const CommandMenu = ({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[15vh]">
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-overlay/80 backdrop-blur-sm animate-in fade-in-0"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-surface shadow-popover">
-        <div className="flex items-center gap-2 border-b border-border px-4">
+      <div className="relative z-10 flex w-full max-w-lg flex-col overflow-hidden rounded-xl border border-border/60 bg-card shadow-2xl ring-1 ring-black/[0.04] dark:ring-white/[0.08] animate-in fade-in-0 zoom-in-95 duration-200">
+        <div className="flex items-center gap-3 border-b border-border/60 px-4">
           <svg
-            className="h-4 w-4 shrink-0 text-muted-foreground"
+            className="h-4 w-4 shrink-0 text-muted-foreground/60"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -127,14 +128,17 @@ const CommandMenu = ({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="flex-1 bg-transparent py-3.5 text-sm text-foreground outline-none placeholder:text-subtle"
+            className="flex-1 bg-transparent py-3.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/50"
           />
+          <kbd className="hidden shrink-0 rounded-md border border-border/60 bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground/70 sm:inline-block">
+            esc
+          </kbd>
         </div>
         <div className="max-h-80 overflow-y-auto p-2">
           {flatItems.length === 0 && (
-            <div className="flex flex-col items-center gap-1 py-8 text-center">
+            <div className="flex flex-col items-center gap-1.5 py-10 text-center">
               <svg
-                className="h-8 w-8 text-subtle"
+                className="h-8 w-8 text-muted-foreground/30"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -146,10 +150,10 @@ const CommandMenu = ({
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-medium text-muted-foreground">
                 No results found
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground/60">
                 Try a different search term
               </span>
             </div>
@@ -163,7 +167,7 @@ const CommandMenu = ({
             if (filtered.length === 0) return null;
             return (
               <div key={group.group}>
-                <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                <div className="px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">
                   {group.group}
                 </div>
                 {filtered.map((item) => {
@@ -177,24 +181,24 @@ const CommandMenu = ({
                         onClose();
                       }}
                       onMouseEnter={() => setSelectedIndex(idx)}
-                      className={`flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm ${
+                      className={cn(
+                        "flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-sm transition-colors duration-100",
                         idx === selectedIndex
-                          ? "bg-muted"
-                          : ""
-                      } ${
+                          ? "bg-muted/80"
+                          : "hover:bg-muted/50",
                         item.danger
                           ? "text-danger"
-                          : "text-foreground"
-                      }`}
+                          : "text-foreground",
+                      )}
                     >
                       {item.icon && (
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center text-muted-foreground/70">
                           {item.icon}
                         </span>
                       )}
                       <span className="flex-1 text-left">{item.label}</span>
                       {item.shortcut && (
-                        <span className="shrink-0 rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        <span className="shrink-0 rounded-md border border-border/60 bg-muted/50 px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground/70 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
                           {item.shortcut}
                         </span>
                       )}

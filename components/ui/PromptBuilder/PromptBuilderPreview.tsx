@@ -29,7 +29,7 @@ export function PromptBuilderPreview({
   renderPreviewBody,
 }: PromptBuilderPreviewProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4">
+    <div className="flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-4 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
       <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold tracking-tight">Live Preview</h3>
         <ActionButton

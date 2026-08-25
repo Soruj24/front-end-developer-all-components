@@ -66,7 +66,7 @@ export function renderEditorHighlightNodes(content: string, varById: Map<string,
   tokens.forEach((token, i) => {
     if (token.start > last) nodes.push(content.slice(last, token.start));
     const known = varById.has(token.id);
-    nodes.push(<mark key={`${token.id}-${i}`} className={cn("rounded-[3px] px-px font-semibold", known ? "bg-primary-soft text-primary" : "bg-danger-soft text-danger")}>{token.full}</mark>);
+    nodes.push(<mark key={`${token.id}-${i}`} className={cn("rounded-[3px] px-px font-semibold", known ? "bg-primary/10 text-primary" : "bg-danger-soft text-danger")}>{token.full}</mark>);
     last = token.end;
   });
   if (last < content.length) nodes.push(content.slice(last));
@@ -85,7 +85,7 @@ export function renderPreviewBodyNodes(content: string, varById: Map<string, imp
     const hasPlaceholder = Boolean(variable?.placeholder && !filled);
     const display = filled ? variable?.value ?? "" : hasPlaceholder ? `[${variable?.placeholder ?? token.full}]` : token.full;
     nodes.push(
-      <span key={`${token.id}-${i}`} title={variable ? `${variable.label}${filled ? `: ${variable.value}` : " — needs a value"}` : `Unknown variable: ${token.full}`} className={cn("mx-0.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-[0.9em]", filled ? "bg-primary-soft text-primary" : requiredMissing ? "bg-danger-soft text-danger" : hasPlaceholder ? "bg-warning-soft text-warning" : "bg-muted text-muted-foreground")}>
+      <span key={`${token.id}-${i}`} title={variable ? `${variable.label}${filled ? `: ${variable.value}` : " — needs a value"}` : `Unknown variable: ${token.full}`} className={cn("mx-0.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-[0.9em]", filled ? "bg-primary/10 text-primary" : requiredMissing ? "bg-danger-soft text-danger" : hasPlaceholder ? "bg-warning-soft text-warning" : "bg-muted text-muted-foreground")}>
         {display}
         {requiredMissing && <span className="text-[10px] font-semibold uppercase tracking-wide">Required</span>}
       </span>

@@ -36,7 +36,7 @@ function SendingState({ method, requestUrl }: { method: HttpMethod; requestUrl: 
 function EmptyState({ sendClassName, onSend }: { sendClassName: string; onSend: () => void }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center text-muted-foreground">
-      <SendIcon className="h-5 w-5 text-subtle" />
+      <SendIcon className="h-5 w-5 text-muted-foreground/50" />
       <p className="max-w-xs text-xs leading-relaxed">
         Press <span className="font-medium text-foreground">Send</span> to run the request.
         Responses are simulated — no network call is made.
@@ -83,11 +83,11 @@ function ResultState({
         <span className={cn("rounded-md px-2 py-0.5 font-mono text-xs font-semibold", statusClass(response.status))}>
           {response.status} {response.statusText}
         </span>
-        <span className="font-mono text-[11px] text-subtle">{response.timeMs} ms</span>
-        <span className="font-mono text-[11px] text-subtle">
+        <span className="font-mono text-[11px] text-muted-foreground">{response.timeMs} ms</span>
+        <span className="font-mono text-[11px] text-muted-foreground">
           {responseSize > 1024 ? `${(responseSize / 1024).toFixed(1)} KB` : `${responseSize} B`}
         </span>
-        <span className="ml-auto hidden max-w-56 truncate font-mono text-[11px] text-subtle sm:inline">
+        <span className="ml-auto hidden max-w-56 truncate font-mono text-[11px] text-muted-foreground sm:inline">
           {method} {requestUrl}
         </span>
         <button
@@ -125,7 +125,7 @@ function ResultState({
       <div className="scrollbar-thin min-h-0 flex-1 overflow-auto p-3">
         {responseTab === "body" ? (
           bodyEmpty ? (
-            <p className="font-mono text-xs text-subtle">(no content)</p>
+            <p className="font-mono text-xs text-muted-foreground">(no content)</p>
           ) : (
             <pre
               className="whitespace-pre-wrap break-words font-mono text-xs leading-relaxed"
@@ -133,7 +133,7 @@ function ResultState({
             />
           )
         ) : Object.keys(response.headers).length === 0 ? (
-          <p className="text-xs text-subtle">No response headers.</p>
+          <p className="text-xs text-muted-foreground">No response headers.</p>
         ) : (
           <div className="flex flex-col divide-y divide-border/60">
             {Object.entries(response.headers).map(([key, value]) => (

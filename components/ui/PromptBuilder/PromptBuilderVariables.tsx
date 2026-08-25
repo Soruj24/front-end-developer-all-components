@@ -16,7 +16,7 @@ export function PromptBuilderVariables({
   onRemoveVariable,
 }: PromptBuilderVariablesProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4">
+    <div className="flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-4 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
       <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold tracking-tight">Variables</h3>
       </div>
@@ -78,7 +78,7 @@ export function PromptBuilderVariables({
               }
               placeholder={variable.placeholder || `Value for ${variable.label}`}
               aria-label={`Value for ${variable.label}`}
-              className="mt-2 h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm outline-none transition-colors placeholder:text-subtle focus:border-ring focus:ring-1 focus:ring-ring"
+              className="mt-2 h-9 w-full rounded-md border border-input bg-background px-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring"
             />
             <div className="mt-1.5 flex items-center justify-between gap-2">
               <input
@@ -90,7 +90,7 @@ export function PromptBuilderVariables({
                 }
                 placeholder="Placeholder (optional)"
                 aria-label={`Placeholder for ${variable.label}`}
-                className="h-7 w-full rounded-md border border-transparent bg-transparent px-2 text-xs text-muted-foreground outline-none transition-colors placeholder:text-subtle hover:border-border focus:border-ring"
+                className="h-7 w-full rounded-md border border-transparent bg-transparent px-2 text-xs text-muted-foreground outline-none transition-colors placeholder:text-muted-foreground hover:border-border focus:border-ring"
               />
               {variable.required && !variable.value.trim() && (
                 <span className="shrink-0 text-[11px] font-medium text-danger">

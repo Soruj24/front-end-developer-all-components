@@ -34,7 +34,7 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
             value={auth.token ?? ""}
             onChange={(e) => setAuth((prev) => ({ ...prev, token: e.target.value }))}
             placeholder="eyJhbGciOiJIUzI1NiIs..."
-            className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+            className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
           />
         </label>
       )}
@@ -49,7 +49,7 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
               value={auth.username ?? ""}
               onChange={(e) => setAuth((prev) => ({ ...prev, username: e.target.value }))}
               placeholder="admin"
-              className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+              className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -61,7 +61,7 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
               value={auth.password ?? ""}
               onChange={(e) => setAuth((prev) => ({ ...prev, password: e.target.value }))}
               placeholder="••••••••"
-              className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+              className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             />
           </label>
         </div>
@@ -77,7 +77,7 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
               value={auth.keyName ?? ""}
               onChange={(e) => setAuth((prev) => ({ ...prev, keyName: e.target.value }))}
               placeholder="X-API-Key"
-              className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+              className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -88,13 +88,13 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
               value={auth.keyValue ?? ""}
               onChange={(e) => setAuth((prev) => ({ ...prev, keyValue: e.target.value }))}
               placeholder="sk_live_..."
-              className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+              className="h-8 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
             />
           </label>
         </div>
       )}
 
-      <p className="text-xs text-subtle">
+      <p className="text-xs text-muted-foreground">
         Authorization is injected into the request and shown in the Headers tab.
       </p>
     </div>
@@ -129,7 +129,7 @@ export function BodyTab({ method, body, contentType, setBody, setContentType }: 
               setBody(body);
             }
           }}
-          className="rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary-soft"
+          className="rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/10"
         >
           Format JSON
         </button>
@@ -141,10 +141,10 @@ export function BodyTab({ method, body, contentType, setBody, setContentType }: 
           spellCheck={false}
           aria-label="Request body"
           placeholder={'{\n  "name": "Ada"\n}'}
-          className="scrollbar-thin h-40 resize-none rounded-lg border border-border bg-background p-3 font-mono text-xs leading-relaxed text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+          className="scrollbar-thin h-40 resize-none rounded-lg border border-border bg-background p-3 font-mono text-xs leading-relaxed text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
         />
       ) : (
-        <p className="text-xs text-subtle">{method} requests do not support a body.</p>
+        <p className="text-xs text-muted-foreground">{method} requests do not support a body.</p>
       )}
     </div>
   );

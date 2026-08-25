@@ -24,7 +24,7 @@ export const METHOD_META: Record<HttpMethod, { badge: string; text: string; send
     send: "bg-success text-success-foreground hover:bg-success/90",
   },
   POST: {
-    badge: "bg-primary-soft text-primary",
+    badge: "bg-primary/10 text-primary",
     text: "text-primary",
     send: "bg-primary text-primary-foreground hover:bg-primary/90",
   },

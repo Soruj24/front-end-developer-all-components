@@ -30,13 +30,13 @@ function KeyValueRow({
         readOnly={options?.lockKey}
         onChange={(e) => patchParam(setter, index, { key: e.target.value })}
         placeholder={options?.keyPlaceholder ?? "Key"}
-        className="h-8 min-w-0 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+        className="h-8 min-w-0 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
       />
       <input
         value={item.value}
         onChange={(e) => patchParam(setter, index, { value: e.target.value })}
         placeholder="Value"
-        className="h-8 min-w-0 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-subtle focus:border-primary"
+        className="h-8 min-w-0 rounded-md border border-border bg-background px-2 font-mono text-xs text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
       />
       <button
         type="button"
@@ -65,10 +65,10 @@ export function ParamsTab({
           <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Path parameters
           </span>
-          <span className="font-mono text-[10px] text-subtle">{pathTemplate}</span>
+          <span className="font-mono text-[10px] text-muted-foreground">{pathTemplate}</span>
         </div>
         {pathParams.length === 0 ? (
-          <p className="text-xs text-subtle">No path parameters on this endpoint.</p>
+          <p className="text-xs text-muted-foreground">No path parameters on this endpoint.</p>
         ) : (
           <div className="flex flex-col gap-1.5">
             {pathParams.map((item, index) => (
@@ -92,14 +92,14 @@ export function ParamsTab({
           <button
             type="button"
             onClick={() => setQueryParams((prev) => [...prev, { key: "", value: "", enabled: true }])}
-            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary-soft"
+            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/10"
           >
             <PlusIcon className="h-3 w-3" />
             Add
           </button>
         </div>
         {queryParams.length === 0 ? (
-          <p className="text-xs text-subtle">No query parameters yet.</p>
+          <p className="text-xs text-muted-foreground">No query parameters yet.</p>
         ) : (
           <div className="flex flex-col gap-1.5">
             {queryParams.map((item, index) => (
@@ -134,14 +134,14 @@ export function HeadersTab({
         <button
           type="button"
           onClick={() => setHeaders((prev) => [...prev, { key: "", value: "", enabled: true }])}
-          className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary-soft"
-        >
-          <PlusIcon className="h-3 w-3" />
-          Add
-        </button>
-      </div>
-      {headers.length === 0 ? (
-        <p className="text-xs text-subtle">No custom headers.</p>
+            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/10"
+          >
+            <PlusIcon className="h-3 w-3" />
+            Add
+          </button>
+        </div>
+        {headers.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No custom headers.</p>
       ) : (
         <div className="flex flex-col gap-1.5">
           {headers.map((item, index) => (
@@ -150,13 +150,13 @@ export function HeadersTab({
         </div>
       )}
       {authPreview.length > 0 && (
-        <div className="mt-2 flex items-center gap-2 rounded-md bg-primary-soft/60 px-2 py-1.5">
+        <div className="mt-2 flex items-center gap-2 rounded-md bg-primary/10 px-2 py-1.5">
           <LockIcon className="h-3.5 w-3.5 shrink-0 text-primary" />
           <span className="font-mono text-[11px] text-primary">
             Authorization: {authPreview[0][1].slice(0, 24)}
             {authPreview[0][1].length > 24 ? "…" : ""}
           </span>
-          <span className="ml-auto text-[10px] text-subtle">from Auth tab</span>
+          <span className="ml-auto text-[10px] text-muted-foreground">from Auth tab</span>
         </div>
       )}
     </div>

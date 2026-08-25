@@ -29,7 +29,7 @@ export function PromptBuilderEditor({
   taRefs, onUpdateSection, onMoveSection, onRemoveSection, onInsertVariable, onAddSection, renderEditorHighlight,
 }: PromptBuilderEditorProps) {
   return (
-    <div className="flex min-w-0 flex-col gap-3 rounded-xl border border-border bg-surface p-4">
+    <div className="flex min-w-0 flex-col gap-3 rounded-xl border border-border/60 bg-card p-4 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
       <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-semibold tracking-tight">Sections</h3>
         <ActionButton onClick={onAddSection} label="Add section"><Icon d={ICON.plus} className="h-3.5 w-3.5" />Add</ActionButton>
@@ -50,7 +50,7 @@ export function PromptBuilderEditor({
 
       <div className="relative rounded-lg border border-input bg-background focus-within:border-ring focus-within:ring-1 focus-within:ring-ring">
         <pre aria-hidden className={cn(editorBase, "pointer-events-none absolute inset-0 text-foreground")}>{renderEditorHighlight(activeSectionContent)}{"\n"}</pre>
-        <textarea ref={(el) => { taRefs.current[activeSection.id] = el; }} value={activeSectionContent} onChange={(e) => onUpdateSection(activeSection.id, { content: e.target.value.slice(0, maxLength) })} placeholder="Write your prompt here. Insert {{variable}} tokens or click a chip above." aria-label={`Section content: ${activeSection.title}`} spellCheck={false} className={cn(editorBase, "relative block text-transparent caret-foreground selection:bg-primary-soft placeholder:text-subtle")} />
+        <textarea ref={(el) => { taRefs.current[activeSection.id] = el; }} value={activeSectionContent} onChange={(e) => onUpdateSection(activeSection.id, { content: e.target.value.slice(0, maxLength) })} placeholder="Write your prompt here. Insert {{variable}} tokens or click a chip above." aria-label={`Section content: ${activeSection.title}`} spellCheck={false} className={cn(editorBase, "relative block text-transparent caret-foreground selection:bg-primary/10 placeholder:text-muted-foreground")} />
       </div>
 
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground/70">

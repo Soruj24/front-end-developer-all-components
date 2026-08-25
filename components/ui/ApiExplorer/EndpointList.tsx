@@ -28,7 +28,7 @@ export function EndpointList({ endpoints, cursor, selectedId, onSelect }: Endpoi
     rows.push(
       <div
         key={group.label}
-        className="px-2 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-wider text-subtle"
+        className="px-2 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
       >
         {group.label}
       </div>
@@ -47,7 +47,7 @@ export function EndpointList({ endpoints, cursor, selectedId, onSelect }: Endpoi
           onClick={() => onSelect(endpoint)}
           className={cn(
             "flex w-full flex-col gap-1 rounded-lg px-2 py-2 text-left transition-colors",
-            isActive ? "bg-primary-soft/70" : "hover:bg-muted/60",
+            isActive ? "bg-primary/10" : "hover:bg-muted/60",
             isCursor && "ring-1 ring-inset ring-primary"
           )}
         >
@@ -61,7 +61,7 @@ export function EndpointList({ endpoints, cursor, selectedId, onSelect }: Endpoi
               {endpoint.method}
             </span>
             <span className="truncate font-mono text-[11px] text-foreground">{endpoint.path}</span>
-            {endpoint.requiresAuth && <LockIcon className="h-3 w-3 shrink-0 text-subtle" />}
+            {endpoint.requiresAuth && <LockIcon className="h-3 w-3 shrink-0 text-muted-foreground" />}
           </span>
           <span className="truncate text-[11px] text-muted-foreground">{endpoint.title}</span>
         </button>

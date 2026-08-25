@@ -59,7 +59,7 @@ export function CommandPalette({ items, open: openProp, defaultOpen = false, onO
   return (
     <div role="dialog" aria-modal="true" aria-label="Command palette" className={cn("fixed inset-0 z-50 flex items-start justify-center px-4 pb-8 pt-[14vh]", className)}>
       <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px]" style={{ animation: "fade-in 150ms ease both" }} onClick={() => setOpenState(false)} aria-hidden="true" />
-      <div className="relative z-10 w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-popover" style={{ width, maxWidth: "100%", animation: "fade-slide 200ms cubic-bezier(0.16, 1, 0.3, 1) both" }}>
+      <div className="relative z-10 w-full overflow-hidden rounded-2xl border border-border/60 bg-card shadow-popover ring-1 ring-black/[0.04] dark:ring-white/[0.08]" style={{ width, maxWidth: "100%", animation: "fade-slide 200ms cubic-bezier(0.16, 1, 0.3, 1) both" }}>
         <PaletteSearchBar query={query} setQuery={setQuery} setSelected={setSelected} stack={stack} placeholder={placeholder} handleKeyDown={handleKeyDown} goBack={goBack} />
         {stack.length > 0 && <PaletteBreadcrumb stack={stack} setStack={setStack} setSelected={setSelected} />}
         <PaletteResults listRef={listRef} sections={sections} safeSelected={safeSelected} query={query} favorites={favorites} pinned={pinned} emptyMessage={emptyMessage} maxHeight={maxHeight} selectRow={selectRow} toggleFavorite={toggleFavorite} togglePinned={togglePinned} setSelected={setSelected} />

@@ -48,7 +48,7 @@ export default function Tooltip({
             className
           )}
         >
-          <div className="whitespace-nowrap rounded-md bg-foreground px-2.5 py-1.5 text-xs text-background shadow-popover">
+          <div className="whitespace-nowrap rounded-md bg-foreground px-2.5 py-1.5 text-xs text-background shadow-popover ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
             {content}
           </div>
         </div>

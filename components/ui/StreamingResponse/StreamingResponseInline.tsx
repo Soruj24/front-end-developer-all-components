@@ -9,11 +9,11 @@ function buildInlineRegex() { return new RegExp(INLINE_SOURCE, "g"); }
 function SmartImage({ src, alt, title }: { src: string; alt: string; title?: string }) {
   const [failed, setFailed] = useState(false);
   if (failed) return <div className="my-3 flex h-32 w-full flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border bg-muted/40 text-muted-foreground"><ImageIcon className="h-6 w-6" /><span className="px-3 text-center text-xs">{alt || "Image unavailable"}</span></div>;
-  return <img src={src} alt={alt} title={title} loading="lazy" onError={() => setFailed(true)} className="my-3 max-h-80 w-full rounded-xl border border-border object-cover shadow-card" />;
+  return <img src={src} alt={alt} title={title} loading="lazy" onError={() => setFailed(true)} className="my-3 max-h-80 w-full rounded-xl border border-border object-cover shadow-card ring-1 ring-black/[0.04] dark:ring-white/[0.08]" />;
 }
 
 function CitationChip({ id }: { id: number }) {
-  return <a href={`#streaming-cite-${id}`} aria-label={`Source ${id}`} className="mx-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary-soft px-1 align-super text-[10px] font-semibold leading-none text-primary no-underline transition-colors hover:bg-primary hover:text-primary-foreground">{id}</a>;
+  return <a href={`#streaming-cite-${id}`} aria-label={`Source ${id}`} className="mx-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-primary/10 px-1 align-super text-[10px] font-semibold leading-none text-primary no-underline transition-colors hover:bg-primary hover:text-primary-foreground">{id}</a>;
 }
 
 export function renderInline(source: string, prefix = "k"): ReactNode[] {

@@ -24,7 +24,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
       <div
         ref={ref}
         className={cn(
-          "relative overflow-auto rounded-xl border border-border bg-card",
+          "relative overflow-auto rounded-xl border border-border/60 bg-card ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
           "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground/20",
           "hover:scrollbar-thumb-muted-foreground/40",
           "scrollbar-thumb-rounded-full scrollbar-track-rounded-full",

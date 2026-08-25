@@ -53,7 +53,7 @@ export function PricingCalculator({ items, currencies = [{ code: "USD", symbol: 
             <div className="flex flex-col gap-2">
               <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Quick start</span>
               <div className="grid grid-cols-3 gap-2">
-                {presets.map((preset) => <button key={preset.id} type="button" onClick={() => applyPreset(preset)} aria-pressed={activePresetId === preset.id} className={cn("flex flex-col items-start gap-0.5 rounded-lg border px-3 py-2.5 text-left transition-colors", activePresetId === preset.id ? "border-primary/40 bg-primary-soft text-primary" : "border-border bg-surface text-muted-foreground hover:text-foreground")}><span className="text-sm font-medium">{preset.label}</span>{preset.description && <span className="text-[11px] leading-tight opacity-80">{preset.description}</span>}</button>)}
+                {presets.map((preset) => <button key={preset.id} type="button" onClick={() => applyPreset(preset)} aria-pressed={activePresetId === preset.id} className={cn("flex flex-col items-start gap-0.5 rounded-lg border px-3 py-2.5 text-left transition-colors", activePresetId === preset.id ? "border-primary/40 bg-primary/10 text-primary" : "border-border/60 bg-card text-muted-foreground hover:text-foreground")}><span className="text-sm font-medium">{preset.label}</span>{preset.description && <span className="text-[11px] leading-tight opacity-80">{preset.description}</span>}</button>)}
               </div>
             </div>
           )}
@@ -74,7 +74,7 @@ export function PricingCalculator({ items, currencies = [{ code: "USD", symbol: 
                 {showTierHints && tierContext && (
                   <div className="flex items-center justify-between gap-3 text-xs">
                     {tierContext.nextTier ? <span className="text-primary">+{tierContext.gap} more {item.unit ?? "unit"}{tierContext.gap !== 1 ? "s" : ""} → {formatPrice(tierContext.nextTier.price, currency, locale)}/{item.unit ?? "unit"}</span> : <span className="text-success">Best volume rate unlocked</span>}
-                    <span className="text-subtle">now {formatPrice(tierContext.unitPrice, currency, locale)}/{item.unit ?? "unit"}</span>
+                    <span className="text-muted-foreground">now {formatPrice(tierContext.unitPrice, currency, locale)}/{item.unit ?? "unit"}</span>
                   </div>
                 )}
               </div>
@@ -121,7 +121,7 @@ export function PricingCalculator({ items, currencies = [{ code: "USD", symbol: 
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface/60 p-5">
+        <div className="flex flex-col gap-5 rounded-xl border border-border/60 bg-muted/40 p-5 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
           {showChart && segments.length > 0 && <DonutChart segments={segments} currency={currency} locale={locale} />}
           <QuoteReceipt breakdown={breakdown} currency={currency} locale={locale} animatedTotal={displayTotal} showSavingsMeter={showSavingsMeter} showCopy={showCopy} copied={copied} onCopy={handleCopyQuote} />
           {ctaLabel && <Button type="button" className="w-full" onClick={onCtaClick}>{ctaLabel}</Button>}

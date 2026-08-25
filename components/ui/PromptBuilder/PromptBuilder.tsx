@@ -108,13 +108,13 @@ export function PromptBuilder({
         {pb.activeSection ? (
           <PromptBuilderEditor activeSection={pb.activeSection} activeSectionContent={pb.activeSectionContent} activeSectionIndex={pb.activeSectionIndex} sections={pb.state.sections} variables={pb.state.variables} maxLength={maxLength} taRefs={pb.taRefs} onUpdateSection={pb.updateSection} onMoveSection={pb.moveSection} onRemoveSection={pb.removeSection} onInsertVariable={pb.insertVariable} onAddSection={pb.addSection} renderEditorHighlight={renderEditorHighlight} />
         ) : (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-surface p-4 py-10">
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-muted/30 p-4 py-10">
             <p className="text-sm text-muted-foreground">No sections yet.</p>
             <ActionButton onClick={pb.addSection} label="Add section"><Icon d={ICON.plus} className="h-3.5 w-3.5" />Add section</ActionButton>
           </div>
         )}
         <div className="flex min-w-0 flex-col gap-4">
-          <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4">
+          <div className="flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-4 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-sm font-semibold tracking-tight">Variables</h3>
               <ActionButton onClick={pb.addVariable} label="Add variable"><Icon d={ICON.plus} className="h-3.5 w-3.5" />Add</ActionButton>

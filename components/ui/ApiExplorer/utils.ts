@@ -10,7 +10,7 @@ export interface EndpointState {
 export function statusClass(status: number): string {
   if (status >= 500) return "bg-danger-soft text-danger";
   if (status >= 400) return "bg-warning-soft text-warning";
-  if (status >= 300) return "bg-primary-soft text-primary";
+  if (status >= 300) return "bg-primary/10 text-primary";
   if (status >= 200) return "bg-success-soft text-success";
   return "bg-muted text-muted-foreground";
 }

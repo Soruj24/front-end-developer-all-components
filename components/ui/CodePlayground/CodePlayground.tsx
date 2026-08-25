@@ -112,14 +112,14 @@ export function CodePlayground({ files: initialFiles, entry, title = "Code Playg
   const highlighted = useMemo(() => highlightCode(activeSource), [activeSource]);
 
   return (
-    <div className={cn("flex flex-col overflow-hidden rounded-xl border border-border bg-background text-foreground shadow-card transition-all", fullscreen && "fixed inset-0 z-50 h-screen max-h-none rounded-none shadow-xl", !fullscreen && className)} style={!fullscreen ? { height } : undefined}>
+    <div className={cn("flex flex-col overflow-hidden rounded-xl border border-border/60 bg-background text-foreground shadow-card ring-1 ring-black/[0.04] dark:ring-white/[0.08] transition-all", fullscreen && "fixed inset-0 z-50 h-screen max-h-none rounded-none shadow-xl", !fullscreen && className)} style={!fullscreen ? { height } : undefined}>
       <CodePlaygroundToolbar title={title} files={files} entryName={entryName} running={running} theme={theme} fullscreen={fullscreen} copied={copied} shared={shared} exportOpen={exportOpen} exportMenu={exportMenu} onRun={() => void run()} onCopy={copyActive} onReset={reset} onShare={share} onToggleTheme={toggleTheme} onToggleFullscreen={() => setFullscreen((v) => !v)} onToggleExportOpen={() => setExportOpen((v) => !v)} />
       <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1">
         <CodePlaygroundEditor files={files} activeFile={activeFile} entryName={entryName} activeSource={activeSource} highlighted={highlighted} dirtyMap={dirtyMap} scrollMirrorRef={scrollMirrorRef} onUpdate={updateFile} onKeyDown={handleKeyDown} onSyncScroll={syncScroll} setActiveName={setActiveName} />
         <CodePlaygroundPreview previewRef={previewRef} device={device} setDevice={setDevice} consoleOpen={consoleOpen} setConsoleOpen={setConsoleOpen} error={error} setError={setError} counts={counts} onRun={() => void run()} />
       </div>
       {consoleOpen && <CodePlaygroundConsole logs={logs} setLogs={setLogs} setConsoleOpen={setConsoleOpen} />}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border bg-surface/60 px-3 py-1.5 font-mono text-[10px] text-subtle">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border/60 bg-muted/40 px-3 py-1.5 font-mono text-[10px] text-muted-foreground">
         <span className="flex items-center gap-1.5"><span className={cn("h-1.5 w-1.5 rounded-full", running ? "animate-pulse bg-warning" : error ? "bg-danger" : "bg-success")} />{running ? "compiling…" : error ? "error" : "ready"}</span>
         <span>{activeFile.name} · {activeSource.split("\n").length} lines</span>
         <span className="ml-auto hidden sm:inline">Ctrl/Cmd + Enter to run</span>

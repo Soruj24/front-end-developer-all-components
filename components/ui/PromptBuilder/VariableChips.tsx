@@ -27,7 +27,7 @@ export function VariableChips({
             className={cn(
               "inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors",
               filled
-                ? "border-primary/30 bg-primary-soft/60 text-primary hover:bg-primary-soft"
+                ? "border-primary/30 bg-primary/10 text-primary hover:bg-primary/10"
                 : variable.required
                   ? "border-danger/40 bg-danger-soft/60 text-danger hover:bg-danger-soft"
                   : "border-warning/40 bg-warning-soft/60 text-warning hover:bg-warning-soft"

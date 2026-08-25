@@ -25,7 +25,7 @@ export function SectionTabs({
           className={cn(
             "inline-flex max-w-full items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors",
             section.id === activeSectionId
-              ? "border-primary/40 bg-primary-soft text-primary"
+              ? "border-primary/40 bg-primary/10 text-primary"
               : "border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
           )}
         >
