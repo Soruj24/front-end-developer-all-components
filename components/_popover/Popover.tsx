@@ -39,7 +39,6 @@ export function Popover({ trigger, content, open, defaultOpen, onOpenChange, off
   React.useLayoutEffect(() => {
     if (isOpen && triggerRef.current && contentRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
-      const contentRect = contentRef.current.getBoundingClientRect();
       setCoords({
         x: triggerRect.left,
         y: triggerRect.bottom + offset,

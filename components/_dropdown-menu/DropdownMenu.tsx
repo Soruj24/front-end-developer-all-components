@@ -48,7 +48,7 @@ export function DropdownMenu({ trigger, items, open, defaultOpen, onOpenChange, 
         data-state={isOpen ? "open" : "closed"}
         className={cn(
           DROPDOWN_MENU_STYLES.content,
-          "pointer-events-none absolute z-50 mt-1",
+          "pointer-events-none absolute z-50 mt-1.5",
           "data-[state=open]:pointer-events-auto",
           alignClass,
           className,

@@ -46,7 +46,7 @@ export function NavigationMenuList({ children, className }: NavigationMenuListPr
   return (
     <ul
       role="menubar"
-      className={cn("flex items-center gap-1", className)}
+      className={cn("flex items-center gap-0.5", className)}
     >
       {children}
     </ul>
@@ -73,12 +73,13 @@ export function NavigationMenuTrigger({ children, className }: NavigationMenuTri
       aria-expanded={isOpen}
       onClick={() => setOpenItem(isOpen ? null : "nav")}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium",
-        "transition-colors duration-150",
-        "hover:bg-muted hover:text-foreground",
+        "inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium",
+        "transition-colors duration-150 ease-out",
+        "text-muted-foreground",
+        "hover:bg-accent hover:text-accent-foreground",
         "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
-        "active:bg-muted/80",
-        isOpen && "bg-muted text-foreground",
+        "active:bg-accent/80",
+        isOpen && "bg-accent text-accent-foreground",
         className,
       )}
     >
@@ -114,9 +115,8 @@ export function NavigationMenuContent({ children, className }: NavigationMenuCon
       <div
         role="menu"
         className={cn(
-          "absolute left-0 top-full z-50 mt-1.5 min-w-[16rem] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
+          "absolute left-0 top-full z-50 mt-1.5 min-w-[16rem] overflow-hidden rounded-lg border border-border/60 bg-card p-1 shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50",
           "animate-in fade-in-0 zoom-in-95",
-          "dark:shadow-black/40",
           className,
         )}
       >
@@ -132,11 +132,12 @@ export function NavigationMenuLink({ href, children, className }: NavigationMenu
       href={href}
       role="menuitem"
       className={cn(
-        "flex items-center rounded-lg px-3 py-2.5 text-sm",
-        "transition-colors duration-150",
-        "hover:bg-muted hover:text-foreground",
+        "flex items-center rounded-md px-3 py-2 text-sm",
+        "transition-colors duration-100 ease-out",
+        "text-muted-foreground",
+        "hover:bg-accent hover:text-accent-foreground",
         "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
-        "active:bg-muted/80",
+        "active:bg-accent/80",
         className,
       )}
     >

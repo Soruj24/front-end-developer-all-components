@@ -2,30 +2,64 @@ import { cn } from "@/lib/cn";
 import type { NotificationProps, NotificationTitleProps, NotificationDescriptionProps } from "./Notification.types";
 
 const variantClasses: Record<string, string> = {
-  info: "border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-100",
-  success: "border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950 dark:text-green-100",
-  warning: "border-yellow-200 bg-yellow-50 text-yellow-900 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-100",
-  error: "border-red-200 bg-red-50 text-red-900 dark:border-red-800 dark:bg-red-950 dark:text-red-100",
+  info: "border-info/30 bg-info/5 text-info-foreground",
+  success: "border-success/30 bg-success/5 text-success-foreground",
+  warning: "border-warning/30 bg-warning/5 text-warning-foreground",
+  error: "border-danger/30 bg-danger/5 text-danger-foreground",
+};
+
+const iconClasses: Record<string, string> = {
+  info: "text-info",
+  success: "text-success",
+  warning: "text-warning",
+  error: "text-danger",
 };
 
 export function Notification({ children, variant = "info", title, onClose, className }: NotificationProps) {
   return (
-    <div className={cn("relative rounded-lg border p-4", variantClasses[variant], className)}>
-      {title && <NotificationTitle>{title}</NotificationTitle>}
+    <div
+      className={cn(
+        "relative rounded-lg border p-4",
+        "bg-card shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        "animate-in fade-in-0 slide-in-from-top-1 duration-200",
+        variantClasses[variant],
+        className,
+      )}
+    >
+      {title && <NotificationTitle variant={variant}>{title}</NotificationTitle>}
       <NotificationDescription>{children}</NotificationDescription>
       {onClose && (
-        <button type="button" onClick={onClose} className="absolute right-2 top-2 rounded-sm opacity-70 hover:opacity-100">
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        <button
+          type="button"
+          onClick={onClose}
+          className={cn(
+            "absolute right-3 top-3 rounded-md p-1",
+            "text-muted-foreground transition-colors duration-150",
+            "hover:bg-muted hover:text-foreground",
+            "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
+          )}
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
       )}
     </div>
   );
 }
 
-export function NotificationTitle({ children, className }: NotificationTitleProps) {
-  return <h4 className={cn("text-sm font-medium mb-1", className)}>{children}</h4>;
+export function NotificationTitle({ children, className, variant = "info" }: NotificationTitleProps & { variant?: string }) {
+  return (
+    <h4 className={cn("text-sm font-semibold mb-1", className)}>
+      {children}
+    </h4>
+  );
 }
 
 export function NotificationDescription({ children, className }: NotificationDescriptionProps) {
-  return <div className={cn("text-sm opacity-90", className)}>{children}</div>;
+  return (
+    <div className={cn("text-sm text-muted-foreground", className)}>
+      {children}
+    </div>
+  );
 }

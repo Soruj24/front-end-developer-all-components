@@ -65,7 +65,7 @@ export function DropdownMenu({
         <div
           data-state={open ? "open" : "closed"}
           className={cn(
-            "pointer-events-none absolute z-50 mt-2 min-w-[12rem] overflow-hidden rounded-xl border border-border bg-card p-1.5 text-foreground shadow-lg",
+            "pointer-events-none absolute z-50 mt-1.5 min-w-[12rem] overflow-hidden rounded-lg border border-border/60 bg-card p-1 text-foreground shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50",
             "data-[state=open]:pointer-events-auto data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:duration-200",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:duration-150",
             "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
@@ -100,10 +100,11 @@ export function DropdownMenuTrigger({
       aria-haspopup="menu"
       data-state={open ? "open" : "closed"}
       className={cn(
-        "inline-flex items-center justify-center rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all duration-200",
-        "hover:bg-muted hover:border-border",
-        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+        "inline-flex items-center justify-center rounded-lg border border-border/60 bg-card px-3.5 py-2 text-sm font-medium text-foreground shadow-sm ring-1 ring-black/[0.04] transition-all duration-150",
+        "hover:bg-muted hover:text-foreground hover:border-border/80",
+        "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card focus-visible:outline-none",
         "active:scale-[0.98]",
+        "dark:ring-white/[0.08]",
         className,
       )}
     >
@@ -131,7 +132,7 @@ export function DropdownMenuContent({
       role="menu"
       data-state="open"
       className={cn(
-        "min-w-[12rem] overflow-hidden rounded-xl border border-border bg-card p-1.5 text-foreground shadow-lg",
+        "min-w-[12rem] overflow-hidden rounded-lg border border-border/60 bg-card p-1 text-foreground shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:duration-200",
         alignClass,
         className,
@@ -170,24 +171,25 @@ export function DropdownMenuItem({
         setOpen(false);
       }}
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm outline-none transition-colors duration-150",
-        "hover:bg-muted",
-        "focus:bg-muted",
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex w-full cursor-pointer select-none items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm outline-none transition-colors duration-100",
+        "text-muted-foreground",
+        "hover:bg-accent hover:text-accent-foreground",
+        "focus:bg-accent focus:text-accent-foreground",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-40",
         destructive &&
           "text-destructive hover:bg-destructive/10 focus:bg-destructive/10",
-        disabled && "pointer-events-none opacity-50",
+        disabled && "pointer-events-none opacity-40",
         className,
       )}
     >
       {icon && (
-        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">
+        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground/70">
           {icon}
         </span>
       )}
       <span className="flex-1 text-left">{children}</span>
       {shortcut && (
-        <span className="ml-auto text-xs tracking-widest text-muted-foreground">
+        <span className="ml-auto font-mono text-[11px] tracking-wider text-muted-foreground/50">
           {shortcut}
         </span>
       )}
@@ -203,7 +205,7 @@ export function DropdownMenuSeparator({
   return (
     <div
       role="separator"
-      className={cn("-mx-1 my-1.5 h-px bg-border", className)}
+      className={cn("-mx-1 my-1 h-px bg-border/60", className)}
     />
   );
 }
@@ -220,7 +222,7 @@ export function DropdownMenuLabel({
   return (
     <div
       className={cn(
-        "px-2.5 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+        "px-2.5 py-1.5 text-xs font-semibold text-muted-foreground/70",
         inset && "pl-8",
         className,
       )}
@@ -238,7 +240,7 @@ export function DropdownMenuGroup({
   className?: string;
 }) {
   return (
-    <div role="group" className={cn("p-1", className)}>
+    <div role="group" className={cn("p-0.5", className)}>
       {children}
     </div>
   );

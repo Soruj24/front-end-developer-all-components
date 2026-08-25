@@ -1,4 +1,5 @@
 import { forwardRef, ReactNode, useEffect, useRef } from "react";
+import { cn } from "@/lib/cn";
 
 type Placement = "top" | "bottom" | "left" | "right";
 
@@ -41,7 +42,10 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         {open && (
           <div
             ref={ref}
-            className={`absolute z-50 min-w-[10rem] max-w-[calc(100vw-1rem)] rounded-lg border border-border bg-surface p-4 shadow-popover ${placementClasses[placement]}`}
+            className={cn(
+              "absolute z-50 min-w-[10rem] max-w-[calc(100vw-1rem)] rounded-lg border border-border/60 bg-card p-4 shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50 animate-in fade-in-0 zoom-in-95",
+              placementClasses[placement],
+            )}
           >
             {children}
           </div>

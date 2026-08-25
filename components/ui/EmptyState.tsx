@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 export interface EmptyStateProps {
   icon?: ReactNode;
@@ -19,18 +20,22 @@ function EmptyState({ icon, title, description, action, size = "md" }: EmptyStat
 
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-4 text-center ${s.pad} px-6`}
+      className={cn(
+        "flex flex-col items-center justify-center gap-4 text-center",
+        s.pad,
+        "px-6",
+      )}
     >
       {icon && (
-        <div className={`${s.icon} text-subtle`}>
+        <div className={cn(s.icon, "text-muted-foreground/40")}>
           {icon}
         </div>
       )}
-      <h3 className={`${s.title} font-semibold text-foreground`}>
+      <h3 className={cn(s.title, "font-semibold text-foreground")}>
         {title}
       </h3>
       {description && (
-        <p className={`${s.desc} max-w-sm text-muted-foreground`}>
+        <p className={cn(s.desc, "max-w-sm text-muted-foreground")}>
           {description}
         </p>
       )}

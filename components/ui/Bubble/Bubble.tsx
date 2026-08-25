@@ -25,21 +25,22 @@ export function Bubble({
         <img
           src={avatar}
           alt={sender ?? "avatar"}
-          className="h-8 w-8 shrink-0 rounded-full object-cover"
+          className="h-8 w-8 shrink-0 rounded-full object-cover ring-2 ring-background"
         />
       )}
       <div className={cn("max-w-[75%]")}>
         {!isSent && sender && (
-          <p className="mb-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          <p className="mb-1 text-xs font-medium text-muted-foreground">
             {sender}
           </p>
         )}
         <div
           className={cn(
             "rounded-2xl px-4 py-2 text-sm",
+            "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
             isSent
-              ? "bg-blue-600 text-white"
-              : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted text-foreground",
           )}
         >
           {message}
@@ -47,7 +48,7 @@ export function Bubble({
         {timestamp && (
           <p
             className={cn(
-              "mt-1 text-xs text-zinc-400",
+              "mt-1 text-xs text-muted-foreground/60",
               isSent ? "text-right" : "text-left"
             )}
           >

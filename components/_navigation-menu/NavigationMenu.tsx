@@ -22,7 +22,7 @@ export function NavigationMenu({ items, orientation = "vertical", className, ite
           >
             {item.icon && <span className={NAVIGATION_MENU_STYLES.icon}>{item.icon}</span>}
             <span>{item.label}</span>
-            {item.children && <span className="ml-auto">▸</span>}
+            {item.children && <span className="ml-auto text-muted-foreground/50">▸</span>}
           </div>
           {item.children && openItem === item.label && (
             <div className="ml-4">

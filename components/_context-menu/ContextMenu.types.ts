@@ -1,14 +1,18 @@
 import type { ReactNode } from "react";
 
 export interface ContextMenuItem {
-  key: string;
+  key?: string;
   label: ReactNode;
   icon?: ReactNode;
   shortcut?: string;
   disabled?: boolean;
+  danger?: boolean;
   dangerous?: boolean;
+  divider?: boolean;
   onClick?: () => void;
   child?: ContextMenuItem[];
+  children?: ContextMenuItem[];
+  [key: string]: unknown;
 }
 
 export interface ContextMenuProps {

@@ -67,10 +67,10 @@ export function ContextMenu({ children, items, trigger = "rightClick", triggerDe
             style={{ left: coords.x, top: coords.y }}
             role="menu"
           >
-            {items.map((item) => renderItem(item, () => {
+            {items.map((item, i) => renderItem(item, () => {
               if (!isControlled) setInternalOpen(false);
               onOpenChange?.(false);
-            }))}
+            }, i))}
           </div>
         </>
       )}
@@ -78,13 +78,21 @@ export function ContextMenu({ children, items, trigger = "rightClick", triggerDe
   );
 }
 
-const renderItem = (item: ContextMenuItem, close: () => void): React.ReactElement => {
-  if (item.child) {
+const renderItem = (item: ContextMenuItem, close: () => void, idx: number): React.ReactElement => {
+  const key = item.key ?? String(idx);
+  const isDanger = item.danger || item.dangerous;
+
+  if (item.divider) {
+    return <div key={key} className={CONTEXT_MENU_STYLES.separator} />;
+  }
+
+  const children = item.child ?? item.children;
+  if (children) {
     return (
-      <div key={item.key}>
+      <div key={key}>
         <div className={CONTEXT_MENU_STYLES.group}>{item.label}</div>
         <div className="ml-4">
-          {item.child.map((sub) => renderItem(sub, close))}
+          {children.map((sub, si) => renderItem(sub, close, si))}
         </div>
       </div>
     );
@@ -92,11 +100,11 @@ const renderItem = (item: ContextMenuItem, close: () => void): React.ReactElemen
 
   return (
     <div
-      key={item.key}
+      key={key}
       className={cn(
         CONTEXT_MENU_STYLES.item,
         item.disabled && CONTEXT_MENU_STYLES.itemDisabled,
-        item.dangerous && CONTEXT_MENU_STYLES.itemDangerous,
+        isDanger && CONTEXT_MENU_STYLES.itemDangerous,
       )}
       onClick={(e) => { e.stopPropagation(); if (!item.disabled) { item.onClick?.(); close(); } }}
       aria-disabled={item.disabled}

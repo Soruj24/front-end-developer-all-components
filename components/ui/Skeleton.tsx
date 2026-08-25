@@ -1,4 +1,5 @@
 import { HTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "text" | "circular" | "rectangular";
@@ -7,28 +8,40 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function Skeleton({
-  className = "",
+  className,
   variant = "text",
   width,
   height,
   ...props
 }: SkeletonProps) {
   const variantClass =
-    variant === "circular" ? "rounded-full" : variant === "rectangular" ? "rounded-lg" : "rounded-md h-4";
+    variant === "circular"
+      ? "rounded-full"
+      : variant === "rectangular"
+        ? "rounded-lg"
+        : "rounded-md h-4";
 
   return (
     <div
-      className={`skeleton-shimmer ${variantClass} ${className}`}
+      className={cn(
+        "animate-pulse bg-muted/50",
+        variantClass,
+        className,
+      )}
       style={{ width, height }}
       {...props}
     />
   );
 }
 
-function SkeletonCard({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
+function SkeletonCard({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-lg border border-border bg-surface p-4 ${className}`}
+      className={cn(
+        "rounded-lg border border-border/60 bg-card p-4",
+        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        className,
+      )}
       {...props}
     >
       <Skeleton variant="rectangular" width="100%" height={160} />
@@ -41,10 +54,10 @@ function SkeletonCard({ className = "", ...props }: HTMLAttributes<HTMLDivElemen
   );
 }
 
-function SkeletonListItem({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
+function SkeletonListItem({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`flex items-center gap-3 px-4 py-3 ${className}`}
+      className={cn("flex items-center gap-3 px-4 py-3", className)}
       {...props}
     >
       <Skeleton variant="circular" width={40} height={40} />
@@ -56,21 +69,25 @@ function SkeletonListItem({ className = "", ...props }: HTMLAttributes<HTMLDivEl
   );
 }
 
-function SkeletonTable({ rows = 5, columns = 4, className = "" }: { rows?: number; columns?: number; className?: string }) {
+function SkeletonTable({ rows = 5, columns = 4, className }: { rows?: number; columns?: number; className?: string }) {
   const colWidth = (i: number) => `${((i * 7) % 30) + 10}%`;
   return (
-    <div className={`rounded-lg border border-border ${className}`}>
-      {/* Header */}
-      <div className="flex gap-4 border-b border-border bg-muted px-4 py-3">
+    <div
+      className={cn(
+        "rounded-lg border border-border/60",
+        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        className,
+      )}
+    >
+      <div className="flex gap-4 border-b border-border/60 bg-muted/30 px-4 py-3">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton key={i} variant="text" width={colWidth(i)} />
         ))}
       </div>
-      {/* Rows */}
       {Array.from({ length: rows }).map((_, r) => (
         <div
           key={r}
-          className="flex gap-4 border-b border-border px-4 py-3 last:border-0"
+          className="flex gap-4 border-b border-border/60 px-4 py-3 last:border-0"
         >
           {Array.from({ length: columns }).map((_, c) => (
             <Skeleton key={c} variant="text" width={colWidth(r * 3 + c + 1)} />
@@ -83,7 +100,7 @@ function SkeletonTable({ rows = 5, columns = 4, className = "" }: { rows?: numbe
 
 function SkeletonAvatar({
   size = 40,
-  className = "",
+  className,
 }: {
   size?: number;
   className?: string;

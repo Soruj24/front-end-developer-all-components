@@ -95,8 +95,8 @@ export function HoverCard({
           role="tooltip"
           className={cn(
             "absolute z-50 mt-2 w-80",
-            "rounded-xl border border-border bg-popover p-4",
-            "shadow-xl",
+            "rounded-lg border border-border/60 bg-card p-4",
+            "shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50",
             "animate-in fade-in-0 zoom-in-95",
             "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           )}

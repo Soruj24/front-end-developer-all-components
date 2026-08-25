@@ -41,7 +41,7 @@ const Dropdown = ({ trigger, items, align = "start", className }: DropdownProps)
       <div
         data-state={open ? "open" : "closed"}
         className={cn(
-          "pointer-events-none absolute z-50 mt-1 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md",
+          "pointer-events-none absolute z-50 mt-1.5 min-w-[10rem] overflow-hidden rounded-lg border border-border/60 bg-card p-1 text-foreground shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] dark:shadow-black/50",
           "data-[state=open]:pointer-events-auto data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           align === "end" ? "right-0" : "left-0",
@@ -50,7 +50,7 @@ const Dropdown = ({ trigger, items, align = "start", className }: DropdownProps)
       >
         {items.map((item, i) => {
           if (item.divider) {
-            return <div key={i} className="-mx-1 my-1 h-px bg-muted" />;
+            return <div key={i} className="-mx-1 my-1 h-px bg-border/60" />;
           }
           return (
             <button
@@ -64,21 +64,22 @@ const Dropdown = ({ trigger, items, align = "start", className }: DropdownProps)
                 }
               }}
               className={cn(
-                "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
+                "relative flex w-full cursor-pointer select-none items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm outline-none transition-colors duration-100",
+                "text-muted-foreground",
                 "hover:bg-accent hover:text-accent-foreground",
                 "focus:bg-accent focus:text-accent-foreground",
-                item.danger && "text-destructive focus:bg-destructive/10 focus:text-destructive",
-                item.disabled && "pointer-events-none opacity-50",
+                item.danger && "text-destructive hover:bg-destructive/10 focus:bg-destructive/10",
+                item.disabled && "pointer-events-none opacity-40",
               )}
             >
               {item.icon && (
-                <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground/70">
                   {item.icon}
                 </span>
               )}
               <span className="flex-1 text-left">{item.label}</span>
               {item.shortcut && (
-                <span className="ml-auto text-xs tracking-widest opacity-60">
+                <span className="ml-auto font-mono text-[11px] tracking-wider text-muted-foreground/50">
                   {item.shortcut}
                 </span>
               )}
