@@ -1,15 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { cn } from "@/lib/cn";
 import type { GraphNode, DependencyGraphProps, Pos, Bounds } from "./DependencyGraph.types";
-import { NODE_W, NODE_H, PAD, MIN_SCALE, MAX_SCALE, MINI_W, MINI_H, clamp, nextInstanceId, computeLayout, computeBounds, edgePath } from "./DependencyGraph.constants";
+import { NODE_W, NODE_H, PAD, MIN_SCALE, MAX_SCALE, MINI_W, MINI_H, clamp, computeLayout, computeBounds, edgePath } from "./DependencyGraph.constants";
 import { NodeView, EdgePath } from "./DependencyGraphPieces";
 import { GraphOverlay } from "./DependencyGraphOverlay";
 
 export function DependencyGraph({ nodes, edges, width = "100%", height, minHeight = 480, className, onNodeSelect, searchable = true, minimap = true, focusable = true, emptyMessage = "Nothing to render yet" }: DependencyGraphProps) {
-  const [instanceId] = useState(() => nextInstanceId());
-  const markerId = `${instanceId}-arrow`;
+  const reactId = useId();
+  const markerId = `${reactId}-arrow`;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -76,7 +76,7 @@ export function DependencyGraph({ nodes, edges, width = "100%", height, minHeigh
     [edges, positions, derived]);
 
   const minimapGeo = useMemo(() => {
-    const s = Math.min((MINI_W - 14) / Math.max(bounds.width, 1), (MINI_H - 14) / Math.max(bounds.height, 1)) * 0.98;
+    const s = Math.min((MINI_W - 16) / Math.max(bounds.width, 1), (MINI_H - 16) / Math.max(bounds.height, 1)) * 0.98;
     const ox = (MINI_W - bounds.width * s) / 2 - bounds.minX * s;
     const oy = (MINI_H - bounds.height * s) / 2 - bounds.minY * s;
     const dots = nodes.map((n) => { const p = positions[n.id]; if (!p) return null; return { id: n.id, x: ox + p.x * s, y: oy + p.y * s }; }).filter((v): v is NonNullable<typeof v> => Boolean(v));
@@ -243,14 +243,14 @@ export function DependencyGraph({ nodes, edges, width = "100%", height, minHeigh
 
   if (nodes.length === 0) {
     return (
-      <div ref={containerRef} className={cn("relative flex items-center justify-center overflow-hidden rounded-2xl border border-border bg-card bg-dots", className)} style={{ width, height, minHeight }}>
-        <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+      <div ref={containerRef} className={cn("relative flex items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-card bg-dots shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.06]", className)} style={{ width, height, minHeight }}>
+        <p className="text-sm text-muted-foreground/80">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className={cn("relative overflow-hidden rounded-2xl border border-border bg-card bg-dots", className)} style={{ width, height, minHeight }}>
+    <div ref={containerRef} className={cn("relative overflow-hidden rounded-xl border border-border/60 bg-card bg-dots shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.06]", className)} style={{ width, height, minHeight }}>
       <svg ref={svgRef} role="img" aria-label="Dependency graph" data-lod="high" className="absolute inset-0 h-full w-full touch-none select-none"
         onPointerDown={handleSvgPointerDown} onPointerMove={handleSvgPointerMove} onPointerUp={handleSvgPointerUp} onPointerCancel={handleSvgPointerUp}>
         <defs>

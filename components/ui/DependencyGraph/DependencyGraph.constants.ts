@@ -1,18 +1,18 @@
 import type { Pos, Bounds } from "./DependencyGraph.types";
 
-export const NODE_W = 152;
-export const NODE_H = 46;
-export const GAP_X = 64;
-export const GAP_Y = 28;
-export const PAD = 48;
-export const MIN_SCALE = 0.2;
+export const NODE_W = 164;
+export const NODE_H = 52;
+export const GAP_X = 72;
+export const GAP_Y = 32;
+export const PAD = 56;
+export const MIN_SCALE = 0.15;
 export const MAX_SCALE = 3;
-export const MINI_W = 176;
-export const MINI_H = 124;
+export const MINI_W = 180;
+export const MINI_H = 128;
 
 export const KIND_FILL: Record<string, string> = {
   app: "fill-primary", module: "fill-primary", component: "fill-primary", ui: "fill-primary",
-  page: "fill-info", service: "fill-info",
+  page: "fill-info", service: "fill-info", entry: "fill-info", asset: "fill-info",
   lib: "fill-warning", db: "fill-warning", queue: "fill-warning",
   hooks: "fill-success", package: "fill-success",
   util: "fill-muted-foreground", middleware: "fill-muted-foreground",
@@ -47,7 +47,7 @@ export function computeBounds(positions: Record<string, Pos>): Bounds {
 export function edgePath(from: Pos, to: Pos): string {
   const x1 = from.x + NODE_W; const y1 = from.y + NODE_H / 2;
   const x2 = to.x; const y2 = to.y + NODE_H / 2;
-  const dx = clamp(Math.abs(x2 - x1) * 0.5, 24, 90);
+  const dx = clamp(Math.abs(x2 - x1) * 0.45, 28, 96);
   if (x2 >= x1) return `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
   const mx = (x1 + x2) / 2;
   return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
