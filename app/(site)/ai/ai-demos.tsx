@@ -270,9 +270,7 @@ export default function AiDemos() {
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
         <div className="rounded-xl border border-border bg-muted/50 p-4 font-mono text-sm overflow-x-auto">
-          <pre className="text-xs">
-import { useAiChat } from "@/features/ai";
-</pre>
+          <pre className="text-xs">{`import { useAiChat } from "@/features/ai";`}</pre>
         </div>
       </section>
 
@@ -299,7 +297,7 @@ import { useAiChat } from "@/features/ai";
             {messages.length <= 1 && (
               <div className="mb-6 flex flex-wrap gap-2">
                 {quickPrompts.map((p) => (
-                  <QuickPromptsDemo prompt={p} />
+                  <QuickPromptsDemo key={p} prompt={p} />
                 ))}
               </div>
             )}
