@@ -3,6 +3,7 @@
 import type { ChangeEvent, DragEvent, KeyboardEvent, RefObject } from "react";
 import { CodeBlock } from "@/components/markdown";
 import { PaperclipIcon, ImageIcon, MicIcon } from "./icons";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { tones } from "./data";
 import type { Tone } from "./data";
 
@@ -208,17 +209,18 @@ export function InputArea({
                 placeholder="Describe the code you need..."
                 className="flex-1 rounded-lg border border-border bg-muted/40 px-4 py-2 text-sm outline-none focus:border-blue-500 dark:border-border dark:bg-muted dark:text-zinc-100"
               />
-              <select
+              <InlineSelect
+                options={[
+                  { value: "JavaScript", label: "JavaScript" },
+                  { value: "TypeScript", label: "TypeScript" },
+                  { value: "Python", label: "Python" },
+                  { value: "SQL", label: "SQL" },
+                  { value: "CSS", label: "CSS" },
+                ]}
                 value={codeLanguage}
-                onChange={(e) => onCodeLanguageChange(e.target.value)}
-                className="rounded-lg border border-border bg-white px-3 py-2 text-xs font-medium text-muted-foreground outline-none dark:border-border dark:bg-muted dark:text-zinc-200"
-              >
-                <option>JavaScript</option>
-                <option>TypeScript</option>
-                <option>Python</option>
-                <option>SQL</option>
-                <option>CSS</option>
-              </select>
+                onChange={(val) => onCodeLanguageChange(val)}
+                size="sm"
+              />
               <button onClick={onGenerateCode} className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700">
                 Generate
               </button>

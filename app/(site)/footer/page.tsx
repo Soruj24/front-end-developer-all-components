@@ -6,6 +6,7 @@ import {
   PreviewPanel,
   SourceCodeViewer,
 } from "@/components/docs";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { FOOTER_SOURCE } from "./footer-source";
 
 const products = ["Overview", "Features", "Pricing", "Changelog"];
@@ -135,16 +136,12 @@ function FooterDemo() {
             </div>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <select
+            <InlineSelect
+              options={languages.map((l) => ({ value: l.code, label: l.label }))}
               value={lang}
-              aria-label="Language"
-              onChange={(e) => setLang(e.target.value)}
-              className="rounded-md border border-border bg-white px-3 py-1.5 text-xs text-muted-foreground dark:border-border dark:bg-muted dark:text-muted-foreground"
-            >
-              {languages.map((l) => (
-                <option key={l.code} value={l.code}>{l.label}</option>
-              ))}
-            </select>
+              onChange={(val) => setLang(val)}
+              size="sm"
+            />
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <input
                 type="email"

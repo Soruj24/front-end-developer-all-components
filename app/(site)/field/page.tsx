@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Field } from "@/components/ui/Field";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -200,11 +201,16 @@ export default function FieldPage() {
         >
           <div className="w-full max-w-sm">
             <Field label="Role">
-              <select className={inputClass}>
-                <option>Select a role</option>
-                <option>Developer</option>
-                <option>Designer</option>
-              </select>
+              <InlineSelect
+                options={[
+                  { value: "", label: "Select a role" },
+                  { value: "Developer", label: "Developer" },
+                  { value: "Designer", label: "Designer" },
+                ]}
+                value=""
+                onChange={() => {}}
+                size="sm"
+              />
             </Field>
           </div>
         </ExampleBlock>

@@ -68,7 +68,7 @@ export function Combobox({ options, value, defaultValue, onValueChange, placehol
       >
         <div className="flex flex-wrap items-center gap-1 flex-1">
           {current.length === 0 ? (
-            <span className="text-gray-500">{placeholder}</span>
+            <span className="text-muted-foreground">{placeholder}</span>
           ) : (
             current.map((val) => {
               const opt = options.find((o) => o.value === val);
@@ -90,7 +90,7 @@ export function Combobox({ options, value, defaultValue, onValueChange, placehol
             />
           </div>
           {filteredOptions.length === 0 ? (
-            <div className="py-6 text-center text-sm text-gray-500">{emptyMessage}</div>
+            <div className="py-6 text-center text-sm text-muted-foreground">{emptyMessage}</div>
           ) : (
             filteredOptions.map((opt) => (
               <div
@@ -104,7 +104,7 @@ export function Combobox({ options, value, defaultValue, onValueChange, placehol
               >
                 {opt.icon && <span className="flex-shrink-0">{opt.icon}</span>}
                 <span>{opt.label}</span>
-                {opt.description && <span className="ml-2 text-xs text-gray-500">{opt.description}</span>}
+                {opt.description && <span className="ml-2 text-xs text-muted-foreground">{opt.description}</span>}
               </div>
             ))
           )}

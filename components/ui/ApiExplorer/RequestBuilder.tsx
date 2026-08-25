@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { METHOD_ORDER } from "./constants";
 import { RequestTabPanel } from "./RequestTabs";
 import { LockIcon, SendIcon } from "./Icons";
@@ -41,21 +42,17 @@ export function RequestBuilder({
   return (
     <>
       <div className="flex items-center gap-2 border-b border-border p-3">
-        <select
+        <InlineSelect
+          options={METHOD_ORDER.map((m) => ({ value: m, label: m }))}
           value={method}
-          onChange={(e) => setMethod(e.target.value as HttpMethod)}
+          onChange={(val) => setMethod(val as HttpMethod)}
+          size="sm"
           aria-label="HTTP method"
           className={cn(
             "h-9 shrink-0 rounded-lg border border-border bg-background px-2 text-xs font-semibold outline-none transition-colors focus:border-primary",
             methodText
           )}
-        >
-          {METHOD_ORDER.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
+        />
         <input
           value={url}
           onChange={(e) => setUrl(e.target.value)}

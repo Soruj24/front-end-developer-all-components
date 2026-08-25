@@ -55,11 +55,11 @@ export function MultiSelect({
         aria-haspopup="listbox"
         onClick={() => { if (!disabled) { setOpen(!open); setTimeout(() => inputRef.current?.focus(), 0); } }}
         className={cn(
-          "flex min-h-[42px] w-full cursor-pointer flex-wrap items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-left text-sm",
-          "transition-colors duration-150",
-          "hover:border-muted-foreground/30",
-          "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
-          open && "ring-2 ring-primary/20 border-primary/40",
+          "flex min-h-[42px] w-full cursor-pointer flex-wrap items-center gap-1.5 rounded-lg border border-border/60 bg-card px-3 py-2 text-left text-sm",
+          "transition-all duration-150",
+          "hover:border-border hover:bg-muted/30",
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          open && "ring-2 ring-ring/20 border-border",
           disabled && "pointer-events-none opacity-50",
         )}
       >
@@ -105,8 +105,8 @@ export function MultiSelect({
           role="listbox"
           aria-multiselectable="true"
           className={cn(
-            "absolute z-50 mt-1.5 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-border bg-card p-1.5 shadow-lg",
-            "animate-in fade-in-0 zoom-in-95",
+            "absolute z-50 mt-1.5 max-h-60 w-full overflow-hidden overflow-y-auto rounded-lg border border-border/60 bg-popover p-1 shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+            "animate-in fade-in-0 zoom-in-95 duration-150",
           )}
         >
           {searchable && (
@@ -116,7 +116,7 @@ export function MultiSelect({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search..."
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/50 focus:outline-none"
+                className="w-full rounded-md border border-border/60 bg-muted/50 px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-ring/20 focus:border-border focus:outline-none"
               />
             </div>
           )}
@@ -134,12 +134,11 @@ export function MultiSelect({
                 disabled={opt.disabled}
                 onClick={() => toggle(opt.id)}
                 className={cn(
-                  "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm",
-                  "transition-colors duration-150",
-                  "hover:bg-muted",
-                  "focus-visible:bg-muted focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:outline-none",
-                  "active:bg-muted/80",
-                  isSelected && "bg-primary/5",
+                  "flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left text-sm",
+                  "transition-colors duration-75",
+                  "hover:bg-accent hover:text-accent-foreground",
+                  "focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-none",
+                  isSelected && "bg-accent/50 font-medium text-accent-foreground",
                   opt.disabled && "pointer-events-none opacity-40",
                 )}
               >

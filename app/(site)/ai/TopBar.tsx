@@ -2,6 +2,7 @@
 
 import { models } from "./data";
 import { MenuIcon, SearchIcon, SunIcon, MoonIcon } from "./icons";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import type { Model } from "./data";
 
 export function TopBar({
@@ -39,15 +40,12 @@ export function TopBar({
             <MenuIcon className="h-5 w-5" />
           </button>
         )}
-        <select
+        <InlineSelect
+          options={models.map((m) => ({ value: m, label: m }))}
           value={model}
-          onChange={(e) => onModelChange(e.target.value as Model)}
-          className="rounded-lg border border-border bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground outline-none focus:border-blue-500 dark:border-border dark:bg-muted dark:text-zinc-200"
-        >
-          {models.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
+          onChange={(val) => onModelChange(val as Model)}
+          size="sm"
+        />
         <button
           onClick={onToggleWebSearch}
           className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${

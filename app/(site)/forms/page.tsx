@@ -1,6 +1,7 @@
 "use client";
 
 import { Form, FormField, FormMessage } from "@/components/ui/Form";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -272,11 +273,16 @@ export default function FormsPage() {
           <div className="w-full max-w-sm">
             <Form onSubmit={(e) => e.preventDefault()}>
               <FormField label="Role">
-                <select className={inputClass}>
-                  <option>Select a role</option>
-                  <option>Developer</option>
-                  <option>Designer</option>
-                </select>
+                <InlineSelect
+                  options={[
+                    { value: "", label: "Select a role" },
+                    { value: "Developer", label: "Developer" },
+                    { value: "Designer", label: "Designer" },
+                  ]}
+                  value=""
+                  onChange={() => {}}
+                  size="sm"
+                />
               </FormField>
               <button type="submit" className={btnClass}>Submit</button>
             </Form>

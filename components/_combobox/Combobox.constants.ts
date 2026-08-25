@@ -1,10 +1,10 @@
 export const COMBOBOX_STYLES: Record<string, string> = {
   base: "relative w-full",
-  trigger: "flex h-10 w-full items-center justify-between rounded-md border bg-background px-3 py-2 text-sm",
-  popover: "absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-popover py-1 text-sm shadow-lg",
-  option: "flex items-center gap-2 px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer",
-  optionSelected: "bg-gray-100 dark:bg-gray-800",
-  optionDisabled: "opacity-50 cursor-not-allowed",
-  search: "w-full px-3 py-2 text-sm outline-none",
-  badge: "inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium dark:bg-gray-800",
+  trigger: "flex min-h-[42px] w-full items-center justify-between gap-2 rounded-lg border border-border/60 bg-card px-3 py-2 text-left text-sm transition-all duration-150 hover:border-border hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50",
+  popover: "absolute z-50 mt-1.5 w-full overflow-hidden rounded-lg border border-border/60 bg-popover py-0 text-sm shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08] animate-in fade-in-0 zoom-in-95 duration-150",
+  option: "flex items-center gap-2 px-2.5 py-1.5 cursor-pointer rounded-md transition-colors duration-75 hover:bg-accent hover:text-accent-foreground",
+  itemSelected: "bg-accent/50 font-medium text-accent-foreground",
+  itemDisabled: "pointer-events-none opacity-40",
+  search: "w-full rounded-md bg-muted/50 px-2.5 py-1.5 text-sm outline-none placeholder:text-muted-foreground/50",
+  badge: "inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
 };

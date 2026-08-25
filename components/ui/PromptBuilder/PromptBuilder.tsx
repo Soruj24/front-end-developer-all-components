@@ -2,6 +2,7 @@
 
 import { useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { promptBuilderTemplates } from "@/components/prompt-builder/templates";
 import type { PromptBuilderProps } from "./PromptBuilder.types";
 import { DEFAULT_MAX_LENGTH, ICON } from "./PromptBuilder.constants";
@@ -65,9 +66,14 @@ export function PromptBuilder({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 flex-wrap items-center gap-2.5">
-          <select value={pb.state.templateId} onChange={(e) => pb.selectTemplate(e.target.value)} aria-label="Prompt template" className="h-9 max-w-[16rem] rounded-lg border border-input bg-background px-2.5 pr-8 text-sm outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring">
-            {templates.map((t) => (<option key={t.id} value={t.id}>{t.name}</option>))}
-          </select>
+          <InlineSelect
+            options={templates.map((t) => ({ value: t.id, label: t.name }))}
+            value={pb.state.templateId}
+            onChange={(val) => pb.selectTemplate(val)}
+            size="sm"
+            aria-label="Prompt template"
+            className="h-9 max-w-[16rem] rounded-lg border border-input bg-background px-2.5 pr-8 text-sm outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring"
+          />
           <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium", pb.isValid ? "border-success/40 bg-success-soft text-success" : "border-warning/40 bg-warning-soft text-warning")}>
             <span className={cn("h-1.5 w-1.5 rounded-full", pb.isValid ? "bg-success" : "bg-warning")} />
             {pb.isValid ? (pb.totalChars > 0 ? "Ready to copy" : "Empty prompt") : `${pb.validation.missingRequired.length} variable${pb.validation.missingRequired.length === 1 ? "" : "s"} need a value`}

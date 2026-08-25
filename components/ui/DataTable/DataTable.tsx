@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import type { DataTableProps } from "./DataTable.types";
 
 const alignClass = {
@@ -169,21 +170,19 @@ export function DataTable<T extends Record<string, unknown>>({
               Showing {startRow}&ndash;{endRow} of {sorted.length}
             </span>
             {showPageSizeSelector && (
-              <select
-                value={pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
+              <InlineSelect
+                options={pageSizeOptions.map((size) => ({
+                  value: String(size),
+                  label: size + " / page",
+                }))}
+                value={String(pageSize)}
+                onChange={(val) => {
+                  setPageSize(Number(val));
                   setPage(0);
                 }}
-                className="h-7 rounded-lg border border-border bg-card px-2 text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+                size="xs"
                 aria-label="Rows per page"
-              >
-                {pageSizeOptions.map((size) => (
-                  <option key={size} value={size}>
-                    {size} / page
-                  </option>
-                ))}
-              </select>
+              />
             )}
           </div>
 

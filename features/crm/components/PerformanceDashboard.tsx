@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SectionCard } from "./SectionCard";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 
 export function PerformanceDashboard() {
   const [metric, setMetric] = useState("revenue");
@@ -17,16 +18,17 @@ export function PerformanceDashboard() {
     <SectionCard title="Performance Dashboard" description="Key sales metrics at a glance">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <select
+          <InlineSelect
+            options={[
+              { value: "revenue", label: "Revenue" },
+              { value: "deals", label: "Deals" },
+              { value: "calls", label: "Calls" },
+              { value: "emails", label: "Emails" },
+            ]}
             value={metric}
-            onChange={(e) => setMetric(e.target.value)}
-            className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
-          >
-            <option value="revenue">Revenue</option>
-            <option value="deals">Deals</option>
-            <option value="calls">Calls</option>
-            <option value="emails">Emails</option>
-          </select>
+            onChange={(val) => setMetric(val)}
+            size="sm"
+          />
         </div>
         {stats.map((s) => (
           <div key={s.label} className="rounded-lg border border-zinc-200 p-4 text-center dark:border-zinc-800">

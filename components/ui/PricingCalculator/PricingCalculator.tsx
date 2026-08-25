@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { Input } from "../Input";
 import Button from "../Button";
 import type { PricingCalculatorProps, PriceItem, BillingCycle, Coupon, PricingPreset } from "./PricingCalculator.types";
@@ -90,9 +91,17 @@ export function PricingCalculator({ items, currencies = [{ code: "USD", symbol: 
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-medium text-foreground">Currency</span>
-                <select value={currencyCode} onChange={(e) => setCurrencyCode(e.target.value)} aria-label="Currency" className="flex h-10 w-full cursor-pointer rounded-lg border border-input bg-background px-3 text-sm text-foreground transition-colors focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring">
-                  {currencies.map((c) => <option key={c.code} value={c.code}>{c.symbol} {c.name ?? c.code}</option>)}
-                </select>
+                <InlineSelect
+                  options={currencies.map((c) => ({
+                    value: c.code,
+                    label: c.symbol + " " + (c.name ?? c.code),
+                  }))}
+                  value={currencyCode}
+                  onChange={(val) => setCurrencyCode(val)}
+                  size="sm"
+                  aria-label="Currency"
+                  className="flex h-10 w-full cursor-pointer rounded-lg border border-input bg-background px-3 text-sm text-foreground transition-colors focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
+                />
               </div>
             </div>
             {coupons.length > 0 && (

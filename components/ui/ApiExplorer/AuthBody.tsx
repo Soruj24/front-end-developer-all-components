@@ -1,5 +1,6 @@
 "use client";
 
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { METHOD_ALLOWS_BODY } from "./constants";
 import { prettyJson } from "./utils";
 import type { RequestTabPanelProps } from "./types";
@@ -11,16 +12,17 @@ export function AuthTab({ auth, setAuth }: RequestTabPanelProps) {
         <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
           Auth type
         </span>
-        <select
+        <InlineSelect
+          options={[
+            { value: "none", label: "No Auth" },
+            { value: "bearer", label: "Bearer Token" },
+            { value: "basic", label: "Basic Auth" },
+            { value: "apiKey", label: "API Key" },
+          ]}
           value={auth.type}
-          onChange={(e) => setAuth((prev) => ({ ...prev, type: e.target.value as RequestTabPanelProps["auth"]["type"] }))}
-          className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground outline-none transition-colors focus:border-primary"
-        >
-          <option value="none">No Auth</option>
-          <option value="bearer">Bearer Token</option>
-          <option value="basic">Basic Auth</option>
-          <option value="apiKey">API Key</option>
-        </select>
+          onChange={(val) => setAuth((prev) => ({ ...prev, type: val as RequestTabPanelProps["auth"]["type"] }))}
+          size="sm"
+        />
       </label>
 
       {auth.type === "bearer" && (
@@ -107,15 +109,16 @@ export function BodyTab({ method, body, contentType, setBody, setContentType }: 
           <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Body
           </span>
-          <select
+          <InlineSelect
+            options={[
+              { value: "application/json", label: "application/json" },
+              { value: "application/x-www-form-urlencoded", label: "x-www-form-urlencoded" },
+              { value: "text/plain", label: "text/plain" },
+            ]}
             value={contentType}
-            onChange={(e) => setContentType(e.target.value)}
-            className="h-7 rounded-md border border-border bg-background px-2 font-mono text-[11px] text-muted-foreground outline-none focus:border-primary"
-          >
-            <option value="application/json">application/json</option>
-            <option value="application/x-www-form-urlencoded">x-www-form-urlencoded</option>
-            <option value="text/plain">text/plain</option>
-          </select>
+            onChange={(val) => setContentType(val)}
+            size="xs"
+          />
         </div>
         <button
           type="button"

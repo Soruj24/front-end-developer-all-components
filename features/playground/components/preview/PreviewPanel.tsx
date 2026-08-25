@@ -1,11 +1,60 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { DEVICES, ZOOM_LEVELS } from "../../constants";
 import { usePlayground } from "../../context";
 import { toHtml } from "../../utils/exporters";
 import { Icon } from "../../ui/icons";
 import { IconButton, VDivider } from "../../ui/primitives";
+
+function DeviceSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = DEVICES.find((d) => d.id === value);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex h-6 items-center gap-1.5 rounded border border-[#3a3a41] bg-[#1f1f23] px-1.5 text-[11px] text-[#d4d4d8] transition-colors duration-150 hover:border-[#505056] hover:bg-[#252526] focus:border-[#2b7de9] focus:outline-none"
+      >
+        <span className="truncate">{selected ? `${selected.label} · ${selected.chrome}` : "Device"}</span>
+        <svg className={`h-3 w-3 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 z-50 mt-1 w-48 overflow-hidden rounded-md border border-[#3a3a41] bg-[#252526] shadow-lg animate-in fade-in-0 zoom-in-95 duration-150">
+          {DEVICES.map((d) => (
+            <button
+              key={d.id}
+              type="button"
+              onClick={() => { onChange(d.id); setOpen(false); }}
+              className={`flex w-full items-center justify-between px-2.5 py-1.5 text-left text-[11px] transition-colors duration-75 hover:bg-[#2a2d2e] ${d.id === value ? "bg-[#37373d] text-white" : "text-[#d4d4d8]"}`}
+            >
+              <span>{d.label} · {d.chrome}</span>
+              {d.id === value && (
+                <svg className="h-3.5 w-3.5 text-[#2b7de9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function PreviewPanel() {
   const {
@@ -68,18 +117,7 @@ export function PreviewPanel() {
 
       <VDivider />
 
-      <select
-        value={deviceId}
-        onChange={(e) => setDeviceId(e.target.value)}
-        title="Device"
-        className="h-6 rounded border border-[#3a3a41] bg-[#1f1f23] px-1.5 text-[11px] text-[#d4d4d8] outline-none focus:border-[#2b7de9] [&>option]:bg-[#1f1f23]"
-      >
-        {DEVICES.map((d) => (
-          <option key={d.id} value={d.id}>
-            {d.label} · {d.chrome}
-          </option>
-        ))}
-      </select>
+      <DeviceSelect value={deviceId} onChange={setDeviceId} />
 
       <IconButton
         icon="rotate"

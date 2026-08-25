@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import {
   promptBuilderTemplates,
   type PromptSection,
@@ -843,21 +844,17 @@ export function PromptBuilder({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 flex-wrap items-center gap-2.5">
-          <select
+          <InlineSelect
+            options={[
+              ...(!template ? [{ value: state.templateId, label: "Custom (imported)" }] : []),
+              ...templates.map((t) => ({ value: t.id, label: t.name })),
+            ]}
             value={state.templateId}
-            onChange={(e) => selectTemplate(e.target.value)}
+            onChange={(val) => selectTemplate(val)}
+            size="sm"
             aria-label="Prompt template"
             className="h-9 max-w-[16rem] rounded-lg border border-input bg-background px-2.5 pr-8 text-sm outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring"
-          >
-            {!template && (
-              <option value={state.templateId}>Custom (imported)</option>
-            )}
-            {templates.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-          </select>
+          />
           <span
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",

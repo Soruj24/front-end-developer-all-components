@@ -1,6 +1,7 @@
 import type { RegistryComponent } from "@/features/registry";
 import { registryCategories, registrySortOptions, tagCounts } from "@/features/registry";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { ComponentSearch } from "./ComponentSearch";
 
 export interface FiltersProps {
@@ -62,17 +63,12 @@ export function ComponentFilters(props: FiltersProps) {
         </div>
         <label className="flex items-center gap-2 text-xs text-muted-foreground">
           Sort
-          <select
+          <InlineSelect
+            options={registrySortOptions.map((option) => ({ value: option.value, label: option.label }))}
             value={props.sort}
-            onChange={(event) => props.onSort(event.target.value)}
-            className="h-8 rounded-lg border border-border bg-background px-2 text-xs outline-none"
-          >
-            {registrySortOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => props.onSort(val)}
+            size="sm"
+          />
         </label>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import type { PaginationProps } from "./Pagination.types";
 
 const range = (start: number, end: number) =>
@@ -150,21 +151,22 @@ export function Pagination({
           </span>
         )}
         {onPageSizeChange && (
-          <select
-            value={pageSize}
+          <InlineSelect
+            options={[5, 10, 20, 50, 100].map((size) => ({
+              value: String(size),
+              label: size + " / page",
+            }))}
+            value={String(pageSize)}
+            onChange={(val) => onPageSizeChange(Number(val))}
+            size="sm"
             aria-label="Rows per page"
-            onChange={(e) => onPageSizeChange(Number(e.target.value))}
             className={cn(
               "h-9 rounded-lg border border-border bg-card px-2.5 py-1 text-sm",
               "transition-colors duration-150",
               "hover:border-muted-foreground/30",
               "focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
             )}
-          >
-            {[5, 10, 20, 50, 100].map((size) => (
-              <option key={size} value={size}>{size} / page</option>
-            ))}
-          </select>
+          />
         )}
       </div>
     </nav>

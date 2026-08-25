@@ -1,25 +1,46 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
+import { CustomSelect } from "../ui/Select/CustomSelect";
 import type { NativeSelectProps } from "./NativeSelect.types";
-import { NATIVE_SELECT_STYLES } from "./NativeSelect.constants";
 
-export function NativeSelect({ size = "md", label, helperText, error, className, children, ...props }: NativeSelectProps) {
+export function NativeSelect({
+  size = "md",
+  label,
+  helperText,
+  error,
+  className,
+  children,
+  ...props
+}: NativeSelectProps) {
+  const options: { value: string; label: string; disabled?: boolean }[] = [];
+
+  if (children && Array.isArray(children)) {
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child) && child.type === "option") {
+        const optProps = child.props as { value?: string; children?: React.ReactNode; disabled?: boolean };
+        if (optProps.value !== undefined) {
+          options.push({
+            value: optProps.value,
+            label: String(optProps.children ?? ""),
+            disabled: optProps.disabled,
+          });
+        }
+      }
+    });
+  }
+
   return (
-    <div className="w-full">
-      {label && <label className="mb-1 block text-sm font-medium">{label}</label>}
-      <select
-        className={cn(
-          NATIVE_SELECT_STYLES.base,
-          NATIVE_SELECT_STYLES[size],
-          "border-gray-300 dark:border-gray-600",
-          error && "border-red-500 focus:ring-red-500",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </select>
-      {helperText && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{helperText}</p>}
-    </div>
+    <CustomSelect
+      options={options}
+      label={label as string}
+      error={error ? " " : undefined}
+      helperText={helperText as string}
+      size={size}
+      className={cn(
+        error && "border-destructive",
+        className,
+      )}
+      {...props}
+    />
   );
 }

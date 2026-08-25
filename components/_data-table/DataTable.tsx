@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import type { DataColumn, DataTableProps, DataTablePaginationProps } from "./DataTable.types";
 import { DATA_TABLE_STYLES } from "./DataTable.constants";
 
@@ -94,9 +95,12 @@ function DataTablePagination({ page, pageSize, total, pageSizeOptions, onPageCha
         Page {page} of {totalPages} ({total} items)
       </div>
       <div className="flex items-center gap-2">
-        <select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))} className={DATA_TABLE_STYLES.pageSize}>
-          {pageSizeOptions.map((size) => <option key={size} value={size}>{size}</option>)}
-        </select>
+        <InlineSelect
+          options={pageSizeOptions.map((size) => ({ value: String(size), label: String(size) }))}
+          value={String(pageSize)}
+          onChange={(val) => onPageSizeChange(Number(val))}
+          size="sm"
+        />
         <button onClick={() => onPageChange(page - 1)} disabled={page <= 1} className="rounded px-2 py-1 disabled:opacity-50">Prev</button>
         <button onClick={() => onPageChange(page + 1)} disabled={page >= totalPages} className="rounded px-2 py-1 disabled:opacity-50">Next</button>
       </div>

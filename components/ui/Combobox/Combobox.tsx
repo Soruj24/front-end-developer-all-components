@@ -151,11 +151,11 @@ export function Combobox({
         disabled={opt.disabled}
         onClick={() => select(opt)}
         className={cn(
-          "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 text-sm outline-none transition-colors duration-100",
+          "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-1.5 text-sm outline-none transition-colors duration-75",
           "hover:bg-accent hover:text-accent-foreground",
           "focus:bg-accent focus:text-accent-foreground",
-          isSelected && "bg-accent text-accent-foreground",
-          opt.disabled && "pointer-events-none opacity-50",
+          isSelected && "bg-accent/50 font-medium text-accent-foreground",
+          opt.disabled && "pointer-events-none opacity-40",
         )}
       >
         {multiple && (
@@ -197,13 +197,12 @@ export function Combobox({
         aria-haspopup="listbox"
         aria-expanded={open}
         className={cn(
-          "flex min-h-[42px] w-full items-center justify-between gap-2 rounded-xl border border-border bg-background px-3 py-2 text-left text-sm transition-colors duration-150",
+          "flex min-h-[42px] w-full items-center justify-between gap-2 rounded-lg border border-border/60 bg-card px-3 py-2 text-left text-sm transition-all duration-150",
           "placeholder:text-muted-foreground",
-          "hover:border-primary/50",
+          "hover:border-border hover:bg-muted/30",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-          "active:scale-[0.99]",
           "disabled:cursor-not-allowed disabled:opacity-50",
-          open && "border-primary ring-2 ring-ring ring-offset-2",
+          open && "border-border ring-2 ring-ring/20",
         )}
       >
         <div className="flex min-h-[24px] flex-1 flex-wrap items-center gap-1.5">
@@ -254,16 +253,17 @@ export function Combobox({
       <div
         data-state={open ? "open" : "closed"}
         className={cn(
-          "absolute z-50 mt-1.5 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
-          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-top-2",
+          "absolute z-50 mt-1.5 w-full overflow-hidden rounded-lg border border-border/60 bg-popover text-popover-foreground shadow-lg ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-top-1",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          "data-[state=closed]:duration-150 data-[state=open]:duration-150",
           "pointer-events-none data-[state=open]:pointer-events-auto",
         )}
       >
         {/* Search */}
-        <div className="border-b border-border p-2">
-          <div className="flex items-center gap-2 rounded-lg bg-muted/50 px-2.5 py-1.5">
-            <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="border-b border-border/60 p-2">
+          <div className="flex items-center gap-2 rounded-md bg-muted/50 px-2.5 py-1.5">
+            <svg className="h-4 w-4 shrink-0 text-muted-foreground/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             <input
@@ -274,7 +274,7 @@ export function Combobox({
               onKeyDown={(e) => {
                 if (e.key === "Enter") e.preventDefault();
               }}
-              className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/50"
             />
           </div>
         </div>

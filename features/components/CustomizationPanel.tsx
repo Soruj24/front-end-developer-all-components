@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/cn";
 import { CodeBlock } from "@/components/home/CodeBlock";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { CUSTOMIZATION_GROUPS, type CustomizationOption } from "./customization-config";
 import { generateTailwindClasses, generateComponentCode } from "./utils/tailwind-generator";
 
@@ -30,12 +31,12 @@ function OptionControl({
   }
   if (option.type === "select") {
     return (
-      <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="h-9 rounded-lg border border-border bg-background px-3 text-xs outline-none focus:border-ring/60">
-        {option.options?.map((opt) => (
-          <option key={opt} value={opt}>{opt}</option>
-        ))}
-      </select>
+      <InlineSelect
+        options={option.options?.map((opt) => ({ value: opt, label: opt })) ?? []}
+        value={value}
+        onChange={(val) => onChange(val)}
+        size="sm"
+      />
     );
   }
   if (option.type === "range") {

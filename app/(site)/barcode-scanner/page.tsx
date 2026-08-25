@@ -17,6 +17,7 @@ import {
   SizeExample,
   StatusIndicatorExample,
 } from "@/components/ui/BarcodeScanner/examples";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { cn } from "@/lib/cn";
 
 const BARCODE_SCANNER_SOURCE = `"use client";
@@ -206,21 +207,12 @@ export default function BarcodeScannerPage() {
 
           {/* Mobile dropdown */}
           <div className="sm:hidden">
-            <select
+            <InlineSelect
+              options={examples.map((ex) => ({ value: ex.id, label: ex.title }))}
               value={activeExample}
-              onChange={(e) => setActiveExample(e.target.value)}
-              className={cn(
-                "w-full rounded-lg border border-border bg-background px-3 py-2",
-                "text-sm text-foreground",
-                "focus:outline-none focus:ring-2 focus:ring-ring",
-              )}
-            >
-              {examples.map((ex) => (
-                <option key={ex.id} value={ex.id}>
-                  {ex.title}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setActiveExample(val)}
+              size="sm"
+            />
           </div>
         </div>
 

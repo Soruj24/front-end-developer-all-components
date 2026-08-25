@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/cn";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import type { ProductCategory, ProductSort } from "../types/ecommerce.types";
 import { PRODUCT_CATEGORIES, PRICE_RANGES } from "../constants/categories";
 
@@ -178,17 +179,18 @@ export function ProductFilters({
         <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Sort By
         </h3>
-        <select
+        <InlineSelect
+          options={[
+            { value: "featured", label: "Featured" },
+            { value: "price-asc", label: "Price: Low to High" },
+            { value: "price-desc", label: "Price: High to Low" },
+            { value: "rating", label: "Highest Rated" },
+            { value: "newest", label: "Newest" },
+          ]}
           value={sort}
-          onChange={(e) => onSortChange(e.target.value as ProductSort)}
-          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-        >
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="rating">Highest Rated</option>
-          <option value="newest">Newest</option>
-        </select>
+          onChange={(val) => onSortChange(val as ProductSort)}
+          size="sm"
+        />
       </div>
     </aside>
   );

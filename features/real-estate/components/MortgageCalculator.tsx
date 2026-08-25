@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 
 export function MortgageCalculator() {
   const [amount, setAmount] = useState("500000");
@@ -55,15 +56,16 @@ export function MortgageCalculator() {
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Loan Term</label>
-          <select
+          <InlineSelect
+            options={[
+              { value: "15", label: "15 years" },
+              { value: "20", label: "20 years" },
+              { value: "30", label: "30 years" },
+            ]}
             value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-          >
-            <option value="15">15 years</option>
-            <option value="20">20 years</option>
-            <option value="30">30 years</option>
-          </select>
+            onChange={(val) => setTerm(val)}
+            size="sm"
+          />
         </div>
         <div className="rounded-lg bg-primary/5 p-4 text-center">
           <p className="text-xs text-muted-foreground">Monthly Payment</p>

@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/design-system/Button";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import { US_STATES, COUNTRIES, type CheckoutAddress, type CheckoutShippingMethod } from "../types/checkout.types";
 
 interface CheckoutShippingFormProps {
@@ -288,20 +289,12 @@ export function CheckoutShippingForm({
           <label className="mb-1.5 block text-sm font-medium text-foreground">
             State <span className="text-red-500">*</span>
           </label>
-          <select
+          <InlineSelect
+            options={[{ value: "", label: "Select state" }, ...US_STATES.map((state) => ({ value: state, label: state }))]}
             value={address.state}
-            onChange={(e) => update("state", e.target.value)}
-            className={cn(
-              inputClass,
-              errors.state && touched.state && errorClass,
-              fieldValidity.state && validClass
-            )}
-          >
-            <option value="">Select state</option>
-            {US_STATES.map((state) => (
-              <option key={state} value={state}>{state}</option>
-            ))}
-          </select>
+            onChange={(val) => update("state", val)}
+            size="sm"
+          />
           {errors.state && touched.state && (
             <p className="mt-1 text-xs text-red-500">{errors.state}</p>
           )}
@@ -334,15 +327,12 @@ export function CheckoutShippingForm({
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-foreground">Country</label>
-        <select
+        <InlineSelect
+          options={COUNTRIES.map((country) => ({ value: country, label: country }))}
           value={address.country}
-          onChange={(e) => update("country", e.target.value)}
-          className={inputClass}
-        >
-          {COUNTRIES.map((country) => (
-            <option key={country} value={country}>{country}</option>
-          ))}
-        </select>
+          onChange={(val) => update("country", val)}
+          size="sm"
+        />
       </div>
 
       <div className="flex items-center gap-2">

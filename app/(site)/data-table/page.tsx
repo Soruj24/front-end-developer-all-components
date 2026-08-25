@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DataTable } from "@/components/ui/DataTable";
+import { InlineSelect } from "@/components/ui/InlineSelect";
 import {
   ComponentDocPage,
   PreviewPanel,
@@ -101,10 +102,12 @@ export function DataTable<T extends Record<string, unknown>>({
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground">Showing {startRow}&ndash;{endRow} of {sorted.length}</span>
             {showPageSizeSelector && (
-              <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
-                className="h-7 rounded-lg border border-border bg-card px-2 text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" aria-label="Rows per page">
-                {pageSizeOptions.map((size) => <option key={size} value={size}>{size} / page</option>)}
-              </select>
+              <InlineSelect
+                options={pageSizeOptions.map((size) => ({ value: String(size), label: size + " / page" }))}
+                value={String(pageSize)}
+                onChange={(val) => { setPageSize(Number(val)); setPage(0); }}
+                size="sm"
+              />
             )}
           </div>
           {totalPages > 1 && (
