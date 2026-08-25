@@ -286,8 +286,6 @@ export { NumberInput } from "./NumberInput";
 export type { NumberInputProps } from "./NumberInput";
 export { Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
-export { PaginationBar } from "./PaginationBar";
-export type { PaginationBarProps, PaginationBarVariant, PaginationBarSize } from "./PaginationBar";
 export { PasswordStrength } from "./PasswordStrength";
 export type { PasswordStrengthProps } from "./PasswordStrength";
 export { PasswordGenerator } from "./PasswordGenerator";
