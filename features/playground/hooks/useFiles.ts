@@ -50,17 +50,30 @@ export interface UseFilesResult {
 }
 
 export function useFiles(): UseFilesResult {
-  const stored = useMemo(() => loadStored<PlaygroundFile[]>(AUTOSAVE_KEY, DEFAULT_PROJECT), []);
+  const [stored, setStored] = useState<PlaygroundFile[]>(DEFAULT_PROJECT);
   const history = useHistory<PlaygroundFile[]>(stored);
   const files = history.value;
 
-  const [openOrder, setOpenOrder] = useState<string[]>(() => stored.map((f) => f.name).slice(0, 4));
-  const [activeName, setActiveName] = useState<string>(() => stored[0]?.name ?? ENTRY_FILE);
-  const [snapshots, setSnapshots] = useState<HistorySnapshot[]>(() => loadStored(SNAPSHOT_KEY, []));
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => loadStored(BOOKMARK_KEY, []));
+  const [openOrder, setOpenOrder] = useState<string[]>(() => DEFAULT_PROJECT.map((f) => f.name).slice(0, 4));
+  const [activeName, setActiveName] = useState<string>(() => DEFAULT_PROJECT[0]?.name ?? ENTRY_FILE);
+  const [snapshots, setSnapshots] = useState<HistorySnapshot[]>([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [baseline, setBaseline] = useState<Map<string, string>>(
-    () => new Map(files.map((f) => [f.name, f.source]))
+    () => new Map(DEFAULT_PROJECT.map((f) => [f.name, f.source]))
   );
+
+  useEffect(() => {
+    const storedFiles = loadStored<PlaygroundFile[]>(AUTOSAVE_KEY, DEFAULT_PROJECT);
+    if (storedFiles.length > 0) {
+      history.reset(storedFiles);
+      setBaseline(new Map(storedFiles.map((f) => [f.name, f.source])));
+      setOpenOrder(storedFiles.map((f) => f.name).slice(0, 6));
+      setActiveName(storedFiles.find((f) => f.name === ENTRY_FILE)?.name ?? storedFiles[0]?.name ?? ENTRY_FILE);
+    }
+    setSnapshots(loadStored(SNAPSHOT_KEY, []));
+    setBookmarks(loadStored(BOOKMARK_KEY, []));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const active = useMemo(
     () => files.find((f) => f.name === activeName) ?? files[0] ?? { name: ENTRY_FILE, source: "" },
