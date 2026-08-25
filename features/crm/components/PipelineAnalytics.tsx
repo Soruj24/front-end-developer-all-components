@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { SectionCard } from "./SectionCard";
 
 const pipelineData = [
@@ -13,11 +14,11 @@ export function PipelineAnalytics() {
       <div className="flex flex-col gap-4">
         {pipelineData.map((m) => (
           <div key={m.stage} className="flex items-center gap-4">
-            <span className="w-48 text-sm text-zinc-500">{m.stage}</span>
-            <div className="h-2 flex-1 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+            <span className="w-48 text-sm text-muted-foreground">{m.stage}</span>
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted/30">
               <div className="h-full rounded-full bg-blue-500" style={{ width: `${m.rate}%` }} />
             </div>
-            <span className="w-12 text-right text-sm font-medium text-zinc-900 dark:text-zinc-100">{m.value}</span>
+            <span className="w-12 text-right text-sm font-medium text-foreground">{m.value}</span>
           </div>
         ))}
       </div>

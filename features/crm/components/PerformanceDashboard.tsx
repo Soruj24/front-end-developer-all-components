@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { cn } from "@/lib/cn";
 import { SectionCard } from "./SectionCard";
 import { InlineSelect } from "@/components/ui/InlineSelect";
 
@@ -31,9 +32,18 @@ export function PerformanceDashboard() {
           />
         </div>
         {stats.map((s) => (
-          <div key={s.label} className="rounded-lg border border-zinc-200 p-4 text-center dark:border-zinc-800">
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">{s.label}</p>
-            <p className="mt-1 text-xl font-bold text-zinc-900 dark:text-zinc-100">{s.value}</p>
+          <div
+            key={s.label}
+            className={cn(
+              "rounded-lg border border-border/60 p-4 text-center",
+              "bg-card shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+              "hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20",
+              "hover:border-border hover:ring-black/[0.08] dark:hover:ring-white/[0.12]",
+              "transition-all duration-200"
+            )}
+          >
+            <p className="text-xs text-muted-foreground">{s.label}</p>
+            <p className="mt-1 text-xl font-bold text-foreground">{s.value}</p>
           </div>
         ))}
       </div>
