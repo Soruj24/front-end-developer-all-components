@@ -168,8 +168,6 @@ export { ScrollArea } from "./ScrollArea";
 export type { ScrollAreaProps } from "./ScrollArea";
 export { Scrollspy, ScrollspyProgress, ScrollspyBackToTop, useScrollspy } from "./Scrollspy";
 export type { ScrollspyProps, ScrollspyProgressProps, ScrollspyBackToTopProps, ScrollspyNavItem } from "./Scrollspy";
-export { SearchInput } from "./SearchInput";
-export type { SearchInputProps } from "./SearchInput";
 export { SegmentedControl } from "./SegmentedControl";
 export type { SegmentedControlProps, SegmentedControlOption, SegmentedControlSize } from "./SegmentedControl";
 export { Select } from "./Select";

@@ -208,7 +208,6 @@ export const navigationSections: NavSection[] = [
       { label: "Resizable", href: "/resizable", icon: <ArrowLeftRight className="h-4 w-4" />, desc: "Resizable panels" },
       { label: "Rich Text Editor", href: "/rich-text-editor", icon: <PenTool className="h-4 w-4" />, desc: "WYSIWYG rich text editor" },
       { label: "Scroll Area", href: "/scroll-area", icon: <ArrowUpDown className="h-4 w-4" />, desc: "Custom scroll containers" },
-      { label: "Search Input", href: "/search-input", icon: <Search className="h-4 w-4" />, desc: "Search input with debounced results" },
       { label: "Select", href: "/select", icon: <ChevronDown className="h-4 w-4" />, desc: "Custom select dropdowns" },
       { label: "Separator", href: "/separator", icon: <Minus className="h-4 w-4" />, desc: "Visual dividers" },
       { label: "Sheet", href: "/sheet", icon: <PanelLeft className="h-4 w-4" />, desc: "Slide-out sheet panels" },

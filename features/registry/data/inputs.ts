@@ -41,16 +41,6 @@ export const inputs = [
     features: ["disabled", "full-width", "dark-mode", "accessibility"],
   }),
   component({
-    slug: "search-input",
-    name: "Search Input",
-    description: "Inputs with a built-in search icon and one-click clearing.",
-    category: "inputs",
-    tags: ["search", "filter", "command"],
-    updatedAt: "2026-01-27T00:00:00.000Z",
-    stats: { downloads: 143_290, likes: 1_934, bookmarks: 690, comments: 61, views: 355_000 },
-    features: ["icons", "dark-mode", "accessibility", "responsive"],
-  }),
-  component({
     slug: "switch",
     name: "Switch",
     description: "Toggle controls for boolean settings with ARIA labelling.",
