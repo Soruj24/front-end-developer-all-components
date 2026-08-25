@@ -54,15 +54,6 @@ import {
   Link,
   List,
   Loader,
-  Locate,
-  Lock,
-  Magnet,
-  Mail,
-  Map,
-  MapPin,
-  Maximize2,
-  Megaphone,
-  Menu,
   MessageCircle,
   MessageCircleMore,
   MessageSquare,
@@ -112,8 +103,7 @@ import {
   Wifi,
   Workflow,
   Zap,
-  ZoomIn,
-  ZoomOut,
+  Lock,
 } from "lucide-react";
 
 export const navigationSections: NavSection[] = [
