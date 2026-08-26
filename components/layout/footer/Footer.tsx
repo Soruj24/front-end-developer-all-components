@@ -55,19 +55,11 @@ const footerSections = [
 
 export function Footer() {
   return (
-    <footer className={cn("border-t", BORDER.default, BG.base)} role="contentinfo">
+    <footer
+      className={cn("border-t", BORDER.default, BG.base)}
+      role="contentinfo"
+    >
       <div className={cn("mx-auto", LAYOUT.maxWidth, LAYOUT.px)}>
-        <div className="grid gap-10 py-12 sm:gap-8 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] lg:py-16">
-          <FooterBrand />
-          {footerSections.map((section) => (
-            <FooterLinks
-              key={section.title}
-              title={section.title}
-              links={section.links}
-            />
-          ))}
-        </div>
-
         <FooterSocials />
 
         <div className="py-6">
