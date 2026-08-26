@@ -112,19 +112,7 @@ export const navigationSections: NavSection[] = [
     description: "Core concepts and fundamentals",
     links: [{ label: "Home", href: "/", icon: <Home className="h-4 w-4" /> }],
   },
-  {
-    title: "Registry",
-    icon: <Search className="h-4 w-4" />,
-    description: "Component registry platform",
-    links: [
-      {
-        label: "Components",
-        href: "/components",
-        icon: <Box className="h-4 w-4" />,
-        desc: "Browse the component registry",
-      },
-    ],
-  },
+
   {
     title: "Components",
     icon: <Layers className="h-4 w-4" />,

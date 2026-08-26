@@ -98,3 +98,123 @@ export interface Recruiter {
   email: string;
   phone: string;
 }
+
+export interface JobAlert {
+  id: string;
+  query: string;
+  location: string;
+  types: string[];
+  levels: string[];
+  salaryMin: number;
+  salaryMax: number;
+  frequency: "daily" | "weekly" | "instant";
+  createdAt: string;
+  active: boolean;
+}
+
+export interface JobNote {
+  jobId: number;
+  note: string;
+  updatedAt: string;
+}
+
+export interface SalaryInsight {
+  title: string;
+  location: string;
+  median: number;
+  p25: number;
+  p75: number;
+  p90: number;
+  growth: number;
+  openRoles: number;
+}
+
+export interface InterviewQuestion {
+  id: number;
+  category: string;
+  question: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  tips: string;
+  timeLimit: string;
+}
+
+export interface CompanyInsight {
+  name: string;
+  logo: string;
+  workLifeBalance: number;
+  compensation: number;
+  culture: number;
+  careerGrowth: number;
+  diversity: number;
+  recommendToFriend: number;
+  totalReviews: number;
+  ceo: string;
+  ceoApproval: number;
+  pros: string[];
+  cons: string[];
+}
+
+export type SortOption = "relevance" | "salary-high" | "salary-low" | "date-new" | "date-old";
+
+export interface PaginationState {
+  page: number;
+  perPage: number;
+  total: number;
+}
+
+export interface BookmarkCategory {
+  id: string;
+  name: string;
+  color: string;
+  jobIds: number[];
+}
+
+export interface SearchHistoryEntry {
+  id: string;
+  query: string;
+  location: string;
+  timestamp: string;
+}
+
+export interface SalaryCalculation {
+  baseSalary: number;
+  bonus: number;
+  equity: number;
+  totalComp: number;
+  monthlyGross: number;
+  monthlyNet: number;
+  taxRate: number;
+}
+
+export interface CareerPathNode {
+  id: number;
+  title: string;
+  level: string;
+  salaryRange: string;
+  yearsExp: string;
+  skills: string[];
+  next: number[];
+}
+
+export interface JobMarketReport {
+  category: string;
+  totalJobs: number;
+  avgSalary: number;
+  growth: number;
+  topSkills: string[];
+  topCompanies: string[];
+  demandLevel: "High" | "Medium" | "Low";
+}
+
+export interface CompanyDirectoryEntry {
+  name: string;
+  logo: string;
+  industry: string;
+  size: string;
+  headquarters: string;
+  openRoles: number;
+  rating: number;
+  founded: string;
+  website: string;
+  description: string;
+}
