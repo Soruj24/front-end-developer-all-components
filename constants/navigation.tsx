@@ -29,7 +29,6 @@ import {
   Cog,
   Columns,
   Command,
-  Contact,
   DollarSign,
   Eye,
   FileCode,
@@ -1097,12 +1096,6 @@ export const navigationSections: NavSection[] = [
         href: "/social-media",
         icon: <Users className="h-4 w-4" />,
         desc: "Feed, stories, profiles",
-      },
-      {
-        label: "CRM",
-        href: "/crm",
-        icon: <Contact className="h-4 w-4" />,
-        desc: "Contact management, deals, pipeline",
       },
       {
         label: "LMS",
