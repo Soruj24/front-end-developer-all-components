@@ -1053,19 +1053,6 @@ export const navigationSections: NavSection[] = [
   },
 
   {
-    title: "Tools",
-    icon: <Cog className="h-4 w-4" />,
-    description: "Visual editors and generators",
-    links: [
-      {
-        label: "AI Generator",
-        href: "/ai-generator",
-        icon: <Sparkles className="h-4 w-4" />,
-        desc: "AI-powered component generation",
-      },
-    ],
-  },
-  {
     title: "Templates",
     icon: <Sparkles className="h-4 w-4" />,
     description: "Full application templates",
