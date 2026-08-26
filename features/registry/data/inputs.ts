@@ -81,15 +81,4 @@ export const inputs = [
     stats: { downloads: 84_110, likes: 1_050, bookmarks: 392, comments: 31, views: 205_000 },
     features: ["disabled", "dark-mode", "accessibility"],
   }),
-  component({
-    slug: "stepper",
-    name: "Stepper",
-    description: "Multi-step progress indicators for wizards and checkouts.",
-    category: "inputs",
-    tags: ["steps", "wizard", "progress"],
-    updatedAt: "2026-01-15T00:00:00.000Z",
-    stats: { downloads: 132_540, likes: 1_740, bookmarks: 612, comments: 55, views: 310_000 },
-    variants: ["horizontal", "vertical"],
-    features: ["variants", "dark-mode", "accessibility", "responsive"],
-  }),
 ];

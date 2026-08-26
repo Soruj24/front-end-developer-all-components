@@ -633,12 +633,6 @@ export const navigationSections: NavSection[] = [
         desc: "Cmd+K spotlight search overlay",
       },
       {
-        label: "Stepper",
-        href: "/stepper",
-        icon: <ChevronsRight className="h-4 w-4" />,
-        desc: "Step-by-step wizard stepper",
-      },
-      {
         label: "Steps",
         href: "/steps",
         icon: <ChevronsRight className="h-4 w-4" />,
@@ -920,12 +914,6 @@ export const navigationSections: NavSection[] = [
         href: "/segmented-control",
         icon: <ToggleRight className="h-4 w-4" />,
         desc: "Segmented button control",
-      },
-      {
-        label: "Stepper Input",
-        href: "/stepper-input",
-        icon: <Hash className="h-4 w-4" />,
-        desc: "Number stepper with +/- buttons",
       },
       {
         label: "Rating Input",

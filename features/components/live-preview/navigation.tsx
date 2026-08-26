@@ -6,7 +6,6 @@ import {
   Breadcrumb,
   Dock,
   FloatingToolbar,
-  Stepper,
   Tabs,
 } from "@/components/ui";
 
@@ -50,8 +49,6 @@ export const navigation: Record<string, () => ReactNode> = {
       />
     </div>
   ),
-
-  stepper: () => <StepperDemo />,
 };
 
 function TabsDemo() {
@@ -68,32 +65,6 @@ function TabsDemo() {
         activeTab={active}
         onChange={setActive}
       />
-    </div>
-  );
-}
-
-function StepperDemo() {
-  const [step, setStep] = useState(1);
-  return (
-    <div className="flex w-full max-w-lg flex-col gap-4">
-      <Stepper
-        variant="numbered"
-        steps={[
-          { label: "Account", description: "Create your account" },
-          { label: "Billing", description: "Choose a plan" },
-          { label: "Done", description: "Launch" },
-        ]}
-        currentStep={step}
-        onStepClick={setStep}
-      />
-      <div className="flex justify-center gap-2">
-        <button type="button" className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground" onClick={() => setStep((value) => Math.max(0, value - 1))}>
-          Prev
-        </button>
-        <button type="button" className="rounded-lg bg-primary px-3 py-1.5 text-xs text-white" onClick={() => setStep((value) => Math.min(2, value + 1))}>
-          Next
-        </button>
-      </div>
     </div>
   );
 }
