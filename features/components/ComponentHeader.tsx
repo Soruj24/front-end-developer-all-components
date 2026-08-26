@@ -8,16 +8,13 @@ import {
   HeartIcon,
   BookmarkIcon,
   ShareIcon,
-  PlayIcon,
   TagIcon,
 } from "./icons";
 
 export function ComponentHeader({
   component,
-  onOpenPlayground,
 }: {
   component: RegistryComponent;
-  onOpenPlayground: () => void;
 }) {
   const category = categoryBySlug[component.category];
   const { getActionState, toggleAction } = useRegistryActions();
@@ -87,15 +84,6 @@ export function ComponentHeader({
         >
           <ShareIcon className="h-3.5 w-3.5" />
           Share
-        </button>
-
-        <button
-          type="button"
-          onClick={onOpenPlayground}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-foreground px-3 py-1.5 text-xs font-medium text-background transition-opacity hover:opacity-90"
-        >
-          <PlayIcon className="h-3.5 w-3.5" />
-          Open Playground
         </button>
       </div>
     </div>

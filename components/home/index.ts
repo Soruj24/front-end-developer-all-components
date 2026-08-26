@@ -6,7 +6,6 @@ export { CategoriesSection } from "./CategoriesSection";
 export { TemplatesSection } from "./TemplatesSection";
 export { TemplateCard } from "./TemplateCard";
 export { VisualBuilderSection } from "./VisualBuilderSection";
-export { PlaygroundSection } from "./PlaygroundSection";
 export { AIFeaturesSection } from "./AIFeaturesSection";
 export { RegistrySection } from "./RegistrySection";
 export { WorkflowSection } from "./WorkflowSection";

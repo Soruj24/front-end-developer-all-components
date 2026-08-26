@@ -30,7 +30,6 @@ const primaryNav: NavItem[] = [
   { label: "Templates", href: "/templates" },
   { label: "AI", href: "/ai", badge: "new" },
   { label: "Registry", href: "/registry" },
-  { label: "Playground", href: "/playground" },
 ];
 
 const secondaryNav: NavItem[] = [

@@ -13,7 +13,6 @@ const footerSections = [
     links: [
       { label: "Components", href: "/components" },
       { label: "Templates", href: "/templates" },
-      { label: "Playground", href: "/playground" },
       { label: "Registry", href: "/registry" },
       { label: "AI Generator", href: "/ai" },
       { label: "Visual Builder", href: "/visual-builder" },

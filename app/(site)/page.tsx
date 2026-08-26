@@ -4,7 +4,6 @@ import {
   FeaturedComponents,
   CategoriesSection,
   VisualBuilderSection,
-  PlaygroundSection,
   AIFeaturesSection,
   RegistrySection,
   WorkflowSection,
@@ -53,7 +52,6 @@ export default async function Home() {
         <CategoriesSection categories={categories} />
         <TemplatesSection />
         <VisualBuilderSection />
-        <PlaygroundSection />
         <AIFeaturesSection />
         <RegistrySection />
         <WorkflowSection />

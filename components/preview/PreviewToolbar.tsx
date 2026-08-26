@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { DeviceId } from "./devices";
 import { DeviceSwitcher } from "./DeviceSwitcher";
@@ -8,7 +7,6 @@ import {
   CheckIcon,
   CopyIcon,
   ExpandIcon,
-  ExternalLinkIcon,
   MoonIcon,
   SunIcon,
 } from "./icons";
@@ -23,7 +21,6 @@ interface PreviewToolbarProps {
   copied: boolean;
   onCopy: () => void;
   onExpand: () => void;
-  playgroundHref: string;
 }
 
 function ToolbarButton({
@@ -68,7 +65,6 @@ export function PreviewToolbar({
   copied,
   onCopy,
   onExpand,
-  playgroundHref,
 }: PreviewToolbarProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 sm:px-6">
@@ -102,15 +98,6 @@ export function PreviewToolbar({
         <ToolbarButton title="Expand" onClick={onExpand}>
           <ExpandIcon className="h-3.5 w-3.5" />
         </ToolbarButton>
-
-        <Link
-          href={playgroundHref}
-          title="Open in playground"
-          aria-label="Open in playground"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-[background-color,color,transform] duration-150 ease-out hover:bg-muted hover:text-foreground active:scale-95"
-        >
-          <ExternalLinkIcon className="h-3.5 w-3.5" />
-        </Link>
       </div>
     </div>
   );

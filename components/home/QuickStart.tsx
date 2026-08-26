@@ -14,8 +14,8 @@ const steps = [
   {
     icon: Sliders,
     title: "Customize it",
-    description: "Open Playground and change props, Tailwind classes, and content.",
-    href: "/playground",
+    description: "View live preview and change props, Tailwind classes, and content.",
+    href: "/components",
     color: "text-violet-500",
     bg: "bg-violet-500/10",
   },

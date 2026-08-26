@@ -5,7 +5,6 @@ import { getRegistryItem } from "@/components/registry";
 import { cn } from "@/lib/cn";
 import { AnimatedTabs } from "./AnimatedTabs";
 import { ExpandablePreview } from "./ExpandablePreview";
-import { PreviewToolbar } from "./PreviewToolbar";
 import { PreviewFrame } from "./PreviewFrame";
 import { PreviewCanvas } from "./PreviewCanvas";
 import { DEFAULT_DEVICE_ID, getDevice } from "./devices";
@@ -115,16 +114,6 @@ export function ComponentPreview({
       <div key={activeTab} className="animate-fade-slide">
         {activeTab === "preview" && (
           <div className="relative">
-            {/* <PreviewToolbar
-              device={device}
-              onDeviceChange={setDevice}
-              forcedDark={forcedDark}
-              onToggleDark={() => setForcedDark((v) => !v)}
-              copied={copied}
-              onCopy={onCopy}
-              onExpand={() => setExpanded(true)}
-              playgroundHref={`/playground?component=${encodeURIComponent(id)}`}
-            /> */}
             <div
               className={cn(
                 "relative border-t border-border",

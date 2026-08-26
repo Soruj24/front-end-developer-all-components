@@ -21,10 +21,10 @@ export function FinalCTA() {
                 Browse Components
               </Link>
               <Link
-                href="/playground"
+                href="/docs"
                 className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
               >
-                Start Building
+                Read Docs
               </Link>
             </div>
           </div>

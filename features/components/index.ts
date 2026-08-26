@@ -9,8 +9,6 @@ export { CodeViewer } from "./CodeViewer";
 export { ExampleSection } from "./ExampleSection";
 export { ExampleCard } from "./ExampleCard";
 export { CustomizationPanel } from "./CustomizationPanel";
-export { PlaygroundModal } from "./PlaygroundModal";
-export { PlaygroundToolbar } from "./PlaygroundToolbar";
 export { buildComponentExamples } from "./example-builder";
 export { generateTailwindClasses, generateComponentCode } from "./utils/tailwind-generator";
 export { ComponentStats } from "./ComponentStats";

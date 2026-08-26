@@ -7,7 +7,7 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as UILib from "@/components/ui";
 import { cn } from "@/lib/cn";
 import type { CodePlaygroundProps, PlaygroundFile, ConsoleEntry, DeviceKey } from "./CodePlayground.types";
-import { highlightCode, loadEsbuild, transformFile, resolveRelative, isConsoleNoise, readSharedFiles, downloadBlob } from "./CodePlayground.utils";
+import { loadEsbuild, transformFile, resolveRelative, isConsoleNoise, readSharedFiles, downloadBlob } from "./CodePlayground.utils";
 import { CodePlaygroundToolbar } from "./CodePlaygroundToolbar";
 import { CodePlaygroundEditor } from "./CodePlaygroundEditor";
 import { CodePlaygroundPreview } from "./CodePlaygroundPreview";
@@ -43,7 +43,6 @@ export function CodePlayground({ files: initialFiles, entry, title = "Code Playg
 
   const previewRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<Root | null>(null);
-  const scrollMirrorRef = useRef<HTMLDivElement>(null);
   const runIdRef = useRef(0);
   const firstDelayRef = useRef(300);
 
@@ -95,12 +94,13 @@ export function CodePlayground({ files: initialFiles, entry, title = "Code Playg
   useEffect(() => { const timer = window.setTimeout(() => { void run(); }, firstDelayRef.current); firstDelayRef.current = 600; return () => window.clearTimeout(timer); }, [files, run]);
   useEffect(() => () => { rootRef.current?.unmount(); }, []);
 
+  useEffect(() => {
+    const handler = () => void run();
+    window.addEventListener("playground:run", handler);
+    return () => window.removeEventListener("playground:run", handler);
+  }, [run]);
+
   const updateFile = (name: string, source: string) => setFiles((prev) => prev.map((f) => (f.name === name ? { ...f, source } : f)));
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") { event.preventDefault(); void run(); return; }
-    if (event.key === "Tab") { event.preventDefault(); const target = event.currentTarget; const start = target.selectionStart; const end = target.selectionEnd; const next = `${target.value.slice(0, start)}  ${target.value.slice(end)}`; updateFile(activeFile.name, next); requestAnimationFrame(() => { target.selectionStart = target.selectionEnd = start + 2; }); }
-  };
-  const syncScroll = (element: HTMLTextAreaElement) => { const target = scrollMirrorRef.current; if (target) target.style.transform = `translate3d(${-element.scrollLeft}px, ${-element.scrollTop}px, 0)`; };
   const copyActive = () => { void navigator.clipboard?.writeText(activeFile.source); setCopied(true); window.setTimeout(() => setCopied(false), 1400); };
   const reset = () => { setFiles(initialFiles.map((f) => ({ ...f }))); setActiveName(entryName); setError(null); setLogs([]); };
   const share = () => { const payload = btoa(encodeURIComponent(JSON.stringify(files))); const params = new URLSearchParams(window.location.search); params.set(shareKey, payload); const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`; window.history.replaceState(null, "", url); void navigator.clipboard?.writeText(url); setShared(true); window.setTimeout(() => setShared(false), 1600); };
@@ -109,13 +109,12 @@ export function CodePlayground({ files: initialFiles, entry, title = "Code Playg
   const dirtyMap = useMemo(() => new Map(initialFiles.map((f) => [f.name, f.source])), [initialFiles]);
   const counts = useMemo(() => { let errors = 0; let warnings = 0; for (const log of logs) { if (log.type === "error") errors += 1; else if (log.type === "warn") warnings += 1; } return { errors, warnings }; }, [logs]);
   const activeSource = activeFile.source;
-  const highlighted = useMemo(() => highlightCode(activeSource), [activeSource]);
 
   return (
     <div className={cn("flex flex-col overflow-hidden rounded-xl border border-border/60 bg-background text-foreground shadow-card ring-1 ring-black/[0.04] dark:ring-white/[0.08] transition-all", fullscreen && "fixed inset-0 z-50 h-screen max-h-none rounded-none shadow-xl", !fullscreen && className)} style={!fullscreen ? { height } : undefined}>
       <CodePlaygroundToolbar title={title} files={files} entryName={entryName} running={running} theme={theme} fullscreen={fullscreen} copied={copied} shared={shared} exportOpen={exportOpen} exportMenu={exportMenu} onRun={() => void run()} onCopy={copyActive} onReset={reset} onShare={share} onToggleTheme={toggleTheme} onToggleFullscreen={() => setFullscreen((v) => !v)} onToggleExportOpen={() => setExportOpen((v) => !v)} />
       <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1">
-        <CodePlaygroundEditor files={files} activeFile={activeFile} entryName={entryName} activeSource={activeSource} highlighted={highlighted} dirtyMap={dirtyMap} scrollMirrorRef={scrollMirrorRef} onUpdate={updateFile} onKeyDown={handleKeyDown} onSyncScroll={syncScroll} setActiveName={setActiveName} />
+        <CodePlaygroundEditor files={files} activeFile={activeFile} entryName={entryName} activeSource={activeSource} dirtyMap={dirtyMap} onUpdate={updateFile} setActiveName={setActiveName} />
         <CodePlaygroundPreview previewRef={previewRef} device={device} setDevice={setDevice} consoleOpen={consoleOpen} setConsoleOpen={setConsoleOpen} error={error} setError={setError} counts={counts} onRun={() => void run()} />
       </div>
       {consoleOpen && <CodePlaygroundConsole logs={logs} setLogs={setLogs} setConsoleOpen={setConsoleOpen} />}

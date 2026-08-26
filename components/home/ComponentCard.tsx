@@ -68,12 +68,6 @@ export function ComponentCard({ component, className }: ComponentCardProps) {
           >
             View
           </Link>
-          <Link
-            href={`/playground?component=${component.slug}`}
-            className="flex h-7 flex-1 items-center justify-center rounded-md border border-border/60 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            Playground
-          </Link>
           <span className="text-[10px] text-muted-foreground/60">
             {formatNumber(component.stats.downloads)}
           </span>

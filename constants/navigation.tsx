@@ -1069,13 +1069,6 @@ export const navigationSections: NavSection[] = [
         icon: <Play className="h-4 w-4" />,
         desc: "Live code playground with preview",
       },
-
-      {
-        label: "Playground",
-        href: "/playground",
-        icon: <Play className="h-4 w-4" />,
-        desc: "Live code playground with preview",
-      },
     ],
   },
   {

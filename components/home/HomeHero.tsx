@@ -120,12 +120,6 @@ export function HomeHero() {
                   </svg>
                 </Link>
                 <Link
-                  href="/playground"
-                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
-                >
-                  Open Playground
-                </Link>
-                <Link
                   href="/ai"
                   className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
                 >

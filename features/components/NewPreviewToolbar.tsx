@@ -6,7 +6,7 @@ import type { DeviceId } from "@/components/preview";
 import { DEVICES } from "@/components/preview";
 import {
   SunIcon, MoonIcon, RefreshIcon, ExpandIcon, MinimizeIcon,
-  CopyIcon, CheckIcon, ExternalLinkIcon,
+  CopyIcon, CheckIcon,
 } from "./icons";
 
 interface PreviewToolbarProps {
@@ -17,7 +17,6 @@ interface PreviewToolbarProps {
   onRefresh: () => void;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
-  onOpenPlayground: () => void;
   copied: boolean;
   onCopy: () => void;
   breakpoint?: string;
@@ -49,7 +48,7 @@ function Divider() {
 export function PreviewToolbar({
   device, onDeviceChange, isDark, onToggleDark,
   onRefresh, isFullscreen, onToggleFullscreen,
-  onOpenPlayground, copied, onCopy, breakpoint,
+  copied, onCopy, breakpoint,
 }: PreviewToolbarProps) {
   const currentDevice = DEVICES.find((d) => d.id === device);
 
@@ -98,10 +97,6 @@ export function PreviewToolbar({
             copied ? "text-success" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
           {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
           {copied ? "Copied" : "Copy"}
-        </button>
-        <button type="button" onClick={onOpenPlayground} title="Open in playground"
-          className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-          <ExternalLinkIcon className="h-3.5 w-3.5" />Playground
         </button>
       </div>
     </div>

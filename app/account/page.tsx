@@ -109,13 +109,13 @@ export default async function AccountOverview() {
             </div>
           </div>
           <Link
-            href="/playground"
+            href="/components"
             className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition-colors hover:bg-foreground/90"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 5v14M5 12h14" />
             </svg>
-            Build a component
+            Browse Components
           </Link>
         </div>
       </section>

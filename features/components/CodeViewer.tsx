@@ -2,13 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/cn";
-import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DownloadIcon, ExternalLinkIcon } from "./icons";
+import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DownloadIcon } from "./icons";
 
 interface CodeViewerProps {
   source: string;
   filename?: string;
   language?: string;
-  onOpenPlayground?: () => void;
 }
 
 type TokenType = "comment" | "string" | "keyword" | "tag" | "attr" | "number" | "plain";
@@ -62,7 +61,6 @@ export function CodeViewer({
   source,
   filename = "Component.tsx",
   language = "tsx",
-  onOpenPlayground,
 }: CodeViewerProps) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -110,12 +108,6 @@ export function CodeViewer({
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
             <DownloadIcon className="h-3.5 w-3.5" />Download
           </button>
-          {onOpenPlayground && (
-            <button type="button" onClick={onOpenPlayground}
-              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-              <ExternalLinkIcon className="h-3.5 w-3.5" />Playground
-            </button>
-          )}
         </div>
       </div>
 

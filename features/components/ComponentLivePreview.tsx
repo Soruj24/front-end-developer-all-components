@@ -23,10 +23,8 @@ function getBreakpointLabel(device: DeviceId, containerWidth: number): string {
 
 export function ComponentLivePreview({
   component,
-  onOpenPlayground,
 }: {
   component: RegistryComponent;
-  onOpenPlayground: () => void;
 }) {
   const [device, setDevice] = useState<DeviceId>("full");
   const [isDark, setIsDark] = useState(false);
@@ -67,7 +65,6 @@ export function ComponentLivePreview({
             onRefresh={handleRefresh}
             isFullscreen={isFullscreen}
             onToggleFullscreen={toggleFullscreen}
-            onOpenPlayground={onOpenPlayground}
             copied={copied}
             onCopy={handleCopy}
             breakpoint={breakpointLabel}
@@ -117,7 +114,6 @@ export function ComponentLivePreview({
                 onRefresh={handleRefresh}
                 isFullscreen={true}
                 onToggleFullscreen={toggleFullscreen}
-                onOpenPlayground={onOpenPlayground}
                 copied={copied}
                 onCopy={handleCopy}
                 breakpoint={breakpointLabel}
