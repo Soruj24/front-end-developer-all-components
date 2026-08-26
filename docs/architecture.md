@@ -72,7 +72,6 @@ Higher-level composed components. Some are already refactored into folders:
 | TerminalEmulator | `components/ui/TerminalEmulator.tsx` | 1223 |
 | DependencyGraph | `components/ui/DependencyGraph.tsx` | 966 |
 | PricingCalculator | `components/ui/PricingCalculator.tsx` | 930 |
-| CodePlayground | `components/ui/CodePlayground.tsx` | 877 |
 | CommandPalette | `components/ui/CommandPalette.tsx` | 801 |
 | JsonTreeViewer | `components/ui/JsonTreeViewer.tsx` | 658 |
 | SpotlightSearch | `components/ui/SpotlightSearch.tsx` | 560 |

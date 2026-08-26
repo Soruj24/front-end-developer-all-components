@@ -42,16 +42,6 @@ export const surfaces = [
     features: ["dark-mode", "responsive"],
   }),
   component({
-    slug: "code-playground",
-    name: "Code Playground",
-    description: "Live editors with preview, console, share, and export.",
-    category: "surfaces",
-    tags: ["editor", "preview", "sandbox"],
-    updatedAt: "2026-05-12T00:00:00.000Z",
-    stats: { downloads: 134_260, likes: 1_876, bookmarks: 712, comments: 66, views: 322_000 },
-    features: ["dark-mode", "responsive"],
-  }),
-  component({
     slug: "api-explorer",
     name: "API Explorer",
     description: "HTTP client with headers, auth, body, and JSON response viewer.",

@@ -102,8 +102,7 @@ export type {
   FsNode,
 } from "./TerminalEmulator";
 export { TERMINAL_THEMES, DEFAULT_TERMINAL_FS } from "./TerminalEmulator";
-export { CodePlayground } from "./CodePlayground";
-export type { PlaygroundFile, ConsoleEntry, CodePlaygroundProps } from "./CodePlayground";
+
 export {
   Dialog,
   DialogTrigger,

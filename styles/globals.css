@@ -934,7 +934,7 @@ svg[data-lod="low"] .graph-lod-label {
 }
 
 /* ------------------------------------------------------------------ */
-/* Code editor syntax tokens (used by CodePlayground)                  */
+/* Code editor syntax tokens                                          */
 /* ------------------------------------------------------------------ */
 
 .tok-comment { color: var(--color-muted-foreground); font-style: italic; }

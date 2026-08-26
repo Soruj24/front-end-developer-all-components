@@ -1063,12 +1063,6 @@ export const navigationSections: NavSection[] = [
         icon: <Sparkles className="h-4 w-4" />,
         desc: "AI-powered component generation",
       },
-      {
-        label: "Code Playground",
-        href: "/code-playground",
-        icon: <Play className="h-4 w-4" />,
-        desc: "Live code playground with preview",
-      },
     ],
   },
   {

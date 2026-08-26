@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import {
   ApiExplorer,
-  CodePlayground,
   DependencyGraph,
   PromptBuilder,
   StreamingResponse,
@@ -19,23 +18,6 @@ export const apps: Record<string, () => ReactNode> = {
       hostname="component-library"
       welcome={["Type help to list available commands."]}
       autoFocus={false}
-    />
-  ),
-
-  "code-playground": () => (
-    <CodePlayground
-      height={280}
-      showConsole
-      files={[
-        {
-          name: "App.tsx",
-          source: `import { Button } from "@/components/ui";\n\nexport default function App() {\n  return <Button variant="primary">Hello</Button>;\n}`,
-        },
-        {
-          name: "styles.css",
-          source: `.app {\n  display: flex;\n  gap: 8px;\n  padding: 24px;\n}`,
-        },
-      ]}
     />
   ),
 

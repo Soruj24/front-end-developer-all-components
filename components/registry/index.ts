@@ -33,7 +33,6 @@ import { feedback } from "./constants/feedback";
 import { search } from "./constants/search";
 import { promptBuilders } from "./constants/promptBuilders";
 import { commandPalettes } from "./constants/commandPalettes";
-import { codePlaygrounds } from "./constants/codePlaygrounds";
 import { apiExplorers } from "./constants/apiExplorers";
 import { jsonTreeViewers } from "./constants/jsonTreeViewers";
 import { terminalEmulators } from "./constants/terminalEmulators";
@@ -109,7 +108,6 @@ const allEntries: RegistryEntry[] = [
   ...search,
   ...promptBuilders,
   ...commandPalettes,
-  ...codePlaygrounds,
   ...apiExplorers,
   ...jsonTreeViewers,
   ...terminalEmulators,
