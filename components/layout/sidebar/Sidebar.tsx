@@ -15,7 +15,6 @@ import {
   TEXT,
   COLOR,
 } from "@/constants/tokens";
-import { SidebarHeader } from "./SidebarHeader";
 import { SidebarSearch } from "./SidebarSearch";
 import { SidebarNavigation } from "./SidebarNavigation";
 import { SidebarFooter } from "./SidebarFooter";
@@ -118,10 +117,7 @@ export function Sidebar({ sections, width = LAYOUT.sidebarWidth }: SidebarProps)
         style={{ width: collapsed ? LAYOUT.sidebarCollapsedWidth : width }}
         aria-label="Documentation"
       >
-        <SidebarHeader
-          collapsed={collapsed}
-          onToggleCollapse={() => setCollapsed((p) => !p)}
-        />
+         
 
         {!collapsed && (
           <SidebarSearch value={search} onChange={setSearch} />
