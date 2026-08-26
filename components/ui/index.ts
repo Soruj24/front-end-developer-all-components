@@ -319,8 +319,6 @@ export { RadioGroup } from "./RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./RadioGroup";
 export { RangeCalendar } from "./RangeCalendar";
 export type { RangeCalendarProps, DateRange } from "./RangeCalendar";
-export { Resizable, ResizablePanel, ResizableHandle } from "./Resizable";
-export type { ResizableProps, ResizablePanelProps, ResizableHandleProps } from "./Resizable";
 export { RichTextEditor } from "./RichTextEditor";
 export type { RichTextEditorProps } from "./RichTextEditor";
 export { Separator } from "./Separator";

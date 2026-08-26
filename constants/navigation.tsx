@@ -585,12 +585,6 @@ export const navigationSections: NavSection[] = [
         desc: "Star rating with half-star support",
       },
       {
-        label: "Resizable",
-        href: "/resizable",
-        icon: <ArrowLeftRight className="h-4 w-4" />,
-        desc: "Resizable panels",
-      },
-      {
         label: "Rich Text Editor",
         href: "/rich-text-editor",
         icon: <PenTool className="h-4 w-4" />,

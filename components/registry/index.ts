@@ -65,7 +65,6 @@ import { nativeSelects } from "./constants/native-selects";
 import { navigationMenus } from "./constants/navigation-menus";
 import { progresses } from "./constants/progresses";
 import { radioGroups } from "./constants/radio-groups";
-import { resizables } from "./constants/resizables";
 import { scrollAreas } from "./constants/scroll-areas";
 import { selects } from "./constants/selects";
 import { separators } from "./constants/separators";
@@ -140,7 +139,6 @@ const allEntries: RegistryEntry[] = [
   ...navigationMenus,
   ...progresses,
   ...radioGroups,
-  ...resizables,
   ...scrollAreas,
   ...selects,
   ...separators,
