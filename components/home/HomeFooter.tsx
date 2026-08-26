@@ -22,7 +22,6 @@ const columns = [
       { label: "Blog", href: "/blog" },
       { label: "Dashboard", href: "/dashboard" },
       { label: "E-commerce", href: "/e-commerce" },
-      { label: "AI", href: "/ai" },
       { label: "Chat", href: "/chat" },
       { label: "Portfolio", href: "/portfolio" },
     ],

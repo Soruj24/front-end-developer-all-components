@@ -1,10 +1,8 @@
 import {
   HomeHero,
-  AIComponentGenerator,
   FeaturedComponents,
   CategoriesSection,
   VisualBuilderSection,
-  AIFeaturesSection,
   RegistrySection,
   WorkflowSection,
   StatsSection,
@@ -52,7 +50,6 @@ export default async function Home() {
         <CategoriesSection categories={categories} />
         <TemplatesSection />
         <VisualBuilderSection />
-        <AIFeaturesSection />
         <RegistrySection />
         <WorkflowSection />
         <StatsSection

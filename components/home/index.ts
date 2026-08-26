@@ -1,12 +1,10 @@
 export { HomeHero } from "./HomeHero";
-export { AIComponentGenerator } from "./AIComponentGenerator";
 export { FeaturedComponents } from "./FeaturedComponents";
 export { ComponentCard } from "./ComponentCard";
 export { CategoriesSection } from "./CategoriesSection";
 export { TemplatesSection } from "./TemplatesSection";
 export { TemplateCard } from "./TemplateCard";
 export { VisualBuilderSection } from "./VisualBuilderSection";
-export { AIFeaturesSection } from "./AIFeaturesSection";
 export { RegistrySection } from "./RegistrySection";
 export { WorkflowSection } from "./WorkflowSection";
 export { StatsSection } from "./StatsSection";

@@ -32,7 +32,6 @@ export const siteConfig = {
     { label: "Components", href: "/components" },
     { label: "Blocks", href: "/blocks" },
     { label: "Templates", href: "/templates" },
-    { label: "AI", href: "/ai", badge: "new" as const },
     { label: "Registry", href: "/registry" },
   ],
   secondaryNavLinks: [

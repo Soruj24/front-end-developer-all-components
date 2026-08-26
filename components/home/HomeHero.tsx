@@ -119,15 +119,6 @@ export function HomeHero() {
                     <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                   </svg>
                 </Link>
-                <Link
-                  href="/ai"
-                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
-                >
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83" />
-                  </svg>
-                  Generate with AI
-                </Link>
               </div>
             </div>
           </Reveal>

@@ -28,7 +28,6 @@ const primaryNav: NavItem[] = [
   { label: "Components", href: "/components" },
   { label: "Blocks", href: "/blocks" },
   { label: "Templates", href: "/templates" },
-  { label: "AI", href: "/ai", badge: "new" },
   { label: "Registry", href: "/registry" },
 ];
 

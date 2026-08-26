@@ -9,7 +9,6 @@ import {
   ArrowUpDown,
   Bell,
   Bookmark,
-  Bot,
   Box,
   BarChart3,
   Briefcase,
@@ -1074,12 +1073,6 @@ export const navigationSections: NavSection[] = [
         href: "/chat",
         icon: <MessageCircleMore className="h-4 w-4" />,
         desc: "Messaging interface",
-      },
-      {
-        label: "AI",
-        href: "/ai",
-        icon: <Bot className="h-4 w-4" />,
-        desc: "AI chat and generation",
       },
       {
         label: "Portfolio",

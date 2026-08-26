@@ -14,7 +14,6 @@ const footerSections = [
       { label: "Components", href: "/components" },
       { label: "Templates", href: "/templates" },
       { label: "Registry", href: "/registry" },
-      { label: "AI Generator", href: "/ai" },
       { label: "Visual Builder", href: "/visual-builder" },
       { label: "CLI", href: "/cli" },
     ],
