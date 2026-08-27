@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
-import { CheckIcon, CopyIcon } from "./icons";
 
 type TokenType =
   | "comment"
