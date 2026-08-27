@@ -1,3 +1,4 @@
+ 
 export const ACCORDION_SOURCE = `"use client";
 
 import * as React from "react";
@@ -5,7 +6,7 @@ import { cn } from "@/lib/cn";
 
 export interface AccordionItemData {
   id?: string;
-  title: string;
+  title: React.ReactNode;
   body: React.ReactNode;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -20,11 +21,56 @@ export type AccordionVariant =
 
 export interface AccordionProps {
   items: AccordionItemData[];
+
+  /**
+   * Allow multiple accordion items to remain open.
+   */
   multi?: boolean;
+
+  /**
+   * Visual style of the accordion.
+   */
   variant?: AccordionVariant;
-  startOpen?: number;
-  className?: string;
+
+  /**
+   * Initial open item indexes for uncontrolled usage.
+   */
+  defaultOpen?: number[];
+
+  /**
+   * Controlled open item indexes.
+   */
+  openItems?: number[];
+
+  /**
+   * Called whenever the open items change.
+   */
   onChange?: (openItems: number[]) => void;
+
+  /**
+   * Additional class names for the root element.
+   */
+  className?: string;
+
+  /**
+   * Additional class names for each accordion item.
+   */
+  itemClassName?: string;
+
+  /**
+   * Additional class names for accordion triggers.
+   */
+  triggerClassName?: string;
+
+  /**
+   * Additional class names for accordion content.
+   */
+  contentClassName?: string;
+
+  /**
+   * Disable the entire accordion.
+   */
+  disabled?: boolean;
 }
 
 const containerClasses: Record<AccordionVariant, string> = {
@@ -35,10 +81,10 @@ const containerClasses: Record<AccordionVariant, string> = {
     "bg-transparent",
 
   boxed:
-    "flex flex-col gap-1.5",
+    "flex flex-col gap-2",
 
   separated:
-    "flex flex-col gap-2",
+    "flex flex-col gap-3",
 
   minimal:
     "bg-transparent",
@@ -50,7 +96,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       aria-hidden="true"
       className={cn(
         "h-4 w-4 shrink-0 text-muted-foreground",
-        "transition-transform duration-300",
+        "transition-transform duration-200",
         "ease-[cubic-bezier(0.87,0,0.13,1)]",
         open && "rotate-180",
       )}
@@ -61,77 +107,230 @@ function ChevronIcon({ open }: { open: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M6 9l6 6 6-6" />
+      <path d="m6 9 6 6 6-6" />
     </svg>
   );
+}
+
+function normalizeIndexes(
+  indexes: number[],
+  itemCount: number,
+  multi: boolean,
+) {
+  const validIndexes = indexes.filter(
+    (index) =>
+      Number.isInteger(index) &&
+      index >= 0 &&
+      index < itemCount,
+  );
+
+  const uniqueIndexes = [...new Set(validIndexes)];
+
+  return multi
+    ? uniqueIndexes
+    : uniqueIndexes.slice(0, 1);
 }
 
 export function Accordion({
   items,
   multi = false,
   variant = "bordered",
-  startOpen = 0,
-  className,
+  defaultOpen = [0],
+  openItems: controlledOpenItems,
   onChange,
+  className,
+  itemClassName,
+  triggerClassName,
+  contentClassName,
+  disabled = false,
 }: AccordionProps) {
-  const initialOpen =
-    startOpen >= 0 && startOpen < items.length
-      ? [startOpen]
-      : [];
-
-  const [openItems, setOpenItems] =
-    React.useState<number[]>(initialOpen);
-
   const baseId = React.useId();
+
+  const isControlled =
+    controlledOpenItems !== undefined;
+
+  const normalizedDefaultOpen = React.useMemo(
+    () =>
+      normalizeIndexes(
+        defaultOpen,
+        items.length,
+        multi,
+      ),
+    [defaultOpen, items.length, multi],
+  );
+
+  const [internalOpenItems, setInternalOpenItems] =
+    React.useState<number[]>(
+      normalizedDefaultOpen,
+    );
+
+  const openItems = isControlled
+    ? normalizeIndexes(
+        controlledOpenItems,
+        items.length,
+        multi,
+      )
+    : internalOpenItems;
+
+  const updateOpenItems = React.useCallback(
+    (nextItems: number[]) => {
+      const normalized = normalizeIndexes(
+        nextItems,
+        items.length,
+        multi,
+      );
+
+      if (!isControlled) {
+        setInternalOpenItems(normalized);
+      }
+
+      onChange?.(normalized);
+    },
+    [
+      items.length,
+      multi,
+      isControlled,
+      onChange,
+    ],
+  );
 
   const toggle = React.useCallback(
     (index: number) => {
       const item = items[index];
 
-      if (!item || item.disabled) {
+      if (!item || item.disabled || disabled) {
         return;
       }
 
-      setOpenItems((previous) => {
-        let next: number[];
+      const isOpen = openItems.includes(index);
 
-        if (multi) {
-          next = previous.includes(index)
-            ? previous.filter((itemIndex) => itemIndex !== index)
-            : [...previous, index];
-        } else {
-          next = previous.includes(index) ? [] : [index];
-        }
+      if (multi) {
+        updateOpenItems(
+          isOpen
+            ? openItems.filter(
+                (itemIndex) => itemIndex !== index,
+              )
+            : [...openItems, index],
+        );
 
-        onChange?.(next);
+        return;
+      }
 
-        return next;
-      });
+      updateOpenItems(
+        isOpen ? [] : [index],
+      );
     },
-    [items, multi, onChange],
+    [
+      items,
+      disabled,
+      multi,
+      openItems,
+      updateOpenItems,
+    ],
+  );
+
+  const handleKeyDown = React.useCallback(
+    (
+      event: React.KeyboardEvent<HTMLButtonElement>,
+      index: number,
+    ) => {
+      const enabledIndexes = items
+        .map((item, itemIndex) =>
+          item.disabled || disabled
+            ? -1
+            : itemIndex,
+        )
+        .filter((itemIndex) => itemIndex !== -1);
+
+      if (!enabledIndexes.length) {
+        return;
+      }
+
+      const currentPosition =
+        enabledIndexes.indexOf(index);
+
+      let nextPosition = currentPosition;
+
+      switch (event.key) {
+        case "ArrowDown":
+          event.preventDefault();
+
+          nextPosition =
+            (currentPosition + 1) %
+            enabledIndexes.length;
+
+          break;
+
+        case "ArrowUp":
+          event.preventDefault();
+
+          nextPosition =
+            (currentPosition - 1 +
+              enabledIndexes.length) %
+            enabledIndexes.length;
+
+          break;
+
+        case "Home":
+          event.preventDefault();
+          nextPosition = 0;
+          break;
+
+        case "End":
+          event.preventDefault();
+          nextPosition =
+            enabledIndexes.length - 1;
+          break;
+
+        default:
+          return;
+      }
+
+      const nextIndex =
+        enabledIndexes[nextPosition];
+
+      document
+        .getElementById(
+          \`\${baseId}-trigger-\${nextIndex}\`,
+        )
+        ?.focus();
+    },
+    [items, disabled, baseId],
   );
 
   const isCardVariant =
-    variant === "boxed" || variant === "separated";
+    variant === "boxed" ||
+    variant === "separated";
+
+  if (!items.length) {
+    return null;
+  }
 
   return (
     <div
       className={cn(
         containerClasses[variant],
+        disabled && "pointer-events-none opacity-60",
         className,
       )}
+      data-slot="accordion"
+      data-variant={variant}
+      data-disabled={disabled || undefined}
     >
       {items.map((item, index) => {
         const isOpen = openItems.includes(index);
+        const isDisabled =
+          disabled || Boolean(item.disabled);
 
         const itemId =
-          item.id ?? \`\${baseId}-item-\${index}\`;
+          item.id ??
+          \`\${baseId}-item-\${index}\`;
 
         const triggerId =
-          \`\${itemId}-trigger\`;
+          \`\${baseId}-trigger-\${index}\`;
 
         const contentId =
-          \`\${itemId}-content\`;
+          \`\${baseId}-content-\${index}\`;
 
         return (
           <div
@@ -147,20 +346,35 @@ export function Accordion({
                 variant !== "minimal" &&
                 index < items.length - 1 &&
                 "border-b border-border",
+              itemClassName,
             )}
+            data-slot="accordion-item"
+            data-state={
+              isOpen ? "open" : "closed"
+            }
+            data-disabled={
+              isDisabled || undefined
+            }
           >
             <button
               type="button"
               id={triggerId}
               aria-expanded={isOpen}
               aria-controls={contentId}
-              disabled={item.disabled}
+              aria-disabled={
+                isDisabled || undefined
+              }
+              disabled={isDisabled}
               onClick={() => toggle(index)}
+              onKeyDown={(event) =>
+                handleKeyDown(event, index)
+              }
               className={cn(
                 "flex w-full items-center gap-3",
                 "px-4 py-3.5 sm:px-5 sm:py-4",
                 "text-left text-sm font-medium",
                 "text-foreground",
+
                 "transition-colors duration-150",
 
                 "focus-visible:outline-none",
@@ -171,17 +385,32 @@ export function Accordion({
                 "disabled:cursor-not-allowed",
                 "disabled:opacity-40",
 
-                !item.disabled &&
+                !isDisabled &&
                   !isOpen &&
                   "hover:bg-muted/60",
 
-                isOpen && "bg-muted/40",
+                isOpen &&
+                  "bg-muted/40",
+
+                triggerClassName,
               )}
+              data-slot="accordion-trigger"
+              data-state={
+                isOpen ? "open" : "closed"
+              }
+              data-disabled={
+                isDisabled || undefined
+              }
             >
               {item.icon && (
                 <span
                   aria-hidden="true"
-                  className="shrink-0 text-muted-foreground"
+                  className={cn(
+                    "shrink-0",
+                    "text-muted-foreground",
+                    "transition-colors",
+                    "duration-200",
+                  )}
                 >
                   {item.icon}
                 </span>
@@ -198,6 +427,7 @@ export function Accordion({
               id={contentId}
               role="region"
               aria-labelledby={triggerId}
+              aria-hidden={!isOpen}
               className={cn(
                 "grid overflow-hidden",
                 "transition-[grid-template-rows]",
@@ -207,6 +437,10 @@ export function Accordion({
                   ? "grid-rows-[1fr]"
                   : "grid-rows-[0fr]",
               )}
+              data-slot="accordion-content"
+              data-state={
+                isOpen ? "open" : "closed"
+              }
             >
               <div className="min-h-0 overflow-hidden">
                 <div
@@ -215,6 +449,7 @@ export function Accordion({
                     "text-sm leading-6",
                     "text-muted-foreground",
                     "sm:px-5 sm:pb-5",
+                    contentClassName,
                   )}
                 >
                   {item.body}
@@ -228,19 +463,35 @@ export function Accordion({
   );
 }
 `;
+
 export const BASIC_EXAMPLE = `
 const items = [
   {
     title: "What is React?",
-    body: "React is a JavaScript library for building user interfaces.",
+    body: (
+      <p>
+        React is a JavaScript library for
+        building user interfaces.
+      </p>
+    ),
   },
   {
     title: "What is Next.js?",
-    body: "Next.js is a React framework for building full-stack web applications.",
+    body: (
+      <p>
+        Next.js is a React framework for
+        building full-stack web applications.
+      </p>
+    ),
   },
   {
     title: "What is Tailwind CSS?",
-    body: "Tailwind CSS is a utility-first CSS framework.",
+    body: (
+      <p>
+        Tailwind CSS is a utility-first
+        CSS framework.
+      </p>
+    ),
   },
 ];
 
@@ -275,35 +526,69 @@ export const VARIANTS_EXAMPLE = `
 `;
 
 export const OPEN_MODE_EXAMPLE = `
-{/* Only one item can be open */}
+const items = [
+  {
+    title: "What is React?",
+    body: "React is a JavaScript library.",
+  },
+  {
+    title: "What is Next.js?",
+    body: "Next.js is a React framework.",
+  },
+  {
+    title: "What is Tailwind CSS?",
+    body: "Tailwind CSS is a utility-first CSS framework.",
+  },
+];
+
+{/* Single item at a time */}
 <Accordion
-  items={faqItems}
+  items={items}
+  multi={false}
 />
 
-{/* Multiple items can be open */}
+{/* Multiple items at the same time */}
 <Accordion
-  items={faqItems}
+  items={items}
   multi
 />
 `;
 
 export const CONTROLS_EXAMPLE = `
-{/* First item open */}
+{/* First item open by default */}
 <Accordion
   items={faqItems}
-  startOpen={0}
+  defaultOpen={[0]}
 />
 
-{/* Second item open */}
+{/* Second item open by default */}
 <Accordion
   items={faqItems}
-  startOpen={1}
+  defaultOpen={[1]}
+/>
+
+{/* Multiple items open by default */}
+<Accordion
+  items={faqItems}
+  multi
+  defaultOpen={[0, 1]}
 />
 
 {/* Everything closed */}
 <Accordion
   items={faqItems}
-  startOpen={-1}
+  defaultOpen={[]}
+/>
+`;
+
+export const CONTROLLED_EXAMPLE = `
+const [openItems, setOpenItems] =
+  useState<number[]>([0]);
+
+<Accordion
+  items={faqItems}
+  openItems={openItems}
+  onChange={setOpenItems}
 />
 `;
 
@@ -326,7 +611,7 @@ const disabledItems = [
 
 <Accordion
   items={disabledItems}
-  startOpen={-1}
+  defaultOpen={[]}
 />
 `;
 
@@ -340,25 +625,34 @@ import {
 const itemsWithIcons = [
   {
     title: "Security",
-    body: "Manage security settings and authentication.",
-    icon: <ShieldCheck className="h-4 w-4" />,
+    body:
+      "Manage security settings and authentication.",
+    icon: (
+      <ShieldCheck className="h-4 w-4" />
+    ),
   },
   {
     title: "AI Features",
-    body: "Configure AI-powered features for your application.",
-    icon: <Sparkles className="h-4 w-4" />,
+    body:
+      "Configure AI-powered features for your application.",
+    icon: (
+      <Sparkles className="h-4 w-4" />
+    ),
   },
   {
     title: "Settings",
-    body: "Manage your application preferences.",
-    icon: <Settings className="h-4 w-4" />,
+    body:
+      "Manage your application preferences.",
+    icon: (
+      <Settings className="h-4 w-4" />
+    ),
   },
 ];
 
 <Accordion
   items={itemsWithIcons}
   variant="boxed"
-  startOpen={-1}
+  defaultOpen={[]}
 />
 `;
 
@@ -369,18 +663,21 @@ const longItems = [
     body: (
       <div className="space-y-3">
         <p>
-          These terms and conditions explain the rules and
-          regulations for using this application.
+          These terms and conditions explain
+          the rules and regulations for using
+          this application.
         </p>
 
         <p>
-          By accessing this application, you agree to be
-          bound by these terms and conditions.
+          By accessing this application, you
+          agree to be bound by these terms and
+          conditions.
         </p>
 
         <p>
-          If you disagree with any part of these terms,
-          you should not use the application.
+          If you disagree with any part of
+          these terms, you should not use the
+          application.
         </p>
       </div>
     ),
@@ -389,7 +686,7 @@ const longItems = [
 
 <Accordion
   items={longItems}
-  startOpen={-1}
+  defaultOpen={[]}
 />
 `;
 
@@ -400,7 +697,8 @@ const items = [
     body: (
       <div className="space-y-4">
         <p>
-          Manage your account information and preferences.
+          Manage your account information
+          and preferences.
         </p>
 
         <div className="rounded-lg border border-border p-3">
@@ -422,3 +720,32 @@ const items = [
   variant="boxed"
 />
 `;
+
+export const CUSTOM_STYLING_EXAMPLE = `
+<Accordion
+  items={faqItems}
+  variant="bordered"
+  className="max-w-2xl"
+  itemClassName="bg-background"
+  triggerClassName="hover:bg-accent"
+  contentClassName="text-sm"
+/>
+`;
+
+export const KEYBOARD_NAVIGATION_EXAMPLE = `
+<Accordion
+  items={faqItems}
+  defaultOpen={[]}
+/>
+
+{/* Supported keyboard controls:
+
+  ArrowDown → Move to next item
+  ArrowUp   → Move to previous item
+  Home      → Move to first item
+  End       → Move to last item
+  Enter     → Toggle current item
+  Space     → Toggle current item
+*/}
+`;
+ 

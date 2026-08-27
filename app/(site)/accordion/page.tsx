@@ -9,8 +9,6 @@ import {
   OPEN_MODE_EXAMPLE,
   DISABLED_EXAMPLE,
   ICONS_EXAMPLE,
-  LONG_EXAMPLE,
-  CUSTOM_CONTENT_EXAMPLE
 } from "./accordion-source";
 import {
   VariantsSection,
