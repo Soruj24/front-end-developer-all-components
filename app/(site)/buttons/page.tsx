@@ -47,52 +47,67 @@ type Size = "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-sm" | "icon-lg";
 const variantClasses: Record<Variant, string> = {
   primary: [
     "bg-primary text-primary-foreground",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]",
-    "hover:bg-primary/90 hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)]",
+    "shadow-sm",
+    "hover:bg-primary/90 hover:shadow-md",
     "focus-visible:ring-primary/50",
+    "dark:bg-primary dark:text-primary-foreground",
+    "dark:hover:bg-primary/90",
   ].join(" "),
   secondary: [
     "bg-secondary text-secondary-foreground",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]",
-    "hover:bg-secondary/80 hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)]",
+    "shadow-sm",
+    "hover:bg-secondary/80 hover:shadow-md",
     "focus-visible:ring-secondary/50",
+    "dark:bg-secondary dark:text-secondary-foreground",
+    "dark:hover:bg-secondary/80",
   ].join(" "),
   outline: [
     "border border-input bg-background text-foreground",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.02)]",
-    "hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/20",
-    "hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)]",
+    "shadow-sm",
+    "hover:bg-accent hover:text-accent-foreground",
+    "hover:shadow-md",
     "focus-visible:ring-ring/50",
+    "dark:border-input dark:bg-background",
+    "dark:hover:bg-accent dark:hover:text-accent-foreground",
   ].join(" "),
   ghost: [
     "bg-transparent text-foreground",
     "hover:bg-accent hover:text-accent-foreground",
     "focus-visible:ring-ring/50",
+    "dark:text-foreground",
+    "dark:hover:bg-accent dark:hover:text-accent-foreground",
   ].join(" "),
   destructive: [
     "bg-destructive text-destructive-foreground",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]",
-    "hover:bg-destructive/90 hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.15)]",
+    "shadow-sm",
+    "hover:bg-destructive/90 hover:shadow-md",
     "focus-visible:ring-destructive/50",
+    "dark:bg-destructive dark:text-destructive-foreground",
+    "dark:hover:bg-destructive/90",
   ].join(" "),
   "destructive-outline": [
     "border border-destructive/30 bg-transparent text-destructive",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.02)]",
-    "hover:bg-destructive/5 hover:border-destructive/40",
-    "hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)]",
+    "shadow-sm",
+    "hover:bg-destructive/10 hover:border-destructive/50",
+    "hover:shadow-md",
     "focus-visible:ring-destructive/50",
+    "dark:border-destructive/40 dark:text-destructive",
+    "dark:hover:bg-destructive/15",
   ].join(" "),
   link: [
     "bg-transparent text-primary underline-offset-4",
     "hover:underline",
     "focus-visible:ring-primary/50",
     "p-0 h-auto",
+    "dark:text-primary",
   ].join(" "),
   soft: [
     "bg-primary/10 text-primary",
-    "shadow-[0_1px_2px_0_rgba(0,0,0,0.02)]",
-    "hover:bg-primary/15 hover:shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)]",
+    "shadow-sm",
+    "hover:bg-primary/15 hover:shadow-md",
     "focus-visible:ring-primary/50",
+    "dark:bg-primary/15 dark:text-primary",
+    "dark:hover:bg-primary/20",
   ].join(" "),
 };
 
@@ -101,7 +116,7 @@ const sizeClasses: Record<Size, string> = {
   sm: "h-8 px-3 text-sm rounded-md gap-1.5 font-medium",
   md: "h-9 px-4 text-sm rounded-md gap-2 font-medium",
   lg: "h-10 px-5 text-sm rounded-md gap-2 font-medium",
-  xl: "h-11 px-6 text-base rounded-lg gap-2.5 font-medium",
+  xl: "h-11 px-6 text-base rounded-lg gap-2.5 font-semibold",
   "icon-sm": "h-8 w-8 p-0 rounded-md",
   icon: "h-9 w-9 p-0 rounded-md",
   "icon-lg": "h-10 w-10 p-0 rounded-md",
@@ -189,7 +204,7 @@ export default function ButtonsPage() {
     <ComponentDocPage
       name="Buttons"
       category="Elements"
-      description="Versatile button component with 8 variants, 8 sizes, loading states, icon support, and premium focus-visible ring system."
+      description="Premium button component with 8 variants, 8 sizes, refined shadows, dark mode support, and smooth micro-interactions."
     >
       <PreviewPanel filename="ButtonVariants.tsx">
         <AllVariantsExample />
