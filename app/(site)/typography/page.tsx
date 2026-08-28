@@ -90,7 +90,7 @@ function InlineShowcase() {
 const TAG: Record<string, string> = {
   h1:"h1",h2:"h2",h3:"h3",h4:"h4",h5:"h5",h6:"h6",
   p:"p",blockquote:"blockquote",code:"code",
-  lead:"p",large:"p",small:"p",muted:"p",
+  lead:"p",large:"p",small:"small",muted:"p",
 };
 const CLS: Record<string, string> = {
   h1:"scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
