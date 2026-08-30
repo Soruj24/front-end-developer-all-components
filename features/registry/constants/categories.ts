@@ -44,6 +44,12 @@ export const registryCategories: RegistryCategory[] = [
     description: "Playgrounds, grids, and explorers",
     icon: "▣",
   },
+  {
+    id: "dsa",
+    label: "DSA",
+    description: "Data structures and algorithms with interactive visualizations",
+    icon: "◆",
+  },
 ];
 
 export const categoryBySlug = Object.fromEntries(

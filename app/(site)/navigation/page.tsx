@@ -40,10 +40,18 @@ const sections: NavSection[] = [
 
 <Sidebar sections={sections} />`;
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">
+        {title}
+      </h2>
       {children}
     </section>
   );
@@ -54,19 +62,26 @@ export default function NavigationPage() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 p-6 sm:p-10 lg:p-14">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Navigation</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Navigation
+          </h1>
           <Badge variant="primary">6 patterns</Badge>
         </div>
         <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-          Premium navigation patterns — a searchable accordion sidebar, nav bars,
-          mega menus, tabs, breadcrumbs, pagination, scroll spy, and progress
-          indicators. Fully keyboard accessible and theme aware.
+          Premium navigation patterns — a searchable accordion sidebar, nav
+          bars, mega menus, tabs, breadcrumbs, pagination, scroll spy, and
+          progress indicators. Fully keyboard accessible and theme aware.
         </p>
       </header>
 
       {/* Installation */}
       <Section title="Installation">
-        <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
+        <CodeBlock
+          code={installCommand}
+          filename="Terminal"
+          label="bash"
+          variant="terminal"
+        />
       </Section>
 
       {/* Usage */}
@@ -77,8 +92,9 @@ export default function NavigationPage() {
       {/* Live Preview */}
       <Section title="Live Preview">
         <p className="max-w-2xl text-sm text-muted-foreground">
-          The real sidebar sub-components composed inside a static frame — try the
-          search, toggle the accordions, and notice the active &ldquo;Navigation&rdquo; link.
+          The real sidebar sub-components composed inside a static frame — try
+          the search, toggle the accordions, and notice the active
+          &ldquo;Navigation&rdquo; link.
         </p>
         <PreviewPanel filename="sidebar-preview.tsx">
           <SidebarShowcase />
@@ -87,7 +103,9 @@ export default function NavigationPage() {
 
       {/* Examples */}
       <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
         <ComponentPreview id="navigation-basic">
           <BasicNavDemo />
@@ -121,8 +139,8 @@ export default function NavigationPage() {
       {/* Playground */}
       <Section title="Playground">
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Drive the sidebar interactively — filter with search, collapse sections,
-          or reset to see the empty state.
+          Drive the sidebar interactively — filter with search, collapse
+          sections, or reset to see the empty state.
         </p>
         <PreviewPanel filename="sidebar-playground.tsx">
           <NavPlayground />
@@ -132,8 +150,8 @@ export default function NavigationPage() {
       {/* Code Viewer */}
       <Section title="Code Viewer">
         <p className="max-w-2xl text-sm text-muted-foreground">
-          The actual updated Tailwind CSS source behind the redesign — every color,
-          radius, shadow, and motion curve comes from the design tokens.
+          The actual updated Tailwind CSS source behind the redesign — every
+          color, radius, shadow, and motion curve comes from the design tokens.
         </p>
         <SourceCodeViewer
           source={SIDEBAR_SOURCE}
@@ -141,17 +159,36 @@ export default function NavigationPage() {
           defaultExpanded
         />
         <div className="grid gap-4 lg:grid-cols-2">
-          <SourceCodeViewer source={SECTION_SOURCE} filename="components/navigation/Sidebar/SidebarSection.tsx" />
-          <SourceCodeViewer source={NAV_LINK_SOURCE} filename="components/navigation/Sidebar/SidebarNavLink.tsx" />
-          <SourceCodeViewer source={BRAND_SOURCE} filename="components/navigation/Sidebar/SidebarBrand.tsx" />
-          <SourceCodeViewer source={SEARCH_SOURCE} filename="components/navigation/Sidebar/SidebarSearch.tsx" />
-          <SourceCodeViewer source={TOGGLE_SOURCE} filename="components/navigation/Sidebar/SidebarToggle.tsx" />
-          <SourceCodeViewer source={BACKDROP_SOURCE} filename="components/navigation/Sidebar/SidebarBackdrop.tsx" />
-          <SourceCodeViewer source={FOOTER_SOURCE} filename="components/navigation/Sidebar/SidebarFooter.tsx" />
+          <SourceCodeViewer
+            source={SECTION_SOURCE}
+            filename="components/navigation/Sidebar/SidebarSection.tsx"
+          />
+          <SourceCodeViewer
+            source={NAV_LINK_SOURCE}
+            filename="components/navigation/Sidebar/SidebarNavLink.tsx"
+          />
+          <SourceCodeViewer
+            source={BRAND_SOURCE}
+            filename="components/navigation/Sidebar/SidebarBrand.tsx"
+          />
+          <SourceCodeViewer
+            source={SEARCH_SOURCE}
+            filename="components/navigation/Sidebar/SidebarSearch.tsx"
+          />
+          <SourceCodeViewer
+            source={TOGGLE_SOURCE}
+            filename="components/navigation/Sidebar/SidebarToggle.tsx"
+          />
+          <SourceCodeViewer
+            source={BACKDROP_SOURCE}
+            filename="components/navigation/Sidebar/SidebarBackdrop.tsx"
+          />
+          <SourceCodeViewer
+            source={FOOTER_SOURCE}
+            filename="components/navigation/Sidebar/SidebarFooter.tsx"
+          />
         </div>
       </Section>
-
-       
     </div>
   );
 }

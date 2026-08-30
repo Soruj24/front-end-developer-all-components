@@ -101,6 +101,8 @@ import {
   Workflow,
   Zap,
   Lock,
+  Triangle,
+  Calculator,
 } from "lucide-react";
 
 export const navigationSections: NavSection[] = [
@@ -1105,6 +1107,8 @@ export const navigationSections: NavSection[] = [
       },
     ],
   },
+
+   
 ];
 
 /** Total number of links across the whole tree. */

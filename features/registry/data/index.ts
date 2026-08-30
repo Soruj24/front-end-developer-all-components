@@ -5,7 +5,7 @@ import { dataDisplay } from "./data-display";
 import { feedback } from "./feedback";
 import { overlays } from "./overlays";
 import { navigation } from "./navigation";
-import { surfaces } from "./surfaces";
+import { surfaces } from "./surfaces"; 
 
 /** The full component registry catalog, ready for server rendering. */
 export const registryCatalog: RegistryComponent[] = [
@@ -15,7 +15,7 @@ export const registryCatalog: RegistryComponent[] = [
   ...feedback,
   ...overlays,
   ...navigation,
-  ...surfaces,
+  ...surfaces, 
 ];
 
 export { component } from "./factory";
