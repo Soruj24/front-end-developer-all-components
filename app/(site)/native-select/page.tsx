@@ -75,7 +75,11 @@ export default function NativeSelectPage() {
         </div>
       </PreviewPanel>
 
-      <SourceCodeViewer source={NATIVE_SELECT_SOURCE} filename="components/ui/NativeSelect/NativeSelect.tsx" defaultExpanded />
+      <SourceCodeViewer
+        source={NATIVE_SELECT_SOURCE}
+        filename="components/ui/NativeSelect/NativeSelect.tsx"
+        defaultExpanded
+      />
 
       <section className="flex flex-col gap-8">
         <h2 className="text-lg font-semibold tracking-tight text-foreground">
@@ -180,8 +184,6 @@ export default function NativeSelectPage() {
           </div>
         </ExampleBlock>
       </section>
-
-
     </ComponentDocPage>
   );
 }

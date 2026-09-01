@@ -939,7 +939,7 @@ svg[data-lod="low"] .graph-lod-label {
 
 .tok-comment { color: var(--color-muted-foreground); font-style: italic; }
 .tok-string { color: var(--color-success); }
-.tok-keyword { color: var(--color-primary); }
+.tok-keyword { color: var(--color-primary); font-weight: 500; }
 .tok-number { color: var(--color-warning); }
 .tok-component { color: var(--color-info); }
 .tok-key { color: var(--color-accent); }
@@ -947,6 +947,10 @@ svg[data-lod="low"] .graph-lod-label {
 .tok-tag { color: var(--color-primary); }
 .tok-punct { color: var(--color-muted-foreground); }
 .tok-plain { color: var(--color-foreground); }
+.tok-type { color: var(--color-info); }
+.tok-attr { color: var(--color-warning); }
+.tok-prop { color: var(--color-info); }
+.tok-operator { color: var(--color-primary); }
 
 /* ------------------------------------------------------------------ */
 /* 404 demo page animations (Glitch style)                             */
