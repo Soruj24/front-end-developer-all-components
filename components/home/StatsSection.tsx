@@ -1,42 +1,36 @@
-import { formatNumber } from "@/features/registry";
+import { getHomeStats } from "@/lib/stats";
 import { SectionHeading } from "./SectionHeading";
 import { Reveal } from "./Reveal";
+import { StatsGrid } from "./StatsGrid";
 
-interface StatsSectionProps {
-  componentCount: number;
-  categoryCount: number;
-  totalDownloads: number;
-}
-
-export function StatsSection({ componentCount, categoryCount, totalDownloads }: StatsSectionProps) {
-  const stats = [
-    { value: componentCount, label: "Components" },
-    { value: categoryCount, label: "Categories" },
-    { value: totalDownloads, label: "Downloads" },
-    { value: 500, label: "Stars" },
-  ];
+export async function StatsSection() {
+  const stats = await getHomeStats();
 
   return (
-    <section className="border-b border-border/40 bg-background">
+    <section className="border-b border-border/40 bg-muted/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
         <Reveal>
           <SectionHeading
             eyebrow="Stats"
-            title="Built for Scale"
-            description="A growing registry trusted by developers worldwide."
+            title="Trusted by developers."
+            description="A growing registry built for scale."
           />
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                  {formatNumber(s.value)}+
-                </div>
-                <div className="mt-1 text-sm text-muted-foreground">{s.label}</div>
-              </div>
-            ))}
+          <div className="mt-12">
+            <StatsGrid
+              stats={[
+                { value: stats.components, label: "Components", suffix: "+" },
+                { value: stats.categories, label: "Categories", suffix: "+" },
+                {
+                  value: stats.downloads > 0 ? stats.downloads : null,
+                  label: "Downloads",
+                  suffix: stats.downloads > 0 ? "+" : undefined,
+                },
+                { value: stats.stars, label: "Stars" },
+              ]}
+            />
           </div>
         </Reveal>
       </div>

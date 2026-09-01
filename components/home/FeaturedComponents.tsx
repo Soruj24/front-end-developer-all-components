@@ -17,7 +17,7 @@ export function FeaturedComponents({ components }: FeaturedComponentsProps) {
         <Reveal>
           <SectionHeading
             eyebrow="Featured"
-            title="Featured Components"
+            title="Popular components."
             description="Hand-picked components loved by the community."
           />
         </Reveal>
@@ -31,14 +31,23 @@ export function FeaturedComponents({ components }: FeaturedComponentsProps) {
         </Reveal>
 
         <Reveal delay={200}>
-          <div className="mt-8 text-center">
+          <div className="mt-10 text-center">
             <Link
               href="/components"
-              className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              className="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
             >
               View All Components
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+              <svg
+                className="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
               </svg>
             </Link>
           </div>

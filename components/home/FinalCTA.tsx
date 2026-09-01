@@ -8,10 +8,10 @@ export function FinalCTA() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl text-balance">
-              Build your next interface faster.
+              Start building today.
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Discover components, customize them visually, generate Tailwind CSS and ship.
+              Browse components, copy the source, and ship faster.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link

@@ -17,20 +17,20 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
         <Reveal>
           <SectionHeading
             eyebrow="Categories"
-            title="Explore by Category"
+            title="Explore by category."
             description="Find the right components for your project."
           />
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-12 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/categories/${cat.id}`}
                 className={cn(
-                  "group flex items-start gap-4 rounded-lg border border-border/60 bg-background p-4",
-                  "transition-all duration-200 hover:border-ring/40 hover:shadow-sm",
+                  "group flex items-start gap-4 rounded-xl border border-border/60 bg-background p-4",
+                  "transition-all duration-200 hover:border-border hover:shadow-sm",
                 )}
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted text-lg">
@@ -38,15 +38,28 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-foreground">{cat.label}</h3>
+                    <h3 className="text-sm font-semibold text-foreground">
+                      {cat.label}
+                    </h3>
                     <span className="rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                       {cat.count}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground line-clamp-1">{cat.description}</p>
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-1">
+                    {cat.description}
+                  </p>
                 </div>
-                <svg className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                <svg
+                  className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-muted-foreground"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
                 </svg>
               </Link>
             ))}
