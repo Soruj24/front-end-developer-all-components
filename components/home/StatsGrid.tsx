@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/cn";
 
 function formatStatValue(value: number): string {
   if (value >= 1_000_000) {
