@@ -24,14 +24,24 @@ const statusColors: Record<string, string> = {
 
 function SearchIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.35-4.35" />
     </svg>
   );
 }
 
-function ComponentCard({ component }: { component: typeof registryCatalog[number] }) {
+function ComponentCard({
+  component,
+}: {
+  component: (typeof registryCatalog)[number];
+}) {
   const cat = categoryBySlug[component.category];
 
   return (
@@ -41,17 +51,27 @@ function ComponentCard({ component }: { component: typeof registryCatalog[number
     >
       <div className="relative flex h-44 items-center justify-center overflow-hidden border-b border-border/40 bg-gradient-to-br from-muted/30 via-background to-muted/20 px-4">
         <div className="flex flex-col items-center gap-2 text-muted-foreground/50 transition-colors group-hover:text-muted-foreground/70">
-          <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-10 w-10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect width="18" height="18" x="3" y="3" rx="2" />
             <path d="M3 9h18" />
             <path d="M9 21V9" />
           </svg>
           <span className="text-xs font-medium">{component.name}</span>
         </div>
-        <span className={cn(
-          "absolute right-2.5 top-2.5 rounded-md px-1.5 py-0.5 text-[10px] font-medium",
-          statusColors[component.status] ?? "bg-muted text-muted-foreground"
-        )}>
+        <span
+          className={cn(
+            "absolute right-2.5 top-2.5 rounded-md px-1.5 py-0.5 text-[10px] font-medium",
+            statusColors[component.status] ?? "bg-muted text-muted-foreground",
+          )}
+        >
           {component.status}
         </span>
       </div>
@@ -73,7 +93,10 @@ function ComponentCard({ component }: { component: typeof registryCatalog[number
             </span>
           )}
           {component.tags.slice(0, 2).map((tag) => (
-            <span key={tag} className="rounded-md bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+            <span
+              key={tag}
+              className="rounded-md bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+            >
               {tag}
             </span>
           ))}
@@ -82,7 +105,13 @@ function ComponentCard({ component }: { component: typeof registryCatalog[number
         <div className="mt-auto flex items-center justify-between pt-3 border-t border-border/40">
           <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
             <span className="flex items-center gap-1">
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                className="h-3 w-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" x2="12" y1="15" y2="3" />
@@ -90,13 +119,21 @@ function ComponentCard({ component }: { component: typeof registryCatalog[number
               {component.stats.downloads.toLocaleString()}
             </span>
             <span className="flex items-center gap-1">
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                className="h-3 w-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
               {component.stats.likes}
             </span>
           </div>
-          <span className="text-[10px] text-muted-foreground/60">v{component.version}</span>
+          <span className="text-[10px] text-muted-foreground/60">
+            v{component.version}
+          </span>
         </div>
       </div>
     </Link>
@@ -114,7 +151,9 @@ export default function ComponentsPage() {
     if (search.trim()) {
       const terms = search.toLowerCase();
       result = result.filter((c) => {
-        const haystack = [c.name, c.slug, c.description, ...c.tags].join(" ").toLowerCase();
+        const haystack = [c.name, c.slug, c.description, ...c.tags]
+          .join(" ")
+          .toLowerCase();
         return terms.split(/\s+/).every((term) => haystack.includes(term));
       });
     }
@@ -128,7 +167,10 @@ export default function ComponentsPage() {
         result.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "newest":
-        result.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+        result.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+        );
         break;
       case "downloads":
         result.sort((a, b) => b.stats.downloads - a.stats.downloads);
@@ -143,7 +185,9 @@ export default function ComponentsPage() {
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { all: registryCatalog.length };
     for (const cat of registryCategories) {
-      counts[cat.id] = registryCatalog.filter((c) => c.category === cat.id).length;
+      counts[cat.id] = registryCatalog.filter(
+        (c) => c.category === cat.id,
+      ).length;
     }
     return counts;
   }, []);
@@ -163,7 +207,8 @@ export default function ComponentsPage() {
             Component Library
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Browse, search, and copy production-ready UI components for your next project.
+            Browse, search, and copy production-ready UI components for your
+            next project.
           </p>
         </div>
 
@@ -193,7 +238,7 @@ export default function ComponentsPage() {
                       "rounded-md px-3 py-1.5 text-xs font-medium transition-all",
                       sortBy === option.value
                         ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {option.label}
@@ -212,14 +257,18 @@ export default function ComponentsPage() {
                 "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all",
                 selectedCategory === "all"
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "border border-border bg-background text-muted-foreground hover:text-foreground hover:border-ring/40"
+                  : "border border-border bg-background text-muted-foreground hover:text-foreground hover:border-ring/40",
               )}
             >
               All
-              <span className={cn(
-                "rounded-full px-1.5 py-0.5 text-[10px]",
-                selectedCategory === "all" ? "bg-primary-foreground/20" : "bg-muted"
-              )}>
+              <span
+                className={cn(
+                  "rounded-full px-1.5 py-0.5 text-[10px]",
+                  selectedCategory === "all"
+                    ? "bg-primary-foreground/20"
+                    : "bg-muted",
+                )}
+              >
                 {categoryCounts.all}
               </span>
             </button>
@@ -232,15 +281,19 @@ export default function ComponentsPage() {
                   "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all",
                   selectedCategory === cat.id
                     ? "bg-primary text-primary-foreground shadow-sm"
-                    : "border border-border bg-background text-muted-foreground hover:text-foreground hover:border-ring/40"
+                    : "border border-border bg-background text-muted-foreground hover:text-foreground hover:border-ring/40",
                 )}
               >
                 <span>{cat.icon}</span>
                 {cat.label}
-                <span className={cn(
-                  "rounded-full px-1.5 py-0.5 text-[10px]",
-                  selectedCategory === cat.id ? "bg-primary-foreground/20" : "bg-muted"
-                )}>
+                <span
+                  className={cn(
+                    "rounded-full px-1.5 py-0.5 text-[10px]",
+                    selectedCategory === cat.id
+                      ? "bg-primary-foreground/20"
+                      : "bg-muted",
+                  )}
+                >
                   {categoryCounts[cat.id]}
                 </span>
               </button>
@@ -250,10 +303,14 @@ export default function ComponentsPage() {
 
         {/* Results Count */}
         <div className="mb-4 text-sm text-muted-foreground">
-          Showing {filteredComponents.length} of {registryCatalog.length} components
+          Showing {filteredComponents.length} of {registryCatalog.length}{" "}
+          components
           {search && (
             <span>
-              {" "}for &ldquo;<span className="font-medium text-foreground">{search}</span>&rdquo;
+              {" "}
+              for &ldquo;
+              <span className="font-medium text-foreground">{search}</span>
+              &rdquo;
             </span>
           )}
         </div>
@@ -267,15 +324,28 @@ export default function ComponentsPage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-border/60 bg-muted/20 py-20">
-            <svg className="h-12 w-12 text-muted-foreground/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg
+              className="h-12 w-12 text-muted-foreground/30"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
-            <p className="mt-4 text-sm font-medium text-foreground">No components found</p>
-            <p className="mt-1 text-sm text-muted-foreground">Try adjusting your search or filter criteria.</p>
+            <p className="mt-4 text-sm font-medium text-foreground">
+              No components found
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Try adjusting your search or filter criteria.
+            </p>
             <button
               type="button"
-              onClick={() => { setSearch(""); setSelectedCategory("all"); }}
+              onClick={() => {
+                setSearch("");
+                setSelectedCategory("all");
+              }}
               className="mt-4 text-sm font-medium text-primary hover:underline"
             >
               Clear filters
@@ -287,7 +357,10 @@ export default function ComponentsPage() {
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
             Can&apos;t find what you need?{" "}
-            <Link href="/docs" className="font-medium text-foreground underline underline-offset-4 hover:text-primary">
+            <Link
+              href="/docs"
+              className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+            >
               Read the docs
             </Link>
           </p>

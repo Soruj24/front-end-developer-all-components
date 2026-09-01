@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { SearchTrigger } from "@/components/search/SearchTrigger";
 import { SearchDialog } from "@/components/search/SearchDialog";
 import { Reveal } from "./Reveal";
@@ -106,33 +105,6 @@ export function HomeHero() {
                 Discover, customize, and ship reusable UI components for your
                 next project. Built with React, Tailwind CSS, and TypeScript.
               </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-                <Link
-                  href="/components"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md active:scale-[0.98]"
-                >
-                  Browse Components
-                  <svg
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/docs"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-background px-5 text-sm font-medium text-foreground transition-all hover:bg-muted active:scale-[0.98]"
-                >
-                  Read Docs
-                </Link>
-              </div>
             </div>
           </Reveal>
 
