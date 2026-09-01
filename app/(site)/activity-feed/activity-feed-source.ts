@@ -1,4 +1,4 @@
- 
+
 export const ACTIVITY_FEED_SOURCE = `"use client";
 
 import * as React from "react";
@@ -623,4 +623,4 @@ export const EMPTY_EXAMPLE = `
   emptyMessage="No recent activity."
 />
 `;
- 
+

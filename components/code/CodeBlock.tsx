@@ -46,26 +46,14 @@ interface CodeBlockProps {
 
 export function CodeBlock({
   code,
-  language = "tsx",
-  filename,
-  label,
+  language = "tsx", 
   showLineNumbers = true,
   className,
 }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
   const lines = code.split("\n");
   const lineCount = lines.length;
 
   const tokens = useMemo(() => tokenize(code, language), [code, language]);
-
-  const onCopy = async () => {
-    const ok = await writeClipboard(code);
-    if (!ok) return;
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
-  };
-
-  const displayLabel = label ?? language.toUpperCase();
 
   return (
     <div
@@ -74,66 +62,6 @@ export function CodeBlock({
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-border/60 bg-muted/30 px-4 py-2.5">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-muted-foreground">
-            {displayLabel}
-          </span>
-          {filename && (
-            <>
-              <span className="text-border">·</span>
-              <span className="font-mono text-[11px] text-muted-foreground/70">
-                {filename}
-              </span>
-            </>
-          )}
-        </div>
-        <button
-          type="button"
-          onClick={onCopy}
-          aria-label={copied ? "Copied" : "Copy code"}
-          className={cn(
-            "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-all duration-150",
-            copied
-              ? "bg-success/10 text-success"
-              : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
-          )}
-        >
-          {copied ? (
-            <>
-              <svg
-                className="h-3.5 w-3.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              Copied!
-            </>
-          ) : (
-            <>
-              <svg
-                className="h-3.5 w-3.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>
-              Copy
-            </>
-          )}
-        </button>
-      </div>
-
       <div className="overflow-x-auto">
         <pre className="p-4 font-mono text-[13px] leading-relaxed">
           <code>
