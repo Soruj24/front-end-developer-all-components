@@ -169,7 +169,7 @@ export function CodeBlock({
                         );
                       })
                     ) : (
-                      <span className="tok-plain">{" "}</span>
+                      <span className="tok-plain"> </span>
                     )}
                   </span>
                 </div>

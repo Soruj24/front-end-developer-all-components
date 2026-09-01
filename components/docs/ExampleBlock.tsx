@@ -2,7 +2,12 @@
 
 import { useState, useCallback } from "react";
 import { CodeBlock } from "@/components/home/CodeBlock";
-import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import {
+  CopyIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "lucide-react";
 
 interface ExampleBlockProps {
   title: string;
@@ -41,7 +46,9 @@ export function ExampleBlock({
         <div>
           <h4 className="text-sm font-semibold text-foreground">{title}</h4>
           {description && (
-            <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {description}
+            </p>
           )}
         </div>
         <div className="flex items-center gap-1">
@@ -49,9 +56,7 @@ export function ExampleBlock({
             type="button"
             onClick={handleCopy}
             className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors ${
-              copied
-                ? "text-green-500"
-                : "text-muted-foreground hover:bg-muted"
+              copied ? "text-green-500" : "text-muted-foreground hover:bg-muted"
             }`}
           >
             {copied ? (

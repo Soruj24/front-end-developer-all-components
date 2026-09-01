@@ -32,7 +32,7 @@ export default function AccordionPage() {
 
       <SourceCodeViewer
         source={ACCORDION_SOURCE}
-        filename="components/ui/Accordion/Accordion.tsx"
+        filename="components/ui/Accordion.tsx"
         defaultExpanded
       />
 

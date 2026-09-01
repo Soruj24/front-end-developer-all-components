@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
+import {
+  ComponentDocPage,
+  PreviewPanel,
+  SourceCodeViewer,
+  ExampleBlock,
+} from "@/components/docs";
 import { ActivityFeed } from "@/components/ui/ActivityFeed";
 import type { ActivityFeedItem } from "@/components/ui/ActivityFeed";
 import {
@@ -64,7 +69,8 @@ const feedItems: ActivityFeedItem[] = [
     time: "3 hours ago",
     avatar: "James Okonkwo",
     color: "bg-rose-500",
-    details: "I think we should consider using a connection pool here for better performance under load.",
+    details:
+      "I think we should consider using a connection pool here for better performance under load.",
   },
   {
     id: "6",
@@ -149,7 +155,7 @@ export default function ActivityFeedPage() {
 
       <SourceCodeViewer
         source={ACTIVITY_FEED_SOURCE}
-        filename="components/ui/ActivityFeed/ActivityFeed.tsx"
+        filename="components/ui/ActivityFeed.tsx"
         defaultExpanded
       />
 
