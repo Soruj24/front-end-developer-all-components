@@ -198,4 +198,4 @@ export function ActivityFeed({
   );
 }
 
-export type { ActivityFeedProps, ActivityFeedItem, ActivityFeedVariant };
+export type { ActivityFeedProps };
