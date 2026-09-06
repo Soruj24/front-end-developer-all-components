@@ -1,15 +1,21 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { Button, Input } from "@/components/ui";
 import { forgotPassword, type AuthFormState } from "../actions";
+import { AlertIcon } from "./icons";
 
 export function ForgotPasswordForm() {
   const [state, formAction, pending] = useActionState<AuthFormState, FormData>(
     forgotPassword,
     {}
   );
+
+  // UI-only presentation hint: validation failures carry `errors`, and the
+  // rate-limit message is the only other non-success copy this action returns.
+  const isError =
+    Boolean(state.errors && Object.keys(state.errors).length > 0) ||
+    (state.message?.includes("Too many requests") ?? false);
 
   return (
     <form action={formAction} className="flex flex-col gap-5" noValidate>
@@ -23,29 +29,39 @@ export function ForgotPasswordForm() {
         error={state.errors?.email?.[0]}
       />
 
-      {state.message && (
-        <div className="rounded-lg border border-border bg-muted px-3 py-2.5 text-sm text-foreground">
-          {state.message}
-        </div>
-      )}
-
-      <Button type="submit" size="lg" className="w-full" disabled={pending}>
-        {pending ? (
-          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" />
-          </svg>
+      {state.message &&
+        (isError ? (
+          <div
+            role="alert"
+            className="flex items-start gap-2.5 rounded-lg bg-danger-soft px-3.5 py-3 text-sm text-danger"
+          >
+            <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{state.message}</span>
+          </div>
         ) : (
-          "Send reset link"
-        )}
-      </Button>
+          <div
+            role="status"
+            className="flex items-start gap-2.5 rounded-lg bg-success-soft px-3.5 py-3 text-sm text-success"
+          >
+            <svg
+              className="mt-0.5 h-4 w-4 shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <span>{state.message}</span>
+          </div>
+        ))}
 
-      <Link
-        href="/login"
-        className="text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        ← Back to sign in
-      </Link>
+      <Button type="submit" size="lg" className="w-full" loading={pending}>
+        {pending ? "Sending…" : "Send reset link"}
+      </Button>
     </form>
   );
 }
