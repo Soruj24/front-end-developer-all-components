@@ -42,20 +42,20 @@ export function BlogPagination({
   const pages = generatePages(currentPage, totalPages);
 
   return (
-    <div className={cn("flex items-center justify-center gap-1.5", className)}>
+    <nav aria-label="Blog pages" className={cn("flex items-center justify-center gap-1.5", className)}>
       <button
         onClick={() => onPageChange?.(currentPage - 1)}
         disabled={currentPage === 1}
+        aria-label="Previous page"
         className={cn(
-          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all",
-          "border border-border/60 text-muted-foreground shadow-sm",
-          "hover:bg-accent hover:text-foreground hover:border-border",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "flex min-h-[44px] items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors sm:min-h-0",
+          "border border-border/60 text-muted-foreground",
+          "hover:bg-muted hover:text-foreground",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-40",
-          "active:scale-[0.97]",
         )}
       >
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
         Prev
@@ -73,13 +73,14 @@ export function BlogPagination({
           <button
             key={page}
             onClick={() => onPageChange?.(page)}
+            aria-label={`Page ${page}`}
+            aria-current={page === currentPage ? "page" : undefined}
             className={cn(
-              "h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-all",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-              "active:scale-[0.97]",
+              "h-11 min-w-11 rounded-lg px-3 text-sm font-medium transition-colors sm:h-9 sm:min-w-9",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               page === currentPage
-                ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
-                : "border border-border/60 text-muted-foreground shadow-sm hover:bg-accent hover:text-foreground hover:border-border",
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "border border-border/60 text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {page}
@@ -90,20 +91,20 @@ export function BlogPagination({
       <button
         onClick={() => onPageChange?.(currentPage + 1)}
         disabled={currentPage === totalPages}
+        aria-label="Next page"
         className={cn(
-          "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all",
-          "border border-border/60 text-muted-foreground shadow-sm",
-          "hover:bg-accent hover:text-foreground hover:border-border",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+          "flex min-h-[44px] items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors sm:min-h-0",
+          "border border-border/60 text-muted-foreground",
+          "hover:bg-muted hover:text-foreground",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-40",
-          "active:scale-[0.97]",
         )}
       >
         Next
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
-    </div>
+    </nav>
   );
 }

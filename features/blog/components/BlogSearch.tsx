@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { FOCUS } from "@/constants/tokens";
 
 interface BlogSearchProps {
   value: string;
@@ -8,12 +9,13 @@ interface BlogSearchProps {
 
 export function BlogSearch({ value, onChange, className }: BlogSearchProps) {
   return (
-    <div className={cn("relative w-full sm:w-72", className)}>
+    <div role="search" className={cn("relative w-full sm:w-72", className)}>
       <svg
-        className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60"
+        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -23,18 +25,31 @@ export function BlogSearch({ value, onChange, className }: BlogSearchProps) {
         />
       </svg>
       <input
-        type="text"
+        type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search articles..."
+        placeholder="Search articles…"
+        aria-label="Search articles"
         className={cn(
-          "w-full rounded-lg border border-border/60 bg-background py-2.5 pl-10 pr-4 text-sm",
-          "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
-          "outline-none transition-all",
-          "placeholder:text-muted-foreground",
-          "focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-sm",
+          "h-11 w-full rounded-lg border border-border bg-background pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground transition-colors hover:border-muted-foreground/30 sm:h-10",
+          FOCUS.ringInput,
         )}
       />
+      {value && (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          aria-label="Clear search"
+          className={cn(
+            "absolute inset-y-0 right-0 flex w-10 items-center justify-center rounded-r-lg text-muted-foreground transition-colors hover:text-foreground",
+            FOCUS.ring,
+          )}
+        >
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

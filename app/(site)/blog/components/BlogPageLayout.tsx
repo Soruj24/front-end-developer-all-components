@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import EmptyState from "@/components/ui/EmptyState";
 import {
   BlogCard,
   BlogHero,
@@ -57,7 +58,13 @@ export function BlogPageLayout() {
               Insights, tutorials, and updates from our team.
             </p>
           </div>
-          <BlogSearch value={searchQuery} onChange={setSearchQuery} />
+          <BlogSearch
+            value={searchQuery}
+            onChange={(value) => {
+              setSearchQuery(value);
+              setCurrentPage(1);
+            }}
+          />
         </div>
 
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
@@ -93,22 +100,50 @@ export function BlogPageLayout() {
         }}
       />
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1">
+      <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
+        Showing {paginatedPosts.length} of {filteredPosts.length} articles
+        {searchQuery.trim() && (
+          <>
+            {" "}for &ldquo;
+            <span className="font-medium text-foreground">{searchQuery.trim()}</span>
+            &rdquo;
+          </>
+        )}
+      </p>
+
+      <div className="flex min-w-0 flex-col gap-8 lg:flex-row">
+        <div className="min-w-0 flex-1">
           {paginatedPosts.length === 0 ? (
-            <div className="py-16 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                <svg className="h-8 w-8 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <EmptyState
+              icon={
+                <svg
+                  className="h-full w-full"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-              </div>
-              <p className="text-lg font-medium text-foreground">No posts found</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Try adjusting your search or filter to find what you&apos;re looking for.
-              </p>
-            </div>
+              }
+              title="No posts found"
+              description="Try adjusting your search or filter to find what you're looking for."
+              action={
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveCategory("All");
+                    setCurrentPage(1);
+                  }}
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  Clear filters
+                </button>
+              }
+            />
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid min-w-0 gap-6 sm:grid-cols-2">
               {paginatedPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}

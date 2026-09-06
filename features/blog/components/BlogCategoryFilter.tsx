@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { FOCUS } from "@/constants/tokens";
 
 const CATEGORIES = [
   "All",
@@ -21,23 +22,31 @@ export function BlogCategoryFilter({
   className,
 }: BlogCategoryFilterProps) {
   return (
-    <div className={cn("flex gap-2 overflow-x-auto pb-1", className)}>
-      {CATEGORIES.map((cat) => (
-        <button
-          key={cat}
-          onClick={() => onSelect(cat)}
-          className={cn(
-            "whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-            "active:scale-[0.97]",
-            active === cat
-              ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
-              : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground",
-          )}
-        >
-          {cat}
-        </button>
-      ))}
+    <div
+      role="group"
+      aria-label="Filter posts by category"
+      className={cn("flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]", className)}
+    >
+      {CATEGORIES.map((cat) => {
+        const selected = active === cat;
+        return (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => onSelect(cat)}
+            aria-pressed={selected}
+            className={cn(
+              "min-h-[44px] shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors sm:min-h-0",
+              FOCUS.ring,
+              selected
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-muted text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {cat}
+          </button>
+        );
+      })}
     </div>
   );
 }

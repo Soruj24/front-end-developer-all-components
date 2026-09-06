@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
-import { Badge } from "@/components/design-system/Badge";
-import { Avatar } from "@/components/design-system/Avatar";
+import { FOCUS } from "@/constants/tokens";
+import { Badge } from "@/components/ui/Badge";
+import { Avatar } from "@/components/ui/Avatar";
 import type { BlogPost } from "../types/blog.types";
 
 interface BlogCardProps {
@@ -10,40 +11,36 @@ interface BlogCardProps {
   className?: string;
 }
 
-const categoryColors: Record<string, string> = {
-  Technology: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  Design: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
-  Business: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  AI: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  Security: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+const CATEGORY_VARIANTS: Record<string, "info" | "primary" | "warning" | "success" | "error"> = {
+  Technology: "info",
+  Design: "primary",
+  Business: "warning",
+  AI: "success",
+  Security: "error",
 };
 
 export function BlogCard({ post, className }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
+      aria-label={`${post.title} — by ${post.author.name}. ${post.excerpt}`}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-xl border border-border/60 bg-card",
-        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
-        "transition-all duration-200",
-        "hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20",
-        "hover:border-border hover:ring-black/[0.08] dark:hover:ring-white/[0.12]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-        "active:scale-[0.98]",
+        "group flex min-w-0 flex-col overflow-hidden rounded-lg border border-border/60 bg-surface shadow-sm transition-colors duration-200 hover:border-ring/40",
+        FOCUS.ring,
         className,
       )}
     >
-      <div className="relative h-48 overflow-hidden bg-muted/30">
+      <div className="relative h-48 overflow-hidden bg-muted/20">
         {post.coverImage ? (
           <Image
             src={post.coverImage}
-            alt={post.title}
+            alt=""
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-muted/50 to-muted/80">
+          <div className="flex h-full items-center justify-center" aria-hidden="true">
             <svg
               className="h-12 w-12 text-muted-foreground/20"
               fill="none"
@@ -60,25 +57,20 @@ export function BlogCard({ post, className }: BlogCardProps) {
           </div>
         )}
         {post.featured && (
-          <div className="absolute top-3 left-3">
-            <Badge className="rounded-full bg-yellow-500/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+          <div className="absolute left-3 top-3">
+            <Badge variant="warning" size="sm">
               Featured
             </Badge>
           </div>
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <Badge
-          className={cn(
-            "w-fit rounded-full px-2.5 py-0.5 text-[11px] font-medium",
-            categoryColors[post.category] || "bg-muted text-muted-foreground",
-          )}
-        >
+      <div className="flex min-w-0 flex-1 flex-col gap-3 p-5">
+        <Badge variant={CATEGORY_VARIANTS[post.category] ?? "secondary"} size="sm" className="w-fit">
           {post.category}
         </Badge>
 
-        <h3 className="text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+        <h3 className="text-base font-semibold leading-snug text-foreground">
           {post.title}
         </h3>
 
@@ -86,34 +78,35 @@ export function BlogCard({ post, className }: BlogCardProps) {
           {post.excerpt}
         </p>
 
-        <div className="mt-auto flex items-center gap-3 border-t border-border/60 pt-3">
+        <div className="mt-auto flex min-w-0 items-center gap-3 border-t border-border/60 pt-3">
           <Avatar
             fallback={post.author.name
               .split(" ")
               .map((n) => n[0])
               .join("")}
+            alt={post.author.name}
             size="sm"
           />
-          <div className="flex flex-1 items-center gap-x-2 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">
+          <div className="flex min-w-0 flex-1 items-center gap-x-2 text-xs text-muted-foreground">
+            <span className="truncate font-medium text-foreground">
               {post.author.name}
             </span>
-            <span className="text-border">·</span>
-            <span>{post.date}</span>
+            <span className="shrink-0 text-border" aria-hidden="true">·</span>
+            <span className="shrink-0">{post.date}</span>
           </div>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {post.readTime}
             </span>
             {post.views && (
               <span className="flex items-center gap-1">
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
@@ -122,15 +115,19 @@ export function BlogCard({ post, className }: BlogCardProps) {
             )}
             {post.likes && (
               <span className="flex items-center gap-1">
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 {post.likes}
               </span>
             )}
           </div>
-          <span className="text-xs font-medium text-primary transition-colors group-hover:text-primary/80">
-            Read more →
+          <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-primary">
+            Read more
+            <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
           </span>
         </div>
       </div>
