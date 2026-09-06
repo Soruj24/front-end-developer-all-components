@@ -38,8 +38,8 @@ function SkeletonCard({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-border/60 bg-card p-4",
-        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        "rounded-lg border border-border/60 bg-surface p-4",
+        "shadow-sm",
         className,
       )}
       {...props}
@@ -74,8 +74,8 @@ function SkeletonTable({ rows = 5, columns = 4, className }: { rows?: number; co
   return (
     <div
       className={cn(
-        "rounded-lg border border-border/60",
-        "shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+        "rounded-lg border border-border/60 bg-surface",
+        "shadow-sm",
         className,
       )}
     >

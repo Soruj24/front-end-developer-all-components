@@ -4,10 +4,10 @@ import { useEffect } from 'react'
 
 export default function Error({
   error,
-  unstable_retry,
+  reset,
 }: {
   error: Error & { digest?: string }
-  unstable_retry: () => void
+  reset: () => void
 }) {
   useEffect(() => {
     console.error(error)
@@ -43,8 +43,8 @@ export default function Error({
         </p>
       )}
       <button
-        onClick={() => unstable_retry()}
-        className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 active:scale-[0.97]"
+        onClick={() => reset()}
+        className="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50"
       >
         Try again
       </button>

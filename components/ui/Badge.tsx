@@ -1,7 +1,7 @@
 import { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "default" | "primary" | "secondary" | "success" | "warning" | "error" | "outline";
+type Variant = "default" | "primary" | "secondary" | "success" | "warning" | "error" | "info" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const variantClasses: Record<Variant, string> = {
@@ -11,6 +11,7 @@ const variantClasses: Record<Variant, string> = {
   success: "bg-success/10 text-success ring-1 ring-success/20",
   warning: "bg-warning/10 text-warning ring-1 ring-warning/20",
   error: "bg-danger/10 text-danger ring-1 ring-danger/20",
+  info: "bg-info/10 text-info ring-1 ring-info/20",
   outline: "border border-border text-foreground",
 };
 
@@ -51,8 +52,8 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         {...props}
       >
         {dot && (
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-40" />
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-40 motion-reduce:animate-none" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-current" />
           </span>
         )}

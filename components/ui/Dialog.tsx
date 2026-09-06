@@ -157,8 +157,7 @@ export function DialogContent({ children, className }: { children: ReactNode; cl
         tabIndex={-1}
         className={cn(
           "relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col outline-none",
-          "rounded-xl border border-border/60 bg-card shadow-modal",
-          "ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+          "rounded-lg border border-border/60 bg-surface shadow-modal",
           "transition-[opacity,transform] duration-200 ease-out will-change-transform motion-reduce:transition-none",
           closing ? "scale-[0.98] opacity-0" : "animate-scale-in-fast",
           className,

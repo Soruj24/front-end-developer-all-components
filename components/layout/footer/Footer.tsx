@@ -1,69 +1,40 @@
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
-import { BORDER, BG, LAYOUT } from "@/constants/tokens";
-import { FooterBrand } from "./FooterBrand";
-import { FooterLinks } from "./FooterLinks";
-import { FooterSocials } from "./FooterSocials";
-import { FooterNewsletter } from "./FooterNewsletter";
+import { LAYOUT } from "@/constants/tokens";
 import { FooterBottom } from "./FooterBottom";
 
-const footerSections = [
-  {
-    title: "Product",
-    links: [
-      { label: "Components", href: "/components" },
-      { label: "Templates", href: "/templates" },
-      { label: "Registry", href: "/registry" },
-      { label: "Visual Builder", href: "/visual-builder" },
-      { label: "CLI", href: "/cli" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Documentation", href: "/docs" },
-      { label: "Guides", href: "/guides" },
-      { label: "Examples", href: "/examples" },
-      { label: "Changelog", href: "/changelog" },
-      { label: "Blog", href: "/blog" },
-      { label: "Community", href: "/community" },
-    ],
-  },
-  {
-    title: "Developers",
-    links: [
-      { label: "API", href: "/api" },
-      { label: "SDK", href: "/sdk" },
-      { label: "CLI", href: "/cli" },
-      { label: "MCP", href: "/mcp" },
-      { label: "Registry", href: "/registry" },
-      { label: "GitHub", href: siteConfig.github },
-      { label: "Status", href: "/status" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-      { label: "Security", href: "/security" },
-    ],
-  },
+const QUICK_LINKS = [
+  { label: "Components", href: "/components" },
+  { label: "Templates", href: "/templates" },
+  { label: "Docs", href: "/docs" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export function Footer() {
   return (
-    <footer
-      className={cn("border-t", BORDER.default, BG.base)}
-      role="contentinfo"
-    >
+    <footer className="border-t border-border/60 bg-background" role="contentinfo">
       <div className={cn("mx-auto", LAYOUT.maxWidth, LAYOUT.px)}>
-        <FooterSocials />
-
-        <div className="py-6">
-          <FooterNewsletter />
+        <div className="flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
+          <Link href="/" className="flex w-fit items-center gap-2.5" aria-label="Home">
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background">
+              {siteConfig.shortName}
+            </span>
+            <span className="text-sm font-semibold tracking-tight text-foreground">
+              {siteConfig.name}
+            </span>
+          </Link>
+          <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            {QUICK_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         <FooterBottom />

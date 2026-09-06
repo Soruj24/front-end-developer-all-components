@@ -27,7 +27,7 @@ export function MobileAccountNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+                "flex min-h-[40px] shrink-0 items-center gap-2 rounded-md border px-3.5 py-1.5 text-sm font-medium transition-colors",
                 active
                   ? "border-primary bg-primary-soft text-primary"
                   : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"

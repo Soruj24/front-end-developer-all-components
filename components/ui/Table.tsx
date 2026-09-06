@@ -130,7 +130,7 @@ function Table({
       : "px-4 py-3 text-xs";
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-border/60 bg-card shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
+    <div className="w-full overflow-x-auto rounded-lg border border-border/60 bg-surface shadow-sm">
       <table className="w-full border-collapse">
         <caption className="sr-only">Data table</caption>
         <thead>
@@ -167,7 +167,7 @@ function Table({
                 }
                 className={cn(
                   headerCell,
-                  "text-left font-semibold uppercase tracking-wider text-muted-foreground/70",
+                  "text-left font-semibold uppercase tracking-wider text-muted-foreground",
                   ALIGN[col.align ?? "left"],
                   col.sortable &&
                     "cursor-pointer select-none transition-colors hover:text-foreground",

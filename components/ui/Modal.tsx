@@ -16,7 +16,7 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
   md: "max-w-md",
   lg: "max-w-lg",
   xl: "max-w-xl",
-  fullscreen: "h-dvh max-h-none w-full max-w-full rounded-none sm:h-[95vh] sm:max-h-[95vh] sm:max-w-[95vw] sm:rounded-2xl",
+  fullscreen: "h-dvh max-h-none w-full max-w-full rounded-none sm:h-[95vh] sm:max-h-[95vh] sm:max-w-[95vw] sm:rounded-lg",
 };
 
 export interface ModalProps {
@@ -139,9 +139,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           ref={panelRef}
           tabIndex={-1}
           className={cn(
-            "relative z-10 flex w-full flex-col outline-none border border-border bg-card shadow-modal ring-1 ring-black/[0.04] dark:ring-white/[0.08]",
+            "relative z-10 flex w-full flex-col outline-none border border-border/60 bg-surface shadow-modal",
             "transition-[opacity,transform] duration-200 ease-out will-change-transform motion-reduce:transition-none",
-            isFullscreen ? SIZE_CLASSES.fullscreen : cn("max-h-[calc(100dvh-1.5rem)] rounded-t-2xl sm:max-h-[88vh] sm:rounded-2xl", SIZE_CLASSES[size]),
+            isFullscreen ? SIZE_CLASSES.fullscreen : cn("max-h-[calc(100dvh-1.5rem)] rounded-t-lg sm:max-h-[88vh] sm:rounded-lg", SIZE_CLASSES[size]),
             closing ? "translate-y-3 scale-[0.98] opacity-0 sm:translate-y-0" : "animate-scale-in-fast",
           )}
         >

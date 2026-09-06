@@ -27,7 +27,7 @@ function EmptyState({ icon, title, description, action, size = "md" }: EmptyStat
       )}
     >
       {icon && (
-        <div className={cn(s.icon, "text-muted-foreground/40")}>
+        <div className={cn(s.icon, "text-muted-foreground")} aria-hidden="true">
           {icon}
         </div>
       )}

@@ -30,24 +30,26 @@ export function SidebarItem({ link, depth = 0, collapsed, onNavigate }: SidebarI
           onClick={onNavigate}
           data-nav-link
           className={cn(
-            "group relative mx-auto flex h-8 w-8 items-center justify-center",
+            "group relative mx-auto flex h-9 w-9 items-center justify-center",
             RADIUS.sm,
             TRANSITION.colors,
             active
               ? `${BG.accent} text-foreground`
-              : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
+              : `text-muted-foreground hover:bg-muted hover:text-foreground`,
           )}
           title={link.label}
           aria-current={active ? "page" : undefined}
         >
           <span
             className={cn(
-              "absolute left-0 top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-accent transition-opacity",
+              "absolute -left-2 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-full bg-primary transition-opacity",
               active ? "opacity-100" : "opacity-0",
             )}
             aria-hidden="true"
           />
-          {link.icon ?? <span className="text-xs">{link.label.charAt(0)}</span>}
+          <span className="flex h-4 w-4 items-center justify-center text-[13px]" aria-hidden="true">
+            {link.icon ?? link.label.charAt(0)}
+          </span>
         </Link>
       </li>
     );
@@ -60,22 +62,21 @@ export function SidebarItem({ link, depth = 0, collapsed, onNavigate }: SidebarI
         onClick={onNavigate}
         data-nav-link
         className={cn(
-          "group relative flex items-center gap-2 py-1.5 pr-2",
+          "group relative flex h-9 items-center gap-2.5 pr-2",
           RADIUS.sm,
           TEXT.body,
           "font-medium",
           TRANSITION.colors,
-          "active:scale-[0.98]",
-          depth === 0 ? "pl-2" : "pl-6",
+          depth === 0 ? "pl-3" : "pl-6",
           active
-            ? `${BG.accent} text-foreground font-semibold`
-            : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
+            ? `${BG.accent} font-semibold text-foreground`
+            : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
         aria-current={active ? "page" : undefined}
       >
         <span
           className={cn(
-            "absolute left-0 top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-accent transition-opacity",
+            "absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-full bg-primary transition-opacity",
             active ? "opacity-100" : "opacity-0 group-hover:opacity-40",
           )}
           aria-hidden="true"
@@ -83,8 +84,8 @@ export function SidebarItem({ link, depth = 0, collapsed, onNavigate }: SidebarI
         {link.icon && (
           <span
             className={cn(
-              "w-4 shrink-0 text-center text-xs transition-colors",
-              active ? "text-accent" : "text-muted-foreground/70 group-hover:text-foreground",
+              "flex h-4 w-4 shrink-0 items-center justify-center text-[13px] transition-colors",
+              active ? "text-primary" : "text-muted-foreground group-hover:text-foreground",
             )}
             aria-hidden="true"
           >

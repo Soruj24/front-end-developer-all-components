@@ -35,10 +35,14 @@ export const BORDER = {
 /* ── Radius ─────────────────────────────────────────────── */
 
 export const RADIUS = {
-  /** Buttons, inputs, small interactive elements */
+  /** Buttons, checkboxes, icon buttons, toggles */
   sm: "rounded-md",
-  /** Cards, panels, larger containers */
+  /** Selects, dropdowns, popovers */
+  md: "rounded-md",
+  /** Cards, tables, inputs, textareas, dialogs */
   lg: "rounded-lg",
+  /** Badges, pills, avatar, switch track */
+  full: "rounded-full",
 } as const;
 
 /* ── Backgrounds ────────────────────────────────────────── */
@@ -165,6 +169,26 @@ export const Z = {
   modal: "z-[60]",
   /** Toast / notification (future) */
   toast: "z-[70]",
+} as const;
+
+/* ── Unified interactive states ─────────────────────────── */
+
+export const STATE = {
+  /** Keyboard focus for buttons / links / menus */
+  focus:
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+  /** Keyboard focus for text inputs (no offset) */
+  focusInput:
+    "focus:outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/20",
+  /** Hover for text inputs */
+  hoverInput: "hover:border-muted-foreground/30",
+  /** Disabled / aria-disabled */
+  disabled:
+    "disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
+  /** Loading (buttons, rows, cards) */
+  loading: "pointer-events-none opacity-70",
+  /** Standard press feedback */
+  press: "active:scale-[0.98]",
 } as const;
 
 /* ── Status dot (ping animation) ────────────────────────── */

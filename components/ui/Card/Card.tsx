@@ -10,9 +10,9 @@ const paddingClasses: Record<string, string> = {
 
 const variantClasses: Record<string, string> = {
   default:
-    "border border-border bg-card text-card-foreground shadow-sm",
+    "border border-border/60 bg-surface text-card-foreground shadow-sm",
   elevated:
-    "border border-border/60 bg-card text-card-foreground shadow-md shadow-black/[.03] dark:shadow-black/[.08]",
+    "border border-border/60 bg-surface text-card-foreground shadow-card",
   outline:
     "border-2 border-border bg-transparent text-card-foreground",
   ghost:
@@ -23,7 +23,7 @@ export function Card({ children, padding = "md", variant = "default", className 
   return (
     <div
       className={cn(
-        "rounded-xl transition-colors",
+        "rounded-lg transition-colors",
         variantClasses[variant],
         paddingClasses[padding],
         className,

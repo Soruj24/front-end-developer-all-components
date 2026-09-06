@@ -60,7 +60,7 @@ function initials(name: string): string {
 
 function StatCard({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-background p-5">
+    <div className="rounded-lg border border-border/60 bg-surface p-5 shadow-sm">
       <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
       <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground">{value}</p>
       {note && <p className="mt-1 text-xs text-muted-foreground">{note}</p>}
@@ -89,10 +89,10 @@ export default async function AccountOverview() {
 
   return (
     <div className="flex flex-col gap-6">
-      <section className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary-soft via-background to-background p-6 sm:p-8">
+      <section className="relative overflow-hidden rounded-lg border border-border/60 bg-surface p-6 shadow-sm sm:p-8">
         <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-foreground text-lg font-bold text-background shadow-sm">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-foreground text-lg font-bold text-background shadow-sm">
               {initials(profile.name)}
             </span>
             <div>
@@ -110,7 +110,7 @@ export default async function AccountOverview() {
           </div>
           <Link
             href="/components"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm transition-colors hover:bg-foreground/90"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background shadow-sm transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 5v14M5 12h14" />
@@ -129,7 +129,7 @@ export default async function AccountOverview() {
         <StatCard label="Role" value={roleLabel(profile.role)} note="Platform access level" />
       </div>
 
-      <section className="rounded-2xl border border-border bg-background p-5">
+      <section className="rounded-lg border border-border/60 bg-surface p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold tracking-tight text-foreground">Your content</h2>
           <Link
@@ -144,7 +144,7 @@ export default async function AccountOverview() {
             <Link
               key={section.href}
               href={section.href}
-              className="group flex flex-col gap-3 rounded-xl border border-border p-4 transition-colors hover:border-ring/60 hover:bg-muted"
+              className="group flex flex-col gap-3 rounded-lg border border-border/60 p-4 transition-colors hover:border-ring/60 hover:bg-muted"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted transition-colors group-hover:bg-primary-soft">
                 <svg
@@ -168,7 +168,7 @@ export default async function AccountOverview() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-background p-5">
+      <section className="rounded-lg border border-border/60 bg-surface p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold tracking-tight text-foreground">Recent activity</h2>
           <Link href="/account/history" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
@@ -183,7 +183,7 @@ export default async function AccountOverview() {
             <li key={String(event._id)} className="flex items-center justify-between gap-4 py-3 text-sm">
               <div className="flex items-center gap-3">
                 <span
-                  className={`h-2 w-2 rounded-full ${event.status === "success" ? "bg-emerald-500" : "bg-danger"}`}
+                  className={`h-2 w-2 rounded-full ${event.status === "success" ? "bg-success" : "bg-danger"}`}
                 />
                 <span className="text-foreground">
                   {event.status === "success" ? "Signed in" : "Failed sign-in"} · {event.method}

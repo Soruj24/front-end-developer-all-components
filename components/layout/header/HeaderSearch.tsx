@@ -1,15 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import {
-  BORDER,
-  BG,
-  RADIUS,
-  TRANSITION,
-  FOCUS,
-  TEXT,
-  COLOR,
-} from "@/constants/tokens";
+import { FOCUS } from "@/constants/tokens";
 
 interface HeaderSearchTriggerProps {
   onClick: () => void;
@@ -21,48 +13,30 @@ export function HeaderSearch({ onClick, className }: HeaderSearchTriggerProps) {
     <button
       type="button"
       onClick={onClick}
+      aria-label="Search (Ctrl+K)"
       className={cn(
-        "hidden items-center gap-2 border",
-        RADIUS.sm,
-        BORDER.default,
-        BG.mutedSoft,
-        "px-3 py-1.5",
-        TEXT.brand,
-        COLOR.muted,
-        TRANSITION.colors,
-        "hover:text-foreground",
+        "mr-1 hidden h-9 w-44 items-center gap-2 rounded-md border border-border/60 bg-muted/50 px-3 text-[13px] text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground md:flex xl:w-56",
         FOCUS.ring,
-        "lg:flex",
         className,
       )}
-      aria-label="Search (Ctrl+K)"
     >
       <svg
-        className="h-3.5 w-3.5 shrink-0"
+        className="h-4 w-4 shrink-0"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={1.8}
         strokeLinecap="round"
         strokeLinejoin="round"
+        aria-hidden="true"
       >
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.3-4.3" />
       </svg>
-      <span className="min-w-0 truncate">Search components, templates, docs...</span>
-      <kbd
-        className={cn(
-          "pointer-events-none ml-4 hidden h-5 select-none items-center gap-1",
-          "border bg-background px-1.5 font-mono",
-          BORDER.default,
-          TEXT.tiny,
-          COLOR.muted,
-          "sm:flex",
-          RADIUS.sm,
-        )}
-      >
-        <span className="text-xs">Ctrl</span>
-        <span className="text-xs">K</span>
+      <span className="min-w-0 flex-1 truncate text-left">Search…</span>
+      <kbd className="pointer-events-none hidden h-5 shrink-0 select-none items-center gap-0.5 rounded border border-border/60 bg-background px-1.5 font-mono text-[10px] text-muted-foreground lg:flex">
+        <span>⌘</span>
+        <span>K</span>
       </kbd>
     </button>
   );

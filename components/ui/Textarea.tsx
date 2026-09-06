@@ -35,11 +35,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={textareaId}
           maxLength={maxLength}
           className={cn(
-            "flex min-h-[80px] w-full rounded-xl border border-border bg-card px-3 py-2.5 text-sm text-foreground",
+            "flex min-h-[80px] w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground",
             "placeholder:text-muted-foreground",
             "transition-colors duration-200",
             "hover:border-muted-foreground/30",
-            "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+            "focus:outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/20",
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
               ? "border-destructive focus:border-destructive focus:ring-destructive/20"
@@ -47,11 +47,13 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             className,
           )}
           onChange={handleChange}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${textareaId}-error` : undefined}
           {...props}
         />
         <div className="flex items-center justify-between">
           {error ? (
-            <p className="text-sm text-destructive">{error}</p>
+            <p id={`${textareaId}-error`} role="alert" className="text-xs text-destructive">{error}</p>
           ) : (
             <div />
           )}

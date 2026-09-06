@@ -19,10 +19,16 @@ export function ThemeInit() {
       if (stored === "dark") apply(true);
       else if (stored === "light") apply(false);
       else {
+        // "system" or unset follows the OS; blocking script in layout already
+        // painted the correct class, this only keeps it in sync.
         apply(mq.matches);
-        mq.addEventListener("change", (e) => {
-          if (!localStorage.getItem("theme")) apply(e.matches);
-        });
+        const onChange = (e: MediaQueryListEvent) => {
+          try {
+            if (!localStorage.getItem("theme")) apply(e.matches);
+          } catch {}
+        };
+        mq.addEventListener("change", onChange);
+        return () => mq.removeEventListener("change", onChange);
       }
     } catch (e) {}
   }, []);

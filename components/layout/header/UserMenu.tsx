@@ -2,16 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
-import {
-  FOCUS,
-  TRANSITION,
-  Z,
-  RADIUS,
-  BORDER,
-  BG,
-  TEXT,
-} from "@/constants/tokens";
+import { FOCUS, TEXT, Z } from "@/constants/tokens";
 
 interface UserMenuProps {
   userName?: string;
@@ -24,15 +17,9 @@ interface UserMenuProps {
 const USER_ITEMS = [
   { label: "Profile", href: "/profile" },
   { label: "My Components", href: "/components" },
-  { label: "My Templates", href: "/templates" },
   { label: "Favorites", href: "/favorites" },
   { label: "Projects", href: "/projects" },
   { label: "Settings", href: "/account/settings" },
-];
-
-const ADMIN_ITEMS = [
-  { label: "Admin Panel", href: "/admin" },
-  { label: "Users", href: "/admin/users" },
 ];
 
 export function UserMenu({
@@ -47,32 +34,35 @@ export function UserMenu({
 
   useEffect(() => {
     if (!open) return;
-    const handleClick = (e: MouseEvent) => {
+    const onDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [open]);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open ]);
 
   const initial = userName.charAt(0).toUpperCase();
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className={cn("relative", className)}>
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
-        className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-full",
-          BORDER.default,
-          BG.muted,
-          "text-xs font-medium text-muted-foreground",
-          "hover:bg-muted/80",
-          TRANSITION.colors,
-          FOCUS.ring,
-          className,
-        )}
-        aria-label="User menu"
+        aria-label="Account menu"
         aria-expanded={open}
+        aria-haspopup="menu"
+        className={cn(
+          "flex h-10 w-10 items-center justify-center rounded-md text-sm font-semibold transition-colors hover:bg-muted sm:h-8 sm:w-8",
+          userAvatar ? "" : "bg-foreground text-background hover:bg-foreground/90",
+          FOCUS.ring,
+        )}
       >
         {userAvatar ? (
           <Image
@@ -80,7 +70,7 @@ export function UserMenu({
             alt={userName}
             width={32}
             height={32}
-            className="h-full w-full rounded-full object-cover"
+            className="h-8 w-8 rounded-md object-cover"
           />
         ) : (
           initial
@@ -89,95 +79,58 @@ export function UserMenu({
 
       {open && (
         <div
-          className={cn(
-            "absolute right-0 top-full mt-1 w-56 overflow-hidden",
-            Z.chrome,
-            RADIUS.lg,
-            BORDER.default,
-            "bg-popover shadow-lg",
-            "animate-in fade-in-0 zoom-in-95",
-          )}
           role="menu"
+          aria-label="Account"
+          className={cn(
+            "absolute right-0 top-full z-50 mt-2 w-60 max-w-[85vw] overflow-hidden rounded-lg border border-border/60 bg-popover shadow-popover",
+            Z.chrome,
+          )}
         >
-          <div className={cn("border-b px-3 py-2.5", BORDER.default)}>
-            <p className={cn("font-medium text-foreground", TEXT.body)}>
+          <div className="border-b border-border/60 px-4 py-3">
+            <p className={cn("truncate font-semibold text-foreground", TEXT.body)}>
               {userName}
             </p>
-            {role === "admin" && (
-              <span
-                className={cn(
-                  "mt-1 inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 font-medium text-primary",
-                  TEXT.tiny,
-                )}
-              >
-                Admin
-              </span>
-            )}
+            <p className={cn("mt-0.5 truncate capitalize text-muted-foreground", TEXT.small)}>
+              {role} plan
+            </p>
           </div>
 
-          <div className="p-1">
+          <div className="p-1.5">
             {USER_ITEMS.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  "flex items-center px-2.5 py-1.5",
-                  RADIUS.sm,
-                  "text-muted-foreground",
-                  BG.mutedSoft,
-                  "hover:text-foreground",
-                  TRANSITION.colors,
-                  TEXT.body,
-                )}
                 role="menuitem"
+                onClick={() => setOpen(false)}
+                className="flex items-center rounded-md px-3 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
-          {role === "admin" && ADMIN_ITEMS.length > 0 && (
-            <div className={cn("border-t p-1", BORDER.default)}>
-              {ADMIN_ITEMS.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center px-2.5 py-1.5",
-                    RADIUS.sm,
-                    "text-muted-foreground",
-                    BG.mutedSoft,
-                    "hover:text-foreground",
-                    TRANSITION.colors,
-                    TEXT.body,
-                  )}
-                  role="menuitem"
-                >
-                  {item.label}
-                </a>
-              ))}
+          {role === "admin" && (
+            <div className="border-t border-border/60 p-1.5">
+              <Link
+                href="/admin"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="flex items-center rounded-md px-3 py-2 text-[13px] font-medium text-primary transition-colors hover:bg-primary-soft"
+              >
+                Admin Panel
+              </Link>
             </div>
           )}
 
-          <div className={cn("border-t p-1", BORDER.default)}>
+          <div className="border-t border-border/60 p-1.5">
             <button
               type="button"
+              role="menuitem"
               onClick={() => {
                 setOpen(false);
                 onLogout?.();
               }}
-              className={cn(
-                "flex w-full items-center px-2.5 py-1.5",
-                RADIUS.sm,
-                "text-muted-foreground",
-                BG.mutedSoft,
-                "hover:text-foreground",
-                TRANSITION.colors,
-                TEXT.body,
-              )}
-              role="menuitem"
+              className="flex w-full items-center rounded-md px-3 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               Log out
             </button>

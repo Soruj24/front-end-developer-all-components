@@ -23,7 +23,7 @@ export default async function AccountSecurity() {
 
       <SectionPanel title="Email verification" subtitle="Required to unlock publishing.">
         {profile?.emailVerified ? (
-          <p className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+          <p className="flex items-center gap-2 text-sm text-success">
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 6 9 17l-5-5" />
             </svg>
@@ -57,14 +57,14 @@ export default async function AccountSecurity() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Link
           href="/account/sessions"
-          className="rounded-2xl border border-border bg-background p-5 transition-colors hover:border-ring/60 hover:bg-muted"
+          className="rounded-lg border border-border/60 bg-surface p-5 shadow-sm transition-colors hover:border-ring/60 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <h2 className="text-base font-semibold tracking-tight text-foreground">Active sessions</h2>
           <p className="mt-1 text-sm text-muted-foreground">Review and revoke devices.</p>
         </Link>
         <Link
           href="/account/history"
-          className="rounded-2xl border border-border bg-background p-5 transition-colors hover:border-ring/60 hover:bg-muted"
+          className="rounded-lg border border-border/60 bg-surface p-5 shadow-sm transition-colors hover:border-ring/60 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <h2 className="text-base font-semibold tracking-tight text-foreground">Login history</h2>
           <p className="mt-1 text-sm text-muted-foreground">Review recent sign-ins.</p>

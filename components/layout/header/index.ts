@@ -4,5 +4,6 @@ export { HeaderSearch } from "./HeaderSearch";
 export { HeaderActions } from "./HeaderActions";
 export { ThemeSwitcher } from "./ThemeSwitcher";
 export { UserMenu } from "./UserMenu";
+export { NotificationsMenu } from "./NotificationsMenu";
 export { MobileHeader } from "./MobileHeader";
 export { MobileNavigation } from "./MobileNavigation";

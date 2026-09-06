@@ -56,11 +56,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              "flex h-10 w-full rounded-xl border border-border bg-card px-3 text-sm text-foreground",
+              "flex h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground",
               "placeholder:text-muted-foreground",
               "transition-colors duration-200",
               "hover:border-muted-foreground/30",
-              "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
+              "focus:outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/20",
               "disabled:cursor-not-allowed disabled:opacity-50",
               error
                 ? "border-destructive focus:border-destructive focus:ring-destructive/20"
@@ -94,10 +94,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && (
-          <p id={errorId} className="text-sm text-destructive">{error}</p>
+          <p id={errorId} role="alert" className="text-xs text-destructive">{error}</p>
         )}
         {helperText && !error && (
-          <p id={helperId} className="text-sm text-muted-foreground">{helperText}</p>
+          <p id={helperId} className="text-xs text-muted-foreground">{helperText}</p>
         )}
       </div>
     );

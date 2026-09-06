@@ -198,6 +198,14 @@
   --color-danger-soft: var(--danger-soft);
   --color-destructive: var(--danger);
   --color-destructive-foreground: var(--danger-foreground);
+  --color-destructive-soft: var(--danger-soft);
+  /* Unified semantic aliases — error == danger == destructive */
+  --color-error: var(--danger);
+  --color-error-foreground: var(--danger-foreground);
+  --color-error-soft: var(--danger-soft);
+  /* Card alias — cards are surfaces, never a separate hue */
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-info-soft: var(--info-soft);
@@ -347,15 +355,26 @@
   }
 
   a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-decoration-color: color-mix(in oklab, var(--accent) 35%, transparent);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 150ms ease;
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 150ms ease;
   }
 
   a:hover {
-    text-decoration-color: var(--accent);
+    color: var(--primary);
+  }
+
+  /* Prose links keep the underline; app chrome / nav links never underline. */
+  :where(p, li, td, th) a,
+  .docs a {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--primary) 35%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  :where(p, li, td, th) a:hover,
+  .docs a:hover {
+    text-decoration-color: var(--primary);
   }
 
   ::selection {
@@ -525,34 +544,34 @@ svg[data-lod="low"] .graph-lod-label {
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium;
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium;
     transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
     @apply active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium bg-primary text-primary-foreground;
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium bg-primary text-primary-foreground;
     transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
     @apply active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
     @apply shadow-sm hover:bg-primary/90 hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium bg-secondary text-secondary-foreground;
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium bg-secondary text-secondary-foreground;
     transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
     @apply active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
     @apply hover:bg-secondary/80;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium border border-border bg-background;
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium border border-border bg-background;
     transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
     @apply active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
     @apply hover:bg-muted;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium bg-transparent text-foreground;
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium bg-transparent text-foreground;
     transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.2s ease-out;
     @apply active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
     @apply hover:bg-muted;
@@ -564,22 +583,22 @@ svg[data-lod="low"] .graph-lod-label {
   .btn-icon { @apply h-10 w-10 p-0; }
 
   .surface-card {
-    @apply rounded-xl border border-border bg-surface;
+    @apply rounded-lg border border-border/60 bg-surface;
   }
 
   .surface-raised {
-    @apply rounded-xl border border-border bg-surface;
-    @apply shadow-xs;
+    @apply rounded-lg border border-border/60 bg-surface;
+    @apply shadow-card;
   }
 
   .surface-interact {
-    @apply rounded-xl border border-border bg-surface;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
-    @apply hover:-translate-y-0.5 hover:border-ring/40 hover:shadow-md;
+    @apply rounded-lg border border-border/60 bg-surface;
+    transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out;
+    @apply hover:border-ring/40 hover:shadow-md;
   }
 
   .input {
-    @apply w-full rounded-lg border border-border bg-background/60;
+    @apply w-full rounded-lg border border-border bg-background;
     @apply px-3.5 py-2 text-sm text-foreground;
     @apply placeholder:text-muted-foreground/60;
     transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
@@ -605,6 +624,40 @@ svg[data-lod="low"] .graph-lod-label {
   .badge-dot::before {
     content: "";
     @apply h-1.5 w-1.5 shrink-0 rounded-full;
+  }
+
+  /* ——— Unified interactive states (single source of truth) ——— */
+  .state-disabled {
+    @apply disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50;
+  }
+
+  .state-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .state-focus-input {
+    @apply focus:outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/20;
+  }
+
+  .state-loading {
+    @apply pointer-events-none opacity-70;
+  }
+
+  /* ——— Visual hierarchy helpers (whitespace over borders) ——— */
+  .section-stack {
+    @apply flex flex-col gap-8;
+  }
+
+  .content-stack {
+    @apply flex flex-col gap-6;
+  }
+
+  .field-stack {
+    @apply flex flex-col gap-5;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-widest text-muted-foreground;
   }
 }
 

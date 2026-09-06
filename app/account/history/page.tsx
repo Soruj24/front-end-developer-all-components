@@ -41,8 +41,9 @@ export default async function AccountHistory() {
               <div className="flex items-center gap-3">
                 <span
                   className={`h-2 w-2 shrink-0 rounded-full ${
-                    event.status === "success" ? "bg-emerald-500" : "bg-danger"
+                    event.status === "success" ? "bg-success" : "bg-danger"
                   }`}
+                  aria-hidden="true"
                 />
                 <div>
                   <p className="text-sm font-medium text-foreground">
@@ -59,7 +60,7 @@ export default async function AccountHistory() {
             </li>
           ))}
         </ul>
-        <div className="mt-4 rounded-xl bg-muted/50 px-4 py-3 text-xs text-muted-foreground">
+        <div className="mt-4 rounded-lg bg-muted/50 px-4 py-3 text-xs text-muted-foreground">
           Something look wrong?{" "}
           <Link href="/account/security" className="font-medium text-foreground underline underline-offset-2">
             Change your password

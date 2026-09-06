@@ -1,9 +1,7 @@
 export { Sidebar } from "./Sidebar";
-export { SidebarHeader } from "./SidebarHeader";
 export { SidebarSearch } from "./SidebarSearch";
 export { SidebarNavigation } from "./SidebarNavigation";
 export { SidebarSection } from "./SidebarSection";
 export { SidebarItem } from "./SidebarItem";
 export { SidebarCategory } from "./SidebarCategory";
 export { SidebarFooter } from "./SidebarFooter";
-export { MobileSidebar } from "./MobileSidebar";

@@ -31,20 +31,20 @@ const variantClasses: Record<Variant, string> = {
     "dark:hover:bg-secondary/80",
   ].join(" "),
   outline: [
-    "border border-input bg-background text-foreground",
+    "border border-border bg-background text-foreground",
     "shadow-sm",
-    "hover:bg-accent hover:text-accent-foreground",
+    "hover:bg-muted hover:text-foreground",
     "hover:shadow-md",
     "focus-visible:ring-ring/50",
     "dark:border-input dark:bg-background",
-    "dark:hover:bg-accent dark:hover:text-accent-foreground",
+    "dark:hover:bg-muted dark:hover:text-foreground",
   ].join(" "),
   ghost: [
     "bg-transparent text-foreground",
-    "hover:bg-accent hover:text-accent-foreground",
+    "hover:bg-muted hover:text-foreground",
     "focus-visible:ring-ring/50",
     "dark:text-foreground",
-    "dark:hover:bg-accent dark:hover:text-accent-foreground",
+    "dark:hover:bg-muted dark:hover:text-foreground",
   ].join(" "),
   destructive: [
     "bg-destructive text-destructive-foreground",
@@ -94,6 +94,7 @@ const sizeClasses: Record<Size, string> = {
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
+  loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -103,27 +104,56 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = "primary",
       size = "md",
       disabled,
+      loading = false,
+      children,
       ...props
     },
     ref,
   ) => {
+    const isDisabled = disabled || loading;
     return (
       <button
         ref={ref}
-        disabled={disabled}
+        disabled={isDisabled}
+        aria-busy={loading || undefined}
         className={cn(
           "inline-flex items-center justify-center font-medium whitespace-nowrap",
           "transition-all duration-200 ease-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "active:scale-[0.98]",
           "disabled:pointer-events-none disabled:opacity-50",
+          loading && "pointer-events-none opacity-70",
           "select-none",
           variantClasses[variant],
           sizeClasses[size],
           className,
         )}
         {...props}
-      />
+      >
+        {loading && (
+          <svg
+            className="h-4 w-4 animate-spin"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
+          </svg>
+        )}
+        {children}
+      </button>
     );
   },
 );

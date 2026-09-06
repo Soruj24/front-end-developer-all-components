@@ -75,17 +75,18 @@ export function SidebarSection({ section, open, onToggle, collapsed, onNavigate 
         aria-expanded={open}
         aria-controls={contentId}
         className={cn(
-          "group flex w-full items-center gap-2 px-2 py-1.5 text-left",
+          "group flex h-9 w-full items-center gap-2 px-2 text-left",
           RADIUS.sm,
-          TEXT.body,
-          "font-medium text-foreground",
+          "text-[11px] font-semibold uppercase tracking-widest text-muted-foreground",
           TRANSITION.colors,
-          "hover:bg-muted/70 active:bg-muted/80",
+          "hover:text-foreground",
         )}
       >
-        <span className="flex h-4 w-4 shrink-0 items-center justify-center text-xs text-muted-foreground transition-colors group-hover:text-foreground">
-          {section.icon}
-        </span>
+        {section.icon && (
+          <span className="flex h-4 w-4 shrink-0 items-center justify-center text-[13px]" aria-hidden="true">
+            {section.icon}
+          </span>
+        )}
         <span className="flex-1 truncate">{section.title}</span>
         <svg
           className={cn(

@@ -30,7 +30,7 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
         </Link>
 
         <div className="w-full max-w-[400px]">
-          <div className="rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <div className="rounded-lg border border-border/60 bg-surface p-6 shadow-card sm:p-8">
             <header className="mb-8 text-center">
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">{title}</h1>
               <p className="mt-1.5 text-sm text-muted-foreground">{subtitle}</p>

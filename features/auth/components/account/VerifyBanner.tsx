@@ -38,8 +38,8 @@ export function VerifyBanner() {
   if (dismissed) return null;
 
   return (
-    <div className="flex items-start justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm dark:border-amber-900/40 dark:bg-amber-950/30">
-      <p className="text-amber-800 dark:text-amber-200">
+    <div className="flex items-start justify-between gap-4 rounded-lg border border-warning/20 bg-warning-soft px-4 py-3 text-sm">
+      <p className="text-warning-foreground dark:text-warning">
         Confirm your email to unlock publishing.{" "}
         <Link
           href="/account/security"
@@ -52,7 +52,7 @@ export function VerifyBanner() {
         type="button"
         aria-label="Dismiss"
         onClick={dismiss}
-        className="shrink-0 rounded-md p-1 text-amber-700 transition-colors hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-900/40"
+        className="shrink-0 rounded-md p-1 text-warning transition-colors hover:bg-warning/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
           <path d="M6 18 18 6M6 6l12 12" />
