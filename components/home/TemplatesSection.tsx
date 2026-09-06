@@ -3,13 +3,14 @@ import { SectionHeading } from "./SectionHeading";
 import { TemplateCard } from "./TemplateCard";
 import { Reveal } from "./Reveal";
 
+// Hrefs point at live demo routes — every template opens a real page.
 const templates = [
-  { title: "SaaS Dashboard", description: "Admin dashboard with analytics, users, and billing.", category: "Dashboard", pages: 12, components: 45, href: "/templates/saas-dashboard" },
-  { title: "Admin Panel", description: "Full admin panel with CRUD operations and auth.", category: "Dashboard", pages: 8, components: 32, href: "/templates/admin-panel" },
-  { title: "E-commerce Store", description: "Product listing, cart, checkout, and order management.", category: "E-Commerce", pages: 15, components: 52, href: "/templates/ecommerce" },
-  { title: "AI SaaS", description: "AI-powered SaaS with chat interface and billing.", category: "SaaS", pages: 10, components: 38, href: "/templates/ai-saas" },
-  { title: "Portfolio", description: "Personal portfolio with project showcase.", category: "Portfolio", pages: 6, components: 20, href: "/templates/portfolio" },
-  { title: "Documentation", description: "Technical documentation site with search and navigation.", category: "Documentation", pages: 20, components: 28, href: "/templates/documentation" },
+  { title: "SaaS Dashboard", description: "Admin dashboard with analytics, users, and billing.", category: "Dashboard", pages: 12, components: 45, href: "/dashboard" },
+  { title: "Admin Panel", description: "Full admin panel with project tracking and management.", category: "Dashboard", pages: 8, components: 32, href: "/project-management" },
+  { title: "E-commerce Store", description: "Product listing, cart, checkout, and order management.", category: "E-Commerce", pages: 15, components: 52, href: "/e-commerce" },
+  { title: "AI SaaS", description: "AI-powered SaaS with chat interface and billing.", category: "SaaS", pages: 10, components: 38, href: "/saas" },
+  { title: "Portfolio", description: "Personal portfolio with project showcase.", category: "Portfolio", pages: 6, components: 20, href: "/portfolio" },
+  { title: "Documentation", description: "Technical documentation site with search and navigation.", category: "Documentation", pages: 20, components: 28, href: "/docs" },
 ];
 
 export function TemplatesSection() {
