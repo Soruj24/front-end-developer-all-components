@@ -7,7 +7,7 @@ import { register, type AuthFormState } from "../actions";
 import { OAuthButtons } from "./OAuthButtons";
 import { PasswordField } from "./PasswordField";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
-import { AlertIcon, AtIcon, SpinnerIcon, } from "./icons";
+import { AlertIcon, AtIcon } from "./icons";
 import { MailIcon, UserIcon } from "lucide-react";
 
 export function RegisterForm() {
@@ -112,14 +112,15 @@ export function RegisterForm() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="flex cursor-pointer select-none items-start gap-2.5 text-sm text-muted-foreground">
+          <label className="flex min-h-[44px] cursor-pointer select-none items-start gap-2.5 py-1 text-sm text-muted-foreground">
             <input
               type="checkbox"
               name="terms"
               checked={terms}
               onChange={(e) => setTerms(e.target.checked)}
               aria-invalid={termsError ? true : undefined}
-              className="mt-0.5 h-4 w-4 rounded border-input accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-describedby={termsError ? "register-terms-error" : undefined}
+              className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-border accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             />
             <span>
               I agree to the{" "}
@@ -140,20 +141,13 @@ export function RegisterForm() {
             </span>
           </label>
           {termsError && (
-            <p role="alert" className="text-sm text-danger">
+            <p id="register-terms-error" role="alert" className="text-xs text-destructive">
               {termsError}
             </p>
           )}
         </div>
 
-        <Button
-          type="submit"
-          size="lg"
-          className="w-full"
-          disabled={pending}
-          aria-busy={pending}
-        >
-          {pending && <SpinnerIcon className="h-4 w-4 animate-spin" />}
+        <Button type="submit" size="lg" className="w-full" loading={pending}>
           {pending ? "Creating account…" : "Create account"}
         </Button>
       </form>
