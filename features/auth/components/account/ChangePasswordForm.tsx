@@ -34,19 +34,24 @@ export function ChangePasswordForm() {
         autoComplete="new-password"
         error={state.errors?.confirmPassword?.[0]}
       />
-      {state.message && (
-        <p
-          className={
-            state.message === "Password updated."
-              ? "text-sm text-emerald-600 dark:text-emerald-400"
-              : "text-sm text-danger"
-          }
-        >
-          {state.message}
-        </p>
-      )}
+      {state.message &&
+        (state.message === "Password updated." ? (
+          <p
+            role="status"
+            className="rounded-lg bg-success-soft px-3 py-2.5 text-sm text-success"
+          >
+            {state.message}
+          </p>
+        ) : (
+          <p
+            role="alert"
+            className="rounded-lg bg-danger-soft px-3 py-2.5 text-sm text-danger"
+          >
+            {state.message}
+          </p>
+        ))}
       <div>
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" loading={pending}>
           {pending ? "Updating…" : "Update password"}
         </Button>
       </div>

@@ -11,7 +11,7 @@ export function LogoutButton() {
     <Button
       variant="ghost"
       className="w-full justify-start text-danger"
-      disabled={pending}
+      loading={pending}
       onClick={() => startTransition(() => logout())}
     >
       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">

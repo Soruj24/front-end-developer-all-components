@@ -19,9 +19,12 @@ export default async function VerifyEmailPage({
 
   const content =
     result.ok ? (
-      <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-10 text-center dark:border-emerald-900/40 dark:bg-emerald-950/30">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
-          <svg className="h-6 w-6 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <div
+        role="status"
+        className="flex flex-col items-center gap-3 rounded-lg border border-success/20 bg-success-soft px-6 py-10 text-center"
+      >
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-success/15">
+          <svg className="h-6 w-6 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M20 6 9 17l-5-5" />
           </svg>
         </span>
@@ -31,13 +34,13 @@ export default async function VerifyEmailPage({
         </p>
         <Link
           href="/account"
-          className="mt-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
+          className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-md bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Go to your account
         </Link>
       </div>
     ) : (
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-background px-6 py-10 text-center">
+      <div className="flex flex-col items-center gap-4 rounded-lg bg-muted/50 px-6 py-10 text-center">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
           <svg className="h-6 w-6 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 4h16v14H4zM4 6l8 6 8-6" />
@@ -58,7 +61,30 @@ export default async function VerifyEmailPage({
     );
 
   return (
-    <AuthShell title="Verify your email" subtitle="One quick step to unlock publishing." footer={<Link href="/login" className="text-sm font-medium text-foreground underline-offset-4 hover:underline">← Back to sign in</Link>}>
+    <AuthShell
+      title="Verify your email"
+      subtitle="One quick step to unlock publishing."
+      footer={
+        <Link
+          href="/login"
+          className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-md text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          Back to sign in
+        </Link>
+      }
+    >
       {content}
     </AuthShell>
   );

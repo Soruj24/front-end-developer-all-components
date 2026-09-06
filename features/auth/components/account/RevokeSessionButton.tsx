@@ -11,7 +11,7 @@ export function RevokeSessionButton({ sessionId }: { sessionId: string }) {
     <Button
       variant="outline"
       size="sm"
-      disabled={pending}
+      loading={pending}
       onClick={() => startTransition(() => revokeSessionAction(sessionId))}
     >
       {pending ? "Revoking…" : "Revoke"}
