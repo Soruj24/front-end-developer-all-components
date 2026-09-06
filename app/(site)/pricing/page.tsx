@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/design-system/Badge";
+import { cn } from "@/lib/cn";
+import { FOCUS } from "@/constants/tokens";
+import { Badge } from "@/components/ui/Badge";
 import { ComponentPreview } from "@/components/preview";
 import { CodeBlock } from "@/components/home/CodeBlock";
 import { ThreeColumnStandard } from "./components/ThreeColumnStandard";
@@ -34,14 +36,6 @@ import { SeatBasedTeamDiscount } from "./components/SeatBasedTeamDiscount";
 import { HybridPricing } from "./components/HybridPricing";
 import { GrandfatheredPricing } from "./components/GrandfatheredPricing";
 import { PriceAnchoring } from "./components/PriceAnchoring";
-
-const pricingProps = [
-  { prop: "variant", type: "\"three-column\" | \"four-column\" | \"toggle\" | \"enterprise\"", default: "\"three-column\"", required: "No" },
-  { prop: "plans", type: "PricingPlan[]", default: "-", required: "Yes" },
-  { prop: "annual", type: "boolean", default: "false", required: "No" },
-  { prop: "showFeatures", type: "boolean", default: "true", required: "No" },
-  { prop: "onSelect", type: "(plan: string) => void", default: "-", required: "No" },
-];
 
 const installCommand = `npx component-library@latest add pricing`;
 
@@ -90,55 +84,73 @@ export default function Pricing() {
   const { Render: Active, registryId } = STYLES[activeStyle];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-24 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto flex max-w-7xl min-w-0 flex-col gap-12 px-4 py-12 sm:px-6 lg:px-8">
       <div className="text-center">
-        <div className="flex items-center justify-center gap-3">
-          <h1 className="text-4xl font-bold tracking-tight">Simple, transparent pricing</h1>
-          <Badge variant="primary">{STYLES.length} layouts</Badge>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground">
+            Simple, transparent pricing
+          </h1>
+          <Badge variant="primary" size="sm">
+            {STYLES.length} layouts
+          </Badge>
         </div>
-        <p className="mt-3 text-muted-foreground dark:text-muted-foreground/70">Choose the plan that fits your needs. No hidden fees. No surprises.</p>
+        <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+          Choose the plan that fits your needs. No hidden fees. No surprises.
+        </p>
       </div>
 
-      {/* Installation */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Installation</h2>
+      <section aria-labelledby="pricing-install" className="flex min-w-0 flex-col gap-4">
+        <h2 id="pricing-install" className="text-xl font-semibold tracking-tight text-foreground">
+          Installation
+        </h2>
         <CodeBlock code={installCommand} filename="Terminal" label="bash" variant="terminal" />
       </section>
 
-      {/* Usage */}
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Usage</h2>
+      <section aria-labelledby="pricing-usage" className="flex min-w-0 flex-col gap-4">
+        <h2 id="pricing-usage" className="text-xl font-semibold tracking-tight text-foreground">
+          Usage
+        </h2>
         <CodeBlock code={usageCode} filename="page.tsx" label="tsx" />
       </section>
 
-      {/* Examples */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Examples</h2>
+      <section aria-labelledby="pricing-examples" className="flex min-w-0 flex-col gap-6">
+        <h2 id="pricing-examples" className="text-xl font-semibold tracking-tight text-foreground">
+          Examples
+        </h2>
 
-      <section>
-        <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {STYLES.map((s, i) => (
-            <button
-              key={s.registryId}
-              onClick={() => setActiveStyle(i)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${
-                activeStyle === i
-                  ? "bg-blue-500 text-white shadow"
-                  : "bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground/70 dark:hover:bg-muted"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
+        <div
+          role="group"
+          aria-label="Choose a pricing layout to preview"
+          className="flex flex-wrap justify-center gap-2"
+        >
+          {STYLES.map((s, i) => {
+            const selected = activeStyle === i;
+            return (
+              <button
+                key={s.registryId}
+                type="button"
+                onClick={() => setActiveStyle(i)}
+                aria-pressed={selected}
+                className={cn(
+                  "inline-flex min-h-[44px] items-center rounded-full px-4 py-2 text-[13px] font-medium transition-colors sm:min-h-0",
+                  FOCUS.ring,
+                  selected
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "border border-border/60 bg-background text-muted-foreground hover:border-ring/40 hover:text-foreground",
+                )}
+              >
+                {s.label}
+              </button>
+            );
+          })}
         </div>
 
-        <ComponentPreview id={registryId}>
-          <Active />
-        </ComponentPreview>
+        <div aria-live="polite">
+          <ComponentPreview id={registryId}>
+            <Active />
+          </ComponentPreview>
+        </div>
       </section>
-      </section>
-
-
     </div>
   );
 }
