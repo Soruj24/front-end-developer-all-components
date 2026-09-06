@@ -37,28 +37,28 @@ export function HeroCodePreview() {
 
   return (
     <section className="relative border-b border-border/40 bg-background py-16 sm:py-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="mx-auto max-w-4xl">
-            <div className="overflow-hidden rounded-xl border border-border/60 bg-background shadow-2xl">
-              <div className="flex items-center justify-between border-b border-border/60 bg-muted/30 px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <span className="h-3 w-3 rounded-full bg-muted-foreground/20" />
-                    <span className="h-3 w-3 rounded-full bg-muted-foreground/20" />
-                    <span className="h-3 w-3 rounded-full bg-muted-foreground/20" />
+            <div className="overflow-hidden rounded-lg border border-border/60 bg-background shadow-card">
+              <div className="flex items-center justify-between gap-2 border-b border-border/60 bg-muted/30 px-4 py-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="flex shrink-0 gap-1.5" aria-hidden="true">
+                    <span className="h-2.5 w-2.5 rounded-full bg-border" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-border" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-border" />
                   </div>
-                  <span className="ml-2 text-xs font-medium text-muted-foreground">
-                    lib/cn.ts
+                  <span className="ml-2 truncate font-mono text-xs text-muted-foreground">
+                    {activeTab === "utility" ? "lib/cn.ts" : "components/ui/custom-button.tsx"}
                   </span>
                 </div>
-                <div className="flex items-center gap-1">
+                <div role="tablist" aria-label="Code examples" className="flex shrink-0 items-center gap-1">
                   <button
                     type="button"
+                    role="tab"
+                    aria-selected={activeTab === "utility"}
                     onClick={() => setActiveTab("utility")}
-                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`min-h-[44px] rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-0 ${
                       activeTab === "utility"
                         ? "bg-muted text-foreground"
                         : "text-muted-foreground hover:text-foreground"
@@ -68,8 +68,10 @@ export function HeroCodePreview() {
                   </button>
                   <button
                     type="button"
+                    role="tab"
+                    aria-selected={activeTab === "usage"}
                     onClick={() => setActiveTab("usage")}
-                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`min-h-[44px] rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-0 ${
                       activeTab === "usage"
                         ? "bg-muted text-foreground"
                         : "text-muted-foreground hover:text-foreground"

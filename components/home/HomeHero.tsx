@@ -11,39 +11,36 @@ export function HomeHero() {
 
   return (
     <section className="relative overflow-hidden border-b border-border/40 bg-background">
-      <div className="absolute inset-0 bg-grid opacity-30 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
-      <div className="absolute top-0 left-1/2 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-8 py-20 sm:py-28 lg:py-36">
           <Reveal>
             <div className="flex flex-col items-center gap-6 text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+              <Link
+                href="/docs"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-h-0"
+              >
+                <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75 motion-reduce:animate-none" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
                 </span>
-                v2.0 — Now with Visual Builder
+                v2.0 — See what&apos;s new
                 <svg
                   className="h-3 w-3"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth={2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  aria-hidden="true"
                 >
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
                 </svg>
-              </span>
+              </Link>
 
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance max-w-4xl">
-                Build faster with{" "}
-                <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
-                  production-ready
-                </span>{" "}
-                components.
+              <h1 className="text-balance max-w-4xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                Build faster with production-ready components.
               </h1>
 
               <p className="max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -58,7 +55,7 @@ export function HomeHero() {
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link
                   href="/components"
-                  className="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
+                  className="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-all duration-200 hover:opacity-90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   Browse Components
                   <svg
@@ -75,10 +72,10 @@ export function HomeHero() {
                   </svg>
                 </Link>
                 <Link
-                  href="/playground"
-                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98]"
+                  href="/docs"
+                  className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-5 text-sm font-medium text-foreground transition-all duration-200 hover:bg-muted active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  Explore Playground
+                  Read Docs
                 </Link>
               </div>
 
