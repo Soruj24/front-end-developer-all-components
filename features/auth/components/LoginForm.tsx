@@ -6,7 +6,7 @@ import { Button, Input } from "@/components/ui";
 import { login, type AuthFormState } from "../actions";
 import { OAuthButtons } from "./OAuthButtons";
 import { PasswordField } from "./PasswordField";
-import { AlertIcon,   SpinnerIcon } from "./icons";
+import { AlertIcon } from "./icons";
 import { useRememberMe } from "../hooks/useRememberMe";
 import { MailIcon } from "lucide-react";
 
@@ -69,19 +69,18 @@ export function LoginForm() {
           }
         />
 
-        <label className="flex cursor-pointer select-none items-center gap-2.5 text-sm text-foreground">
+        <label className="flex min-h-[44px] cursor-pointer select-none items-center gap-2.5 text-sm text-foreground">
           <input
             type="checkbox"
             name="remember"
             checked={remember}
             onChange={(e) => persist(email, e.target.checked)}
-            className="h-4 w-4 rounded border-input accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="h-4 w-4 shrink-0 cursor-pointer rounded border-border accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           />
           <span>Remember me</span>
         </label>
 
-        <Button type="submit" size="lg" className="w-full" disabled={pending} aria-busy={pending}>
-          {pending && <SpinnerIcon className="h-4 w-4 animate-spin" />}
+        <Button type="submit" size="lg" className="w-full" loading={pending}>
           {pending ? "Signing in…" : "Sign in"}
         </Button>
       </form>
