@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, forwardRef, useState } from "react";
+import { HTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import Image from "next/image";
 
@@ -67,6 +67,17 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     ref,
   ) => {
     const [imgFailed, setImgFailed] = useState(false);
+    const imgRef = useRef<HTMLImageElement>(null);
+
+    // A broken image can fail before React attaches its onError listener (a fast
+    // 4xx/404 answered while the HTML is still parsing), so re-check the mounted
+    // <img> after hydration and whenever src changes.
+    useEffect(() => {
+      setImgFailed(false);
+      const img = imgRef.current;
+      if (img?.complete && img.naturalWidth === 0) setImgFailed(true);
+    }, [src]);
+
     const showImage = src && !imgFailed;
     const gradient = fallbackGradient[hashString(fallback) % fallbackGradient.length];
 
@@ -85,6 +96,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
       >
         {showImage ? (
           <Image
+            ref={imgRef}
             src={src}
             alt={alt}
             className="h-full w-full rounded-full object-cover"

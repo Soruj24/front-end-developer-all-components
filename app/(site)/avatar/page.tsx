@@ -199,7 +199,7 @@ function FallbackExample() {
       <div className="flex flex-col items-center gap-2">
         <Avatar
           size="xl"
-          src="https://invalid.url/img.jpg"
+          src="/avatar-image-missing.jpg"
           alt="User"
           fallback="ML"
         />
@@ -430,7 +430,7 @@ export default function AvatarPage() {
           title="Fallback"
           description="Gradient background with initials when no image or image fails to load."
           code={`<Avatar size="lg" alt="User" fallback="JD" />
-<Avatar size="xl" src="https://invalid.url/img.jpg" alt="User" fallback="ML" />`}
+<Avatar size="xl" src="/avatar-image-missing.jpg" alt="User" fallback="ML" />`}
         >
           <FallbackExample />
         </ExampleBlock>

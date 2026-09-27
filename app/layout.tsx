@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { siteMetadata, siteViewport } from "@/config/site";
 import "@/styles/globals.css";
 import { ThemeInit } from "@/components/theme-init";
+import { ThemeScript } from "@/components/theme-script";
 import { StoreProvider } from "@/components/store-provider";
 
 const geistSans = Geist({
@@ -32,11 +33,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`,
-          }}
-        />
+        <ThemeScript />
       </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <ThemeInit />
