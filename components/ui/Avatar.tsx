@@ -1,5 +1,8 @@
+"use client";
+
 import { HTMLAttributes, forwardRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import Image from "next/image";
 
 type Size = "sm" | "md" | "lg" | "xl";
 type Status = "online" | "offline" | "away" | "busy";
@@ -81,11 +84,12 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         {...props}
       >
         {showImage ? (
-          <img
+          <Image
             src={src}
             alt={alt}
             className="h-full w-full rounded-full object-cover"
             onError={() => setImgFailed(true)}
+            fill
           />
         ) : (
           <span
