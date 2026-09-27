@@ -76,7 +76,7 @@ export default function ComponentsPage() {
             {registryCatalog.length} Components
           </span>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Component Library
+            Sun UI Component Gallery
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
             Browse, search, and copy production-ready UI components for your

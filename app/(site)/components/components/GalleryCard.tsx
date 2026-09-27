@@ -18,7 +18,7 @@ export function GalleryCard({ component }: { component: CatalogItem }) {
 
   return (
     <Link
-      href={`/components/${component.slug}`}
+      href={`/${component.slug}`}
       aria-label={`${component.name} — ${component.description}`}
       className={cn(
         "group flex min-w-0 flex-col rounded-lg border border-border/60 bg-background transition-colors duration-200 hover:border-ring/40 hover:shadow-sm",
