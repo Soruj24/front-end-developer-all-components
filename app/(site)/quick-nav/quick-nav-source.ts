@@ -94,7 +94,7 @@ QuickNav.displayName = "QuickNav";
 export { QuickNav };`;
 
 export const DEFAULT_EXAMPLE = `<QuickNav open={open} onClose={() => setOpen(false)} items={navItems} />`;
-
+ 
 export const COMPACT_EXAMPLE = `<QuickNav open={open} onClose={() => setOpen(false)} items={navItems} variant="compact" />`;
 
 export const FLAT_EXAMPLE = `<QuickNav open={open} onClose={() => setOpen(false)} items={navItems} variant="flat" />`;
