@@ -23,8 +23,13 @@ const THUMB_SIZES: Record<SwitchSize, string> = {
 };
 
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, size = "md", label, description, error, disabled, id, ...props }, ref) => {
+  ({ className, size = "md", label, description, error, disabled, id, onCheckedChange, onChange, ...props }, ref) => {
     const switchId = id ?? (label ? `switch-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e);
+      onCheckedChange?.(e.target.checked);
+    };
 
     return (
       <label
@@ -53,6 +58,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             aria-invalid={!!error || undefined}
             className="peer sr-only"
             disabled={disabled}
+            onChange={handleChange}
             {...props}
           />
           <span
