@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { BookingCalendar } from "../../BookingCalendar";
-import type { BookingDay, TimeSlot } from "../../BookingCalendar.types";
+import type { BookingDay, TimeSlot } from "../BookingCalendar.types";
 
 const allDays: BookingDay[] = [
   { label: "Mon", date: 12 },

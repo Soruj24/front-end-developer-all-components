@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useId } from "react";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { Copy, Check, RefreshCw, Shield } from "lucide-react";
 import type { PasswordGeneratorProps } from "./PasswordGenerator.types";
 
@@ -59,13 +60,14 @@ export default function PasswordGenerator({
     numbers: includeNumbers,
     symbols: includeSymbols,
   });
-  const [pw, setPw] = useState("");
+  const [pw, setPw] = useState(() =>
+    generate(initLength, { uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols }),
+  );
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   useEffect(() => {
-    const next = generate(initLength, { uppercase: includeUppercase, numbers: includeNumbers, symbols: includeSymbols });
-    setPw(next);
-    onGenerate?.(next);
+    onGenerate?.(pw);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
   }, []);
 
@@ -78,9 +80,10 @@ export default function PasswordGenerator({
   }, [length, opts, onGenerate]);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(pw);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const ok = await writeClipboard(pw);
+    setCopied(ok);
+    setCopyFailed(!ok);
+    if (ok) setTimeout(() => setCopied(false), 2000);
   };
 
   const handleLengthChange = (v: number) => {
@@ -115,14 +118,17 @@ export default function PasswordGenerator({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
               "active:scale-[0.95]",
             )}
-            aria-label={copied ? "Copied" : "Copy password"}
+            aria-label={copied ? "Copied" : copyFailed ? "Copy failed — try again" : "Copy password"}
           >
             {copied ? (
               <Check className="h-4 w-4 text-emerald-600" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className={cn("h-4 w-4", copyFailed && "text-danger")} />
             )}
           </button>
+          <span aria-live="polite" role="status" className="sr-only">
+            {copied ? "Password copied." : copyFailed ? "Copy failed." : ""}
+          </span>
           <button
             type="button"
             onClick={regenerate}

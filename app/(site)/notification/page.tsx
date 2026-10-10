@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 
 const NOTIFICATION_SOURCE = `import { cn } from "@/lib/cn";
@@ -88,8 +88,10 @@ const toastBtn = "rounded-md px-3 py-1.5 text-xs font-medium";
 
 export default function NotificationPage() {
   const [toasts, setToasts] = useState<Array<{ id: number; variant: string; message: string }>>([]);
+  const idRef = useRef(0);
   const addToast = (variant: string, message: string) => {
-    const id = Date.now();
+    idRef.current += 1;
+    const id = idRef.current;
     setToasts((prev) => [...prev, { id, variant, message }]);
     setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3000);
   };

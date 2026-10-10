@@ -106,7 +106,7 @@ const CLS: Record<string, string> = {
   small:"text-sm font-medium leading-none",muted:"text-sm text-muted-foreground",
 };
 function Inline({ as = "p", className = "", children }: { as?: string; className?: string; children: React.ReactNode }) {
-  const Tag = TAG[as] || "p";
+  const Tag = (TAG[as] || "p") as keyof React.JSX.IntrinsicElements;
   return <Tag className={`${CLS[as] || CLS.p} ${className}`}>{children}</Tag>;
 }
 

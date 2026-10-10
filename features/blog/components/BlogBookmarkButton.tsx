@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/design-system/Button";
 
@@ -13,14 +13,17 @@ export function BlogBookmarkButton({
   postId,
   className,
 }: BlogBookmarkButtonProps) {
-  const [bookmarked, setBookmarked] = useState(false);
-
-  useEffect(() => {
-    const bookmarks = JSON.parse(
-      localStorage.getItem("blog-bookmarks") || "[]",
-    );
-    setBookmarked(bookmarks.includes(postId));
-  }, [postId]);
+  const [bookmarked, setBookmarked] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      const bookmarks = JSON.parse(
+        localStorage.getItem("blog-bookmarks") || "[]",
+      ) as string[];
+      return bookmarks.includes(postId);
+    } catch {
+      return false;
+    }
+  });
 
   const toggleBookmark = () => {
     const bookmarks = JSON.parse(

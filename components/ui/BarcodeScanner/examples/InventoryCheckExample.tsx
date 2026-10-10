@@ -12,7 +12,7 @@ export function InventoryCheckExample() {
   const handleScan = (code: string) => {
     const isIn = Math.random() > 0.3;
     setItems((prev) =>
-      [{ code, status: isIn ? "in" : "out", time: new Date().toLocaleTimeString() }, ...prev].slice(0, 6),
+      [{ code, status: (isIn ? "in" : "out") as "in" | "out", time: new Date().toLocaleTimeString() }, ...prev].slice(0, 6),
     );
   };
 
@@ -25,7 +25,7 @@ export function InventoryCheckExample() {
         </span>
       </div>
       <BarcodeScanner
-        size="compact"
+        variant="compact"
         onStatusChange={setScanStatus}
         onScan={handleScan}
       />

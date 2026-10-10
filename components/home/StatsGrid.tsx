@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 function formatStatValue(value: number): string {
   if (value >= 1_000_000) {
@@ -15,15 +15,15 @@ function formatStatValue(value: number): string {
 }
 
 function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return reduced;
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      mq.addEventListener("change", onStoreChange);
+      return () => mq.removeEventListener("change", onStoreChange);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
 }
 
 function AnimatedNumber({
@@ -35,11 +35,10 @@ function AnimatedNumber({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
-  const [displayed, setDisplayed] = useState(reduced ? value : 0);
+  const [displayed, setDisplayed] = useState(0);
 
   useEffect(() => {
     if (reduced) {
-      setDisplayed(value);
       return;
     }
 
@@ -80,7 +79,7 @@ function AnimatedNumber({
 
   return (
     <span ref={ref} className="tabular-nums">
-      {formatStatValue(displayed)}
+      {formatStatValue(reduced ? value : displayed)}
     </span>
   );
 }

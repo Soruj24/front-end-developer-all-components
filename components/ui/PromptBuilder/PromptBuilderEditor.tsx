@@ -1,6 +1,6 @@
 "use client";
 
-import { type RefObject, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { PromptSection, PromptVariable } from "@/components/prompt-builder/templates";
 import { editorBase } from "./PromptBuilder.constants";
@@ -15,7 +15,7 @@ interface PromptBuilderEditorProps {
   sections: PromptSection[];
   variables: PromptVariable[];
   maxLength: number;
-  taRefs: RefObject<Record<string, HTMLTextAreaElement | null>>;
+  onRegisterTextarea: (id: string, el: HTMLTextAreaElement | null) => void;
   onUpdateSection: (id: string, patch: Partial<PromptSection>) => void;
   onMoveSection: (id: string, dir: -1 | 1) => void;
   onRemoveSection: (id: string) => void;
@@ -26,7 +26,7 @@ interface PromptBuilderEditorProps {
 
 export function PromptBuilderEditor({
   activeSection, activeSectionContent, activeSectionIndex, sections, variables, maxLength,
-  taRefs, onUpdateSection, onMoveSection, onRemoveSection, onInsertVariable, onAddSection, renderEditorHighlight,
+  onRegisterTextarea, onUpdateSection, onMoveSection, onRemoveSection, onInsertVariable, onAddSection, renderEditorHighlight,
 }: PromptBuilderEditorProps) {
   return (
     <div className="flex min-w-0 flex-col gap-3 rounded-xl border border-border/60 bg-card p-4 ring-1 ring-black/[0.04] dark:ring-white/[0.08]">
@@ -50,7 +50,7 @@ export function PromptBuilderEditor({
 
       <div className="relative rounded-lg border border-input bg-background focus-within:border-ring focus-within:ring-1 focus-within:ring-ring">
         <pre aria-hidden className={cn(editorBase, "pointer-events-none absolute inset-0 text-foreground")}>{renderEditorHighlight(activeSectionContent)}{"\n"}</pre>
-        <textarea ref={(el) => { taRefs.current[activeSection.id] = el; }} value={activeSectionContent} onChange={(e) => onUpdateSection(activeSection.id, { content: e.target.value.slice(0, maxLength) })} placeholder="Write your prompt here. Insert {{variable}} tokens or click a chip above." aria-label={`Section content: ${activeSection.title}`} spellCheck={false} className={cn(editorBase, "relative block text-transparent caret-foreground selection:bg-primary/10 placeholder:text-muted-foreground")} />
+        <textarea ref={(el) => onRegisterTextarea(activeSection.id, el)} value={activeSectionContent} onChange={(e) => onUpdateSection(activeSection.id, { content: e.target.value.slice(0, maxLength) })} placeholder="Write your prompt here. Insert {{variable}} tokens or click a chip above." aria-label={`Section content: ${activeSection.title}`} spellCheck={false} className={cn(editorBase, "relative block text-transparent caret-foreground selection:bg-primary/10 placeholder:text-muted-foreground")} />
       </div>
 
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground/70">

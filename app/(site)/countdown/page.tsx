@@ -300,7 +300,7 @@ function CountdownDemo() {
         key={complete ? "done" : "running"}
       />
       {complete && (
-        <span className="text-sm font-medium text-success">Time's up!</span>
+        <span className="text-sm font-medium text-success">Time&apos;s up!</span>
       )}
     </div>
   );

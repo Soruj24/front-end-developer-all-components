@@ -106,7 +106,7 @@ export function PromptBuilder({
 
       <div className="grid gap-4 lg:grid-cols-2">
         {pb.activeSection ? (
-          <PromptBuilderEditor activeSection={pb.activeSection} activeSectionContent={pb.activeSectionContent} activeSectionIndex={pb.activeSectionIndex} sections={pb.state.sections} variables={pb.state.variables} maxLength={maxLength} taRefs={pb.taRefs} onUpdateSection={pb.updateSection} onMoveSection={pb.moveSection} onRemoveSection={pb.removeSection} onInsertVariable={pb.insertVariable} onAddSection={pb.addSection} renderEditorHighlight={renderEditorHighlight} />
+          <PromptBuilderEditor activeSection={pb.activeSection} activeSectionContent={pb.activeSectionContent} activeSectionIndex={pb.activeSectionIndex} sections={pb.state.sections} variables={pb.state.variables} maxLength={maxLength} onRegisterTextarea={pb.registerTextarea} onUpdateSection={pb.updateSection} onMoveSection={pb.moveSection} onRemoveSection={pb.removeSection} onInsertVariable={pb.insertVariable} onAddSection={pb.addSection} renderEditorHighlight={renderEditorHighlight} />
         ) : (
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-muted/30 p-4 py-10">
             <p className="text-sm text-muted-foreground">No sections yet.</p>

@@ -12,8 +12,18 @@ export function Select({
   error,
   helperText,
   className,
+  value,
+  defaultValue,
   ...props
 }: SelectProps) {
+  const normalizedValue =
+    value === undefined ? undefined : Array.isArray(value) ? value[0] : String(value);
+  const normalizedDefaultValue =
+    defaultValue === undefined
+      ? undefined
+      : Array.isArray(defaultValue)
+        ? defaultValue[0]
+        : String(defaultValue);
   return (
     <CustomSelect
       options={options.map((o) => ({
@@ -26,6 +36,8 @@ export function Select({
       error={error ? " " : undefined}
       helperText={helperText as string}
       size={size}
+      value={normalizedValue}
+      defaultValue={normalizedDefaultValue}
       className={cn(
         variant === "outline" && "border-2",
         className,

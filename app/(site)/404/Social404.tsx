@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NotFoundLayout, GoHomeButton } from "./NotFoundShell";
 import { languages, notFoundTranslations } from "./data";
 
@@ -126,19 +126,30 @@ export function Coffee404() {
   );
 }
 
+function makeSnowflakes() {
+  return Array.from({ length: 30 }, () => ({
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    size: 8 + Math.random() * 12,
+    duration: 3 + Math.random() * 4,
+    delay: Math.random() * 3,
+  }));
+}
+
 export function Winter404() {
+  const flakes = useMemo(() => makeSnowflakes(), []);
   return (
     <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #e8f4f8, #b3d9e8)", borderRadius: "12px", minHeight: "400px" }}>
       <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 30 }, (_, i) => (
+        {flakes.map((flake, i) => (
           <div
             key={i}
             className="absolute text-white opacity-70"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              fontSize: `${8 + Math.random() * 12}px`,
-              animation: `snowfall ${3 + Math.random() * 4}s linear ${Math.random() * 3}s infinite`,
+              left: `${flake.left}%`,
+              top: `${flake.top}%`,
+              fontSize: `${flake.size}px`,
+              animation: `snowfall ${flake.duration}s linear ${flake.delay}s infinite`,
             }}
           >
             ❄
@@ -156,20 +167,31 @@ export function Winter404() {
   );
 }
 
+function makeLeaves() {
+  return Array.from({ length: 20 }, () => ({
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    size: 16 + Math.random() * 16,
+    duration: 4 + Math.random() * 4,
+    delay: Math.random() * 3,
+  }));
+}
+
 export function Autumn404() {
   const leaves = ["🍂", "🍁", "🍃", "🌿"];
+  const particles = useMemo(() => makeLeaves(), []);
   return (
     <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #fde68a, #fbbf24)", borderRadius: "12px", minHeight: "400px" }}>
       <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 20 }, (_, i) => (
+        {particles.map((particle, i) => (
           <div
             key={i}
             className="absolute"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              fontSize: `${16 + Math.random() * 16}px`,
-              animation: `leaf-fall ${4 + Math.random() * 4}s ease-in-out ${Math.random() * 3}s infinite`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              fontSize: `${particle.size}px`,
+              animation: `leaf-fall ${particle.duration}s ease-in-out ${particle.delay}s infinite`,
             }}
           >
             {leaves[i % 4]}
@@ -186,19 +208,28 @@ export function Autumn404() {
   );
 }
 
+function makeFish() {
+  return Array.from({ length: 8 }, () => ({
+    top: 30 + Math.random() * 40,
+    duration: 5 + Math.random() * 3,
+    delay: Math.random() * 2,
+  }));
+}
+
 export function Ocean404() {
+  const fish = useMemo(() => makeFish(), []);
   return (
     <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #0077b6, #023e8a, #03045e)", borderRadius: "12px", minHeight: "400px" }}>
       <div className="absolute bottom-0 left-0 right-0 h-20 opacity-30" style={{ background: "url('data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 120\" preserveAspectRatio=\"none\"%3E%3Cpath d=\"M0,60 C200,120 400,0 600,60 C800,120 1000,0 1200,60 L1200,120 L0,120 Z\" fill=\"%23ffffff\" opacity=\"0.3\"/%3E%3C/svg%3E')", backgroundSize: "cover" }} />
       <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 8 }, (_, i) => (
+        {fish.map((f, i) => (
           <span
             key={i}
             className="absolute text-2xl"
             style={{
               left: `${10 + i * 12}%`,
-              top: `${30 + Math.random() * 40}%`,
-              animation: `fish-swim ${5 + Math.random() * 3}s ease-in-out ${Math.random() * 2}s infinite alternate`,
+              top: `${f.top}%`,
+              animation: `fish-swim ${f.duration}s ease-in-out ${f.delay}s infinite alternate`,
             }}
           >
             🐟
@@ -215,21 +246,31 @@ export function Ocean404() {
   );
 }
 
+function makeFlames() {
+  return Array.from({ length: 12 }, () => ({
+    width: 20 + Math.random() * 20,
+    height: 40 + Math.random() * 40,
+    duration: 0.5 + Math.random() * 0.5,
+    delay: Math.random() * 0.5,
+  }));
+}
+
 export function Fire404() {
+  const flames = useMemo(() => makeFlames(), []);
   return (
     <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "linear-gradient(180deg, #1a0000, #4a0000, #8b0000)", borderRadius: "12px", minHeight: "400px" }}>
       <div className="absolute inset-0 pointer-events-none opacity-60">
-        {Array.from({ length: 12 }, (_, i) => (
+        {flames.map((flame, i) => (
           <div
             key={i}
             className="absolute bottom-0 rounded-full"
             style={{
               left: `${10 + i * 7}%`,
-              width: `${20 + Math.random() * 20}px`,
-              height: `${40 + Math.random() * 40}px`,
+              width: `${flame.width}px`,
+              height: `${flame.height}px`,
               background: `linear-gradient(180deg, #ff4500, #ff6600, #ff8800, transparent)`,
               borderRadius: "50% 50% 20% 20%",
-              animation: `flame-flicker ${0.5 + Math.random() * 0.5}s ease-in-out ${Math.random() * 0.5}s infinite alternate`,
+              animation: `flame-flicker ${flame.duration}s ease-in-out ${flame.delay}s infinite alternate`,
             }}
           />
         ))}

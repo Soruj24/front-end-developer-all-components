@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
@@ -22,14 +22,10 @@ function getComparedIds(): string[] {
 }
 
 export function CompareButton({ productId, className }: CompareButtonProps) {
-  const [isCompared, setIsCompared] = useState(false);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const ids = getComparedIds();
-    setIsCompared(ids.includes(productId));
-    setCount(ids.length);
-  }, [productId]);
+  const [isCompared, setIsCompared] = useState(() =>
+    getComparedIds().includes(productId),
+  );
+  const [count, setCount] = useState(() => getComparedIds().length);
 
   const toggleCompare = useCallback(() => {
     const ids = getComparedIds();

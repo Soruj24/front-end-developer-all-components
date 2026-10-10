@@ -119,7 +119,7 @@ function ToastDemo({ type = "info", message, action, duration = 3000 }: { type?:
   const show = () => {
     const id = String(nextId++);
     setToasts((p) => [...p, { id, type, message, action }]);
-    if (type !== "loading") setTimeout(() => dismiss(id), duration);
+    setTimeout(() => dismiss(id), duration);
   };
   return (
     <>

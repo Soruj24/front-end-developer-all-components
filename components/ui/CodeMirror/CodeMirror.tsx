@@ -315,7 +315,7 @@ export function CodeMirror({
         commands.indentWithTab,
       ]),
       getLanguageExtension(resolvedLang),
-      theme === "dark" ? [oneDark, THEME_BASE, DARK_SYNTAX] : [LIGHT_THEME, LIGHT_SYNTAX],
+      theme === "dark" ? [oneDark, THEME_BASE, lang.syntaxHighlighting(DARK_SYNTAX)] : [LIGHT_THEME, lang.syntaxHighlighting(LIGHT_SYNTAX)],
       view.EditorView.updateListener.of((update) => {
         if (update.docChanged) {
           isInternalChange.current = true;
@@ -356,7 +356,7 @@ export function CodeMirror({
     onCreateEditor?.(cmView);
 
     return () => {
-      editorView.destroy();
+      cmView.destroy();
       viewRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

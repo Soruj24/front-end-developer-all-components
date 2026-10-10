@@ -69,6 +69,8 @@ function ConfettiCanvas({ active, config }: { active: boolean; config: { count: 
   return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />;
 }`;
 
+export const SHAPES = ["square", "circle"] as const;
+
 export interface Particle {
   x: number; y: number; vx: number; vy: number; color: string;
   size: number; rotation: number; rotationSpeed: number; shape: typeof SHAPES[number]; opacity: number;

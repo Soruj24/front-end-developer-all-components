@@ -10,6 +10,8 @@ export function NativeSelect({
   error,
   className,
   children,
+  value,
+  defaultValue,
   ...props
 }: NativeSelectProps) {
   const options: { value: string; label: string; disabled?: boolean }[] = [];
@@ -36,6 +38,16 @@ export function NativeSelect({
       error={error ? " " : undefined}
       helperText={helperText as string}
       size={size}
+      value={
+        value === undefined ? undefined : Array.isArray(value) ? value[0] : String(value)
+      }
+      defaultValue={
+        defaultValue === undefined
+          ? undefined
+          : Array.isArray(defaultValue)
+            ? defaultValue[0]
+            : String(defaultValue)
+      }
       className={cn(
         error && "border-destructive",
         className,

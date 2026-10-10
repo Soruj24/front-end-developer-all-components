@@ -210,10 +210,10 @@ export function Combobox({
             <span className="text-muted-foreground">{placeholder}</span>
           ) : multiple ? (
             selected.map((val) => {
-              const opt = options.find((o) => o.value === val);
+              const opt = options.find((o) => o.value === val.value);
               return opt ? (
                 <span
-                  key={val}
+                  key={val.value}
                   className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground"
                 >
                   {opt.label}
@@ -221,7 +221,7 @@ export function Combobox({
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      remove(val);
+                      remove(val.value);
                     }}
                     aria-label={`Remove ${opt.label}`}
                     className="rounded-sm hover:bg-secondary-foreground/20"

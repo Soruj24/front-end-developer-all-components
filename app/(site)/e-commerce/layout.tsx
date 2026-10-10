@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { EcommerceNavbar } from "@/features/ecommerce/components/EcommerceNavbar";
 import { EcommerceTopBar } from "@/features/ecommerce/components/EcommerceTopBar";
 import { EcommerceFooter } from "@/features/ecommerce/components/EcommerceFooter";
@@ -13,11 +13,11 @@ export default function EcommerceLayout({
 }) {
   const cart = useCart();
   const [cartOpen, setCartOpen] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   return (
     <div className="flex min-h-screen flex-col">

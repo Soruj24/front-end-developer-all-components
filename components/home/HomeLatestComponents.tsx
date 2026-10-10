@@ -11,6 +11,7 @@ const RECENT_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 /** Recently added components pulled live from the database. */
 export async function HomeLatestComponents() {
   const latest = await getLatestComponents(6);
+  // eslint-disable-next-line react-hooks/purity -- async Server Component: read the wall clock once per request; it never re-renders on the client so hooks memoization is unavailable.
   const now = Date.now();
 
   return (

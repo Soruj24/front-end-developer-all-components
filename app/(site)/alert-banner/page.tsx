@@ -85,7 +85,7 @@ function RichContentDemo() {
     <div className="flex w-full max-w-lg flex-col gap-3">
       <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200">
         <Info className="h-4 w-4 shrink-0" />
-        <span className="flex-1">We've made improvements to performance. <a href="#" className="font-medium underline hover:no-underline">Read the changelog</a></span>
+        <span className="flex-1">We&apos;ve made improvements to performance. <a href="#" className="font-medium underline hover:no-underline">Read the changelog</a></span>
         <a href="#" className="flex shrink-0 items-center gap-1 rounded bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-blue-700">Learn more <ExternalLink className="h-3 w-3" /></a>
       </div>
       <div className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">

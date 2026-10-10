@@ -5,15 +5,14 @@ import { Button } from "../../Button";
 export function AsChildExample() {
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button variant="link" asChild>
-        <a href="https://example.com" target="_blank" rel="noopener noreferrer">
-          Navigate with Link
-        </a>
+      <Button
+        variant="link"
+        onClick={() => window.open("https://example.com", "_blank", "noopener,noreferrer")}
+      >
+        Navigate with Link
       </Button>
-      <Button asChild>
-        <a href="#section">
-          Scroll to Section
-        </a>
+      <Button onClick={() => document.querySelector("#section")?.scrollIntoView({ behavior: "smooth" })}>
+        Scroll to Section
       </Button>
     </div>
   );

@@ -49,12 +49,12 @@ export function PaletteRow({ row, index, selected, query, favorites, pinned, onS
         <button type="button" aria-label={isFavorite ? `Remove ${item.label} from favorites` : `Add ${item.label} to favorites`}
           onClick={(e) => { e.stopPropagation(); onToggleFavorite(item.id); }}
           className={cn("rounded-md p-1 transition-colors", isFavorite ? "text-warning" : "text-muted-foreground opacity-40 hover:text-warning hover:opacity-100")}>
-          <StarIcon className="h-3.5 w-3.5" filled={isFavorite} />
+          <StarIcon className="h-3.5 w-3.5" fill={isFavorite ? "currentColor" : "none"} />
         </button>
         <button type="button" aria-label={isPinned ? `Unpin ${item.label}` : `Pin ${item.label}`}
           onClick={(e) => { e.stopPropagation(); onTogglePinned(item.id); }}
           className={cn("rounded-md p-1 transition-colors", isPinned ? "text-primary" : "text-muted-foreground opacity-40 hover:text-primary hover:opacity-100")}>
-          <PinIcon className="h-3.5 w-3.5" filled={isPinned} />
+          <PinIcon className="h-3.5 w-3.5" fill={isPinned ? "currentColor" : "none"} />
         </button>
       </span>
     </div>

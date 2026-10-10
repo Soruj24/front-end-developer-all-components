@@ -10,6 +10,7 @@ interface Row {
   role: string;
   status: string;
   revenue: number;
+  [key: string]: string | number;
 }
 
 const sampleData: Row[] = [

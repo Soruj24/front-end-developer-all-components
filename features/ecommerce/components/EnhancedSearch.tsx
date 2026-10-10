@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { PRODUCTS } from "../constants/product-data";
@@ -33,20 +33,16 @@ export function EnhancedSearch({ className }: EnhancedSearchProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [recentSearches, setRecentSearches] = useState<string[]>(() =>
+    getRecentSearches(),
+  );
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setRecentSearches(getRecentSearches());
-  }, []);
-
-  useEffect(() => {
+  const suggestions = useMemo<SearchSuggestion[]>(() => {
     if (!query.trim()) {
-      setSuggestions([]);
-      return;
+      return [];
     }
     const q = query.toLowerCase();
     const productMatches: SearchSuggestion[] = PRODUCTS.filter(
@@ -73,9 +69,14 @@ export function EnhancedSearch({ className }: EnhancedSearchProps) {
         type: "category" as const,
       }));
 
-    setSuggestions([...productMatches, ...categoryMatches]);
-    setSelectedIndex(-1);
+    return [...productMatches, ...categoryMatches];
   }, [query]);
+
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (prevQuery !== query) {
+    setPrevQuery(query);
+    setSelectedIndex(-1);
+  }
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

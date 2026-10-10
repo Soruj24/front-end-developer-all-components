@@ -1,7 +1,7 @@
 "use client";
 
 import { BookingCalendar } from "../../BookingCalendar";
-import type { BookingDay, TimeSlot } from "../../BookingCalendar.types";
+import type { BookingDay, TimeSlot } from "../BookingCalendar.types";
 
 const days: BookingDay[] = [
   { label: "Sat", date: 20 },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import type { SheetProps, SheetSide, SheetSize } from "./Sheet.types";
@@ -65,11 +65,11 @@ export default function Sheet({
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
   const panelRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const setOpen = useCallback(
     (next: boolean) => {
@@ -140,7 +140,7 @@ export default function Sheet({
           "duration-300 ease-out",
           isOpen ? "data-[state=open]:animate-in" : "data-[state=closed]:animate-out",
           SIDE_CLASSES[side],
-          size !== "full" && side !== "full" ? SIZE_CLASSES[size] : "",
+          size !== "full" ? SIZE_CLASSES[size] : "",
           SLIDE_CLASSES[side],
           side === "left" && "slide-in-from-left",
           side === "right" && "slide-in-from-right",

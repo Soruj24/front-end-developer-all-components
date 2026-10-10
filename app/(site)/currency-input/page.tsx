@@ -278,7 +278,7 @@ export default function CurrencyInputPage() {
               {CURRENCIES.map((c, i) => (
                 <Button
                   key={c.code}
-                  variant={selectedCurrency === i ? "default" : "outline"}
+                  variant={selectedCurrency === i ? "primary" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCurrency(i)}
                 >

@@ -41,6 +41,15 @@ const CommandMenu = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
+    if (!open) {
+      setQuery("");
+      setSelectedIndex(0);
+    }
+  }
+
   const flatItems = groups.flatMap((g) =>
     g.items.filter(
       (item) =>
@@ -48,17 +57,6 @@ const CommandMenu = ({
         item.label.toLowerCase().includes(query.toLowerCase())
     )
   );
-
-  useEffect(() => {
-    if (!open) {
-      setQuery("");
-      setSelectedIndex(0);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
@@ -125,7 +123,10 @@ const CommandMenu = ({
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSelectedIndex(0);
+            }}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             className="flex-1 bg-transparent py-3.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/50"

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useJobSearchHistory } from "../hooks/useJobSearchHistory";
 
 interface JobSearchHistoryProps {
@@ -6,6 +7,7 @@ interface JobSearchHistoryProps {
 
 export function JobSearchHistory({ onSelectSearch }: JobSearchHistoryProps) {
   const { history, removeSearch, clearHistory } = useJobSearchHistory();
+  const [now] = useState(() => Date.now());
 
   if (history.length === 0) {
     return (
@@ -17,7 +19,7 @@ export function JobSearchHistory({ onSelectSearch }: JobSearchHistoryProps) {
   }
 
   const formatTime = (ts: string) => {
-    const diff = Date.now() - new Date(ts).getTime();
+    const diff = now - new Date(ts).getTime();
     const mins = Math.floor(diff / 60000);
     if (mins < 60) return `${mins}m ago`;
     const hours = Math.floor(mins / 60);

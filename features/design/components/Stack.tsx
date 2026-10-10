@@ -37,7 +37,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
 );
 Stack.displayName = "Stack";
 
-export interface HStackProps extends StackProps {}
+export type HStackProps = StackProps;
 
 export const HStack = forwardRef<HTMLDivElement, HStackProps>(
   ({ className, gap = 2, align = "center", justify, reverse, ...props }, ref) => {

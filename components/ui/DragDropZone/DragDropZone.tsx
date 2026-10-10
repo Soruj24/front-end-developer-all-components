@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback, type DragEvent, type InputHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-export interface DragDropZoneProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+export interface DragDropZoneProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange" | "onDrop"> {
   onDrop?: (files: File[]) => void;
   onChange?: (files: File[]) => void;
   accept?: string;

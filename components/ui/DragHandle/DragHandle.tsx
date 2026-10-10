@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { DragHandleProps, DragItemProps, DragHandleVariant, DragHandleSize } from "./DragHandle.types";
 

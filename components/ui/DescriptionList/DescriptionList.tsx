@@ -39,7 +39,7 @@ const VARIANT_STYLES = {
   },
 } as const;
 
-const DescriptionList = forwardRef<HTMLElement, DescriptionListProps>(
+const DescriptionList = forwardRef<HTMLDListElement, DescriptionListProps>(
   (
     {
       items,

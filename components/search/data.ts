@@ -6,6 +6,7 @@
  * components, category shortcuts, and quick actions.
  */
 
+import type { ReactNode } from "react";
 import { navigationSections } from "@/constants/navigation";
 import { fuzzyMatch, type FuzzyMatch } from "./fuzzy";
 
@@ -14,9 +15,9 @@ export interface DocItem {
   title: string;
   description: string;
   category: string;
-  categoryIcon: string;
+  categoryIcon: ReactNode;
   href: string;
-  icon: string;
+  icon: ReactNode;
   keywords: string[];
   popular: boolean;
   badge?: "Page" | "Section" | "Category" | "Action";
@@ -210,7 +211,7 @@ export const docItems: DocItem[] = buildItems();
 
 export interface DocCategory {
   title: string;
-  icon: string;
+  icon: ReactNode;
   description: string;
   count: number;
 }
@@ -264,7 +265,7 @@ export interface SearchResult {
 
 export interface SearchGroup {
   category: string;
-  icon: string;
+  icon: ReactNode;
   results: SearchResult[];
 }
 

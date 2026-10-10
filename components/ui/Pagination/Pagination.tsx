@@ -19,7 +19,7 @@ export function Pagination({
   totalItems,
   className,
 }: PaginationProps) {
-  const pages = useMemo(() => {
+  const pages = useMemo<(number | "ellipsis")[]>(() => {
     const totalSiblings = siblingCount * 2 + 3;
     if (totalPages <= totalSiblings) return range(1, totalPages);
     const leftSibling = Math.max(currentPage - siblingCount, 1);

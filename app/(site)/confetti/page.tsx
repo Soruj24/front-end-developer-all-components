@@ -41,11 +41,11 @@ export default function ConfettiPage() {
       />
 
       <div className="flex flex-col gap-6">
-        <ExampleBlock title="Interactive Demo" description="Adjust parameters and fire confetti to see the effect." code={<ConfettiDemo />}>
+        <ExampleBlock title="Interactive Demo" description="Adjust parameters and fire confetti to see the effect." code="<ConfettiDemo />">
           <ConfettiDemo />
         </ExampleBlock>
 
-        <ExampleBlock title="Presets" description="Pre-configured confetti styles for common scenarios." code={<ConfettiPresets />}>
+        <ExampleBlock title="Presets" description="Pre-configured confetti styles for common scenarios." code="<ConfettiPresets />">
           <ConfettiPresets />
         </ExampleBlock>
 

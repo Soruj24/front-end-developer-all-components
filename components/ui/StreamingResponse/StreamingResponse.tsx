@@ -16,10 +16,10 @@ export function StreamingResponse({
   stream, content, loading = false, autoScroll = true, maxHeight = 420, showHeader = true,
   variant = "card", title = "Assistant", thinkingLabel = "Thinking", className, onDone, onError, onRetry,
 }: StreamingResponseProps) {
-  const streamRef = useRef(stream); streamRef.current = stream;
-  const contentRef = useRef(content); contentRef.current = content;
+  const streamRef = useRef(stream);
+  const contentRef = useRef(content);
   const lastContentRef = useRef(content);
-  const callbacksRef = useRef({ onDone, onError, onRetry }); callbacksRef.current = { onDone, onError, onRetry };
+  const callbacksRef = useRef({ onDone, onError, onRetry });
   const [status, setStatus] = useState<StreamStatus>("idle");
   const [displayText, setDisplayText] = useState("");
   const [thinking, setThinking] = useState("");
@@ -36,6 +36,13 @@ export function StreamingResponse({
   const flushTimerRef = useRef<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const atBottomRef = useRef(true);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    streamRef.current = stream;
+    contentRef.current = content;
+    callbacksRef.current = { onDone, onError, onRetry };
+  });
 
   const flush = useCallback(() => { flushTimerRef.current = null; if (!pendingRef.current) return; setDisplayText((prev) => prev + pendingRef.current); pendingRef.current = ""; }, []);
   const scheduleFlush = useCallback(() => { if (flushTimerRef.current) return; flushTimerRef.current = window.setTimeout(flush, 40); }, [flush]);
@@ -78,7 +85,11 @@ export function StreamingResponse({
     void run();
   }, [flush, resolveStream]);
 
-  useEffect(() => { startRun(); }, [startRun]);
+  useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    startRun();
+  }, [startRun]);
   useEffect(() => { if (content !== lastContentRef.current) { lastContentRef.current = content; startRun(); } }, [content, startRun]);
   useEffect(() => { return () => { cancelledRef.current = true; const gen = genRef.current; if (gen && typeof gen.return === "function") { void gen.return(undefined).catch(() => {}); } if (flushTimerRef.current) clearTimeout(flushTimerRef.current); }; }, []);
   useEffect(() => { const el = scrollRef.current; if (!el) return; if (autoScroll && atBottomRef.current) { el.scrollTop = el.scrollHeight; } }, [displayText, tools, status, autoScroll]);

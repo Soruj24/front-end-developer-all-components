@@ -76,6 +76,7 @@ export function usePromptBuilder({
   const jumpToHistory = (index: number) => { const entry = history[index]; if (!entry) return; setFuture([]); setHistory((p) => p.slice(0, index + 1)); applyState(entry.state); };
 
   const resizeActive = () => { if (!activeSection) return; const ta = taRefs.current[activeSection.id]; if (!ta) return; ta.style.height = "auto"; ta.style.height = `${ta.scrollHeight}px`; };
+  const registerTextarea = (id: string, el: HTMLTextAreaElement | null) => { taRefs.current[id] = el; };
   useLayoutEffect(() => { if (!activeSection) return; const ta = taRefs.current[activeSection.id]; if (!ta) return; ta.style.height = "auto"; ta.style.height = `${ta.scrollHeight}px`; }, [activeSection, activeSectionContent, state.sections]);
 
   const updateSection = (id: string, patch: Partial<PromptSection>) => update((s) => ({ ...s, sections: s.sections.map((sec) => sec.id === id ? { ...sec, ...patch } : sec) }), "Edited section");
@@ -96,7 +97,7 @@ export function usePromptBuilder({
   const copyPrompt = async () => { const text = buildPrompt(state.sections, state.variables, includeSectionTitles); if (!text) return; try { await navigator.clipboard.writeText(text); onCopy?.(text); setCopied(true); setTimeout(() => setCopied(false), 1600); } catch {} };
 
   return {
-    state, activeSection, activeSectionContent, activeSectionIndex, varById, validation, totalChars, charRatio, isValid, copied, taRefs, history, future,
+    state, activeSection, activeSectionContent, activeSectionIndex, varById, validation, totalChars, charRatio, isValid, copied, taRefs, registerTextarea, history, future,
     updateSection, addSection, removeSection, moveSection, updateVariable, addVariable, removeVariable, selectTemplate, reset, copyPrompt, undo, redo, jumpToHistory,
     formatSelection: doFormatSelection, toggleBullet: doToggleBullet, insertVariable: doInsertVariable,
   };

@@ -109,7 +109,7 @@ function Page() {
 function SidebarNav({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   return (
     <div className="flex h-64 w-52 overflow-hidden rounded-lg border border-border">
-      <Sidebar open={open} onOpenChange={onOpenChange}>
+      <Sidebar collapsed={open} onCollapsedChange={onOpenChange}>
         <SidebarHeader>
           <div className="flex items-center justify-between px-2 py-2 text-sm font-bold">
             <span>Acme</span>

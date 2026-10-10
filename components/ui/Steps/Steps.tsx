@@ -42,7 +42,7 @@ export function Steps({ children, className, orientation = "horizontal" }: Steps
           className: cn(child.props.className, !isLast && (isHorizontal ? "" : "pb-0")),
           _isLast: isLast,
           _isHorizontal: isHorizontal,
-        } as StepProps & { _isLast: boolean; _isHorizontal: boolean });
+        } as Partial<StepProps> & { _isLast: boolean; _isHorizontal: boolean });
       })}
     </div>
   );

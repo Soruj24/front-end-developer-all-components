@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes, type RefCallback } from "react";
 import { cn } from "@/lib/cn";
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {
@@ -20,7 +20,7 @@ export const Text = forwardRef<HTMLDivElement, TextProps>(
   ({ className, as: Tag = "p", variant = "body", truncate, balance, ...props }, ref) => {
     return (
       <Tag
-        ref={ref as any}
+        ref={ref as RefCallback<HTMLElement>}
         className={cn(
           variantClasses[variant],
           truncate && "truncate",

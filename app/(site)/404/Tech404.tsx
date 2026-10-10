@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo } from "react";
 import { NotFoundLayout, GoHomeButton } from "./NotFoundShell";
 
 export function Dark404() {
@@ -95,12 +98,17 @@ export function Terminal404() {
   );
 }
 
-export function Matrix404() {
+function makeMatrixText() {
   const chars = "01アイウエオカキクケコ";
+  return Array.from({ length: 200 }, () => chars[Math.floor(Math.random() * chars.length)]).join(" ");
+}
+
+export function Matrix404() {
+  const matrixText = useMemo(() => makeMatrixText(), []);
   return (
     <NotFoundLayout className="py-20 overflow-hidden" style={{ background: "#000", borderRadius: "12px", minHeight: "400px" }}>
       <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ fontFamily: "monospace", fontSize: "14px", color: "#0f0", lineHeight: "1.2", wordBreak: "break-all", overflow: "hidden" }}>
-        {Array.from({ length: 200 }, (_, i) => chars[Math.floor(Math.random() * chars.length)]).join(" ")}
+        {matrixText}
       </div>
       <div className="relative z-10">
         <h1 className="text-[10rem] font-bold text-green-500" style={{ textShadow: "0 0 20px #0f0" }}>404</h1>
