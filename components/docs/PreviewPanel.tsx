@@ -1,28 +1,15 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { CopyIcon, CheckIcon, RotateCcwIcon } from "lucide-react";
-import { writeClipboard } from "@/lib/clipboard";
-import { cn } from "@/lib/cn";
+import { useState } from "react";
+import { RotateCcwIcon } from "lucide-react";
 
 interface PreviewPanelProps {
   children: React.ReactNode;
   filename?: string;
-  /** Full source used by the Copy button. Copies a hint when omitted. */
-  copySource?: string;
 }
 
-export function PreviewPanel({ children, filename, copySource }: PreviewPanelProps) {
-  const [copied, setCopied] = useState(false);
-  const [failed, setFailed] = useState(false);
+export function PreviewPanel({ children, filename }: PreviewPanelProps) {
   const [key, setKey] = useState(0);
-
-  const handleCopy = useCallback(async () => {
-    const ok = await writeClipboard(copySource ?? "See the source code below.");
-    setCopied(ok);
-    setFailed(!ok);
-    if (ok) window.setTimeout(() => setCopied(false), 1600);
-  }, [copySource]);
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background">
@@ -46,31 +33,12 @@ export function PreviewPanel({ children, filename, copySource }: PreviewPanelPro
             onClick={() => setKey((k) => k + 1)}
             aria-label="Refresh preview"
             title="Refresh preview"
-            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-[32px] min-w-[32px] items-center justify-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <RotateCcwIcon className="h-3.5 w-3.5" aria-hidden="true" />
           </button>
-          <button
-            type="button"
-            onClick={handleCopy}
-            aria-label={copied ? "Preview source copied" : "Copy preview source"}
-            className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              copied ? "text-success" : failed ? "text-danger" : "text-muted-foreground hover:bg-muted",
-            )}
-          >
-            {copied ? (
-              <CheckIcon className="h-3.5 w-3.5" aria-hidden="true" />
-            ) : (
-              <CopyIcon className="h-3.5 w-3.5" aria-hidden="true" />
-            )}
-            {copied ? "Copied" : failed ? "Failed" : "Copy"}
-          </button>
         </div>
       </div>
-      <p aria-live="polite" role="status" className="sr-only">
-        {copied ? "Preview source copied." : ""}
-      </p>
       <div
         key={key}
         className="flex min-h-64 items-center justify-center bg-gradient-to-br from-muted/40 via-background to-muted/40 p-8"

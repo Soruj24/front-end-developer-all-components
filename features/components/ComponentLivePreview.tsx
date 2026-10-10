@@ -32,12 +32,14 @@ export function ComponentLivePreview({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const handleRefresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   const handleCopy = useCallback(async () => {
     const ok = await writeClipboard(component.source);
     setCopied(ok);
+    setCopyFailed(!ok);
     if (ok) window.setTimeout(() => setCopied(false), 1600);
   }, [component.source]);
 
@@ -68,6 +70,9 @@ export function ComponentLivePreview({
             onCopy={handleCopy}
             breakpoint={breakpointLabel}
           />
+          <p aria-live="polite" role="status" className="sr-only">
+            {copied ? "Source copied to clipboard." : copyFailed ? "Copy failed. Open the source section to copy manually." : ""}
+          </p>
 
           <div
             className={`flex min-h-64 items-center justify-center overflow-hidden bg-gradient-to-br from-muted/60 via-background to-muted/60 p-6 transition-colors duration-300 ${

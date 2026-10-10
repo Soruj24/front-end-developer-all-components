@@ -47,7 +47,7 @@ export function SourceCodeViewer({
             onClick={handleCopy}
             aria-label={copied ? "Source copied" : `Copy ${filename} to clipboard`}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "inline-flex min-h-[32px] items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               copied ? "text-green-500" : failed ? "text-danger" : "text-muted-foreground hover:bg-muted",
             )}
           >

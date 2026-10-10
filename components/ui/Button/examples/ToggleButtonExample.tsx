@@ -36,6 +36,7 @@ export function ToggleButtonExample() {
     <div className="flex flex-wrap items-center gap-3">
       <Button
         variant={starred ? "primary" : "outline"}
+        aria-pressed={starred}
         onClick={() => setStarred((v) => !v)}
       >
         <StarIcon filled={starred} />
@@ -43,6 +44,7 @@ export function ToggleButtonExample() {
       </Button>
       <Button
         variant={bookmarked ? "secondary" : "outline"}
+        aria-pressed={bookmarked}
         onClick={() => setBookmarked((v) => !v)}
       >
         <BookmarkIcon filled={bookmarked} />
@@ -50,6 +52,7 @@ export function ToggleButtonExample() {
       </Button>
       <Button
         variant={followed ? "soft" : "outline"}
+        aria-pressed={followed}
         onClick={() => setFollowed((v) => !v)}
       >
         {followed && <CheckIcon />}

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/cn";
+import { siteConfig } from "@/config/site";
 
 interface SiteHeaderMobileActionsProps {
   theme: "light" | "dark";
@@ -53,7 +54,7 @@ export function SiteHeaderMobileActions({
       </button>
 
       <a
-        href="https://github.com/sun-ui"
+        href={siteConfig.github}
         target="_blank"
         rel="noreferrer"
         className={cn(

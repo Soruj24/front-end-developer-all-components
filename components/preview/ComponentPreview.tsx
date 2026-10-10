@@ -3,10 +3,12 @@
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { getRegistryItem } from "@/components/registry";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { AnimatedTabs } from "./AnimatedTabs";
 import { ExpandablePreview } from "./ExpandablePreview";
 import { PreviewFrame } from "./PreviewFrame";
 import { PreviewCanvas } from "./PreviewCanvas";
+import { PreviewToolbar } from "./PreviewToolbar";
 import { DEFAULT_DEVICE_ID, getDevice } from "./devices";
 import type { DeviceId } from "./devices";
 import { CodePanel, CliPanel, InstallPanel, DependenciesPanel } from "./panels";
@@ -66,21 +68,24 @@ export function ComponentPreview({
   const [forcedDark, setForcedDark] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const resolvedTitle = title ?? item?.title ?? id;
   const resolvedDescription = description ?? item?.description;
 
   const handleClose = useCallback(() => setExpanded(false), []);
+  const handleExpand = useCallback(() => setExpanded(true), []);
+  const handleToggleDark = useCallback(() => setForcedDark((v) => !v), []);
 
   const onCopy = async () => {
-    if (!item) return;
-    try {
-      await navigator.clipboard.writeText(item.source);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      // Clipboard unavailable; ignore.
+    if (!item) {
+      setCopyFailed(true);
+      return;
     }
+    const ok = await writeClipboard(item.source);
+    setCopied(ok);
+    setCopyFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   };
 
   return (
@@ -114,6 +119,18 @@ export function ComponentPreview({
       <div key={activeTab} className="animate-fade-slide">
         {activeTab === "preview" && (
           <div className="relative">
+            <PreviewToolbar
+              device={device}
+              onDeviceChange={setDevice}
+              forcedDark={forcedDark}
+              onToggleDark={handleToggleDark}
+              copied={copied}
+              onCopy={onCopy}
+              onExpand={handleExpand}
+            />
+            <p aria-live="polite" role="status" className="sr-only">
+              {copied ? "Source copied to clipboard." : copyFailed ? "Copy failed. Open the Code tab to copy manually." : ""}
+            </p>
             <div
               className={cn(
                 "relative border-t border-border",
@@ -130,6 +147,11 @@ export function ComponentPreview({
         )}
 
         {activeTab === "code" && item && <CodePanel item={item} />}
+        {activeTab === "code" && !item && (
+          <p className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
+            No source registered for “{id}” yet.
+          </p>
+        )}
         {activeTab === "cli" && item && <CliPanel item={item} />}
         {activeTab === "install" && item && <InstallPanel item={item} />}
         {activeTab === "deps" && item && <DependenciesPanel item={item} />}

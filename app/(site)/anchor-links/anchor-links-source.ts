@@ -99,7 +99,7 @@ export const TABLE_EXAMPLE = `<AnchorLinks variant="table" links={links} />`;
 export const BREADCRUMB_EXAMPLE = `<nav className="flex items-center gap-1 text-sm">
   <a href="/docs" className="text-muted-foreground hover:text-foreground">Docs</a>
   <ChevronRight className="h-3 w-3 text-muted-foreground/40" />
-  <a href="/docs/components" className="text-muted-foreground hover:text-foreground">Components</a>
+  <a href="/components" className="text-muted-foreground hover:text-foreground">Components</a>
   <ChevronRight className="h-3 w-3 text-muted-foreground/40" />
   <span className="font-medium text-foreground">Anchor Links</span>
 </nav>`;

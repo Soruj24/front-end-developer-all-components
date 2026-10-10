@@ -222,11 +222,13 @@ export default function ButtonsPage() {
             Examples
           </h2>
 
-          <div className="hidden gap-1 overflow-x-auto sm:flex">
+          <div className="hidden gap-1 overflow-x-auto sm:flex" role="tablist" aria-label="Button examples">
             {examples.map((ex) => (
               <button
                 key={ex.id}
                 type="button"
+                role="tab"
+                aria-selected={activeExample === ex.id}
                 onClick={() => setActiveExample(ex.id)}
                 className={cn(
                   "inline-flex shrink-0 items-center rounded-md px-3 py-1.5",

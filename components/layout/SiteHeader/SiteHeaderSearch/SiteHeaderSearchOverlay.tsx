@@ -19,9 +19,9 @@ const recentSearches = [
 ];
 
 const searchResults = [
-  { id: "1", title: "Button", description: "Interactive button component", href: "/components/button" },
-  { id: "2", title: "Dialog", description: "Modal dialog component", href: "/components/dialog" },
-  { id: "3", title: "Form", description: "Form handling utilities", href: "/components/form" },
+  { id: "1", title: "Button", description: "Interactive button component", href: "/button" },
+  { id: "2", title: "Dialog", description: "Modal dialog component", href: "/dialog" },
+  { id: "3", title: "Form", description: "Form handling utilities", href: "/forms" },
 ];
 
 export function SiteHeaderSearchOverlay({
@@ -79,8 +79,7 @@ export function SiteHeaderSearchOverlay({
         <div className="border-t border-zinc-800">
           <SiteHeaderSearchRecent
             searches={recentSearches}
-            onSelect={(query) => {
-              console.log("Selected:", query);
+            onSelect={() => {
               onClose();
             }}
           />

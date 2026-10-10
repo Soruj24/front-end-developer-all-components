@@ -8,7 +8,7 @@ import { DownloadIcon, HeartIcon, BookmarkIcon } from "./icons";
 
 export function ComponentCard({ component }: { component: RegistryComponent }) {
   const category = categoryBySlug[component.category];
-  const href = `/components/${component.slug}`;
+  const href = `/${component.slug}`;
 
   return (
     <Link

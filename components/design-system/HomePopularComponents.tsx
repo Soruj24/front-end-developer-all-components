@@ -87,7 +87,7 @@ export function HomePopularComponents() {
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {popularComponents.map((component, index) => (
             <FadeInUp key={component.slug} delay={index % 2 === 0 ? "short" : "medium"}>
-              <Link href={`/components/${component.slug}`}>
+              <Link href={`/${component.slug}`}>
                 <Card className="h-full transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:-translate-y-0.5">
                   <CardHeader>
                     <div className="flex items-center justify-between">

@@ -74,8 +74,8 @@ export function SiteHeader({ navLinks, className }: HeaderProps) {
           "sticky top-0 z-50 w-full h-16",
           "backdrop-blur-xl",
           scrolled
-            ? "bg-white/80 dark:bg-black/70 border-b border-zinc-800"
-            : "bg-white/80 dark:bg-black/70 border-b border-zinc-800",
+            ? "bg-white/90 dark:bg-black/80 border-b border-border/60 shadow-sm"
+            : "bg-white/60 dark:bg-black/40 border-b border-transparent",
           "transition-all duration-200",
           "animate-fade-in-down",
           className

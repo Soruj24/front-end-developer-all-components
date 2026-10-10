@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { Highlight } from "./Highlight";
 import {
   docCategories,
@@ -80,6 +81,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   const [visible, setVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const [recents, setRecents] = useState<string[]>(() => {
     try {
@@ -191,22 +193,25 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   }, []);
 
   const handleAction = useCallback(
-    (item: DocItem) => {
+    async (item: DocItem) => {
       if (item.id === "action:toggle-theme") {
         const next = !document.documentElement.classList.contains("dark");
         document.documentElement.classList.toggle("dark", next);
+        document.documentElement.style.colorScheme = next ? "dark" : "light";
         try {
           localStorage.setItem("theme", next ? "dark" : "light");
         } catch {
           /* ignore storage errors */
         }
+        window.dispatchEvent(new CustomEvent("theme-change", { detail: next ? "dark" : "light" }));
         onClose();
         return;
       }
       if (item.id === "action:copy-url") {
-        void navigator.clipboard?.writeText(window.location.href);
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 1600);
+        const done = await writeClipboard(window.location.href);
+        setCopied(done);
+        setCopyFailed(!done);
+        if (done) window.setTimeout(() => setCopied(false), 1600);
         return;
       }
       if (item.id === "action:print") {
@@ -545,9 +550,9 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
               <span className="sm:hidden text-muted-foreground/70">Type to search</span>
             )}
           </p>
-          {copied ? (
-            <p className="shrink-0 text-[11px] font-medium text-accent">
-              Copied to clipboard
+          {copied || copyFailed ? (
+            <p className="shrink-0 text-[11px] font-medium text-accent" role="status">
+              {copied ? "Copied to clipboard" : "Copy failed — copy the URL manually"}
             </p>
           ) : (
             <p className="shrink-0 text-[11px] text-muted-foreground/70">

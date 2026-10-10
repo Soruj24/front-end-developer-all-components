@@ -21,12 +21,15 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
       const isTyping =
-        target?.tagName === "INPUT" ||
-        target?.tagName === "TEXTAREA" ||
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
         target?.isContentEditable;
-      if (e.key === "/" && !isTyping) {
+      if (!isTyping) {
         e.preventDefault();
         inputRef.current?.focus();
       }
@@ -53,7 +56,9 @@ export function SidebarSearch({ value, onChange }: SidebarSearchProps) {
         </svg>
         <input
           ref={inputRef}
-          type="text"
+          type="search"
+          aria-label="Search documentation pages"
+          aria-keyshortcuts="/"
           placeholder="Search pages..."
           value={value}
           onChange={(e) => onChange(e.target.value)}

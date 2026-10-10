@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { CodeBlock } from "@/components/home/CodeBlock";
 import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "./icons";
 
@@ -18,13 +19,13 @@ export interface Example {
 export function ExampleCard({ example }: { example: Example }) {
   const [showCode, setShowCode] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(example.code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch { /* ignore */ }
+    const ok = await writeClipboard(example.code);
+    setCopied(ok);
+    setFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   };
 
   return (
@@ -38,15 +39,17 @@ export function ExampleCard({ example }: { example: Example }) {
         </div>
         <div className="flex items-center gap-1">
           <button type="button" onClick={handleCopy}
+            aria-label={copied ? "Example code copied" : `Copy ${example.title} example`}
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
-              copied ? "text-success" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              "inline-flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              copied ? "text-success" : failed ? "text-danger" : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}>
             {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
-            {copied ? "Copied" : "Copy"}
+            {copied ? "Copied" : failed ? "Failed" : "Copy"}
           </button>
           <button type="button" onClick={() => setShowCode((v) => !v)}
-            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+            aria-expanded={showCode}
+            className="inline-flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             {showCode ? <ChevronUpIcon className="h-3.5 w-3.5" /> : <ChevronDownIcon className="h-3.5 w-3.5" />}
             {showCode ? "Hide" : "Code"}
           </button>

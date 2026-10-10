@@ -36,12 +36,17 @@ const THUMB_SIZES: Record<SwitchSize, string> = {
 };
 
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, size = "md", label, description, error, disabled, id, ...props }, ref) => {
+  ({ className, size = "md", label, description, error, disabled, id, onCheckedChange, onChange, ...props }, ref) => {
     const switchId = id ?? (label ? \`switch-\${label.toLowerCase().replace(/\\s+/g, "-")}\` : undefined);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e);
+      onCheckedChange?.(e.target.checked);
+    };
     return (
       <label htmlFor={switchId} className={cn("flex items-start gap-3", disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer", className)}>
         <div className={cn("relative mt-0.5 inline-flex shrink-0 items-center rounded-full border-2 transition-all duration-200 ease-in-out", TRACK_SIZES[size], error ? "border-rose-400 bg-rose-100 peer-checked:bg-rose-500" : "border-transparent bg-muted peer-checked:bg-primary", "focus-within:outline-none focus-within:ring-2 focus-within:ring-primary/50 focus-within:ring-offset-2 focus-within:ring-offset-background")}>
-          <input ref={ref} id={switchId} type="checkbox" role="switch" aria-invalid={!!error || undefined} className="peer sr-only" disabled={disabled} {...props} />
+          <input ref={ref} id={switchId} type="checkbox" role="switch" aria-invalid={!!error || undefined} className="peer sr-only" disabled={disabled} onChange={handleChange} {...props} />
           <span className={cn("absolute inset-0 rounded-full transition-colors duration-200", error ? "bg-rose-100 peer-checked:bg-rose-500" : "bg-muted peer-checked:bg-primary")} />
           <span className={cn("absolute left-0.5 rounded-full bg-white shadow-sm transition-all duration-200 ease-in-out peer-checked:shadow-md", THUMB_SIZES[size])} />
         </div>
@@ -115,10 +120,10 @@ export default function SwitchPage() {
           filename="label-description.tsx"
         >
           <div className="flex flex-col gap-4">
-            <Switch label="Enable notifications" />
+            <Switch label="Email notifications" />
             <Switch
-              label="Dark mode"
-              description="Toggle dark mode across the application"
+              label="Appearance"
+              description="Follow the system color scheme"
             />
             <Switch
               label="Airplane mode"
@@ -146,7 +151,7 @@ export default function SwitchPage() {
           filename="disabled.tsx"
         >
           <div className="flex flex-col gap-4">
-            <Switch disabled />
+            <Switch disabled aria-label="Disabled setting" />
             <Switch disabled label="Disabled option" />
             <Switch
               disabled
@@ -182,7 +187,7 @@ export default function SwitchPage() {
           filename="group.tsx"
         >
           <div className="space-y-4">
-            <Switch label="Push notifications" description="Receive push alerts on your device" checked />
+            <Switch label="Push notifications" description="Receive push alerts on your device" defaultChecked />
             <Switch label="Email digest" description="Weekly summary email" />
             <Switch label="SMS alerts" description="Critical alerts via SMS" />
           </div>
@@ -208,7 +213,7 @@ export default function SwitchPage() {
                   <span className="text-sm font-medium text-foreground">{item.label}</span>
                   <span className="text-xs text-muted-foreground">{item.description}</span>
                 </div>
-                <Switch size="sm" />
+                <Switch size="sm" aria-label={item.label} />
               </div>
             ))}
           </div>

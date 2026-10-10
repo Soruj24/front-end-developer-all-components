@@ -12,7 +12,7 @@ import { useSyncExternalStore } from "react";
  * false). The script already executed from the SSR HTML by then, so behavior
  * is unchanged. See https://github.com/shadcn-ui/ui/issues/10104
  */
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||((!t||t==="system")&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
 
 const subscribe = () => () => {};
 const getClientSnapshot = () => false;

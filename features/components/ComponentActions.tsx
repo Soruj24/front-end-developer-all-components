@@ -1,9 +1,10 @@
 "use client";
 
 import type { RegistryComponent } from "@/features/registry";
-import { cliCommand, formatNumber } from "@/features/registry";
+import { formatNumber } from "@/features/registry";
 import { useRegistryActions } from "@/hooks";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { HeartIcon, BookmarkIcon, DownloadIcon } from "./icons";
 
 /** Like / bookmark / download controls with persisted user state. */
@@ -33,13 +34,14 @@ export function ComponentActions({ component }: { component: RegistryComponent }
         <BookmarkIcon className="h-4 w-4" filled={action.bookmarked} />
       </ActionButton>
       <ActionButton
-        label={isNew ? "Installed" : "Install"}
+        label={isNew ? "Saved" : "Save"}
         count={component.stats.downloads}
         active={isNew}
         activeClass="text-success"
-        onClick={() => {
-          markDownloaded(component.slug);
-          navigator.clipboard?.writeText(cliCommand(component.slug)).catch(() => {});
+        onClick={async () => {
+          const ok = await writeClipboard(component.source);
+          if (ok) markDownloaded(component.slug);
+          else window.prompt("Copy the component source manually:", component.source.slice(0, 2000));
         }}
       >
         <DownloadIcon className="h-4 w-4" />

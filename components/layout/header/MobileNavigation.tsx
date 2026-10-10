@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { FOCUS, TEXT, Z } from "@/constants/tokens";
@@ -32,29 +32,38 @@ export function MobileNavigation({
   onSearch,
   className,
 }: MobileNavigationProps) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     if (!isOpen) return;
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    // Focus the dialog on open; return focus on close.
+    closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      previouslyFocused.current?.focus?.();
+    };
   }, [isOpen, onClose]);
 
-  const shown = sections.slice(0, 6);
-
   return (
-    <div className={cn(!isOpen && "pointer-events-none", className)} aria-hidden={!isOpen}>
+    <div
+      className={cn(!isOpen && "pointer-events-none invisible", className)}
+      inert={!isOpen}
+    >
       <div
         onClick={onClose}
+        aria-hidden="true"
         className={cn(
           "fixed inset-0 z-40 bg-overlay transition-opacity duration-200 lg:hidden",
           isOpen ? "opacity-100" : "opacity-0",
         )}
       />
       <nav
-        role="dialog"
-        aria-modal="true"
         aria-label="Site navigation"
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex w-[320px] max-w-[85vw] flex-col border-r border-border/60 bg-background transition-transform duration-200 ease-out lg:hidden",
@@ -72,6 +81,7 @@ export function MobileNavigation({
             </span>
           </span>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close navigation menu"
@@ -121,13 +131,13 @@ export function MobileNavigation({
             ))}
           </ul>
           <div className="my-3 border-t border-border/60" />
-          {shown.map((section) => (
+          {sections.map((section) => (
             <div key={section.title} className="mb-1">
               <p className={cn("px-3 pb-1 pt-2 font-semibold uppercase tracking-widest text-muted-foreground", TEXT.tiny)}>
                 {section.title}
               </p>
               <ul className="flex flex-col">
-                {section.links.slice(0, 6).map((link) => (
+                {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}

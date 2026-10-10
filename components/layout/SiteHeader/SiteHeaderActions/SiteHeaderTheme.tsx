@@ -1,35 +1,60 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
 interface SiteHeaderThemeProps {
   className?: string;
 }
 
+function getInitialTheme(): { theme: "light" | "dark"; persisted: boolean } {
+  if (typeof window === "undefined") return { theme: "light", persisted: false };
+  try {
+    const stored = window.localStorage.getItem("theme");
+    if (stored === "light" || stored === "dark") {
+      return { theme: stored, persisted: true };
+    }
+    return {
+      theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+      persisted: false,
+    };
+  } catch {
+    return { theme: "light", persisted: false };
+  }
+}
+
 export function SiteHeaderTheme({ className }: SiteHeaderThemeProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [mounted, setMounted] = useState(false);
+  const [initial] = useState(getInitialTheme);
+  const [theme, setTheme] = useState<"light" | "dark">(initial.theme);
+  const [mounted, setMounted] = useState(initial.persisted);
+  const persisted = useRef(initial.persisted);
 
+  // Sync <html> with theme changes and apply the OS-followed theme on mount
+  // without writing back to storage (preserves unset/"system" preference).
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
-    const system = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-    setTheme(stored || system);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+    root.style.colorScheme = theme;
+    // Mount gate for the SSR placeholder: syncing render output with DOM
+    // readiness is an external-system sync, not derived state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, [theme]);
 
-  const toggle = () => setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  useEffect(() => {
+    if (!persisted.current) return;
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      /* ignore storage errors */
+    }
+  }, [theme]);
+
+  const toggle = () => {
+    persisted.current = true;
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   if (!mounted) {
     return (

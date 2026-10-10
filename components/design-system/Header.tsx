@@ -19,17 +19,14 @@ interface HeaderProps {
 export function Header({ navLinks = [], onSearchOpen }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isMac, setIsMac] = useState(() =>
+  // Mobile links close the menu on navigation, so no pathname effect is needed.
+  const [isMac] = useState(() =>
     typeof window !== "undefined"
       ? navigator.platform.toUpperCase().includes("MAC")
       : false
   );
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -40,7 +37,7 @@ export function Header({ navLinks = [], onSearchOpen }: HeaderProps) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         onSearchOpen?.();
       }

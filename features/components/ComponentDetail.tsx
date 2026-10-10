@@ -32,7 +32,7 @@ export function ComponentDetail({
       <ComponentDescription component={component} />
 
       <nav aria-label="On this page" className="flex flex-wrap gap-2 text-xs">
-        {["Preview", "Source Code", "Examples", "Props", "Install", "Usage", "Accessibility"].map(
+        {["Preview", "Code", "Examples", "Props", "Install", "Usage", "Accessibility"].map(
           (item) => (
             <a
               key={item}

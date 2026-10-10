@@ -55,10 +55,9 @@ export function ExampleBlock({
           <button
             type="button"
             onClick={handleCopy}
-            aria-expanded={undefined}
-            aria-label={copied ? "Example code copied" : `Copy ${title} example`}
+            aria-label={copied ? "Example code copied" : failed ? "Copy failed" : `Copy ${title} example`}
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "inline-flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               copied ? "text-green-500" : failed ? "text-danger" : "text-muted-foreground hover:bg-muted",
             )}
           >
@@ -73,7 +72,7 @@ export function ExampleBlock({
             type="button"
             onClick={() => setShowCode((v) => !v)}
             aria-expanded={showCode}
-            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex min-h-[32px] items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {showCode ? (
               <ChevronUpIcon className="h-3.5 w-3.5" />
@@ -87,6 +86,9 @@ export function ExampleBlock({
       <div className="flex min-h-32 items-center justify-center border-y border-border/50 bg-gradient-to-br from-muted/30 via-background to-muted/30 p-8">
         {children}
       </div>
+      <p aria-live="polite" role="status" className="sr-only">
+        {copied ? `${title} example copied.` : failed ? `Copy failed for ${title}.` : ""}
+      </p>
       {showCode && (
         <CodeBlock code={code} filename={codeFilename} label="tsx" />
       )}

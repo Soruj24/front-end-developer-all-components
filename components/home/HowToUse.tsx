@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Check, Copy, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 import { CodeBlock } from "./CodeBlock";
 
@@ -11,25 +10,25 @@ const steps = [
     step: 1,
     title: "Open the Button component",
     description: "Browse the component library and find the Button component.",
-    href: "/button",
+    href: "/buttons",
   },
   {
     step: 2,
     title: "Choose an example",
     description: "Select from variants like Primary, Secondary, Outline, or Ghost.",
-    href: "/button",
+    href: "/buttons",
   },
   {
     step: 3,
     title: "Open Code",
     description: "Click the Code tab to view the complete source code.",
-    href: "/button",
+    href: "/buttons",
   },
   {
     step: 4,
     title: "Copy the source",
     description: "Click the copy button to copy the entire component to your clipboard.",
-    href: "/button",
+    href: "/buttons",
   },
   {
     step: 5,
@@ -68,14 +67,6 @@ export default function Page() {
 }`;
 
 export function HowToUse() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(importCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <section className="border-b border-border/40 bg-background py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -125,19 +116,8 @@ export function HowToUse() {
               </div>
 
               {/* Code */}
-              <div className="relative">
-                <CodeBlock code={importCode} filename="page.tsx" />
-                <button
-                  onClick={handleCopy}
-                  className="absolute right-3 top-3 rounded-md border border-border bg-background p-1.5 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {copied ? (
-                    <Check className="h-3.5 w-3.5 text-success" />
-                  ) : (
-                    <Copy className="h-3.5 w-3.5" />
-                  )}
-                </button>
-              </div>
+              {/* Code (copy via the code block's own copy button) */}
+              <CodeBlock code={importCode} filename="page.tsx" />
             </div>
 
             <div className="rounded-2xl border border-border/60 bg-background p-6">
@@ -148,7 +128,7 @@ export function HowToUse() {
             </div>
 
             <Link
-              href="/button"
+              href="/buttons"
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               View full Button documentation

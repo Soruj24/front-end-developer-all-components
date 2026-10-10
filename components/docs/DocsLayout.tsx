@@ -43,7 +43,11 @@ export function DocsLayout({
   const page = useMemo(() => findDocPage(pathname), [pathname]);
   const resolvedTitle = title ?? page?.label ?? "Documentation";
   const resolvedDescription = description ?? page?.description ?? "";
-  const editUrl = `${siteConfig.github.replace(/\/+$/, "")}/edit/main/client/app/(site)${pathname}/page.tsx`;
+  // Only link to a source file when the current path maps to a known static
+  // doc page. Dynamic pages (e.g. /[slug]) have no 1:1 file mapping.
+  const editUrl = page
+    ? `${siteConfig.github.replace(/\/+$/, "")}/edit/main/client/app/(site)${pathname}/page.tsx`
+    : null;
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -113,7 +117,7 @@ export function DocsLayout({
       window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <div className={cn("relative", className)}>
@@ -145,15 +149,17 @@ export function DocsLayout({
                     {readingTime} min read
                   </span>
                 )}
-                <a
-                  href={editUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <GithubIcon className="h-3 w-3" />
-                  Edit on GitHub
-                </a>
+                {editUrl && (
+                  <a
+                    href={editUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    <GithubIcon className="h-3 w-3" />
+                    Edit on GitHub
+                  </a>
+                )}
               </div>
             </div>
 

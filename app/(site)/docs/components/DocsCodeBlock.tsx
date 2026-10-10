@@ -2,31 +2,34 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { FOCUS } from "@/constants/tokens";
 
 export function DocsCopyButton({ value, label }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const onCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {}
+    const ok = await writeClipboard(value);
+    setCopied(ok);
+    setFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   };
 
   return (
     <button
       type="button"
       onClick={onCopy}
-      aria-label={label ? `Copy ${label}` : "Copy"}
+      aria-label={copied ? "Copied to clipboard" : label ? `Copy ${label} to clipboard` : "Copy to clipboard"}
       aria-live="polite"
       className={cn(
         "inline-flex min-h-[32px] shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
         FOCUS.ring,
         copied
           ? "bg-success/10 text-success"
-          : "bg-muted text-muted-foreground hover:text-foreground",
+          : failed
+            ? "bg-danger/10 text-danger"
+            : "bg-muted text-muted-foreground hover:text-foreground",
       )}
     >
       {copied ? (
@@ -42,7 +45,7 @@ export function DocsCopyButton({ value, label }: { value: string; label?: string
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
           </svg>
-          Copy
+          {failed ? "Failed" : "Copy"}
         </>
       )}
     </button>

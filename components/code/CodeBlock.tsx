@@ -85,7 +85,7 @@ export function CodeBlock({
             onClick={handleCopy}
             aria-label={copied ? "Copied to clipboard" : `Copy ${displayName ?? "code"} to clipboard`}
             className={cn(
-              "inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "inline-flex min-h-[32px] shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               copied
                 ? "text-success"
                 : copyFailed

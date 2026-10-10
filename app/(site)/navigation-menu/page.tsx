@@ -97,7 +97,7 @@ export default function NavigationMenuPage() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Components</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+                  <NavigationMenuLink href="/button">Button</NavigationMenuLink>
                   <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
                   <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
                 </NavigationMenuContent>
@@ -165,7 +165,7 @@ export default function NavigationMenuPage() {
     <NavigationMenuItem>
       <NavigationMenuTrigger>Components</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+        <NavigationMenuLink href="/button">Button</NavigationMenuLink>
         <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
         <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
       </NavigationMenuContent>
@@ -180,7 +180,7 @@ export default function NavigationMenuPage() {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Components</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/components/button">Button</NavigationMenuLink>
+                  <NavigationMenuLink href="/button">Button</NavigationMenuLink>
                   <NavigationMenuLink href="/components/card">Card</NavigationMenuLink>
                   <NavigationMenuLink href="/components/input">Input</NavigationMenuLink>
                 </NavigationMenuContent>

@@ -86,8 +86,23 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        (ref.current?.querySelector("button") as HTMLElement | null)?.focus();
+      }
+    };
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    // Move focus into the menu on open.
+    const menu = ref.current?.querySelector('[role="menu"]');
+    const current = menu?.querySelector<HTMLElement>('button[aria-checked="true"]')
+      ?? menu?.querySelector<HTMLElement>("button");
+    current?.focus();
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, [open]);
 
   const options: { value: Theme; label: string; icon: JSX.Element }[] = [
@@ -137,6 +152,12 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
+        onKeyDown={(e) => {
+          if ((e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") && !open) {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
         className={cn(
           "flex h-8 w-8 items-center justify-center rounded-md",
           "text-muted-foreground hover:text-foreground hover:bg-muted",
@@ -146,12 +167,15 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
         )}
         aria-label={`Theme: ${current.label}`}
         aria-expanded={open}
+        aria-haspopup="menu"
+        aria-controls="theme-menu"
       >
         {current.icon}
       </button>
 
       {open && (
         <div
+          id="theme-menu"
           className={cn(
             "absolute right-0 top-full mt-1 w-36 overflow-hidden",
             Z.chrome,
@@ -161,6 +185,20 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
             "animate-in fade-in-0 zoom-in-95",
           )}
           role="menu"
+          aria-label="Theme"
+          onKeyDown={(e) => {
+            const items = Array.from(
+              (e.currentTarget as HTMLElement).querySelectorAll<HTMLElement>("button"),
+            );
+            const index = items.indexOf(document.activeElement as HTMLElement);
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              items[(index + 1) % items.length]?.focus();
+            } else if (e.key === "ArrowUp") {
+              e.preventDefault();
+              items[(index - 1 + items.length) % items.length]?.focus();
+            }
+          }}
         >
           {options.map((opt) => (
             <button
@@ -170,6 +208,7 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
                 selectTheme(opt.value);
                 setOpen(false);
               }}
+              aria-checked={theme === opt.value}
               className={cn(
                 "flex w-full items-center gap-2.5 px-3 py-2",
                 TEXT.body,
@@ -178,7 +217,7 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
                   ? `${BG.muted} text-foreground`
                   : `text-muted-foreground ${BG.mutedSoft} hover:text-foreground`,
               )}
-              role="menuitem"
+              role="menuitemradio"
             >
               {opt.icon}
               {opt.label}

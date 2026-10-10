@@ -23,7 +23,13 @@ export type { ComponentSeed } from "./factory";
 
 /** Looks up a single component by its unique slug. */
 export function getComponentBySlug(slug: string): RegistryComponent | undefined {
-  return registryCatalog.find((item) => item.slug === slug);
+  const direct = registryCatalog.find((item) => item.slug === slug);
+  if (direct) return direct;
+  // Alias: the data-table docs page documents the `table` catalog entry.
+  if (slug === "data-table") {
+    return registryCatalog.find((item) => item.slug === "table");
+  }
+  return undefined;
 }
 
 /** All slugs, used to generate static component routes. */

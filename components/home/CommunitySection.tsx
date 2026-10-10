@@ -4,9 +4,9 @@ import { Reveal } from "./Reveal";
 
 const items = [
   { label: "GitHub", href: siteConfig.github, icon: "⬡" },
-  { label: "Community", href: "/community", icon: "◎" },
+  { label: "Community", href: siteConfig.github, icon: "◎" },
   { label: "Open Source", href: siteConfig.github, icon: "⊕" },
-  { label: "Submit Component", href: "/registry/new", icon: "↑" },
+  { label: "Submit Component", href: "/components", icon: "↑" },
 ];
 
 export function CommunitySection() {

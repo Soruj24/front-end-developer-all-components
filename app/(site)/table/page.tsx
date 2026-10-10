@@ -246,7 +246,12 @@ export default function TablePage() {
           code={`import Table from "@/components/ui/Table";\n\n<Table columns={columns} data={longData} rowKey="id" stickyHeader />`}
           filename="sticky-header.tsx"
         >
-          <div className="max-h-64">
+          <div
+            className="max-h-64 overflow-auto"
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable sticky-header table preview"
+          >
             <Table
               columns={basicCols}
               data={basicData.flatMap((row) =>

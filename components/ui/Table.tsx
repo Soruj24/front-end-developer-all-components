@@ -14,6 +14,8 @@ export interface Column {
 export interface TableProps {
   columns: Column[];
   data: Array<Record<string, unknown>>;
+  /** Accessible name announced for the table. Defaults to "Data table". */
+  caption?: string;
   onSort?: (key: string, direction: "asc" | "desc") => void;
   sortKey?: string;
   sortDirection?: "asc" | "desc";
@@ -78,6 +80,7 @@ function SortIcon({ direction }: { direction: "asc" | "desc" | undefined }) {
 function Table({
   columns = [],
   data = [],
+  caption = "Data table",
   onSort,
   sortKey,
   sortDirection = "asc",
@@ -132,7 +135,7 @@ function Table({
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-border/60 bg-surface shadow-sm">
       <table className="w-full border-collapse">
-        <caption className="sr-only">Data table</caption>
+        <caption className="sr-only">{caption}</caption>
         <thead>
           <tr
             className={cn(
@@ -173,30 +176,32 @@ function Table({
                     "cursor-pointer select-none transition-colors hover:text-foreground",
                 )}
               >
-                <button
-                  type="button"
-                  disabled={!col.sortable}
-                  onClick={() => {
-                    if (col.sortable && onSort) {
-                      onSort(
-                        col.key,
-                        sortKey === col.key && sortDirection === "asc"
-                          ? "desc"
-                          : "asc",
-                      );
-                    }
-                  }}
-                  className="inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:cursor-default"
-                >
-                  {col.label}
-                  {col.sortable && (
+                {col.sortable ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onSort) {
+                        onSort(
+                          col.key,
+                          sortKey === col.key && sortDirection === "asc"
+                            ? "desc"
+                            : "asc",
+                        );
+                      }
+                    }}
+                    aria-label={`Sort by ${col.label}${sortKey === col.key ? ` (${sortDirection === "asc" ? "ascending" : "descending"})` : ""}`}
+                    className="inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+                  >
+                    {col.label}
                     <SortIcon
                       direction={
                         sortKey === col.key ? sortDirection : undefined
                       }
                     />
-                  )}
-                </button>
+                  </button>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5">{col.label}</span>
+                )}
               </th>
             ))}
           </tr>
@@ -242,10 +247,21 @@ function Table({
                         ? "bg-muted/30"
                         : "bg-background",
                     onRowClick
-                      ? "cursor-pointer hover:bg-muted/60"
+                      ? "cursor-pointer hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/50"
                       : "hover:bg-muted/40",
                   )}
                   onClick={() => onRowClick?.(row)}
+                  {...(onRowClick
+                    ? {
+                        tabIndex: 0,
+                        onKeyDown: (e: React.KeyboardEvent) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            onRowClick(row);
+                          }
+                        },
+                      }
+                    : {})}
                 >
                   {onSelectionChange && (
                     <td className={cell}>

@@ -51,9 +51,7 @@ function LivePreview() {
       <Button variant="primary" size="md">Get started</Button>
       <Button variant="secondary" size="md">Secondary</Button>
       <Button variant="ghost" size="md">Ghost</Button>
-      <Button variant="outline" size="md" className="outline outline-2 outline-offset-2 outline-accent/40">
-        Focused
-      </Button>
+      <Button variant="ghost" size="sm">Small ghost</Button>
     </div>
   );
 }

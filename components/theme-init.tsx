@@ -42,7 +42,8 @@ export function ThemeInit() {
         apply(mq.matches);
         const onChange = (e: MediaQueryListEvent) => {
           try {
-            if (!localStorage.getItem("theme")) apply(e.matches);
+            const current = localStorage.getItem("theme");
+            if (!current || current === "system") apply(e.matches);
           } catch {}
         };
         mq.addEventListener("change", onChange);

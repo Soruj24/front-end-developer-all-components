@@ -8,6 +8,7 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   label?: string;
   description?: string;
   error?: boolean | string;
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 const TRACK_SIZES: Record<SwitchSize, string> = {

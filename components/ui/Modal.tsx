@@ -148,7 +148,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={title ? `Close ${typeof title === "string" ? title : "dialog"}` : "Close dialog"}
             className="absolute right-3.5 top-3.5 z-20 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-all duration-150 ease-out hover:bg-muted hover:text-foreground active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" className="h-4 w-4" aria-hidden="true">
