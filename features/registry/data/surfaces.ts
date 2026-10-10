@@ -6,6 +6,7 @@ import { terminalEmulatorSource } from "./sources/terminal-emulator";
 import { apiExplorerSource } from "./sources/api-explorer";
 import { dependencyGraphSource } from "./sources/dependency-graph";
 import { streamingResponseSource } from "./sources/streaming-response";
+import { USERS_RESPONSE_EXAMPLE } from "@/lib/api/users";
 
 export const surfaces = [
   component({
@@ -155,7 +156,7 @@ export const surfaces = [
   component({
     slug: "api-explorer",
     name: "API Explorer",
-    description: "HTTP client with endpoints, params, headers, auth, body, and mock responses.",
+    description: "HTTP client with endpoints, params, headers, auth, body, and mock or live responses.",
     category: "surfaces",
     tags: ["api", "http", "request"],
     updatedAt: "2026-03-09T00:00:00.000Z",
@@ -172,7 +173,20 @@ export const surfaces = [
     sizes: [],
     longDescription:
       "ApiExplorer is a docs-style HTTP client: searchable endpoint sidebar, method + URL bar, params/headers/auth/body " +
-      "tabs, simulated send with latency, loading/empty/error states, status + timing on the response viewer, and copyable curl.",
+      "tabs, mock or live send with latency, loading/empty/error states, status + timing on the response viewer, and copyable curl. " +
+      "Set live: true on an endpoint to execute a real network request instead of the mock response.",
+    api: {
+      resource: "endpoints",
+      baseUrl: "https://jsonplaceholder.typicode.com",
+      endpoints: [
+        { method: "GET", path: "/users", description: "Live demo: list users." },
+        { method: "GET", path: "/users/1", description: "Live demo: get user #1." },
+        { method: "GET", path: "/posts?_limit=5", description: "Live demo: list posts." },
+      ],
+      responseExample: USERS_RESPONSE_EXAMPLE,
+      mappingNote: "Live responses render as-is in the response viewer; no mapping required.",
+      authNote: "Use the Auth tab for bearer/basic/API-key headers at runtime. Never commit tokens.",
+    },
     props: [
       { name: "endpoints", type: "ApiEndpoint[]", required: true, description: "Endpoints with method, path, defaults, and mock responses." },
       { name: "baseUrl", type: "string", default: '"https://api.example.com/v1"', description: "Base URL prepended to endpoint paths." },

@@ -16,6 +16,12 @@ import {
   MINIMAL_EXAMPLE,
   FILTERED_EXAMPLE,
 } from "./activity-feed-source";
+import { ApiActivityFeed } from "./api-activity-feed";
+import {
+  ACTIVITY_MOCK_SNIPPET,
+  ACTIVITY_REAL_SNIPPET,
+  ACTIVITY_SWITCH_SNIPPET,
+} from "./api-activity-snippets";
 
 const feedItems: ActivityFeedItem[] = [
   {
@@ -192,6 +198,26 @@ export default function ActivityFeedPage() {
           <FilteredDemo />
         </ExampleBlock>
       </div>
+
+      <section aria-labelledby="activity-api-heading" className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 id="activity-api-heading" className="text-lg font-semibold tracking-tight text-foreground">
+            Live data: Mock / Real API
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            The same feed driven by a mock adapter or a real posts endpoint. Records stay
+            serializable (no JSX over the wire) and are mapped to feed items at the edge.
+          </p>
+        </div>
+
+        <div className="flex justify-center overflow-hidden rounded-xl border border-border bg-background p-4 sm:p-6">
+          <ApiActivityFeed />
+        </div>
+
+        <SourceCodeViewer source={ACTIVITY_MOCK_SNIPPET} filename="activity.mock.tsx" label="tsx" />
+        <SourceCodeViewer source={ACTIVITY_REAL_SNIPPET} filename="activity.real.tsx" label="tsx" />
+        <SourceCodeViewer source={ACTIVITY_SWITCH_SNIPPET} filename="switching-to-real.ts" label="ts" />
+      </section>
     </ComponentDocPage>
   );
 }

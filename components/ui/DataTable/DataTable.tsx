@@ -11,7 +11,7 @@ const alignClass = {
   right: "text-right",
 } as const;
 
-export function DataTable<T extends Record<string, unknown>>({
+export function DataTable<T>({
   columns,
   data,
   pageSize: initialPageSize = 10,
@@ -30,9 +30,10 @@ export function DataTable<T extends Record<string, unknown>>({
 
   const sorted = useMemo(() => {
     if (!sortKey) return data;
+    const field = (row: T): unknown => (row as Record<string, unknown>)[sortKey];
     return [...data].sort((a, b) => {
-      const av = a[sortKey];
-      const bv = b[sortKey];
+      const av = field(a);
+      const bv = field(b);
       if (av == null) return 1;
       if (bv == null) return -1;
       const cmp = String(av).localeCompare(String(bv), undefined, {
@@ -141,7 +142,7 @@ export function DataTable<T extends Record<string, unknown>>({
                     >
                       {col.render
                         ? col.render(row, page * pageSize + i)
-                        : ((row[col.key] as React.ReactNode) ?? (
+                        : (((row as Record<string, unknown>)[col.key] as React.ReactNode) ?? (
                             <span className="text-muted-foreground/50">&mdash;</span>
                           ))}
                     </td>

@@ -144,6 +144,60 @@ export function useApiExplorer({ endpoints, baseUrl, query, defaultTheme }: UseA
     }
     setSending(true);
     const start = performance.now();
+    // Live endpoints hit the network; mock endpoints return canned data.
+    if (selected.live) {
+      const finalUrl = buildRequestUrl();
+      const liveHeaders: Record<string, string> = {};
+      for (const [key, value] of authHeaderPairs(auth)) liveHeaders[key] = value;
+      for (const header of headers) {
+        if (header.enabled && header.key) liveHeaders[header.key] = header.value;
+      }
+      try {
+        const res = await fetch(finalUrl, {
+          method,
+          headers: liveHeaders,
+          body: METHOD_ALLOWS_BODY.has(method) && body.trim() ? body.trim() : undefined,
+          signal: AbortSignal.timeout(10_000),
+        });
+        const text = await res.text();
+        let parsed: unknown = text;
+        try {
+          parsed = text ? JSON.parse(text) : null;
+        } catch {
+          /* keep raw text for non-JSON bodies */
+        }
+        const timeMs = Math.round(performance.now() - start);
+        const responseHeaders: Record<string, string> = {};
+        res.headers.forEach((value, key) => {
+          responseHeaders[key] = value;
+        });
+        setResponse({
+          status: res.status,
+          statusText: res.statusText || (DEFAULT_STATUS_TEXT[res.status] ?? "Response"),
+          headers: responseHeaders,
+          body: parsed,
+          timeMs,
+          size: new TextEncoder().encode(text).length,
+        });
+      } catch (err) {
+        const timeMs = Math.round(performance.now() - start);
+        setResponse({
+          status: 0,
+          statusText: "Network Error",
+          headers: {},
+          body: {
+            error: "Request failed",
+            detail: err instanceof Error ? err.message : String(err),
+            hint: "The endpoint may be unreachable from this browser (CORS, offline, or wrong URL). Mock endpoints always work.",
+          },
+          timeMs,
+          size: 0,
+        });
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
     await new Promise((resolve) => setTimeout(resolve, selected.delay ?? 450));
     const timeMs = Math.round(performance.now() - start);
     const resBody = selected.response.body;

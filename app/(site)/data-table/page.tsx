@@ -9,6 +9,8 @@ import {
   SourceCodeViewer,
   ExampleBlock,
 } from "@/components/docs";
+import { ApiUsersTable } from "./api-users-table";
+import { MOCK_SNIPPET, REAL_SNIPPET, SWITCH_SNIPPET } from "./api-users-snippets";
 
 const DATATABLE_SOURCE = `"use client";
 
@@ -361,6 +363,28 @@ export default function DataTablePage() {
             data={[]}
           />
         </ExampleBlock>
+      </section>
+
+      <section aria-labelledby="api-heading" className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 id="api-heading" className="text-lg font-semibold tracking-tight text-foreground">
+            Live data: Mock / Real API
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            The same table fed by two adapters. Mock works offline with labeled sample data;
+            Real calls <code className="font-mono text-xs">GET /users</code> on your endpoint
+            (public JSONPlaceholder demo preconfigured — no key needed). Real failures show an
+            error state; mock data is never substituted.
+          </p>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-border bg-background p-4 sm:p-6">
+          <ApiUsersTable />
+        </div>
+
+        <SourceCodeViewer source={MOCK_SNIPPET} filename="users-table.mock.tsx" label="tsx" />
+        <SourceCodeViewer source={REAL_SNIPPET} filename="users-table.real.tsx" label="tsx" />
+        <SourceCodeViewer source={SWITCH_SNIPPET} filename="switching-to-real.ts" label="ts" />
       </section>
     </ComponentDocPage>
   );

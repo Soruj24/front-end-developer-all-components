@@ -9,6 +9,7 @@ import { TwoFactorForm } from "./components/TwoFactorForm";
 import { LockedForm } from "./components/LockedForm";
 import { MagicLinkForm } from "./components/MagicLinkForm";
 import { SessionExpiredForm } from "./components/SessionExpiredForm";
+import { MockSignInForm } from "./components/MockSignInForm";
 
 const AUTH_PATTERNS: Array<{ label: string; Render: ComponentType }> = [
   { label: "Sign In", Render: SignInForm },
@@ -89,6 +90,26 @@ export function SignInForm({ onSuccess }: SignInFormProps) {
   );
 }`;
 
+const AUTH_SWITCHING_CODE = `// Mock (demo only): import { mockSignIn } from "./auth-api";
+// const session = await mockSignIn({ email, password }); // demo account only
+
+// Real: replace the mock call with your backend. Same success/error shape
+// in the UI — only this function changes.
+async function signIn(input: { email: string; password: string }) {
+  const res = await fetch("https://api.example.com/v1/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include", // server sets an HttpOnly session cookie
+    body: JSON.stringify(input),
+  });
+  if (res.status === 401) throw new Error("Incorrect email or password.");
+  if (!res.ok) throw new Error(\`Sign-in failed (\${res.status}).\`);
+  return (await res.json()) as { user: { id: string; name: string; email: string } };
+}
+// Expected response: POST /auth/login -> { user: { id, name, email } }
+// Send tokens via HttpOnly cookies set by YOUR server — never expose them
+// in client code, and never put secrets in NEXT_PUBLIC_* variables.`;
+
 export default function AuthenticationPage() {
   const [activePattern, setActivePattern] = useState(0);
   const { Render: Active } = AUTH_PATTERNS[activePattern];
@@ -131,6 +152,28 @@ export default function AuthenticationPage() {
         <ExampleBlock title="Magic Link" description="Passwordless sign-in via an emailed magic link." code="<MagicLinkForm />"><MagicLinkForm /></ExampleBlock>
         <ExampleBlock title="Session Expired" description="Prompt users to re-authenticate after an idle timeout." code="<SessionExpiredForm />"><SessionExpiredForm /></ExampleBlock>
       </div>
+
+      <section aria-labelledby="auth-api-heading" className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 id="auth-api-heading" className="text-lg font-semibold tracking-tight text-foreground">
+            Sign in with a mock API
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            The same sign-in UI wired to a mock auth adapter instead of a timer: async loading,
+            a demo session on success, and a 401 error state for wrong credentials. Demo account
+            only — no network, no real accounts. Forms above are unchanged.
+          </p>
+        </div>
+        <ExampleBlock
+          title="Mock sign-in"
+          description="Try the demo account, then try a wrong password to see the error state."
+          code="<MockSignInForm />"
+          filename="mock-sign-in.tsx"
+        >
+          <MockSignInForm />
+        </ExampleBlock>
+        <SourceCodeViewer source={AUTH_SWITCHING_CODE} filename="switching-to-real.ts" label="ts" />
+      </section>
     </ComponentDocPage>
   );
 }

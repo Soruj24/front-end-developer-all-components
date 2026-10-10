@@ -2,15 +2,16 @@
 
 import { useMemo } from "react";
 import type { RegistryComponent } from "@/features/registry";
+import { buildCopyPackage, CopyPackageViewer, SetupChecklist } from "@/features/copyable";
 import { ComponentHeader } from "./ComponentHeader";
 import { ComponentDescription } from "./ComponentDescription";
 import { ComponentLivePreview } from "./ComponentLivePreview";
-import { CodeViewer } from "./CodeViewer";
 import { ExampleSection } from "./ExampleSection";
 import { ComponentInstall } from "./ComponentInstall";
 import { ComponentRelated } from "./ComponentRelated";
 import { PropsTable } from "./PropsTable";
 import { UsageSection, AccessibilitySection } from "./DocSections";
+import { ApiDocsSection } from "./ApiDocsSection";
 import { buildComponentExamples } from "./example-builder";
 
 export function ComponentDetail({
@@ -24,6 +25,7 @@ export function ComponentDetail({
     () => buildComponentExamples(component),
     [component]
   );
+  const pkg = useMemo(() => buildCopyPackage(component), [component]);
 
   return (
     <article className="flex flex-col gap-10">
@@ -32,7 +34,7 @@ export function ComponentDetail({
       <ComponentDescription component={component} />
 
       <nav aria-label="On this page" className="flex flex-wrap gap-2 text-xs">
-        {["Preview", "Code", "Examples", "Props", "Install", "Usage", "Accessibility"].map(
+        {["Preview", "Code", "Examples", "Props", "Install", "Usage", ...(component.api ? ["API"] : []), "Accessibility"].map(
           (item) => (
             <a
               key={item}
@@ -47,11 +49,9 @@ export function ComponentDetail({
 
       <ComponentLivePreview component={component} />
 
-      <CodeViewer
-        source={component.source}
-        filename={`${component.slug}.tsx`}
-        language="tsx"
-      />
+      <CopyPackageViewer pkg={pkg} />
+
+      <SetupChecklist pkg={pkg} />
 
       <div id="examples">
         <ExampleSection examples={examples} />
@@ -67,6 +67,8 @@ export function ComponentDetail({
       </section>
 
       <UsageSection component={component} />
+
+      <ApiDocsSection component={component} />
 
       <AccessibilitySection component={component} />
 

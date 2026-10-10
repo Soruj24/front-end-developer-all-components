@@ -1,5 +1,45 @@
 import type { ApiEndpoint } from "@/components/ui";
 
+/**
+ * Live endpoints against the public JSONPlaceholder API (no key needed).
+ * Mark `live: true` so Send executes a real network request instead of the
+ * mock `response`. Browsers enforce CORS — jsonplaceholder.typicode.com
+ * allows cross-origin GET, which is why it is the demo default.
+ */
+export const liveEndpoints: ApiEndpoint[] = [
+  {
+    id: "live-users",
+    method: "GET",
+    path: "/users",
+    title: "List users (live)",
+    group: "Live demo",
+    tags: ["users", "real"],
+    live: true,
+    response: { status: 200, body: { note: "Replaced by the live response on Send." } },
+  },
+  {
+    id: "live-user",
+    method: "GET",
+    path: "/users/1",
+    title: "Get user #1 (live)",
+    group: "Live demo",
+    tags: ["users", "real"],
+    live: true,
+    response: { status: 200, body: { note: "Replaced by the live response on Send." } },
+  },
+  {
+    id: "live-posts",
+    method: "GET",
+    path: "/posts",
+    title: "List posts (live)",
+    group: "Live demo",
+    tags: ["posts", "real"],
+    query: [{ key: "_limit", value: "5" }],
+    live: true,
+    response: { status: 200, body: { note: "Replaced by the live response on Send." } },
+  },
+];
+
 export const demoEndpoints: ApiEndpoint[] = [
   {
     id: "auth-login",

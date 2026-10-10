@@ -25,6 +25,11 @@ export interface SliderProps
   marks?: { value: number; label?: string }[];
 }
 
+function toNumber(v: unknown, fallback: number): number {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : fallback;
+}
+
 const Slider = forwardRef<HTMLInputElement, SliderProps>(
   (
     {
@@ -44,11 +49,11 @@ const Slider = forwardRef<HTMLInputElement, SliderProps>(
     ref,
   ) => {
     const trackRef = useRef<HTMLDivElement>(null);
-    const [internalValue, setInternalValue] = useState<number>(
-      value ?? Number(props.defaultValue) ?? 50,
+    const [internalValue, setInternalValue] = useState<number>(() =>
+      typeof value === "number" ? value : toNumber(props.defaultValue, 50),
     );
 
-    const currentValue = value ?? internalValue;
+    const currentValue = typeof value === "number" ? value : internalValue;
     const minNum = Number(min);
     const maxNum = Number(max);
     const percent = Math.min(
@@ -186,5 +191,5 @@ Slider.displayName = "Slider";
 
 export default Slider;
 export { Slider };
-// Requires the cn() utility from "@/lib/cn" (clsx + tailwind-merge).
-`;
+
+// cn() is imported from @/lib/cn (clsx + tailwind-merge).`;

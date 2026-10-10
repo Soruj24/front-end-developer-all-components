@@ -46,6 +46,12 @@ export interface ApiEndpoint {
   headers?: ApiKeyValue[];
   /** Default request body (JSON-serializable). */
   requestBody?: unknown;
+  /**
+   * When true, Send executes a real network request against the built URL
+   * instead of returning the mock `response`. Requires a reachable endpoint;
+   * failures surface as error responses (never silent mock data).
+   */
+  live?: boolean;
   /** Mock response. */
   response: {
     status: number;

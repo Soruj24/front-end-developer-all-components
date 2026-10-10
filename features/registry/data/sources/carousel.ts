@@ -69,7 +69,7 @@ const Carousel = ({
         }
         style={
           variant === "slide"
-            ? { transform: 'translateX(-' + current * 100 + '%)' }
+            ? { transform: \`translateX(-\${current * 100}%)\` }
             : undefined
         }
       >
@@ -118,7 +118,7 @@ const Carousel = ({
             <button
               key={i}
               onClick={() => goTo(i)}
-              aria-label={'Go to slide ' + (i + 1)}
+              aria-label={\`Go to slide \${i + 1}\`}
               aria-current={i === current ? "true" : undefined}
               className={cn(
                 "h-2 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
@@ -135,4 +135,5 @@ const Carousel = ({
 };
 
 export default Carousel;
-// Requires the cn() utility from "@/lib/cn" (clsx + tailwind-merge).`;
+
+// cn() is imported from @/lib/cn (clsx + tailwind-merge).`;

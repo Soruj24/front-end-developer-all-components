@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "audit:preview": "node scripts/audit-preview-widths.mjs"
+    "audit:preview": "node scripts/audit-preview-widths.mjs",
+    "audit:copy": "node scripts/verify-copy-packages.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",

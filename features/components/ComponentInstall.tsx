@@ -1,13 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import type { RegistryComponent } from "@/features/registry";
+import { buildCopyPackage } from "@/features/copyable";
 import { CopyButton } from "./CopyButton";
 
-/**
- * Copy-paste installation guidance. Components ship as source files —
- * there is no package to install.
- */
+/** Copy-paste install guidance with real dependency commands. */
 export function ComponentInstall({ component }: { component: RegistryComponent }) {
+  const pkg = useMemo(() => buildCopyPackage(component), [component]);
   const targetFile = component.files[0] ?? `components/ui/${component.slug}.tsx`;
 
   return (
@@ -18,23 +18,25 @@ export function ComponentInstall({ component }: { component: RegistryComponent }
         </code>
         <CopyButton text={targetFile} label="Copy path" />
       </div>
-
-      <p className="text-xs text-muted-foreground">
-        Copy the source code above into{" "}
-        <code className="font-mono">{targetFile}</code> in your project.
-        Components are copy-paste — no package install required.
-      </p>
-
-      {component.dependencies.length > 0 && (
+      {pkg.installCommand ? (
+        <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/40 p-3">
+          <code className="min-w-0 flex-1 truncate font-mono text-xs text-foreground">
+            {pkg.installCommand}
+          </code>
+          <CopyButton text={pkg.installCommand} label="Copy" />
+        </div>
+      ) : (
         <p className="text-xs text-muted-foreground">
-          Requires:{" "}
-          {component.dependencies.map((dep) => (
-            <code key={dep} className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">
-              {dep}
-            </code>
-          ))}
+          No extra packages — React only.
         </p>
       )}
+      <p className="text-xs text-muted-foreground">
+        Copy the component tab above into <code className="font-mono">{targetFile}</code>
+        {pkg.cnFile && (
+          <> plus <code className="font-mono">lib/cn.ts</code> (shown under Setup)</>
+        )}
+        . Requires: {pkg.requiredDeps.join(", ") || "react"}.
+      </p>
     </div>
   );
 }

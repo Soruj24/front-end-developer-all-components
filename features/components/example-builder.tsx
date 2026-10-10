@@ -2,94 +2,58 @@ import type { RegistryComponent } from "@/features/registry";
 import type { Example } from "./ExampleCard";
 import { LivePreview } from "./live-preview/LivePreview";
 
-/** Builds real example variations based on the component category and variants. */
+/**
+ * Runnable examples. Every snippet imports the component from a relative
+ * path (`./<slug>`) so it works next to the copied component file.
+ */
 export function buildComponentExamples(component: RegistryComponent): Example[] {
   const examples: Example[] = [];
-  const source = component.source;
   const pascal = toPascalCase(component.slug);
+  const rel = `./${component.slug}`;
 
-  // 1. Basic usage — always present
   examples.push({
     title: "Basic Usage",
-    description: "The simplest way to render this component.",
-    code: source,
-    filename: `${component.slug}.tsx`,
+    description: "Renders the component with the same defaults as the live preview.",
+    code: `"use client";\n\nimport { ${pascal} } from "${rel}";\n\nexport function ${pascal}Basic() {\n  return <${pascal}>${component.name} content</${pascal}>;\n}`,
+    filename: `${component.slug}-basic.tsx`,
     preview: <LivePreview component={component} />,
   });
 
-  // 2. Variants — if the component has variants
   if (component.variants.length > 0) {
-    const variantLines = component.variants
+    const lines = component.variants
+      .slice(0, 6)
       .map((v) => `      <${pascal} variant="${v}">${v}</${pascal}>`)
       .join("\n");
-
     examples.push({
       title: "Variants",
-      description: `${component.variants.length} available variants: ${component.variants.join(", ")}.`,
-      code: `import { ${pascal} } from "@/components/ui";
-
-export function ${pascal}Variants() {
-  return (
-    <div className="flex flex-wrap gap-3">
-${variantLines}
-    </div>
-  );
-}`,
+      description: `${component.variants.length} variants: ${component.variants.join(", ")}.`,
+      code: `import { ${pascal} } from "${rel}";\n\nexport function ${pascal}Variants() {\n  return (\n    <div className="flex flex-wrap gap-3">\n${lines}\n    </div>\n  );\n}`,
       filename: `${component.slug}-variants.tsx`,
       preview: <LivePreview component={component} />,
     });
   }
 
-  // 3. Sizes — for buttons, inputs
   if (["buttons", "inputs"].includes(component.category)) {
     examples.push({
       title: "Sizes",
-      description: "Available size options from small to large.",
-      code: `import { ${pascal} } from "@/components/ui";
-
-export function ${pascal}Sizes() {
-  return (
-    <div className="flex items-center gap-3">
-      <${pascal} size="sm">Small</${pascal}>
-      <${pascal} size="md">Medium</${pascal}>
-      <${pascal} size="lg">Large</${pascal}>
-    </div>
-  );
-}`,
+      description: "Size presets supported by this component.",
+      code: `import { ${pascal} } from "${rel}";\n\nexport function ${pascal}Sizes() {\n  return (\n    <div className="flex items-center gap-3">\n      <${pascal} size="sm">Small</${pascal}>\n      <${pascal} size="md">Medium</${pascal}>\n      <${pascal} size="lg">Large</${pascal}>\n    </div>\n  );\n}`,
       filename: `${component.slug}-sizes.tsx`,
       preview: <LivePreview component={component} />,
     });
-  }
-
-  // 4. Disabled state — for interactive components
-  if (["buttons", "inputs"].includes(component.category)) {
     examples.push({
       title: "Disabled State",
-      description: "Non-interactive state for buttons and inputs.",
-      code: `import { ${pascal} } from "@/components/ui";
-
-export function ${pascal}Disabled() {
-  return (
-    <div className="flex flex-wrap gap-3">
-      <${pascal} disabled>Disabled</${pascal}>
-      <${pascal} variant="outline" disabled>Outline</${pascal}>
-      <${pascal} variant="ghost" disabled>Ghost</${pascal}>
-    </div>
-  );
-}`,
+      description: "Non-interactive state.",
+      code: `import { ${pascal} } from "${rel}";\n\nexport function ${pascal}Disabled() {\n  return (\n    <div className="flex flex-wrap gap-3">\n      <${pascal} disabled>Disabled</${pascal}>\n    </div>\n  );\n}`,
       filename: `${component.slug}-disabled.tsx`,
       preview: <LivePreview component={component} />,
     });
   }
 
-  // 5. Dark mode preview
   examples.push({
     title: "Dark Mode",
-    description: "How the component appears in dark mode.",
-    code: `// Wrap in a dark container or use the dark class
-<div className="dark">
-  <${pascal}>Dark mode content</${pascal}>
-</div>`,
+    description: "Render inside a dark container.",
+    code: `import { ${pascal} } from "${rel}";\n\nexport function ${pascal}Dark() {\n  return (\n    <div className="dark rounded-xl bg-[#0b0b10] p-6">\n      <${pascal}>Dark mode content</${pascal}>\n    </div>\n  );\n}`,
     filename: `${component.slug}-dark.tsx`,
     preview: (
       <div className="dark bg-[#0b0b10] rounded-xl p-6">
@@ -98,15 +62,10 @@ export function ${pascal}Disabled() {
     ),
   });
 
-  // 6. Responsive
   examples.push({
     title: "Responsive",
-    description: "The component adapts to different container widths.",
-    code: `// The component uses responsive Tailwind classes
-// and adapts to its container width.
-<div className="w-full max-w-md">
-  <${pascal}>Responsive width</${pascal}>
-</div>`,
+    description: "Adapts to its container width.",
+    code: `import { ${pascal} } from "${rel}";\n\nexport function ${pascal}Responsive() {\n  return (\n    <div className="w-full max-w-md">\n      <${pascal}>Responsive width</${pascal}>\n    </div>\n  );\n}`,
     filename: `${component.slug}-responsive.tsx`,
     preview: (
       <div className="flex flex-col gap-4 w-full">
@@ -114,9 +73,6 @@ export function ${pascal}Disabled() {
           <LivePreview component={component} />
         </div>
         <div className="w-2/3 mx-auto">
-          <LivePreview component={component} />
-        </div>
-        <div className="w-1/3 mx-auto">
           <LivePreview component={component} />
         </div>
       </div>

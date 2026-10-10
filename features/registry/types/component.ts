@@ -13,6 +13,17 @@ export interface ComponentStats {
   views: number;
 }
 
+/** Documented API surface for data-driven components (mock + real). */
+export interface ComponentApiDocs {
+  resource: string;
+  baseUrl: string;
+  endpoints: { method: string; path: string; description: string }[];
+  queryParams?: string[];
+  responseExample: string;
+  mappingNote?: string;
+  authNote?: string;
+}
+
 /** A single entry in the component registry catalog. */
 export interface RegistryComponent {
   slug: string;
@@ -40,4 +51,6 @@ export interface RegistryComponent {
   cli: string;
   /** Runnable JSX source exposed in the docs. */
   source: string;
+  /** Present only for API-driven components. */
+  api?: ComponentApiDocs;
 }

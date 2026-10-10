@@ -92,6 +92,49 @@ const DISABLED_CODE = `import { FileUpload } from "@/components/ui/FileUpload";
 
 <FileUpload disabled />`;
 
+const UPLOAD_API_CODE = `"use client";
+
+import { useState } from "react";
+import { FileUpload } from "@/components/ui/FileUpload";
+
+// POST accepted files as multipart/form-data. Uses fetch directly because
+// file uploads are not JSON — see lib/api/api-client.ts for timeouts.
+// Point at your own route; keep tokens server-side (app/api/proxy/route.ts).
+async function uploadFiles(files: File[]): Promise<{ files: { id: string; name: string }[] }> {
+  const form = new FormData();
+  for (const file of files) form.append("files", file, file.name);
+  const res = await fetch("/api/uploads", { method: "POST", body: form });
+  if (!res.ok) throw new Error(\`Upload failed (\${res.status}).\`);
+  return (await res.json()) as { files: { id: string; name: string }[] };
+}
+
+export function UploadForm() {
+  const [status, setStatus] = useState<"idle" | "uploading" | "done" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const handleFiles = async (files: File[]) => {
+    setStatus("uploading");
+    setMessage("");
+    try {
+      const result = await uploadFiles(files);
+      setStatus("done");
+      setMessage(\`Uploaded \${result.files.length} file(s).\`);
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "Upload failed.");
+    }
+  };
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      <FileUpload onFiles={handleFiles} />
+      <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
+        {status === "uploading" ? "Uploading…" : message}
+      </p>
+    </div>
+  );
+}`;
+
 export default function FileUploadPage() {
   const [files, setFiles] = useState<FileItem[]>(MOCK_FILES);
 
@@ -208,6 +251,21 @@ export default function FileUploadPage() {
             <FileUpload disabled />
           </div>
         </ExampleBlock>
+      </section>
+
+      <section aria-labelledby="upload-api-heading" className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <h2 id="upload-api-heading" className="text-lg font-semibold tracking-tight text-foreground">
+            Uploading to an API
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            FileUpload emits <code className="font-mono text-xs">File</code> objects via{" "}
+            <code className="font-mono text-xs">onFiles</code> — post them as{" "}
+            <code className="font-mono text-xs">FormData</code> from your own handler with
+            uploading, done, and error states announced to assistive technology.
+          </p>
+        </div>
+        <SourceCodeViewer source={UPLOAD_API_CODE} filename="upload-form.tsx" label="tsx" />
       </section>
     </ComponentDocPage>
   );

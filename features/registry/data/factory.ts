@@ -24,6 +24,7 @@ export interface ComponentSeed {
   props?: RegistryComponent["props"];
   releases?: RegistryComponent["releases"];
   source?: string;
+  api?: RegistryComponent["api"];
 }
 
 export const DEFAULT_AUTHOR = "Component Library Team";
@@ -46,20 +47,28 @@ function pascalCase(slug: string): string {
 
 function defaultSource(slug: string): string {
   const Component = pascalCase(slug);
-  return `import { cn } from "@/lib/cn";
+  return `"use client";
 
-interface ${Component}Props extends React.HTMLAttributes<HTMLDivElement> {}
+import type { HTMLAttributes, ReactNode } from "react";
+import { cn } from "@/lib/cn";
+
+export interface ${Component}Props extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+}
 
 export function ${Component}({ className, children, ...props }: ${Component}Props) {
   return (
-    <div className={cn("rounded-lg border border-border bg-background p-4", className)} {...props}>
-      {children ?? <${Component}Demo />}
+    <div
+      className={cn("rounded-lg border border-border bg-background p-4", className)}
+      {...props}
+    >
+      {children}
     </div>
   );
 }
 
 export default function ${Component}Demo() {
-  return <${Component}>Install this component, then replace this placeholder with your content.</${Component}>;
+  return <${Component}>${Component} demo content.</${Component}>;
 }`;
 }
 

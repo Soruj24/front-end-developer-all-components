@@ -189,7 +189,7 @@ function Table({
                         );
                       }
                     }}
-                    aria-label={'Sort by ' + col.label + (sortKey === col.key ? ' (' + (sortDirection === "asc" ? "ascending" : "descending") + ')' : "")}
+                    aria-label={\`Sort by \${col.label}\${sortKey === col.key ? \` (\${sortDirection === "asc" ? "ascending" : "descending"})\` : ""}\`}
                     className="inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-background"
                   >
                     {col.label}
@@ -268,7 +268,7 @@ function Table({
                       <label className="inline-flex cursor-pointer items-center">
                         <input
                           type="checkbox"
-                          aria-label={'Select row ' + key}
+                          aria-label={\`Select row \${key}\`}
                           checked={isSelected}
                           onChange={() => handleSelectRow(key)}
                           className="h-4 w-4 rounded border-border/60 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-1 focus:ring-offset-background"
@@ -295,5 +295,5 @@ function Table({
 }
 
 export default Table;
-export { Table };
-// Requires the cn() utility from "@/lib/cn" (clsx + tailwind-merge).`;
+
+// cn() is imported from @/lib/cn (clsx + tailwind-merge).`;

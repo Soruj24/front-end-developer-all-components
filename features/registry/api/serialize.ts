@@ -48,6 +48,7 @@ export function toDetail(component: RegistryComponent) {
     install: component.install,
     cli: component.cli,
     source: component.source,
+    api: component.api,
   };
 }
 

@@ -2,7 +2,7 @@
 
 import { ComponentDocPage, PreviewPanel, SourceCodeViewer, ExampleBlock } from "@/components/docs";
 import { ApiExplorer } from "@/components/ui";
-import { demoEndpoints, publicEndpoints } from "@/components/api-explorer/demo";
+import { demoEndpoints, liveEndpoints, publicEndpoints } from "@/components/api-explorer/demo";
 
 const APIEXPLORER_SOURCE = `"use client";
 
@@ -87,12 +87,19 @@ const PUBLIC_EXAMPLE = `<ApiExplorer
   height={560}
 />`;
 
+const LIVE_EXAMPLE = `<ApiExplorer
+  endpoints={liveEndpoints} // endpoints with \`live: true\`
+  baseUrl="https://jsonplaceholder.typicode.com"
+  title="Live demo API"
+  height={560}
+/>`;
+
 export default function ApiExplorerPage() {
   return (
     <ComponentDocPage
       name="API Explorer"
       category="Data Display"
-      description="A Postman-style API client. Browse endpoints, build requests with params, headers, auth, and a JSON body, then inspect simulated responses with status codes and a syntax-highlighted JSON viewer. Responses are mocked — no network calls are made."
+      description="A Postman-style API client. Browse endpoints, build requests with params, headers, auth, and a JSON body, then inspect responses with status codes and a syntax-highlighted JSON viewer. Endpoints return mock data by default; mark an endpoint live: true to send a real network request."
     >
       <PreviewPanel filename="api-explorer.tsx">
         <div className="flex w-full flex-col gap-3 py-6">
@@ -119,6 +126,22 @@ export default function ApiExplorerPage() {
         <ExampleBlock title="Public API" description="Read-only public endpoints without auth configuration." code={PUBLIC_EXAMPLE}>
           <div className="flex w-full flex-col gap-3 py-6">
             <ApiExplorer endpoints={publicEndpoints} title="Public API" height={560} />
+          </div>
+        </ExampleBlock>
+
+        <ExampleBlock
+          title="Live public API (real network)"
+          description="Endpoints flagged live: true send real requests to JSONPlaceholder (no key needed). Failures surface as error responses — mock data is never substituted."
+          code={LIVE_EXAMPLE}
+          filename="live-api.tsx"
+        >
+          <div className="flex w-full flex-col gap-3 py-6">
+            <ApiExplorer
+              endpoints={liveEndpoints}
+              baseUrl="https://jsonplaceholder.typicode.com"
+              title="Live demo API"
+              height={560}
+            />
           </div>
         </ExampleBlock>
       </div>

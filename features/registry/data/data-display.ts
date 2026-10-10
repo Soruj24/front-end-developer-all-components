@@ -8,6 +8,7 @@ import { jsonTreeViewerSource } from "./sources/json-tree-viewer";
 import { paginationSource } from "./sources/pagination";
 import { tableSource } from "./sources/table";
 import { timelineSource } from "./sources/timeline";
+import { USERS_RESPONSE_EXAMPLE } from "@/lib/api/users";
 
 export const dataDisplay = [
   component({
@@ -171,6 +172,20 @@ export const dataDisplay = [
     features: ["dark-mode", "accessibility", "responsive", "full-width"],
     longDescription:
       "Table renders an accessible data grid with sortable columns, optional row selection, striped and sticky-header modes, three density sizes, and clickable rows.",
+    api: {
+      resource: "users",
+      baseUrl: "https://jsonplaceholder.typicode.com",
+      endpoints: [
+        { method: "GET", path: "/users", description: "List users (array response)." },
+        { method: "GET", path: "/users/{id}", description: "Get one user by id." },
+      ],
+      queryParams: ["page", "pageSize", "search", "sortKey", "sortDir"],
+      responseExample: USERS_RESPONSE_EXAMPLE,
+      mappingNote:
+        "Nested address/company are flattened by mapJsonPlaceholderUser (see lib/api/users.ts). " +
+        "A backend returning the flat User shape needs no mapping.",
+      authNote: "Public demo needs no key. Private APIs: pass runtime headers, never hardcode secrets.",
+    },
     props: [
       {
         name: "columns",

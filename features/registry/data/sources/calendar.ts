@@ -36,7 +36,7 @@ const Calendar = ({
   }, [month]);
 
   const today = new Date();
-  const todayStr = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+  const todayStr = \`\${today.getFullYear()}-\${today.getMonth()}-\${today.getDate()}\`;
 
   return (
     <div className={cn("rounded-xl border border-border/60 bg-card shadow-sm ring-1 ring-black/[0.04] dark:ring-white/[0.08] p-3", className)}>
@@ -51,7 +51,7 @@ const Calendar = ({
         {grid.map((day, i) => {
           const dateStr =
             day !== null
-              ? month.getFullYear() + "-" + month.getMonth() + "-" + day
+              ? \`\${month.getFullYear()}-\${month.getMonth()}-\${day}\`
               : null;
           const isToday = dateStr === todayStr;
           const dayEvents = day !== null ? events[day] || [] : [];
@@ -105,4 +105,5 @@ const Calendar = ({
 };
 
 export default Calendar;
-// Requires the cn() utility from "@/lib/cn" (clsx + tailwind-merge).`;
+
+// cn() is imported from @/lib/cn (clsx + tailwind-merge).`;

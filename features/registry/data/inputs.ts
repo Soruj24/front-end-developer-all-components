@@ -218,6 +218,19 @@ export const inputs = [
       { name: "children", type: "ReactNode", description: "Custom content replacing the default dropzone/button UI." },
     ],
     source: fileUploadSource,
+    api: {
+      resource: "uploads",
+      baseUrl: "https://api.example.com/v1",
+      endpoints: [
+        { method: "POST", path: "/uploads", description: "Multipart file upload; returns file records." },
+      ],
+      responseExample: `{
+  "files": [{ "id": "file_8", "name": "screenshot.png", "size": 48211 }]
+}`,
+      mappingNote:
+        "FileUpload emits File objects via onFiles — post them as FormData from your own handler (see the file-upload docs page). No JSON mapping needed.",
+      authNote: "Uploads usually require auth: send the session cookie or a runtime bearer token, never a hardcoded secret.",
+    },
   }),
   component({
     slug: "rating",
