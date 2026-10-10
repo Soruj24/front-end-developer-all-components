@@ -6,7 +6,7 @@ import { LivePreview } from "./live-preview/LivePreview";
 export function buildComponentExamples(component: RegistryComponent): Example[] {
   const examples: Example[] = [];
   const source = component.source;
-  const pascal = toPascalCase(component.name);
+  const pascal = toPascalCase(component.slug);
 
   // 1. Basic usage — always present
   examples.push({
@@ -126,8 +126,8 @@ export function ${pascal}Disabled() {
   return examples;
 }
 
-function toPascalCase(str: string): string {
-  return str
+function toPascalCase(slug: string): string {
+  return slug
     .split(/[\s-_]+/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join("");

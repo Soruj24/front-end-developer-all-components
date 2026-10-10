@@ -1,4 +1,11 @@
 import { component } from "./factory";
+import { alertProps, alertSource } from "./sources/alert";
+import { countdownProps, countdownSource } from "./sources/countdown";
+import { emptyStateProps, emptyStateSource } from "./sources/empty-state";
+import { progressBarProps, progressBarSource } from "./sources/progress-bar";
+import { skeletonProps, skeletonSource } from "./sources/skeleton";
+import { spinnerProps, spinnerSource } from "./sources/spinner";
+import { toastProps, toastSource } from "./sources/toast";
 
 export const feedback = [
   component({
@@ -9,8 +16,15 @@ export const feedback = [
     tags: ["message", "notice", "status"],
     updatedAt: "2026-03-22T00:00:00.000Z",
     stats: { downloads: 288_410, likes: 3_305, bookmarks: 1_184, comments: 139, views: 670_000 },
-    variants: ["success", "warning", "danger", "info"],
-    features: ["variants", "icons", "rounded", "dark-mode", "accessibility"],
+    variants: ["info", "success", "warning", "error", "default", "destructive"],
+    sizes: ["sm", "md", "lg"],
+    features: ["variants", "sizes", "icons", "rounded", "dark-mode", "accessibility"],
+    dependencies: ["react"],
+    files: ["components/ui/Alert.tsx"],
+    props: alertProps,
+    source: alertSource,
+    longDescription:
+      "Alert renders an inline status message with six variants, three sizes, optional built-in or custom icons, a trailing action slot, and an opt-in dismiss button with Escape-key support.",
   }),
   component({
     slug: "toast",
@@ -20,8 +34,14 @@ export const feedback = [
     tags: ["notification", "snackbar", "message"],
     updatedAt: "2026-05-02T00:00:00.000Z",
     stats: { downloads: 362_180, likes: 4_612, bookmarks: 1_733, comments: 201, views: 848_000 },
-    variants: ["success", "warning", "danger", "info"],
+    variants: ["success", "error", "warning", "info"],
     features: ["variants", "icons", "dark-mode", "accessibility"],
+    dependencies: ["react"],
+    files: ["components/ui/Toast.tsx"],
+    props: toastProps,
+    source: toastSource,
+    longDescription:
+      "Toast renders a fixed stack of dismissible notifications anchored to a screen corner, each with a status type, message, and optional action button. The parent owns the toast list and dismissal.",
   }),
   component({
     slug: "skeleton",
@@ -31,8 +51,14 @@ export const feedback = [
     tags: ["loading", "placeholder", "shimmer"],
     updatedAt: "2026-01-19T00:00:00.000Z",
     stats: { downloads: 254_320, likes: 2_918, bookmarks: 1_060, comments: 112, views: 595_000 },
-    variants: ["text", "circle", "rounded"],
+    variants: ["text", "circular", "rectangular"],
     features: ["variants", "dark-mode", "responsive"],
+    dependencies: ["react"],
+    files: ["components/ui/Skeleton.tsx"],
+    props: skeletonProps,
+    source: skeletonSource,
+    longDescription:
+      "Skeleton renders pulsing placeholder blocks in text, circular, and rectangular shapes with explicit width and height, plus prebuilt card, list-item, table, and avatar composites.",
   }),
   component({
     slug: "spinner",
@@ -42,19 +68,36 @@ export const feedback = [
     tags: ["loading", "progress", "wait"],
     updatedAt: "2026-02-28T00:00:00.000Z",
     stats: { downloads: 207_680, likes: 2_451, bookmarks: 890, comments: 94, views: 480_000 },
-    sizes: ["sm", "md", "lg"],
+    sizes: ["xs", "sm", "md", "lg", "xl"],
     features: ["sizes", "dark-mode"],
+    dependencies: ["react"],
+    files: ["components/ui/Spinner.tsx"],
+    props: spinnerProps,
+    source: spinnerSource,
+    longDescription:
+      "Spinner renders an animated SVG ring with five sizes, an optional custom stroke color, and an accessible label that switches it from presentational to status semantics.",
   }),
   component({
     slug: "progress-bar",
     name: "Progress Bar",
-    description: "Determinate and indeterminate progress bars.",
+    description: "Determinate progress bar with status variants and a percent label.",
     category: "feedback",
     tags: ["progress", "percent", "loading"],
     updatedAt: "2026-03-08T00:00:00.000Z",
     stats: { downloads: 158_430, likes: 1_898, bookmarks: 704, comments: 66, views: 372_000 },
-    variants: ["default", "striped", "indeterminate"],
-    features: ["variants", "dark-mode", "full-width"],
+    variants: ["default", "success", "warning", "error"],
+    sizes: ["sm", "md", "lg"],
+    features: ["variants", "sizes", "dark-mode", "full-width"],
+    dependencies: ["react"],
+    files: [
+      "components/ui/ProgressBar/ProgressBar.tsx",
+      "components/ui/ProgressBar/ProgressBar.types.ts",
+      "components/ui/ProgressBar/index.ts",
+    ],
+    props: progressBarProps,
+    source: progressBarSource,
+    longDescription:
+      "ProgressBar renders a determinate, clamped 0-100 progress track with status variants, three sizes, an optional percent label, and full progressbar ARIA semantics.",
   }),
   component({
     slug: "empty-state",
@@ -64,7 +107,14 @@ export const feedback = [
     tags: ["placeholder", "empty", "onboarding"],
     updatedAt: "2026-02-16T00:00:00.000Z",
     stats: { downloads: 141_930, likes: 1_742, bookmarks: 631, comments: 52, views: 330_000 },
-    features: ["icons", "dark-mode", "responsive"],
+    sizes: ["sm", "md", "lg"],
+    features: ["sizes", "icons", "dark-mode", "responsive"],
+    dependencies: ["react"],
+    files: ["components/ui/EmptyState.tsx"],
+    props: emptyStateProps,
+    source: emptyStateSource,
+    longDescription:
+      "EmptyState renders a centered icon, title, optional description, and action slot for empty collections, with three sizes controlling icon scale and padding.",
   }),
   component({
     slug: "countdown",
@@ -74,7 +124,14 @@ export const feedback = [
     tags: ["timer", "countdown", "launch"],
     updatedAt: "2026-01-05T00:00:00.000Z",
     stats: { downloads: 64_280, likes: 812, bookmarks: 298, comments: 21, views: 155_000 },
+    variants: ["default", "card", "pill"],
     sizes: ["sm", "md", "lg"],
-    features: ["sizes", "dark-mode", "responsive"],
+    features: ["variants", "sizes", "dark-mode", "responsive"],
+    dependencies: ["react"],
+    files: ["components/ui/Countdown.tsx"],
+    props: countdownProps,
+    source: countdownSource,
+    longDescription:
+      "Countdown ticks every second toward a target date with card, pill, and plain digit variants, three sizes, toggleable labels and separators, and a completion callback.",
   }),
 ];

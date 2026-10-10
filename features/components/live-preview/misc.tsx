@@ -7,7 +7,7 @@ import { FileUpload } from "@/components/ui";
 export const misc: Record<string, () => ReactNode> = {
   "file-upload": () => (
     <div className="w-full max-w-sm">
-      <FileUpload maxFiles={3} accept="image/*" />
+      <FileUpload accept="image/*" multiple />
     </div>
   ),
 };

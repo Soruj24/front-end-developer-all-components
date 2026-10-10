@@ -1,37 +1,76 @@
 import { component } from "./factory";
+import { accordionSource } from "./sources/accordion";
+import { tabsSource } from "./sources/tabs";
+import { breadcrumbSource } from "./sources/breadcrumb";
+import { dockSource } from "./sources/dock";
+import { floatingToolbarSource } from "./sources/floating-toolbar";
+import { scrollAreaSource } from "./sources/scroll-area";
 
 export const navigation = [
   component({
     slug: "accordion",
     name: "Accordion",
-    description: "Collapsible sections that expand single or multiple items.",
+    description: "Collapsible sections that expand a single item or multiple items.",
     category: "navigation",
     tags: ["collapse", "expand", "faq"],
     updatedAt: "2026-03-25T00:00:00.000Z",
     stats: { downloads: 312_650, likes: 3_814, bookmarks: 1_420, comments: 162, views: 730_000 },
-    variants: ["single", "multiple"],
+    variants: ["bordered", "ghost", "separated", "boxed"],
     features: ["variants", "icons", "dark-mode", "accessibility", "responsive"],
+    files: ["components/ui/Accordion.tsx"],
+    dependencies: ["react"],
+    source: accordionSource,
+    longDescription:
+      "Accordion renders a list of expandable sections with animated open/close and full ARIA wiring. It supports single or multiple open items and four container variants.",
+    props: [
+      { name: "items", type: "AccordionItem[]", required: true, description: "Sections to render; each item takes a title, content, and optional icon, description, badge, or disabled flag." },
+      { name: "multiple", type: "boolean", default: "false", description: "When true, more than one section can stay open at once." },
+      { name: "variant", type: "enum", default: "bordered", description: "Container layout of the sections.", values: ["bordered", "ghost", "separated", "boxed"] },
+      { name: "defaultOpen", type: "number[]", description: "Indexes of the sections open on first render." },
+      { name: "className", type: "string", description: "Additional classes applied to the container." },
+    ],
   }),
   component({
     slug: "tabs",
     name: "Tabs",
-    description: "Underline, pill, icon, and vertical tab groups.",
+    description: "Underline, pill, and capsule tab groups with keyboard navigation.",
     category: "navigation",
     tags: ["tab", "switch", "section"],
     updatedAt: "2026-04-01T00:00:00.000Z",
     stats: { downloads: 298_430, likes: 3_602, bookmarks: 1_348, comments: 155, views: 698_000 },
-    variants: ["underline", "pills", "icons", "vertical"],
+    variants: ["underline", "pills", "capsule"],
     features: ["variants", "icons", "dark-mode", "accessibility", "responsive"],
+    files: ["components/ui/Tabs.tsx"],
+    dependencies: ["react"],
+    source: tabsSource,
+    longDescription:
+      "Tabs is a controlled tab group with arrow-key, Home, and End navigation plus proper tab/tabpanel ARIA roles. It renders in underline, pills, or capsule styles and stacks horizontally or vertically.",
+    props: [
+      { name: "tabs", type: "Tab[]", required: true, description: "Tabs to render; each tab takes an id, label, content, and optional icon, badge, or disabled flag." },
+      { name: "activeTab", type: "string", required: true, description: "Id of the currently selected tab." },
+      { name: "onChange", type: "function", required: true, description: "Called with the tab id when selection changes." },
+      { name: "variant", type: "enum", default: "underline", description: "Visual style of the tab list.", values: ["underline", "pills", "capsule"] },
+      { name: "orientation", type: "enum", default: "horizontal", description: "Layout direction of the tab list.", values: ["horizontal", "vertical"] },
+    ],
   }),
   component({
     slug: "breadcrumb",
     name: "Breadcrumb",
-    description: "Hierarchical path trails with separators and icons.",
+    description: "Hierarchical path trails with chevron separators.",
     category: "navigation",
     tags: ["trail", "path", "hierarchy"],
     updatedAt: "2026-02-04T00:00:00.000Z",
     stats: { downloads: 154_280, likes: 1_802, bookmarks: 671, comments: 63, views: 362_000 },
     features: ["icons", "dark-mode", "accessibility", "responsive"],
+    files: ["components/ui/Breadcrumb.tsx"],
+    dependencies: ["react", "next"],
+    source: breadcrumbSource,
+    longDescription:
+      "Breadcrumb renders a nav landmark of linked ancestors ending in a plain-text current page. Non-final items with an href use Next.js links; the last item is styled as the current page.",
+    props: [
+      { name: "items", type: "BreadcrumbItem[]", required: true, description: "Trail segments; each item takes a label and an optional href. The last item always renders as plain text." },
+      { name: "className", type: "string", description: "Additional classes applied to the nav element." },
+    ],
   }),
   component({
     slug: "dock",
@@ -42,6 +81,25 @@ export const navigation = [
     updatedAt: "2026-05-08T00:00:00.000Z",
     stats: { downloads: 74_920, likes: 1_044, bookmarks: 388, comments: 29, views: 186_000 },
     features: ["icons", "dark-mode", "accessibility", "responsive"],
+    files: ["components/ui/Dock.tsx"],
+    dependencies: ["react"],
+    source: dockSource,
+    longDescription:
+      "Dock is a macOS-style app launcher with pointer magnification, hover tooltips, drag-to-reorder, and roving-tabindex keyboard support. Active state can be controlled or left internal.",
+    props: [
+      { name: "items", type: "DockItem[]", required: true, description: "Dock entries; each item takes an id, label, icon, and optional active flag or onClick handler." },
+      { name: "magnification", type: "boolean", default: "true", description: "Enlarges icons near the pointer on fine-pointer devices." },
+      { name: "magnificationMax", type: "number", default: "1.55", description: "Peak icon scale at the pointer center." },
+      { name: "magnificationRadius", type: "number", default: "110", description: "Pixel radius around the pointer within which icons scale." },
+      { name: "showTooltips", type: "boolean", default: "true", description: "Shows each item label on hover or keyboard focus." },
+      { name: "draggable", type: "boolean", default: "true", description: "Allows reordering items by dragging." },
+      { name: "activeId", type: "string", description: "Controlled id of the active item; omit for internal state." },
+      { name: "onActiveChange", type: "function", description: "Called with the new active id (or undefined) when selection changes." },
+      { name: "onOrderChange", type: "function", description: "Called with the reordered items after a drag." },
+      { name: "onItemClick", type: "function", description: "Called with the clicked item before active state updates." },
+      { name: "ariaLabel", type: "string", default: "Application dock", description: "Accessible label for the toolbar region." },
+      { name: "className", type: "string", description: "Additional classes applied to the dock container." },
+    ],
   }),
   component({
     slug: "floating-toolbar",
@@ -52,6 +110,22 @@ export const navigation = [
     updatedAt: "2026-03-02T00:00:00.000Z",
     stats: { downloads: 92_610, likes: 1_224, bookmarks: 466, comments: 37, views: 224_000 },
     features: ["icons", "dark-mode", "accessibility", "responsive"],
+    files: ["components/ui/FloatingToolbar.tsx"],
+    dependencies: ["react"],
+    source: floatingToolbarSource,
+    longDescription:
+      "FloatingToolbar groups icon actions into a draggable pill with tooltips, an optional selection label, and a collapse toggle. It positions itself fixed, absolute, or sticky with roving-tabindex arrow-key support.",
+    props: [
+      { name: "groups", type: "FloatingToolbarAction[][]", required: true, description: "Action groups rendered with dividers; each action takes an id, label, icon, and optional shortcut, disabled, or active flag." },
+      { name: "onAction", type: "function", description: "Called with the action when a toolbar button is clicked." },
+      { name: "selectionLabel", type: "string", description: "Context chip shown before the actions, e.g. how many items are selected." },
+      { name: "disabled", type: "boolean", default: "false", description: "Disables every action button." },
+      { name: "activeItemId", type: "string", description: "Id of the action rendered in the active state." },
+      { name: "position", type: "enum", default: "fixed", description: "How the toolbar is anchored.", values: ["fixed", "absolute", "sticky"] },
+      { name: "collapsible", type: "boolean", default: "true", description: "Shows the collapse toggle that hides the actions behind the grip." },
+      { name: "ariaLabel", type: "string", default: "Floating toolbar", description: "Accessible label for the toolbar region." },
+      { name: "className", type: "string", description: "Additional classes applied to the toolbar pill." },
+    ],
   }),
   component({
     slug: "scroll-area",
@@ -62,5 +136,23 @@ export const navigation = [
     updatedAt: "2026-01-12T00:00:00.000Z",
     stats: { downloads: 118_340, likes: 1_488, bookmarks: 544, comments: 50, views: 278_000 },
     features: ["dark-mode", "responsive"],
+    sizes: ["sm", "md", "lg"],
+    files: [
+      "components/ui/ScrollArea/ScrollArea.tsx",
+      "components/ui/ScrollArea/ScrollArea.types.ts",
+      "components/ui/ScrollArea/index.ts",
+    ],
+    dependencies: ["react"],
+    source: scrollAreaSource,
+    longDescription:
+      "ScrollArea is a thin styled wrapper that constrains content to a scrollable region with themed thin scrollbars. Orientation clamps scrolling to one axis and the size prop adjusts scrollbar width.",
+    props: [
+      { name: "children", type: "ReactNode", required: true, description: "Scrollable content." },
+      { name: "orientation", type: "enum", default: "vertical", description: "Which axes may scroll.", values: ["vertical", "horizontal", "both"] },
+      { name: "size", type: "enum", default: "md", description: "Scrollbar width.", values: ["sm", "md", "lg"] },
+      { name: "maxHeight", type: "string", default: "16rem", description: "Maximum height before vertical scrolling; ignored for horizontal orientation." },
+      { name: "maxWidth", type: "string", description: "Maximum width before horizontal scrolling; only applies when orientation is not vertical." },
+      { name: "className", type: "string", description: "Additional classes applied to the scroll container." },
+    ],
   }),
 ];

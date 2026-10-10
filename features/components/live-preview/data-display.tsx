@@ -41,9 +41,9 @@ export const dataDisplay: Record<string, () => ReactNode> = {
     <div className="w-full max-w-md">
       <Timeline
         events={[
-          { date: "2026-06-01", title: "Design tokens defined", description: "Palette and spacing shipped.", type: "success" },
-          { date: "2026-06-10", title: "Core primitives built", description: "Button, Input, Badge released.", type: "info" },
-          { date: "2026-06-20", title: "Registry live", description: "1,000+ components published.", type: "warning" },
+          { date: "2026-06-01", title: "Design tokens defined", description: "Palette and spacing shipped.", type: "milestone" },
+          { date: "2026-06-10", title: "Core primitives built", description: "Button, Input, Badge released.", type: "work" },
+          { date: "2026-06-20", title: "Registry live", description: "1,000+ components published.", type: "personal" },
         ]}
       />
     </div>

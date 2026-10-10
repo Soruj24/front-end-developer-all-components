@@ -1,10 +1,11 @@
 import { component } from "./factory";
+import { buttonSource } from "./sources/button";
 
 export const buttons = [
   component({
     slug: "button",
     name: "Button",
-    description: "Action triggers with five variants, four sizes, icons, and loading states.",
+    description: "Action triggers with eight variants, eight sizes, icons, and loading states.",
     category: "buttons",
     tags: ["action", "interaction", "form"],
     author: "Component Library Team",
@@ -18,8 +19,19 @@ export const buttons = [
       comments: 412,
       views: 1_284_000,
     },
-    variants: ["primary", "secondary", "outline", "ghost", "destructive"],
-    sizes: ["sm", "md", "lg", "icon"],
+    dependencies: ["react"],
+    files: ["components/ui/Button.tsx"],
+    variants: [
+      "primary",
+      "secondary",
+      "outline",
+      "ghost",
+      "destructive",
+      "destructive-outline",
+      "link",
+      "soft",
+    ],
+    sizes: ["xs", "sm", "md", "lg", "xl", "icon", "icon-sm", "icon-lg"],
     features: [
       "variants",
       "sizes",
@@ -49,17 +61,26 @@ export const buttons = [
     props: [
       {
         name: "variant",
-        type: "enum",
-        default: "primary",
+        type: '"primary" | "secondary" | "outline" | "ghost" | "destructive" | "destructive-outline" | "link" | "soft"',
+        default: '"primary"',
         description: "Visual style of the button.",
-        values: ["primary", "secondary", "outline", "ghost", "destructive"],
+        values: [
+          "primary",
+          "secondary",
+          "outline",
+          "ghost",
+          "destructive",
+          "destructive-outline",
+          "link",
+          "soft",
+        ],
       },
       {
         name: "size",
-        type: "enum",
-        default: "md",
+        type: '"xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-sm" | "icon-lg"',
+        default: '"md"',
         description: "Height and horizontal padding.",
-        values: ["sm", "md", "lg", "icon"],
+        values: ["xs", "sm", "md", "lg", "xl", "icon", "icon-sm", "icon-lg"],
       },
       {
         name: "loading",
@@ -70,13 +91,17 @@ export const buttons = [
       {
         name: "disabled",
         type: "boolean",
-        default: "false",
-        description: "Disables the button and dims its appearance.",
+        description: "Standard HTML button disabled attribute; also implied while loading.",
       },
       {
         name: "onClick",
-        type: "function",
-        description: "Invoked when the button is activated.",
+        type: "(event: React.MouseEvent<HTMLButtonElement>) => void",
+        description: "Standard HTML button click handler, invoked when the button is activated.",
+      },
+      {
+        name: "children",
+        type: "React.ReactNode",
+        description: "Content rendered inside the button.",
       },
     ],
     releases: [
@@ -99,14 +124,6 @@ export const buttons = [
         notes: ["Initial public release."],
       },
     ],
-    source: `import { Button } from "@/components/ui";
-
-export default function ButtonDemo() {
-  return (
-    <Button variant="primary" size="md" onClick={() => alert("Clicked")}>
-      Primary Action
-    </Button>
-  );
-}`,
+    source: buttonSource,
   }),
 ];

@@ -43,6 +43,8 @@ export type {
   PricingTier,
 } from "./PricingCalculator";
 export { default as Breadcrumb } from "./Breadcrumb";
+export { Accordion } from "./Accordion";
+export type { AccordionItem, AccordionProps, AccordionVariant } from "./Accordion";
 export { default as Button } from "./Button";
 export { default as Calendar } from "./Calendar";
 export {
@@ -120,7 +122,7 @@ export type {
   DialogTitleProps,
   DialogDescriptionProps,
   DialogFooterProps,
-} from "./Dialog";
+} from "./Dialog/Dialog.types";
 export {
   Drawer,
   DrawerTrigger,

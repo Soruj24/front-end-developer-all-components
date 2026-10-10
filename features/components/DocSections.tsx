@@ -3,10 +3,11 @@
 import type { RegistryComponent } from "@/features/registry";
 
 export function UsageSection({ component }: { component: RegistryComponent }) {
-  const usage = `import { ${toPascal(component.slug)} } from "@/components/ui/${component.slug}";
+  const pascal = toPascal(component.slug);
+  const usage = `import { ${pascal} } from "@/components/ui";
 
 export default function Example() {
-  return <${toPascal(component.slug)} />;
+  return <${pascal} />;
 }`;
 
   return (
