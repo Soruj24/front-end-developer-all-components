@@ -46,17 +46,28 @@ function pascalCase(slug: string): string {
 
 function defaultSource(slug: string): string {
   const Component = pascalCase(slug);
-  return `import { ${Component} } from "@/components/ui";
+  return `import { cn } from "@/lib/cn";
+
+interface ${Component}Props extends React.HTMLAttributes<HTMLDivElement> {}
+
+export function ${Component}({ className, children, ...props }: ${Component}Props) {
+  return (
+    <div className={cn("rounded-lg border border-border bg-background p-4", className)} {...props}>
+      {children ?? <${Component}Demo />}
+    </div>
+  );
+}
 
 export default function ${Component}Demo() {
-  return <${Component} />;
+  return <${Component}>Install this component, then replace this placeholder with your content.</${Component}>;
 }`;
 }
 
 /** Builds a fully-populated RegistryComponent from a compact seed. */
 export function component(seed: ComponentSeed): RegistryComponent {
   const slug = seed.slug;
-  const now = new Date().toISOString();
+  const fallbackDate = "2026-01-15T00:00:00.000Z";
+  const now = fallbackDate;
   const { stats: statsOverride, ...rest } = seed;
   return {
     status: "stable",
@@ -77,9 +88,8 @@ export function component(seed: ComponentSeed): RegistryComponent {
       "rounded-lg",
     ],
     longDescription:
-      `${seed.name} is a dependency-free component designed for production use. ` +
-      "It follows the platform design tokens, supports light and dark mode, " +
-      "and is keyboard accessible out of the box.",
+      seed.longDescription ??
+      `${seed.name}: ${seed.description} Ships as a single copy-paste file with light and dark mode support.`,
     props: [],
     releases: [
       {

@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { Suspense, useState, useMemo } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import EmptyState from "@/components/ui/EmptyState";
 import { registryCategories } from "@/features/registry";
 import { registryCatalog } from "@/features/registry/data";
 import { GalleryCard } from "./components/GalleryCard";
 import { GalleryToolbar, type SortOption } from "./components/GalleryToolbar";
 
-export default function ComponentsPage() {
+function ComponentsGallery() {
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(
+    () => searchParams.get("category") ?? "all",
+  );
   const [sortBy, setSortBy] = useState<SortOption>("popular");
 
   const filteredComponents = useMemo(() => {
@@ -76,7 +80,7 @@ export default function ComponentsPage() {
             {registryCatalog.length} Components
           </span>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Sun UI Component Gallery
+            Component Gallery
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
             Browse, search, and copy production-ready UI components for your
@@ -156,5 +160,13 @@ export default function ComponentsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ComponentsPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-12" role="status">Loading components…</div>}>
+      <ComponentsGallery />
+    </Suspense>
   );
 }

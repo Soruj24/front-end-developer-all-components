@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import { CodeBlock } from "@/components/home/CodeBlock";
 import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { writeClipboard } from "@/lib/clipboard";
+import { cn } from "@/lib/cn";
 
 interface SourceCodeViewerProps {
   source: string;
@@ -19,15 +21,13 @@ export function SourceCodeViewer({
 }: SourceCodeViewerProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(source);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* ignore */
-    }
+    const ok = await writeClipboard(source);
+    setCopied(ok);
+    setFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   }, [source]);
 
   return (
@@ -45,16 +45,18 @@ export function SourceCodeViewer({
           <button
             type="button"
             onClick={handleCopy}
-            className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
-              copied ? "text-green-500" : "text-muted-foreground hover:bg-muted"
-            }`}
+            aria-label={copied ? "Source copied" : `Copy ${filename} to clipboard`}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              copied ? "text-green-500" : failed ? "text-danger" : "text-muted-foreground hover:bg-muted",
+            )}
           >
             {copied ? (
               <CheckIcon className="h-3.5 w-3.5" />
             ) : (
               <CopyIcon className="h-3.5 w-3.5" />
             )}
-            {copied ? "Copied" : "Copy"}
+            {copied ? "Copied" : failed ? "Failed" : "Copy"}
           </button>
           <button
             type="button"

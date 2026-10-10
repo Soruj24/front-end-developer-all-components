@@ -71,15 +71,15 @@ export function HomeHero() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-foreground">
-                  {siteConfig.stats.downloads}+
+                  {siteConfig.stats.categories}+
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">Downloads</div>
+                <div className="mt-1 text-sm text-muted-foreground">Categories</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-foreground">
-                  {siteConfig.stats.stars}+
+                  {siteConfig.stats.pages}+
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">GitHub Stars</div>
+                <div className="mt-1 text-sm text-muted-foreground">Pages</div>
               </div>
             </div>
           </FadeInUp>

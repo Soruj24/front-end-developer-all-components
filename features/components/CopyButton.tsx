@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 
 /** Copies text to the clipboard and shows a check for a moment. */
 export function CopyButton({
@@ -14,24 +15,25 @@ export function CopyButton({
   className?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      // Clipboard unavailable — select-less fallback is fine for demo UI.
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+    const ok = await writeClipboard(text);
+    setCopied(ok);
+    setFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   };
 
   return (
     <button
       type="button"
       onClick={copy}
+      aria-label={copied ? "Copied to clipboard" : `${label} to clipboard`}
+      aria-live="polite"
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+        "inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         copied && "border-success/40 text-success",
+        failed && "border-danger/40 text-danger",
         className
       )}
     >
@@ -40,7 +42,7 @@ export function CopyButton({
       ) : (
         <CopyIcon className="h-3.5 w-3.5" />
       )}
-      {copied ? "Copied" : label}
+      {copied ? "Copied" : failed ? "Failed" : label}
     </button>
   );
 }

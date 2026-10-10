@@ -43,7 +43,7 @@ export function DocsLayout({
   const page = useMemo(() => findDocPage(pathname), [pathname]);
   const resolvedTitle = title ?? page?.label ?? "Documentation";
   const resolvedDescription = description ?? page?.description ?? "";
-  const editUrl = `${siteConfig.github.replace(/\/+$/, "")}/edit/main/app${pathname}/page.tsx`;
+  const editUrl = `${siteConfig.github.replace(/\/+$/, "")}/edit/main/client/app/(site)${pathname}/page.tsx`;
 
   useEffect(() => {
     const timer = window.setTimeout(() => {

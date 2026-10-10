@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useMemo } from "react";
 import type { RegistryComponent } from "@/features/registry";
+import { writeClipboard } from "@/lib/clipboard";
 import { getDevice, DEVICES } from "@/components/preview";
 import type { DeviceId } from "@/components/preview";
 import { PreviewFrame } from "@/components/preview/PreviewFrame";
@@ -35,11 +36,9 @@ export function ComponentLivePreview({
   const handleRefresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(component.source);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch { /* ignore */ }
+    const ok = await writeClipboard(component.source);
+    setCopied(ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   }, [component.source]);
 
   const toggleFullscreen = useCallback(() => setIsFullscreen((v) => !v), []);

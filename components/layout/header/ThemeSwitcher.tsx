@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore, type JSX } from "react";
 import { cn } from "@/lib/cn";
 import {
   FOCUS,
@@ -29,7 +29,12 @@ function subscribeTheme(callback: () => void) {
 }
 
 function getThemeSnapshot(): Theme {
-  return (localStorage.getItem("theme") as Theme) || "system";
+  if (typeof window === "undefined") return "system";
+  try {
+    return (window.localStorage.getItem("theme") as Theme) || "system";
+  } catch {
+    return "system";
+  }
 }
 
 function getThemeServerSnapshot(): Theme {
@@ -37,7 +42,11 @@ function getThemeServerSnapshot(): Theme {
 }
 
 function selectTheme(theme: Theme) {
-  localStorage.setItem("theme", theme);
+  try {
+    localStorage.setItem("theme", theme);
+  } catch {
+    /* storage unavailable */
+  }
   for (const listener of themeListeners) listener();
 }
 
@@ -62,7 +71,14 @@ export function ThemeSwitcher({ className, onThemeToggle }: ThemeSwitcherProps) 
     if (typeof window === "undefined") return;
     const root = document.documentElement;
     root.classList.remove("light", "dark");
-    if (theme !== "system") root.classList.add(theme);
+    if (theme === "system") {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.classList.add(prefersDark ? "dark" : "light");
+      root.style.colorScheme = prefersDark ? "dark" : "light";
+    } else {
+      root.classList.add(theme);
+      root.style.colorScheme = theme;
+    }
   }, [theme]);
 
   useEffect(() => {

@@ -4,9 +4,9 @@ import type { RegistryComponent } from "@/features/registry";
 import { categoryBySlug } from "@/features/registry";
 import { useRegistryActions } from "@/hooks";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import {
   HeartIcon,
-  BookmarkIcon,
   ShareIcon,
   TagIcon,
 } from "./icons";
@@ -21,15 +21,18 @@ export function ComponentHeader({
   const action = getActionState(component.slug);
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/components/${component.slug}`;
+    const url = `${window.location.origin}/${component.slug}`;
     if (navigator.share) {
       try {
         await navigator.share({ title: component.name, url });
+        return;
       } catch {
-        await navigator.clipboard.writeText(url);
+        /* fall through to clipboard */
       }
-    } else {
-      await navigator.clipboard.writeText(url);
+    }
+    const ok = await writeClipboard(url);
+    if (!ok) {
+      window.prompt("Copy this link:", url);
     }
   };
 

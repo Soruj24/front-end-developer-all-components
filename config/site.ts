@@ -19,14 +19,12 @@ export const siteConfig = {
   author: "Component Library",
   github: "https://github.com/Soruj24/front-end-developer-all-components",
   discord: "https://discord.gg/sun-ui",
-  getStartedHref: "/routing",
+  getStartedHref: "/components",
   stats: {
     pages: 54,
     components: 40,
     categories: 9,
     examplesPerPage: "30+",
-    downloads: "10K",
-    stars: "500",
   },
   navLinks: [
     { label: "Components", href: "/components" },

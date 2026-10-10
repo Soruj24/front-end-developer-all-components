@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/cn";
+import { writeClipboard } from "@/lib/clipboard";
 import { CopyIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon, DownloadIcon } from "./icons";
 
 interface CodeViewerProps {
@@ -64,19 +65,18 @@ export function CodeViewer({
 }: CodeViewerProps) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const lines = source.split("\n");
   const shouldCollapse = lines.length > 30;
   const visibleLines = shouldCollapse && !expanded ? lines.slice(0, 30) : lines;
-  const visibleCode = visibleLines.join("\n");
   const hiddenCount = lines.length - 30;
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(source);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch { /* ignore */ }
+    const ok = await writeClipboard(source);
+    setCopied(ok);
+    setCopyFailed(!ok);
+    if (ok) window.setTimeout(() => setCopied(false), 1600);
   };
 
   const handleDownload = () => {
@@ -99,10 +99,11 @@ export function CodeViewer({
         </div>
         <div className="flex items-center gap-1.5">
           <button type="button" onClick={handleCopy}
-            className={cn("inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors",
-              copied ? "text-success" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
+            aria-label={copied ? "Source copied" : "Copy source to clipboard"}
+            className={cn("inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              copied ? "text-success" : copyFailed ? "text-danger" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
             {copied ? <CheckIcon className="h-3.5 w-3.5" /> : <CopyIcon className="h-3.5 w-3.5" />}
-            {copied ? "Copied" : "Copy"}
+            {copied ? "Copied" : copyFailed ? "Failed" : "Copy"}
           </button>
           <button type="button" onClick={handleDownload}
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
